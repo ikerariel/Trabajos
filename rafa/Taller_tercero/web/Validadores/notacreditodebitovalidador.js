@@ -1,6 +1,6 @@
 
 $(document).ready(function () {
-   
+
     cambioEstadoNota();
     mostrarplanillaNota();
 });
@@ -42,7 +42,7 @@ function controlBotonesNuevo() {
     $(document).ready(function () {
         $('body').on('click', '#botonesNota a', function () {
             v = ($(this).attr('id'));
-            if (v === 'btnNuevo' && $('#estadoNotaP').val() === 'CONFIRMADO' || $('#estadoNotaP').val() === 'ANULADO') {               
+            if (v === 'btnNuevo' && $('#estadoNotaP').val() === 'CONFIRMADO' || $('#estadoNotaP').val() === 'ANULADO') {
                 document.getElementById("btnGuardar").style.display = '';
                 document.getElementById("btnGuardarModificado").style.display = 'none';
             } else {
@@ -130,26 +130,27 @@ function buscadorTablaProveeNota() {
     var found = false;
     var compareWith = "";
 // Recorremos todas las filas con contenido de la tabla
-    for (var i = 1; i < tableReg.rows.length; i++){
+    for (var i = 1; i < tableReg.rows.length; i++) {
         cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
         found = false;
 // Recorremos todas las celdas
-        for (var j = 0; j < cellsOfRow.length && !found; j++){
+        for (var j = 0; j < cellsOfRow.length && !found; j++) {
             compareWith = cellsOfRow[j].innerHTML.toLowerCase();
 // Buscamos el texto en el contenido de la celda
-            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)){
+            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
                 found = true;
             }
-        }if (found){
-                tableReg.rows[i].style.display = '';
-            } else {
+        }
+        if (found) {
+            tableReg.rows[i].style.display = '';
+        } else {
 // si no ha encontrado ninguna coincidencia, esconde la fila de la tabla
             tableReg.rows[i].style.display = 'none';
         }
     }
 }//--------------
-function mostrarFacturaNota(){
-    
+function mostrarFacturaNota() {
+
     crearJSON(5);
     $.ajax({
         url: "http://localhost:8084/Taller_tercero/notacreditodebitocontrol",
@@ -168,8 +169,8 @@ function mostrarFacturaNota(){
         }
     });
 }
-function RecuperarDetalleFacturaNota() {   
-      $('#miTablaDetalleNota').find('tbody').find('tr').empty();
+function RecuperarDetalleFacturaNota() {
+    $('#miTablaDetalleNota').find('tbody').find('tr').empty();
     datosDetalleJSON = {
         "opcion": 6,
         "nroFacturaN": $('#notafactuComp').val()
@@ -181,7 +182,7 @@ function RecuperarDetalleFacturaNota() {
         cache: false,
         success: function (resp) {
             if (JSON.stringify(resp) != '[]') {
-                    //alert(resp);
+                //alert(resp);
                 $.each(resp, function (indice, value) {
                     subtotal = value.detfact_precio * value.detfact_cantidad;
                     $('#miTablaDetalleNota').append("<tr id=\'prod" + tindex + "\'>\
@@ -192,7 +193,7 @@ function RecuperarDetalleFacturaNota() {
                                     <td>" + value.detfact_cantidad + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
                                     <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
-                                    \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");                   
+                                    \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
                 });
             } else {
                 alert('Datos no encontrados..');
@@ -237,6 +238,7 @@ function  insertarNota() {
             if (opcion === true) {
                 datosCabeceraJSON = {
                     "opcion": 8,
+                    "dcValor": 1,
                     "tiponota": $('#notatipo').val(),
                     "fechanota": $('#notaFecha').val(),
                     "motivonota": $('#notaMotivo').val(),
@@ -250,11 +252,58 @@ function  insertarNota() {
                     cache: false,
                     dataType: 'text',
                     success: function () {
-                        setTimeout(function (){
-                             insertarDetalleNota();
-                        },1200);
-                       
-                     
+                        setTimeout(function () {
+                            insertarDetalleNota();
+                        }, 1200);
+
+
+                    },
+                    error: function () {
+                    }
+                });
+            } else {
+
+            }
+        }
+    }
+}
+function  updateNCD() {
+    var dato = "";
+    $('#miTablaDetalleNota').find('tbody').find('tr').each(function () {
+        dato = $(this).find("td").eq(0).html();
+    });
+    if (dato === "") {
+        alert('No hay detalle que guardar..!');
+        $("#codgenericiMerca").focus();
+    } else {
+        if ($('#notatipo').val() === "") {
+            alert('Debe ingresar todos los datos requeridos para la consulta..');
+            $("#codgenericiMerca").focus();
+        } else {
+            var opcion = confirm('Desea Guardar Nota credito debito..?');
+            if (opcion === true) {
+                datosCabeceraJSON = {
+                    "opcion": 8,
+                    "dcValor": 2,
+                    "tiponota": $('#notatipo').val(),
+                    "fechanota": $('#notaFecha').val(),
+                    "motivonota": $('#notaMotivo').val(),
+                    "factunota": $('#notafactuComp').val(),
+                    "usunota": $('#CodvUser').val()
+                };
+                $.ajax({
+                    url: "http://localhost:8084/Taller_tercero/notacreditodebitocontrol",
+                    type: 'POST',
+                    data: datosCabeceraJSON,
+                    cache: false,
+                    dataType: 'text',
+                    success: function () {
+                        deleteNCD();
+                        setTimeout(function () {
+                            insertarDetalleNota();
+                        }, 1200);
+
+
                     },
                     error: function () {
                     }
@@ -286,8 +335,26 @@ function  insertarDetalleNota() {
             }
         });
     });
-       alert("Nota credito guardado correctamente.!!");
-                        window.location.reload();
+    alert("Nota credito guardado correctamente.!!");
+    window.location.reload();
+}
+function  deleteNCD() {
+    datosDetalleJSON = {
+        "opcion": 13,
+        "codNCD": $('#codigo').val()
+    };
+    $.ajax({
+        url: "http://localhost:8084/Taller_tercero/notacreditodebitocontrol",
+        type: 'POST',
+        data: datosDetalleJSON,
+        cache: false,
+        dataType: 'text',
+        success: function () {
+        },
+        error: function () {
+        }
+    });
+
 }
 function mostrarplanillaNota() {
     crearJSON(10);
@@ -458,7 +525,7 @@ function recuperarDetalleNotaC() {
                                     <td>" + value.cred_deb_cantidad + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
                                     <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
-                                    \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>"); 
+                                    \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
                     });
                     $('#codigo').val($('#nroNotaP').val());
                 } else {
@@ -510,17 +577,18 @@ function buscadorTablaNota() {
     var found = false;
     var compareWith = "";
 // Recorremos todas las filas con contenido de la tabla
-    for (var i = 1; i < tableReg.rows.length; i++){
+    for (var i = 1; i < tableReg.rows.length; i++) {
         cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
         found = false;
 // Recorremos todas las celdas
-        for (var j = 0; j < cellsOfRow.length && !found; j++){
+        for (var j = 0; j < cellsOfRow.length && !found; j++) {
             compareWith = cellsOfRow[j].innerHTML.toLowerCase();
 // Buscamos el texto en el contenido de la celda
-            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)){
+            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
                 found = true;
             }
-        }if (found){
+        }
+        if (found) {
             tableReg.rows[i].style.display = '';
         } else {
 // si no ha encontrado ninguna coincidencia, esconde la fila de la tabla
@@ -586,17 +654,18 @@ function buscadorTablaMercaderiaNota() {
     var found = false;
     var compareWith = "";
 // Recorremos todas las filas con contenido de la tabla
-    for (var i = 1; i < tableReg.rows.length; i++){
+    for (var i = 1; i < tableReg.rows.length; i++) {
         cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
         found = false;
 // Recorremos todas las celdas
-        for (var j = 0; j < cellsOfRow.length && !found; j++){
+        for (var j = 0; j < cellsOfRow.length && !found; j++) {
             compareWith = cellsOfRow[j].innerHTML.toLowerCase();
 // Buscamos el texto en el contenido de la celda
-            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)){
+            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
                 found = true;
             }
-        }if (found){
+        }
+        if (found) {
             tableReg.rows[i].style.display = '';
         } else {
 // si no ha encontrado ninguna coincidencia, esconde la fila de la tabla
@@ -631,8 +700,8 @@ function agregarFilaMercaNota() {
             <td>" + v_precio + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
-            <td><img onclick=\"$(\'#prod" 
-            + tindex + "\').remove();updatemonto( " + subtotal + ", " 
+            <td><img onclick=\"$(\'#prod"
+            + tindex + "\').remove();updatemonto( " + subtotal + ", "
             + tindex + ")\" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
     calcularmonto();
     $('#codgenericiMerca').val(null);
@@ -664,17 +733,18 @@ function buscadorPlanillaNota() {
     var found = false;
     var compareWith = "";
 // Recorremos todas las filas con contenido de la tabla
-    for (var i = 1; i < tableReg.rows.length; i++){
+    for (var i = 1; i < tableReg.rows.length; i++) {
         cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
         found = false;
 // Recorremos todas las celdas
-        for (var j = 0; j < cellsOfRow.length && !found; j++){
+        for (var j = 0; j < cellsOfRow.length && !found; j++) {
             compareWith = cellsOfRow[j].innerHTML.toLowerCase();
 // Buscamos el texto en el contenido de la celda
-            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)){
+            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
                 found = true;
             }
-        }if (found){
+        }
+        if (found) {
             tableReg.rows[i].style.display = '';
         } else {
 // si no ha encontrado ninguna coincidencia, esconde la fila de la tabla
