@@ -169,6 +169,7 @@ function mostrarFacturaNota(){
     });
 }
 function RecuperarDetalleFacturaNota() {   
+      $('#miTablaDetalleNota').find('tbody').find('tr').empty();
     datosDetalleJSON = {
         "opcion": 6,
         "nroFacturaN": $('#notafactuComp').val()
@@ -250,7 +251,7 @@ function  insertarNota() {
                     dataType: 'text',
                     success: function () {
                         setTimeout(function (){
-//                             insertarDetalleNota();
+                             insertarDetalleNota();
                         },1200);
                        
                      
@@ -300,7 +301,6 @@ function mostrarplanillaNota() {
                 $("#miTablaPlanillaNota").append($("<tr>").append($("<td>" + value.idcred_deb + "</td>" +
                         "<td>" + value.nocred_tipo + "</td>" +
                         "<td>" + value.nocred_fecha + "</td>" +
-                        "<td>" + value.prov_nombre + "</td>" +
                         "<td>" + value.usu_nombre + "</td>" +
                         "<td>" + value.descri_estado + "</td>")));
             });
@@ -644,7 +644,7 @@ function agregarFilaMercaNota() {
 function seleccionarNotaPlanilla() {
     $('#miTablaPlanillaNota tr').click(function () {
         $('#nroNotaP').val($(this).find("td").eq(0).html());
-        $('#estadoNotaP').val($(this).find("td").eq(5).html()); /*Extrae el valor de la fila seleccionada y lo muestra en el campo
+        $('#estadoNotaP').val($(this).find("td").eq(4).html()); /*Extrae el valor de la fila seleccionada y lo muestra en el campo
          //         * v_nroPlanilla*/
         var estado = $('#estadoNotaP').val();
         if (estado === 'PENDIENTE') {

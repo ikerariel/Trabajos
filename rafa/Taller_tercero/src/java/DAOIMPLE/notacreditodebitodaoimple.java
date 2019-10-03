@@ -228,31 +228,67 @@ public class notacreditodebitodaoimple implements notacreditodebitodao {
     }
 
     @Override
-    public boolean insertarCabeceraNota8(notacreditodebitodto dto) {
-        try {
-            sintaxiSql = null;
-            conexion = new Conexion();
-            sintaxiSql = "INSERT INTO nota_credito_debito(nocred_tipo, nocred_fecha, nocred_motivo, idcompra, \n"
-                    + " idusuario, idestado) VALUES (?, ?::date, ?, ?,?, 1);";
-            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
-            preparedStatement.setObject(1, dto.getNocred_tipo());
-            preparedStatement.setObject(2, dto.getNocred_fecha());
-            preparedStatement.setObject(3, dto.getNocred_motivo());
-            preparedStatement.setObject(4, dto.getIdcompra());
-            preparedStatement.setObject(5, dto.getIdusuario());
-            filasAfectadas = preparedStatement.executeUpdate();
-            if (filasAfectadas > 0) {
-                conexion.comit();
-                System.out.println("Comit() Realizado");
-                return true;
-            } else {
-                conexion.rollback();
-                System.out.println("Rollback() Realizado");
-            }
-            conexion.desConectarBD();
-        } catch (SQLException ex) {
-            Logger.getLogger(notacreditodebitodaoimple.class.getName()).log(Level.SEVERE, null, ex);
+    public boolean insertarCabeceraNota8(notacreditodebitodto dto, Integer cod) {
+        switch (cod) {
+            case 1:
+                try {
+                    sintaxiSql = null;
+                    conexion = new Conexion();
+                    sintaxiSql = "INSERT INTO nota_credito_debito(nocred_tipo, nocred_fecha, nocred_motivo, idcompra, \n"
+                            + " idusuario, idestado) VALUES (?, ?::date, ?, ?,?, 1);";
+                    preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+                    preparedStatement.setObject(1, dto.getNocred_tipo());
+                    preparedStatement.setObject(2, dto.getNocred_fecha());
+                    preparedStatement.setObject(3, dto.getNocred_motivo());
+                    preparedStatement.setObject(4, dto.getIdcompra());
+                    preparedStatement.setObject(5, dto.getIdusuario());
+                    filasAfectadas = preparedStatement.executeUpdate();
+                    if (filasAfectadas > 0) {
+                        conexion.comit();
+                        System.out.println("Comit() Realizado");
+                        return true;
+                    } else {
+                        conexion.rollback();
+                        System.out.println("Rollback() Realizado");
+                    }
+                    conexion.desConectarBD();
+                } catch (SQLException ex) {
+                    Logger.getLogger(notacreditodebitodaoimple.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
+
+            case 2:
+                try {
+                    sintaxiSql = null;
+                    conexion = new Conexion();
+                    sintaxiSql = "UPDATE public.nota_credito_debito\n"
+                            + "   SET nocred_tipo=?, nocred_fecha=?::date, nocred_motivo=?, \n"
+                            + "       idcompra=?, idusuario=?, idestado=1\n"
+                            + " WHERE idcred_deb=?";
+                    preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+                    preparedStatement.setObject(1, dto.getNocred_tipo());
+                    preparedStatement.setObject(2, dto.getNocred_fecha());
+                    preparedStatement.setObject(3, dto.getNocred_motivo());
+                    preparedStatement.setObject(4, dto.getIdcompra());
+                    preparedStatement.setObject(5, dto.getIdusuario());
+                    preparedStatement.setObject(6, dto.getIdcred_deb());
+                    filasAfectadas = preparedStatement.executeUpdate();
+                    if (filasAfectadas > 0) {
+                        conexion.comit();
+                        System.out.println("Comit() Realizado");
+                        return true;
+                    } else {
+                        conexion.rollback();
+                        System.out.println("Rollback() Realizado");
+                    }
+                    conexion.desConectarBD();
+                } catch (SQLException ex) {
+                    Logger.getLogger(notacreditodebitodaoimple.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
+
         }
+
         return false;
     }
 
@@ -293,9 +329,9 @@ public class notacreditodebitodaoimple implements notacreditodebitodao {
             conexion = new Conexion();
             sintaxiSql = "SELECT n.idcred_deb, n.nocred_tipo, n.nocred_fecha, \n"
                     + "       u.usu_nombre, e.descri_estado, p.prov_nombre FROM nota_credito_debito n\n"
-                    + "       inner join usuarios u on n.idusuario = u.idusuario\n"
-                    + "       inner join proveedores p on n.id_prov = p.id_prov\n"
-                    + "       inner join estado e on n.idestado = e.idestado where e.idestado in(1,2) order by idcred_deb desc;";
+                    + "       left join usuarios u on n.idusuario = u.idusuario\n"
+                    + "       left join proveedores p on n.id_prov = p.id_prov\n"
+                    + "       left join estado e on n.idestado = e.idestado where e.idestado in(1,2) order by idcred_deb desc;";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
@@ -348,12 +384,12 @@ public class notacreditodebitodaoimple implements notacreditodebitodao {
                     + "                     u.usu_nombre, e.descri_estado, p.prov_nombre, d.idmercaderia, d.cred_deb_cantidad,\n"
                     + "                      d.cred_deb_precio, m.codigogenerico, m.mer_descripcion\n"
                     + "                      FROM nota_credito_debito n\n"
-                    + "                      inner join factura_compra f on n.idcompra = f.idcompra\n"
-                    + "                      inner join proveedores p on n.id_prov = p.id_prov\n"
-                    + "                      inner join usuarios u on n.idusuario = u.idusuario\n"
-                    + "                      inner join estado e on n.idestado = e.idestado\n"
-                    + "                      inner join detalle_cred_deb d on n.idcred_deb = d.idcred_deb\n"
-                    + "                      inner join mercaderias m on d.idmercaderia = m.idmercaderia\n"
+                    + "                      left join factura_compra f on n.idcompra = f.idcompra\n"
+                    + "                      left join proveedores p on n.id_prov = p.id_prov\n"
+                    + "                      left join usuarios u on n.idusuario = u.idusuario\n"
+                    + "                      left join estado e on n.idestado = e.idestado\n"
+                    + "                      left join detalle_cred_deb d on n.idcred_deb = d.idcred_deb\n"
+                    + "                      left join mercaderias m on d.idmercaderia = m.idmercaderia\n"
                     + "                      where n.idcred_deb=?;";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, id);
@@ -383,5 +419,30 @@ public class notacreditodebitodaoimple implements notacreditodebitodao {
     @Override
     public String listarfacturaNota13() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean deleteNCD(notacreditodebitodto dto) {
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "DELETE FROM public.detalle_cred_deb\n"
+                    + " WHERE idcred_deb=?";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            preparedStatement.setObject(1, dto.getIdcred_deb());
+            filasAfectadas = preparedStatement.executeUpdate();
+            if (filasAfectadas > 0) {
+                conexion.comit();
+                System.out.println("Comit() Realizado");
+                return true;
+            } else {
+                conexion.rollback();
+                System.out.println("Rollback() Realizado");
+            }
+            conexion.desConectarBD();
+        } catch (SQLException ex) {
+            Logger.getLogger(notacreditodebitodaoimple.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 }

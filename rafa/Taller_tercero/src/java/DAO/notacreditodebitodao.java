@@ -12,19 +12,31 @@ import DTO.notacreditodebitodto;
  * @author Rafel
  */
 public interface notacreditodebitodao {
-    
+
     Integer getUltimoCodigoNota1();
+
     String listarEstadoNota2();
+
     String listarUsuarioNota3();
+
     String listarProveedorNota4();
+
     String listarfacturaNota5();
+
     String listarDetalleFactura6(Integer id);
-    
+
     String listarMercaderiaNota7();
-    boolean insertarCabeceraNota8(notacreditodebitodto dto);
+
+    boolean insertarCabeceraNota8(notacreditodebitodto dto, Integer cod);
+
     boolean insertarDetalleNota9(notacreditodebitodto dto);
+    boolean deleteNCD(notacreditodebitodto dto);
+
     String listarNota10();
+
     boolean confirmarNota11(notacreditodebitodto dto);
+
     String listarDetalleNota12(Integer id);
+
     String listarfacturaNota13();
 }

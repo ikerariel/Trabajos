@@ -37,11 +37,11 @@ public class notacreditodebitocontrol extends HttpServlet {
         response.setContentType("application/json, charset=UTF-8");
         PrintWriter out = response.getWriter();
         Integer opcion = Integer.parseInt(request.getParameter("opcion"));
-        
+
         notacreditodebitodao notaDAO = new notacreditodebitodaoimple();
         notacreditodebitodto notaDTO = new notacreditodebitodto();
-        
-        switch(opcion){
+
+        switch (opcion) {
             case 1:
                 System.out.println("codigo" + notaDAO.getUltimoCodigoNota1());
                 if (notaDAO.getUltimoCodigoNota1() > 0) {
@@ -56,7 +56,7 @@ public class notacreditodebitocontrol extends HttpServlet {
                 break;
             case 4:
                 out.println(notaDAO.listarProveedorNota4());
-                break; 
+                break;
             case 5:
                 out.println(notaDAO.listarfacturaNota5());
                 break;
@@ -70,12 +70,23 @@ public class notacreditodebitocontrol extends HttpServlet {
                 out.println(notaDAO.listarMercaderiaNota7());
                 break;
             case 8:
-                notaDTO.setNocred_tipo(request.getParameter("tiponota"));
-                notaDTO.setNocred_fecha(request.getParameter("fechanota"));
-                notaDTO.setNocred_motivo(request.getParameter("motivonota"));
-                notaDTO.setIdcompra(Integer.parseInt(request.getParameter("factunota")));
-                notaDTO.setIdusuario(Integer.parseInt(request.getParameter("usunota")));
-                if (notaDAO.insertarCabeceraNota8(notaDTO)) {
+                Integer dcValor = Integer.parseInt(request.getParameter("dcValor"));
+                if (dcValor == 1) {
+                    notaDTO.setNocred_tipo(request.getParameter("tiponota"));
+                    notaDTO.setNocred_fecha(request.getParameter("fechanota"));
+                    notaDTO.setNocred_motivo(request.getParameter("motivonota"));
+                    notaDTO.setIdcompra(Integer.parseInt(request.getParameter("factunota")));
+                    notaDTO.setIdusuario(Integer.parseInt(request.getParameter("usunota")));
+                } else if (dcValor == 2) {
+                    notaDTO.setNocred_tipo(request.getParameter("tiponota"));
+                    notaDTO.setNocred_fecha(request.getParameter("fechanota"));
+                    notaDTO.setNocred_motivo(request.getParameter("motivonota"));
+                    notaDTO.setIdcompra(Integer.parseInt(request.getParameter("factunota")));
+                    notaDTO.setIdusuario(Integer.parseInt(request.getParameter("usunota")));
+                    notaDTO.setIdcred_deb(Integer.parseInt(request.getParameter("codND")));
+                }
+
+                if (notaDAO.insertarCabeceraNota8(notaDTO, dcValor)) {
                     out.println("Exitoso");
                 }
                 break;
@@ -103,7 +114,13 @@ public class notacreditodebitocontrol extends HttpServlet {
                     out.println(notaDAO.listarDetalleNota12(Integer.parseInt(request.getParameter("nroNotaC"))));
                     System.out.println(notaDAO.listarDetalleNota12(Integer.parseInt(request.getParameter("nroNotaC"))));
                 }
-                break;    
+                break;
+            case 13:
+                notaDTO.setIdcred_deb(Integer.parseInt(request.getParameter("codNCD")));
+                if (notaDAO.deleteNCD(notaDTO)) {
+                    out.println("Exitoso");
+                }
+                break;
         }
     }
 
