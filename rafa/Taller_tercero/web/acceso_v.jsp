@@ -70,6 +70,9 @@
                 <div class="form-group has-feedback">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     <input id="claveuser" style="font-weight: bold" type="password" title="Ingrese su Contraseña" class="form-control input-lg"placeholder="Contraseña" name="pass" required autofocus>
                 </div>
                 <div class="form-group has-feedback" >
