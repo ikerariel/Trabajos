@@ -98,7 +98,7 @@
                     <!--HEADER DE LA VENTANA--->
                     <div class="modal-header">
                         <a class="btn btn-lg btn-danger col-md-1"  id="btnGuardar" title="" onclick="insertarNota()" >Guardar</a>
-                        <a class="btn btn-lg btn-danger col-md-1"  id="btnGuardarModificado" title="" onclick="ModificarDetalleOrdenCo()" >Modificar</a>
+                        <a class="btn btn-lg btn-danger col-md-1"  id="btnGuardarModificado" title="" onclick="updateNCD()" >Modificar</a>
                         <a class="close  btn btn-lg btn-danger glyphicon glyphicon-off" data-dismiss="modal" aria-hidden="true" title="Salir"></a>
                     </div>
                     <div class="panel">
