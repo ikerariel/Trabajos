@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0e10f275-ddfb-435f-b84d-72b8d35f7287">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT idciudad, ciu_descripcion
+  FROM public.ciudades]]>
+	</queryString>
+	<field name="idciudad" class="java.lang.Integer"/>
+	<field name="ciu_descripcion" class="java.lang.String"/>
+	<group name="idciudad">
+		<groupExpression><![CDATA[$F{idciudad}]]></groupExpression>
+		<groupHeader>
+			<band height="22">
+				<textField>
+					<reportElement mode="Opaque" x="0" y="1" width="146" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="6bf43e01-b9cc-47ad-9f88-be0e393fedce"/>
+					<textElement textAlignment="Center">
+						<font size="14" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{idciudad}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="330" y="0" width="225" height="21" forecolor="#000000" uuid="b7072439-c5c1-4e31-a430-4e49e427efc9"/>
+					<textElement textAlignment="Center">
+						<font size="14" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{ciu_descripcion}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band/>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="72">
+			<frame>
+				<reportElement mode="Opaque" x="-21" y="-19" width="595" height="72" backcolor="#FFFFFF" uuid="5ec88d0a-9842-40ec-a6c0-ca5f7b78f59f"/>
+				<staticText>
+					<reportElement x="209" y="19" width="234" height="44" forecolor="#000000" backcolor="#000000" uuid="6a36879d-6a82-4e7e-8873-f5b12e141b57"/>
+					<textElement>
+						<font size="34" isBold="true"/>
+					</textElement>
+					<text><![CDATA[CIUDADES]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band height="33">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="146" height="32" forecolor="#000000" backcolor="#FFFFFF" uuid="239c71b1-7646-4f40-a15a-03ed4b98b65b"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CODIGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="0" width="225" height="32" forecolor="#000000" uuid="8c792b7a-709f-4c42-910f-41c838c9e05e"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCION]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="20a7d8e9-20d2-4719-8407-d8eb73770ab7"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="88123e97-5234-4a5a-968e-a89ff0fc4735"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="0" y="4" width="100" height="13" uuid="be3b2d3a-58ec-4f03-964b-2d67ca4a209d"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>
