@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="04443e83-6d0c-4ea1-906d-6fc5cc5f545b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fdesde" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fhasta" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="vUser" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT pg.fechapagorecarga,pg.idestado,r.iddetallerecargas,concat(cl.cedula||' / '|| cl.nombrecliente) as cliente, e.idapertura,$P{vUser} as usuario,
+                                      (e.fecha_apertura) as fechaApertura,e.fechacierre, r.fecharecarga, (o.descripcion) as operadora,'Recarga de Saldo' as operacion, 
+                                      (p.descripcion)as estado,
+                                       concat('0',r.nrodestino) as nrodestino,
+                                       pg.montorecarga, pg.montopagadorecarga,
+                                       $P{fdesde}::Date as fechadesde, $P{fhasta}::Date as fechahasta
+                                       FROM apertura_recarga_giro e 
+                                       left join detallerecargas r on e.idapertura = r.idapertura
+                                        left join tipooperadora o on r.idtipooperadora=o.idtipooperadora
+                                       left join estado p on r.idestado=p.idestado
+                                       left join cliente cl on r.idcliente=cl.idcliente 
+                                      left join pagorecarga pg on r.iddetallerecargas=pg.iddetallerecargas 	
+				where  pg.idestado=6 and e.idestado in(1,2)  and  pg.fechapagorecarga::date
+ BETWEEN $P{fdesde}::Date and $P{fhasta}::Date  order by r.fecharecarga desc]]>
+	</queryString>
+	<field name="fechapagorecarga" class="java.sql.Timestamp"/>
+	<field name="idestado" class="java.lang.Integer"/>
+	<field name="iddetallerecargas" class="java.lang.Integer"/>
+	<field name="cliente" class="java.lang.String"/>
+	<field name="idapertura" class="java.lang.Integer"/>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="fechaapertura" class="java.sql.Timestamp"/>
+	<field name="fechacierre" class="java.sql.Timestamp"/>
+	<field name="fecharecarga" class="java.sql.Timestamp"/>
+	<field name="operadora" class="java.lang.String"/>
+	<field name="operacion" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="nrodestino" class="java.lang.String"/>
+	<field name="montorecarga" class="java.lang.Integer"/>
+	<field name="montopagadorecarga" class="java.lang.Integer"/>
+	<field name="fechadesde" class="java.sql.Date"/>
+	<field name="fechahasta" class="java.sql.Date"/>
+	<variable name="idapertura_1" class="java.lang.Integer" resetType="Page" calculation="Count">
+		<variableExpression><![CDATA[$F{idapertura}]]></variableExpression>
+	</variable>
+	<variable name="montopagado_1" class="java.lang.Integer" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="montopagado_2" class="java.lang.Integer" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<variable name="idestado_1" class="java.lang.Integer" resetType="Page" calculation="Count">
+		<variableExpression><![CDATA[$F{idestado}]]></variableExpression>
+	</variable>
+	<variable name="montopagadorecarga_1" class="java.lang.Integer" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{montopagadorecarga}]]></variableExpression>
+	</variable>
+	<variable name="idestado_2" class="java.lang.Integer" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{idestado}]]></variableExpression>
+	</variable>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="46">
+			<staticText>
+				<reportElement mode="Opaque" x="421" y="1" width="28" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="cd989f84-b7e7-49bb-8422-4c4528586a91"/>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INF-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="378" y="13" width="74" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="23bc17e9-1ce1-4a86-afad-c8cafcb8424c"/>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FechaHora:]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement x="159" y="6" width="238" height="32" uuid="b40a5d68-16de-419c-8803-c202f50c6fad"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="159" y="13" width="238" height="28" forecolor="#000000" uuid="f895cb09-0304-4800-a5d0-ff42b0d35f69"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Detalles Pagados Recarga de Saldo]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="45" width="595" height="1" forecolor="#666666" uuid="33d79723-50e0-448a-aae4-53f23e57aa2a"/>
+				<graphicElement>
+					<pen lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement mode="Opaque" x="446" y="1" width="59" height="13" backcolor="#FFFFFF" uuid="24a067de-0dbb-4212-8b29-638612d90c9a"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="505" y="1" width="52" height="13" backcolor="#FFFFFF" uuid="65fa8c9b-7b9f-4467-b47a-134ab9cf147e"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="457" y="14" width="100" height="13" uuid="443ba126-ed7c-45b2-ae57-bec27af5f800"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="458" y="26" width="100" height="20" uuid="bdff9f00-8f49-4eba-9577-b31e484638bc"/>
+				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="402" y="24" width="51" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="c0a89084-5dd4-4df6-b08a-724fda3bc69f"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuario:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="3"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="45">
+			<staticText>
+				<reportElement mode="Opaque" x="294" y="0" width="95" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ad4a5728-4524-41ec-aa69-7cf093978786"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Hasta :]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="21" width="595" height="1" forecolor="#666666" uuid="18491a52-f195-4979-a9ed-5411d91381a0"/>
+				<graphicElement>
+					<pen lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="105" y="1" width="95" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ec3bfadd-7b00-4fee-a15f-beef2593ea3a"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Desde :]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="205" y="1" width="100" height="20" uuid="bbbaabd7-e5f5-4a54-b496-31e93d66c0de"/>
+				<textFieldExpression><![CDATA[$F{fechadesde}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="395" y="0" width="100" height="20" uuid="576d017a-3690-480e-9248-d22d97555f50"/>
+				<textFieldExpression><![CDATA[$F{fechahasta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="180" y="25" width="100" height="20" uuid="e849ca79-bb65-487c-87cc-98720a72d43f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="513" y="26" width="60" height="19" forecolor="#000000" backcolor="#FFFFFF" uuid="cf2b0a03-cc4b-41d5-bb67-1a2740b71aaf"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cobrado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="432" y="25" width="79" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="d163412e-bfa6-4d59-927e-ee8d1043aab9"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="345" y="25" width="73" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="a189a41a-4b06-4ee3-9067-bd31441bd8fb"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Operación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="-8" y="25" width="95" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="80a09b24-505c-4da7-a74c-bf1d6182a723"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Recarga]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="86" y="25" width="95" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="1bbd572e-66b9-43cb-a6b2-a426541ccac2"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Pago]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-19" y="40" width="595" height="1" forecolor="#666666" uuid="b58b8b0b-a256-4175-95b3-7ecc30c4f2c4"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22">
+			<textField>
+				<reportElement x="5" y="0" width="100" height="20" uuid="7fbd018d-0d78-48db-b046-a7664cf4c8eb"/>
+				<textFieldExpression><![CDATA[$F{fecharecarga}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="181" y="0" width="221" height="20" uuid="9e9ecf6a-e886-4587-9c57-8ac103bb4372"/>
+				<textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="358" y="0" width="100" height="20" uuid="e6ee1ca6-43d3-413f-8577-414e05ed92b4"/>
+				<textFieldExpression><![CDATA[$F{operacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="446" y="0" width="100" height="20" uuid="141c6574-83a2-4cd8-9676-d6ad746f1e1e"/>
+				<textFieldExpression><![CDATA[$F{montorecarga}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="516" y="1" width="100" height="20" uuid="d6c0205c-fcf7-49a6-9320-1642f491f7fa"/>
+				<textFieldExpression><![CDATA[$F{montopagadorecarga}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="106" y="0" width="101" height="20" uuid="957f6b50-d4ba-4ea0-b9b9-c48bc48685a4"/>
+				<textFieldExpression><![CDATA[$F{fechapagorecarga}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="133"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="54">
+			<staticText>
+				<reportElement mode="Opaque" x="4" y="10" width="111" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="47cf8cb4-db3c-4705-b7a5-0199bda08a91"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cant. Registros :]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="7" width="595" height="1" forecolor="#666666" uuid="7a7bf40d-83e5-4168-87a5-7ce1fc2b3078"/>
+				<graphicElement>
+					<pen lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="-20" y="4" width="595" height="1" forecolor="#666666" uuid="642ba567-8fd9-4d98-8592-d2e0cb0d63f4"/>
+				<graphicElement>
+					<pen lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="353" y="8" width="91" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="795cca59-7b5e-4f05-8d02-02559ee87cd9"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total en Caja. :]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="448" y="8" width="100" height="20" uuid="59e81b64-a506-41c7-9232-190e0ef9c870"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{montopagadorecarga_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="117" y="10" width="100" height="20" uuid="a018ecc1-3f01-4207-846e-363cefbf8f28"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{idestado_2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

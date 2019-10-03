@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="04443e83-6d0c-4ea1-906d-6fc5cc5f545b">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fdesde" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fhasta" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="vUser" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idtimbrado" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT t.idtimbrado, t.numero, t.fecha_carga, t.fecha_vigencia_inicio, t.fecha_vigencia_final, 
+       t.factura_establesimiento, t.factura_caja, t.factura_desde, t.factura_hasta, $P{vUser} as usuario,
+       t.idestado, t.idusuario, t.idtipodocumento, t.idsucursal, (e.descripcion) as estadoTimbrado,
+       f.secuencia, f.numerodocumento, (ed.descripcion) as estadoDocumento, (tp.descripcion) as tipodocumento
+  FROM ventas.timbrado t
+  left join estado e on t.idestado=e.idestado
+left join ventas.documentos_facturas f on t.idtimbrado=f.idtimbrado
+  left join estado ed on f.idestado=ed.idestado
+left join ventas.tipo_documento tp on t.idtipodocumento = tp.idtipodocumento
+ where t.idtimbrado = $P{idtimbrado}order by f.secuencia asc]]>
+	</queryString>
+	<field name="idtimbrado" class="java.lang.Integer"/>
+	<field name="numero" class="java.lang.Integer"/>
+	<field name="fecha_carga" class="java.sql.Timestamp"/>
+	<field name="fecha_vigencia_inicio" class="java.sql.Timestamp"/>
+	<field name="fecha_vigencia_final" class="java.sql.Timestamp"/>
+	<field name="factura_establesimiento" class="java.lang.String"/>
+	<field name="factura_caja" class="java.lang.String"/>
+	<field name="factura_desde" class="java.lang.String"/>
+	<field name="factura_hasta" class="java.lang.String"/>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="idestado" class="java.lang.Integer"/>
+	<field name="idusuario" class="java.lang.Integer"/>
+	<field name="idtipodocumento" class="java.lang.Integer"/>
+	<field name="idsucursal" class="java.lang.Integer"/>
+	<field name="estadotimbrado" class="java.lang.String"/>
+	<field name="secuencia" class="java.lang.Integer"/>
+	<field name="numerodocumento" class="java.lang.String"/>
+	<field name="estadodocumento" class="java.lang.String"/>
+	<field name="tipodocumento" class="java.lang.String"/>
+	<variable name="idestado_1" class="java.lang.Integer" resetType="Page" calculation="Count">
+		<variableExpression><![CDATA[$F{idestado}]]></variableExpression>
+	</variable>
+	<variable name="secuencia_1" class="java.lang.Integer" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{secuencia}]]></variableExpression>
+	</variable>
+	<variable name="estadodocumento_1" class="java.lang.Integer" resetType="Page" calculation="Count">
+		<variableExpression><![CDATA[$F{estadodocumento}]]></variableExpression>
+	</variable>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="46">
+			<staticText>
+				<reportElement mode="Opaque" x="421" y="1" width="28" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="cd989f84-b7e7-49bb-8422-4c4528586a91"/>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INF-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="378" y="13" width="74" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="23bc17e9-1ce1-4a86-afad-c8cafcb8424c"/>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FechaHora:]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement x="169" y="6" width="218" height="32" uuid="b40a5d68-16de-419c-8803-c202f50c6fad"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="169" y="6" width="221" height="28" forecolor="#000000" uuid="f895cb09-0304-4800-a5d0-ff42b0d35f69"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Detalle Números de Documentos]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="45" width="595" height="1" forecolor="#666666" uuid="33d79723-50e0-448a-aae4-53f23e57aa2a"/>
+				<graphicElement>
+					<pen lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement mode="Opaque" x="446" y="1" width="59" height="13" backcolor="#FFFFFF" uuid="24a067de-0dbb-4212-8b29-638612d90c9a"/>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="505" y="1" width="52" height="13" backcolor="#FFFFFF" uuid="65fa8c9b-7b9f-4467-b47a-134ab9cf147e"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="457" y="14" width="100" height="13" uuid="443ba126-ed7c-45b2-ae57-bec27af5f800"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="392" y="23" width="61" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="c5c381c3-2125-4af4-ad67-1fc9b28ce889"/>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuario:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="460" y="24" width="100" height="20" uuid="31abd5b1-d633-452f-a104-d4d6003d40d4"/>
+				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="173" y="20" width="221" height="21" forecolor="#000000" uuid="21abc6c5-23db-4792-9db4-3431d2949ceb"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Generados]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="3"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="57">
+			<staticText>
+				<reportElement mode="Opaque" x="168" y="0" width="118" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ad4a5728-4524-41ec-aa69-7cf093978786"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Vigencia. Inicio :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="-19" y="1" width="95" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ec3bfadd-7b00-4fee-a15f-beef2593ea3a"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha alta :]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="81" y="1" width="100" height="20" uuid="bbbaabd7-e5f5-4a54-b496-31e93d66c0de"/>
+				<textFieldExpression><![CDATA[$F{fecha_carga}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="289" y="0" width="103" height="20" uuid="576d017a-3690-480e-9248-d22d97555f50"/>
+				<textFieldExpression><![CDATA[$F{fecha_vigencia_inicio}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="-8" y="36" width="95" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="80a09b24-505c-4da7-a74c-bf1d6182a723"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Secuencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="166" y="37" width="95" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="1bbd572e-66b9-43cb-a6b2-a426541ccac2"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro Factura ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-17" y="51" width="595" height="1" forecolor="#666666" uuid="b58b8b0b-a256-4175-95b3-7ecc30c4f2c4"/>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid" lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="339" y="36" width="100" height="20" uuid="e849ca79-bb65-487c-87cc-98720a72d43f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="369" y="1" width="106" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="70081fe6-ad6e-4d82-a7a9-d3eb24c18007"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Vigencia. Fin :]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="484" y="1" width="103" height="20" uuid="c0c934da-f102-4dc8-833c-2f982a843c54"/>
+				<textFieldExpression><![CDATA[$F{fecha_vigencia_final}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="-14" y="18" width="95" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="e19385f7-b8f4-4e2e-8228-21e0441dabb4"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro. Timbrado :]]></text>
+			</staticText>
+			<textField pattern="###0">
+				<reportElement x="87" y="18" width="100" height="20" uuid="20b4950b-3c9c-41b6-ae4b-fb408912eddc"/>
+				<textFieldExpression><![CDATA[$F{numero}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="179" y="18" width="95" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="4d8eb320-2323-4df6-a353-50c9bfc1b625"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo Documento :]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="278" y="18" width="143" height="20" forecolor="#000099" uuid="8afc604d-7e91-47c0-9ff0-41cbdb047eae"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipodocumento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="380" y="16" width="95" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ad92696e-2d52-4821-b40e-bc153fc5dcf6"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado :]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="33" width="595" height="1" forecolor="#666666" uuid="18491a52-f195-4979-a9ed-5411d91381a0"/>
+				<graphicElement>
+					<pen lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="483" y="16" width="143" height="20" forecolor="#009900" uuid="86f63d05-a078-4af0-9fed-256e68fbbe08"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estadotimbrado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22">
+			<textField>
+				<reportElement x="18" y="0" width="100" height="20" uuid="7fbd018d-0d78-48db-b046-a7664cf4c8eb"/>
+				<textFieldExpression><![CDATA[$F{secuencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="341" y="0" width="221" height="20" uuid="9e9ecf6a-e886-4587-9c57-8ac103bb4372"/>
+				<textFieldExpression><![CDATA[$F{estadodocumento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="186" y="0" width="100" height="20" uuid="957f6b50-d4ba-4ea0-b9b9-c48bc48685a4"/>
+				<textFieldExpression><![CDATA[$F{numerodocumento}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="133"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="54">
+			<staticText>
+				<reportElement mode="Opaque" x="4" y="10" width="111" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="47cf8cb4-db3c-4705-b7a5-0199bda08a91"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cant. Registros :]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="7" width="595" height="1" forecolor="#666666" uuid="7a7bf40d-83e5-4168-87a5-7ce1fc2b3078"/>
+				<graphicElement>
+					<pen lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<line>
+				<reportElement x="-20" y="4" width="595" height="1" forecolor="#666666" uuid="642ba567-8fd9-4d98-8592-d2e0cb0d63f4"/>
+				<graphicElement>
+					<pen lineColor="#666666"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="125" y="8" width="100" height="20" uuid="ec181d7d-c57c-41ef-940d-478f208f94d5"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{estadodocumento_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a4e5e8cc-b94c-4dac-93e2-d460b09ebf96">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="iddetallerecargas" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT r.iddetallerecargas, concat('0',r.nrodestino) as nrodestino,(o.descripcion) as operadora, r.montorecarga, r.nrotransaccion, r.nrooperacion,
+       r.fecharecarga
+  FROM detallerecargas r
+  LEFT JOIN tipooperadora o on r.idtipooperadora = o.idtipooperadora
+  where iddetallerecargas =$P{iddetallerecargas}]]>
+	</queryString>
+	<field name="iddetallerecargas" class="java.lang.Integer"/>
+	<field name="nrodestino" class="java.lang.String"/>
+	<field name="operadora" class="java.lang.String"/>
+	<field name="montorecarga" class="java.lang.Integer"/>
+	<field name="nrotransaccion" class="java.lang.Integer"/>
+	<field name="nrooperacion" class="java.lang.String"/>
+	<field name="fecharecarga" class="java.sql.Timestamp"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="78">
+			<staticText>
+				<reportElement x="121" y="0" width="310" height="78" forecolor="#000000" uuid="e476efe6-da19-4efa-abe1-18d2fd8442f8"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="59" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ticket]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="10" width="553" height="1" forecolor="#666666" uuid="f26c8a9d-0d29-4002-878e-327816ce706a"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="63">
+			<line>
+				<reportElement x="30" y="57" width="506" height="1" forecolor="#666666" uuid="4b1c7214-b6ec-41b8-8c74-baf4a5a5efd7"/>
+			</line>
+			<staticText>
+				<reportElement x="115" y="0" width="328" height="57" forecolor="#000000" uuid="a462473c-84eb-429c-9683-774bdf8a0261"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="37" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Comercial IKER]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="354">
+			<staticText>
+				<reportElement x="172" y="0" width="235" height="26" forecolor="#000000" uuid="585858e6-0ae2-47dd-856b-14a66e31f160"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="19" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Bogotá 233 c/ Tarumá ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="133" y="26" width="300" height="30" forecolor="#000000" uuid="6d82209c-538c-477b-9824-598d415b0e19"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="19" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Tel: 0981 336 336 - 021 336 336]]></text>
+			</staticText>
+			<line>
+				<reportElement x="24" y="55" width="506" height="1" forecolor="#666666" uuid="ed8dd23f-245e-43b9-a501-1cd1d2369291"/>
+			</line>
+			<line>
+				<reportElement x="24" y="59" width="506" height="1" forecolor="#666666" uuid="ab55b9ff-6d50-4b51-91ee-044a06ece61b"/>
+			</line>
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement x="282" y="183" width="254" height="54" uuid="183b9bdf-acbf-49f3-9952-a59dc3212a00"/>
+				<textElement>
+					<font size="30"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{montorecarga}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="4" y="180" width="262" height="64" forecolor="#000000" backcolor="#FFFFFF" uuid="071fd623-11db-46b8-a264-87d7659d0f02"/>
+				<textElement textAlignment="Right">
+					<font size="30" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto Recarga :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="19" y="285" width="248" height="57" forecolor="#000000" backcolor="#FFFFFF" uuid="f6a0b4af-9c70-4d65-9318-be2f1285f34d"/>
+				<textElement textAlignment="Right">
+					<font size="30" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro. Operación :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="282" y="285" width="254" height="39" uuid="943beeff-8fcc-4e90-93f5-97e1d2b875ed"/>
+				<textElement>
+					<font size="30"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nrooperacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="18" y="228" width="248" height="53" forecolor="#000000" backcolor="#FFFFFF" uuid="80a7393b-ecd0-4bdc-80b2-604c91fa136b"/>
+				<textElement textAlignment="Right">
+					<font size="30" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Recarga :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="281" y="232" width="285" height="53" uuid="c3d80724-b195-4d9f-bdec-ff9875a33275"/>
+				<textElement>
+					<font size="30"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecharecarga}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="281" y="127" width="234" height="53" uuid="de6cc9d5-64e0-4463-9d35-928bab560a6c"/>
+				<textElement>
+					<font size="30"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nrodestino}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="31" y="130" width="234" height="40" forecolor="#000000" backcolor="#FFFFFF" uuid="14682214-facc-45b5-9b02-cc5a9a3d0c6d"/>
+				<textElement textAlignment="Right">
+					<font size="30" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro. Linea :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="281" y="79" width="220" height="48" uuid="afc61d38-8754-4143-aabe-88fc15f0642c"/>
+				<textElement>
+					<font size="30"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{operadora}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="31" y="79" width="234" height="40" forecolor="#000000" backcolor="#FFFFFF" uuid="24f51e7c-3df6-4db1-91b1-7fa22b4c7366"/>
+				<textElement textAlignment="Right">
+					<font size="30" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Operadora : ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="24" y="341" width="506" height="1" forecolor="#666666" uuid="a38adf05-9c2f-4d8e-bc6e-97dea0eed445"/>
+			</line>
+			<line>
+				<reportElement x="24" y="349" width="506" height="1" forecolor="#666666" uuid="a268a55b-ffb2-450f-bf61-cfbdb01d8405"/>
+			</line>
+		</band>
+	</columnHeader>
+	<columnFooter>
+		<band height="157">
+			<staticText>
+				<reportElement x="124" y="-10" width="312" height="46" forecolor="#000000" uuid="277deee5-b3f3-46a2-bb7f-5a3a84a7ef08"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="SansSerif" size="29" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pago en efectivo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="25" width="523" height="46" forecolor="#000000" uuid="d7a304c3-7f5e-480e-bae7-e38c075e7364"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="29" isBold="true"/>
+				</textElement>
+				<text><![CDATA[GRACIAS POR SU PREFRERENCIA !!]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="219" y="95" width="182" height="23" uuid="49b89f5e-a8f1-45a0-a556-c4d7b4a73a7f"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="157" y="74" width="204" height="25" forecolor="#000000" backcolor="#FFFFFF" uuid="9968745a-40c1-465c-94c0-6aece48c7738"/>
+				<textElement textAlignment="Right">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Impresión :]]></text>
+			</staticText>
+			<line>
+				<reportElement x="4" y="156" width="553" height="1" forecolor="#666666" uuid="37604845-8bec-48d6-838d-e77cced48a99"/>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="91"/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>
