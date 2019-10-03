@@ -289,7 +289,8 @@ function  updateNCD() {
                     "fechanota": $('#notaFecha').val(),
                     "motivonota": $('#notaMotivo').val(),
                     "factunota": $('#notafactuComp').val(),
-                    "usunota": $('#CodvUser').val()
+                    "usunota": $('#CodvUser').val(),
+                    "codND": $('#codigo').val()
                 };
                 $.ajax({
                     url: "http://localhost:8084/Taller_tercero/notacreditodebitocontrol",
@@ -511,8 +512,8 @@ function recuperarDetalleNotaC() {
                         ///////BLOQUEA LOS CAMPOS//////
                         $("#notatipo").prop('disabled', true);
                         $("#notaFecha").prop('disabled', true);
-                        $("#notaMotivo").prop('disabled', true);
-                        $("#notafactuComp").prop('disabled', true);
+                        $("#notaMotivo").prop('disabled', false);
+                        $("#notafactuComp").prop('disabled', false);
                         $("#notaUsuario").prop('disabled', true);
                         $("#notaEstado").prop('disabled', true);
                         $("#notaProveedor").prop('disabled', true);
