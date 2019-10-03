@@ -43,7 +43,7 @@
                 <div class="col-md-9" id="botonesNota">
                     <a id="btnNuevo" href="#ventanaNota" class="btn btn-lg btn-success" style=" font-weight: bold"  title="Nueva Nota..." data-toggle="modal"
                        onclick="getcodigoNota(); fechaactualNota(); mostrarEstadoN(); mostrarUsuarioN(); mostrarSucurN()">Nuevo </a>
-                    <a id="btnModificarr" class="btn btn-lg btn-info" style=" font-weight: bold" title="Modificar Factuta Compras" data-toggle="modal" onclick="recuperarDetalleNotaC()">Recuperar </a>
+                    <a id="btnModificarrrr" class="btn btn-lg btn-info" style=" font-weight: bold" title="Modificar Factuta Compras" data-toggle="modal" onclick="recuperarDetalleNotaC()">Recuperar </a>
                     <a id="btnAnular" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Anular Factura">Anular*</a>
                     <a id="btnConfirmar" class="btn btn-lg btn-warning glyphicon glyphicon-ok" style=" font-weight: bold" title="Confirmar Factura Compras" onclick=></a>
                     <a id="btnRevertir" class="btn btn-lg btn-danger glyphicon glyphicon-minus-sign" style=" font-weight: bold" title="Revertir Confirmacion Factura Compras" onclick=""></a>
