@@ -295,7 +295,7 @@ public class notacreditodebitodaoimple implements notacreditodebitodao {
                     + "       u.usu_nombre, e.descri_estado, p.prov_nombre FROM nota_credito_debito n\n"
                     + "       inner join usuarios u on n.idusuario = u.idusuario\n"
                     + "       inner join proveedores p on n.id_prov = p.id_prov\n"
-                    + "       inner join estado e on n.idestado = e.idestado order by idcred_deb desc;";
+                    + "       inner join estado e on n.idestado = e.idestado where e.idestado in(1,2) order by idcred_deb desc;";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {

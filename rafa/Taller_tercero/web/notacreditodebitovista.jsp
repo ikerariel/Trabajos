@@ -33,7 +33,7 @@
         <script src="Recursos/js/ImagenFondo.js"></script> 
         <script src="Recursos/js/jquery.backstretch.min.js"></script>
         <script src="Validadores/notacreditodebitovalidador.js"></script>
-         <title>Nota de Credito y Debito</title>
+        <title>Nota de Credito y Debito</title>
     </head>
     <body>
         <%@ include file="menutercero.jsp"%>
@@ -49,7 +49,7 @@
                     <a id="btnRevertir" class="btn btn-lg btn-danger glyphicon glyphicon-minus-sign" style=" font-weight: bold" title="Revertir Confirmacion Factura Compras" onclick=""></a>
                     <a id="btnReporte" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="reportes()"></a>
                 </div>
-                
+
                 <br>
                 <br>
                 <br>
@@ -58,38 +58,38 @@
                     <div class="panel-footer" style="font-weight: bold">Planilla de Nota de credito y debito</div>
                     <div class="">
                         <div class="input-group  input-sm">
-                                <span class="input-group-addon" style=" font-weight: bold">NOTA Nro*</span>
-                                <input id="nroNotaP" type="text" style="background-color: #d9edf7" class="form-control" disabled="" placeholder="Numero de Nota">
-                                <span class="input-group-addon" style=" font-weight: bold" >Estado*</span>
-                                <input id="estadoNotaP" type="text" style="" class="form-control" disabled="" placeholder="Estado de Nota">
+                            <span class="input-group-addon" style=" font-weight: bold">NOTA Nro*</span>
+                            <input id="nroNotaP" type="text" style="background-color: #d9edf7" class="form-control" disabled="" placeholder="Numero de Nota">
+                            <span class="input-group-addon" style=" font-weight: bold" >Estado*</span>
+                            <input id="estadoNotaP" type="text" style="" class="form-control" disabled="" placeholder="Estado de Nota">
                         </div>
                     </div>
                     <div class="">
-                            <div class="input-group input-sm">
-                                <span class="input-group-addon" style=" font-weight: bold">Buscar</span>
-                                <input id="filtrarPlanillaNota" type="text" style="text-transform: uppercase; font-weight: bold" 
-                                       class="form-control " maxlength="20" onkeyup="buscadorPlanillaNota()"placeholder="Buscar Lista...">
-                            </div>
+                        <div class="input-group input-sm">
+                            <span class="input-group-addon" style=" font-weight: bold">Buscar</span>
+                            <input id="filtrarPlanillaNota" type="text" style="text-transform: uppercase; font-weight: bold" 
+                                   class="form-control " maxlength="20" onkeyup="buscadorPlanillaNota()"placeholder="Buscar Lista...">
                         </div>
+                    </div>
                     <div class="panel-body">
-                            <!-- Tabla detalle -->
-                            <div id="scrollPlanilla" class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover table input-md" id="miTablaPlanillaNota" onclick="seleccionarNotaPlanilla()">
+                        <!-- Tabla detalle -->
+                        <div id="scrollPlanilla" class="table-responsive">
+                            <table class="table table-striped table-bordered table-hover table input-md" id="miTablaPlanillaNota" onclick="seleccionarNotaPlanilla()">
                                 <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
-                                    <thead>
-                                        <tr class="alert-dismissable" >
-                                            <th class="alert-success">CODIGO</th>
-                                            <th class="alert-info">TIPO</th>
-                                            <th class="alert-success">FECHA</th>
-                                            <th class="alert-info">PROVEEDOR</th>
-                                            <th class="alert-success">USUARIO</th>
-                                            <th class="alert-danger">ESTADO</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="table_deta"></tbody>
-                                </table>
-                            </div>
+                                <thead>
+                                    <tr class="alert-dismissable" >
+                                        <th class="alert-success">CODIGO</th>
+                                        <th class="alert-info">TIPO</th>
+                                        <th class="alert-success">FECHA</th>
+                                        <th class="alert-info">PROVEEDOR</th>
+                                        <th class="alert-success">USUARIO</th>
+                                        <th class="alert-danger">ESTADO</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_deta"></tbody>
+                            </table>
                         </div>
+                    </div>
                 </div>
             </form>
         </section>
@@ -147,9 +147,9 @@
                                         <input id="notafactuComp" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" 
                                                type="text" placeholder="Ingrese Factura Compra" class="form-control input-sm alert-danger" 
                                                onclick="AbrirFacturaNota()" autofocus="" onkeydown="
-                                                                                            if (event.keyCode === 13) {
-                                                                                                RecuperarDetalleFacturaNota();
-                                                                                            }">
+                                                       if (event.keyCode === 13) {
+                                                           RecuperarDetalleFacturaNota();
+                                                       }">
                                     </div>
                                     <div class="col-md-2">
                                         <input id="notaidProveedor" style="visibility: hidden;" type="text">
@@ -212,12 +212,12 @@
                             </div>
                         </div>
                         <div class="panel-body">
-                        <!-- Tabla detalle -->
-                        <div class="table-responsive" style="height: 180px">
-                            <table class="table table-striped table-bordered table-hover table input-md" id="miTablaDetalleNota" onclick="SeleccionarDetalleFacturaNota()">
-                                <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
-                                <thead>
-                                    <tr class="alert-dismissable" >
+                            <!-- Tabla detalle -->
+                            <div class="table-responsive" style="height: 180px">
+                                <table class="table table-striped table-bordered table-hover table input-md" id="miTablaDetalleNota" onclick="SeleccionarDetalleFacturaNota()">
+                                    <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
+                                    <thead>
+                                        <tr class="alert-dismissable" >
                                             <th style="display: none"></th>
                                             <th class="alert-info">CODIGO</th>
                                             <th class="alert-info">DESCRIPCION</th>
@@ -225,18 +225,18 @@
                                             <th class="alert-info">CANTIDAD</th>
                                             <th class="alert-info">SUB TOTAL</th>
                                             <th  class="alert-danger" style="width: 30px"><div><center><img src="Recursos/img/delete.png"/></center></div></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="table_deta" style="font-weight: bold;font-size: 10pt">
-                                </tbody>
-                            </table>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_deta" style="font-weight: bold;font-size: 10pt">
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-xs-3 col-xs-offset-9 input-group input-group-sm">
-                    <span class="input-group-addon">Total a Pagar:</span>
-                    <input class="form-control" id="total" style="font-size: 15px" type="text"
-                           onkeyup="ValidacionesSoloNumeros(this)" onchange="ValidacionesSoloNumeros(this)">
-                    </div>
+                        <div class="col-xs-3 col-xs-offset-9 input-group input-group-sm">
+                            <span class="input-group-addon">Total a Pagar:</span>
+                            <input class="form-control" id="total" style="font-size: 15px" type="text"
+                                   onkeyup="ValidacionesSoloNumeros(this)" onchange="ValidacionesSoloNumeros(this)">
+                        </div>
                     </div>
                 </div>
             </div> 
@@ -251,7 +251,7 @@
                     </div>
                     <!--CONTENIDO DE LA VENTANA--->
                     <DIV class="modal-body">
-                        
+
                         <div class="container-fluid">
                             <div class="form-group">
                                 <input id="filtrarFacturaNota" type="text" style="text-transform: uppercase; font-weight: bold" maxlength="20" 
@@ -262,7 +262,7 @@
                             <!-- Tabla detalle -->
                             <div id="scrollPlanilla" class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover table input-md" id="miTablaFacturaNota" onclick="seleccionaFacturaNota()">
-                                <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
+                                    <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
                                     <thead>
                                         <tr class="alert-dismissable" >
                                             <th>FACTURA N°</th>
@@ -294,7 +294,7 @@
                         </div>
                     </div>
                     <div class="panel-body">
-                            <!-- Tabla detalle -->
+                        <!-- Tabla detalle -->
                         <div id="scroll" class="table-responsive" style="height: 300px" >   
                             <table class="table table-striped table-bordered table-hover table input-md" id="miTablaMercaderiaCompra"
                                    onclick="seleccionarMercaderiaNota()">
@@ -332,7 +332,7 @@
                             <!-- Tabla detalle -->
                             <div id="scroll" class="table-responsive" style="height: 200px" >
                                 <table class="table table-striped table-bordered table-hover table input-md" id="miTablaProveedoresNota" onclick="seleccionarProveedorNota()">
-                                <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
+                                    <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
                                     <thead>
                                         <tr class="alert-dismissable" >
                                             <th>codigo</th>
