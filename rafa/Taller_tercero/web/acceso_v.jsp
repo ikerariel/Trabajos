@@ -66,6 +66,7 @@
                     <input id="nombreuser" onblur="obtenerDatos()" style="font-weight: bold" type="text" title="Ingrese su Usuario" class="form-control input-lg"placeholder="Usuario" name="usuario" required autofocus
                          >
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>
+       
                 </div>
                 <div class="form-group has-feedback">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
