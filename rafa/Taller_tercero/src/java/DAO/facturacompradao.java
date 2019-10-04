@@ -32,6 +32,7 @@ public interface facturacompradao {
     boolean insertarCabeceraCompra9(facturacompradto dto, Integer cod);
 
     boolean insertarDetalleCompra10(facturacompradto dto);
+    boolean generarCtasapagar(facturacompradto dto);
 
     boolean deletfacturaCompra(facturacompradto dto);
 

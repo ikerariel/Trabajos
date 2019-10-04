@@ -13,6 +13,7 @@ import DTO.proveedoresdto;
 import DTO.usuariosdto;
 import Genericos.Conexion;
 import com.google.gson.Gson;
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -470,7 +471,7 @@ public class facturacompradaoimple implements facturacompradao {
 
     @Override
     public boolean deletfacturaCompra(facturacompradto dto) {
-           try {
+        try {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "DELETE FROM public.det_factura_compra WHERE idcompra=?";
@@ -490,5 +491,25 @@ public class facturacompradaoimple implements facturacompradao {
             Logger.getLogger(facturacompradaoimple.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+    }
+
+    @Override
+    public boolean generarCtasapagar(facturacompradto dto) {
+
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+//            CallableStatement call = conexion.getConexion().prepareCall("{call sp_generarcuota(?))");
+            CallableStatement call = conexion.getConexion().prepareCall("{call sp_generarctaspagar(?)}");
+            call.setInt(1, dto.getIdcompra());
+
+            call.execute();
+            conexion.comit();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(facturacompradaoimple.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+
     }
 }

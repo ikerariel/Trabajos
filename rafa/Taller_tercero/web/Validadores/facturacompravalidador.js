@@ -361,6 +361,23 @@ function  deleteFacturaCompra() {
         }
     });
 }
+function  generarCtas() {
+    jsontas = {
+        "opcion": 16,
+        "codCompra": $('#nrofacturaP').val()
+    };
+    $.ajax({
+        url: "http://localhost:8084/Taller_tercero/facturacompracontrol",
+        type: 'POST',
+        data: jsontas,
+        cache: false,
+        dataType: 'text',
+        success: function () {
+        },
+        error: function () {
+        }
+    });
+}
 function MostrarFacturaCompra() {
     crearJSON(11);
     $.ajax({
@@ -417,6 +434,7 @@ function cambioEstadoFCompras() {
                             "FacturaCNro": $('#nrofacturaP').val()
                         };
                         confirmarFacturaCompra();
+                         generarCtas();
                         alert('Factura Confirmado con éxito.!!');
                     }
                 }
@@ -451,6 +469,7 @@ function confirmarFacturaCompra() {
         success: function () {
             $('#miTablaPlanillaCompra').find('tbody').find('tr').empty();
             MostrarFacturaCompra();
+            
         },
         error: function () {
         }

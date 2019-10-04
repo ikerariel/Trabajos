@@ -139,6 +139,12 @@ public class facturacompracontrol extends HttpServlet {
                     out.println("Exitoso");
                 }
                 break;
+            case 16:
+                compraDTO.setIdcompra(Integer.parseInt(request.getParameter("codCompra")));
+                if (compraDAO.generarCtasapagar(compraDTO)) {
+                    out.println("Exitoso");
+                }
+                break;
         }
     }
 
