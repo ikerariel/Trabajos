@@ -190,15 +190,25 @@
                                                    if (event.keyCode === 13) { pasarCampos();}">
                                     </div>
                                     <label class="col-md-1 control-label">Nro.Cuota</label>  
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <input id="factuCompNroCuota" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" 
                                                type="number" placeholder="Ingrese Cuota" class="form-control input-sm alert-danger"
-                                               onkeyup="ValidacionesSoloNumerosFac(this)" onchange="ValidacionesSoloNumerosFac(this)" onclick="calculomontoconp()">
+                                               onkeyup="ValidacionesSoloNumerosFac(this)" onchange="ValidacionesSoloNumerosFac(this)"
+                                                onkeydown="
+                                                     if (event.keyCode === 13) {
+                                                       calculomontoconp();
+                                                   }">
                                     </div>
                                     
                                     <label class="col-md-1 control-label">Monto</label>  
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <input id="factuCompMonto" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" 
+                                               type="text" placeholder="Ingrese Monto" class="form-control input-sm alert-danger"
+                                               onkeyup="ValidacionesSoloNumerosFac(this)" onchange="ValidacionesSoloNumerosFac(this)">
+                                    </div>
+                                    <label class="col-md-1 control-label">Cuota</label>  
+                                    <div class="col-md-2">
+                                        <input id="faccuotamonto" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" 
                                                type="text" placeholder="Ingrese Monto" class="form-control input-sm alert-danger"
                                                onkeyup="ValidacionesSoloNumerosFac(this)" onchange="ValidacionesSoloNumerosFac(this)">
                                     </div>

@@ -217,7 +217,7 @@ function  inserFacCompra() {
         } else {
             var opcion = confirm('Desea Guardar Factura Compras..?');
             if (opcion === true) {
-                     var pedidofc = $('#factuCompOrdenC').val();
+                var pedidofc = $('#factuCompOrdenC').val();
                 var pedido = 0;
                 if (pedidofc != "") {
                     pedido = pedidofc;
@@ -229,7 +229,7 @@ function  inserFacCompra() {
                     "cValor": 1,
                     "codigoC": $('#codigo').val(),
                     "fcompracuota": $('#factuCompNroCuota').val(),
-                    "fcompramonto": $('#factuCompMonto').val().replace(/\./g, ''),
+                    "fcompramonto": $('#faccuotamonto').val().replace(/\./g, ''),
                     "fcompraNfactu": $('#factuCompNroFactura').val(),
                     "fcompraintervalo": $('#factuCompIntervalo').val(),
                     "fcomprafecha": $('#factuCompFecha').val(),
@@ -238,7 +238,7 @@ function  inserFacCompra() {
                     "fcompraestado": $('#factuCompIdEstado').val(),
                     "fcompratipo": $('#factuidtipocompras').val(),
                     "fcompraordenc": pedido,
-                    "fdeposito":$('#Coddepo').val()
+                    "fdeposito": $('#Coddepo').val()
                 };
                 $.ajax({
                     url: "http://localhost:8084/Taller_tercero/facturacompracontrol",
@@ -274,7 +274,7 @@ function  updatfacCompra() {
         } else {
             var opcion = confirm('Desea Guardar Factura Compras..?');
             if (opcion === true) {
-                          var pedidofc = $('#factuCompOrdenC').val();
+                var pedidofc = $('#factuCompOrdenC').val();
                 var pedido = 0;
                 if (pedidofc != "") {
                     pedido = pedidofc;
@@ -286,14 +286,15 @@ function  updatfacCompra() {
                     "cValor": 2,
                     "codCompra": $('#codigo').val(),
                     "fcompracuota": $('#factuCompNroCuota').val(),
-                    "fcompramonto": $('#factuCompMonto').val(),
+                    "fcompramonto": $('#faccuotamonto').val().replace(/\./g, ''),
                     "fcompraNfactu": $('#factuCompNroFactura').val(),
                     "fcompraintervalo": $('#factuCompIntervalo').val(),
                     "fcomprafecha": $('#factuCompFecha').val(),
                     "fcompraprovee": $('#factuCompIdProvee').val(),
                     "fcomprausua": $('#CodvUser').val(),
                     "fcompratipo": $('#factuidtipocompras').val(),
-                    "fcompraordenc": pedido
+                    "fcompraordenc": pedido,
+                    "fdeposito": $('#Coddepo').val()
                 };
                 $.ajax({
                     url: "http://localhost:8084/Taller_tercero/facturacompracontrol",
@@ -568,6 +569,25 @@ function controlarcampor() {
         $('#factuCompMonto').val(null);
     }
 }
+
+
+function puntodecimal(...uno) {
+    for (let numero of uno) {
+        var num = document.getElementById(numero).value.replace(/\./g, '');
+        if (!isNaN(num)) {
+            num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g, '$1.');
+            num = num.split('').reverse().join('').replace(/^[\.]/, '');
+            document.getElementById(numero).value = num;
+            $('#' + numero).css('font-weight', 'bold');
+
+        } else {
+//            alert('Solo se permiten numeros');
+            document.getElementById(numero).value = document.getElementById(numero).value.replace(/[^\d\.]*/g, '');
+        }
+    }
+
+
+}
 function ValidacionesSoloNumerosFac(input) {
     var num = input.value.replace(/\./g, '');
 //    alert("estees" +num);
@@ -681,6 +701,8 @@ function calcularmonto() {
     });
     $('#total').val(acumu);
     tindex++;
+    $('#factuCompMonto').val($('#total').val());
+    puntodecimal('factuCompMonto');
 }
 function updatemonto(valormonto, ind) {
     var monto = $('#total').val();
@@ -774,6 +796,7 @@ function agregarFilaMercaCompra() {
             <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
             </tr>");
     calcularmonto();
+
     $('#codgenericiMerca').val(null);
     $('#codgenericiMerca').focus;
     $('#nombreMerca').val(null);
@@ -839,27 +862,38 @@ function seleccionartipocompra() {
         $('#factuCompOrdenC').focus();
         $('#ModalFacturaTipo').modal('hide');
         OcultarCampocomp();
-        calculomontoconp();
+
     });
 }//----------
 function OcultarCampocomp() {
     var a = $('#facturatipoC').val();
     if (a === "contado") {
-        $('#factuCompNroCuota').val(1);
-        $('#factuCompIntervalo').hide();
-        $('#factuCompNroCuota').hide();
-    } else {
-        $('#factuCompIntervalo').val(0);
-        $('#factuCompNroCuota').val(1);
-        $('#factuCompIntervalo').focus();
+
+        $("#factuCompNroCuota").prop('disabled', true);
+        $("#factuCompIntervalo").prop('disabled', true);
+        $("#factuCompMonto").prop('disabled', true);
+        $("#factuCompIntervalo").val(0);
+        $("#factuCompNroCuota").val(0);
+        $("#faccuotamonto").val(0);
+    } else if (a === "creditos") {
+        $("#factuCompNroCuota").prop('disabled', false);
+        $("#factuCompIntervalo").val(30);
+        $("#factuCompMonto").prop('disabled', false);
     }
 }
 function calculomontoconp() {
-    var valormonto = $('#factuCompNroCuota').val();
-    var monto = $('#total').val();
-    var calculo = monto / valormonto;
-    $('#factuCompMonto').val(calculo);
-    valormonto = 1;
+    var valormonto = $('#factuCompMonto').val().replace(/\./g, '');
+    var cant = $('#factuCompNroCuota').val();
+    if ($('#factuCompMonto').val() === "" || $('#total').val() === "") {
+        $('#faccuotamonto').val(0);
+    } else {
+        var calculo =  valormonto / cant;
+        $('#faccuotamonto').val(calculo);
+        valormonto = 1;
+        puntodecimal('faccuotamonto');
+    }
+
+
 }
 function buscadorTablatipocompra() {
     var tableReg = document.getElementById('miTablatipocompra');
