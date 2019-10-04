@@ -85,6 +85,7 @@ public class facturacompracontrol extends HttpServlet {
                     compraDTO.setIdestado(Integer.parseInt(request.getParameter("fcompraestado")));
                     compraDTO.setTipo_codigo(Integer.parseInt(request.getParameter("fcompratipo")));
                     compraDTO.setOrdenc_nro(Integer.parseInt(request.getParameter("fcompraordenc")));
+                    compraDTO.setIddeposito(Integer.parseInt(request.getParameter("fdeposito")));
                 } else if (cValor == 2) {
                     compraDTO.setComp_cantcuota(Integer.parseInt(request.getParameter("fcompracuota")));
                     compraDTO.setComp_monto(Integer.parseInt(request.getParameter("fcompramonto")));
@@ -95,6 +96,7 @@ public class facturacompracontrol extends HttpServlet {
                     compraDTO.setIdusuario(Integer.parseInt(request.getParameter("fcomprausua")));
                     compraDTO.setTipo_codigo(Integer.parseInt(request.getParameter("fcompratipo")));
                     compraDTO.setOrdenc_nro(Integer.parseInt(request.getParameter("fcompraordenc")));
+                    compraDTO.setIddeposito(Integer.parseInt(request.getParameter("fdeposito")));
                     compraDTO.setIdcompra(Integer.parseInt(request.getParameter("codCompra")));
                 }
 
@@ -130,9 +132,9 @@ public class facturacompracontrol extends HttpServlet {
             case 14:
                 out.println(compraDAO.ListarTipoCompras14());
                 break;
-                
-            case 15 :
-                  compraDTO.setIdcompra(Integer.parseInt(request.getParameter("codFacCompra")));
+
+            case 15:
+                compraDTO.setIdcompra(Integer.parseInt(request.getParameter("codFacCompra")));
                 if (compraDAO.deletfacturaCompra(compraDTO)) {
                     out.println("Exitoso");
                 }

@@ -244,8 +244,8 @@ public class facturacompradaoimple implements facturacompradao {
                     sintaxiSql = null;
                     conexion = new Conexion();
                     sintaxiSql = "INSERT INTO factura_compra( comp_cantcuota, comp_monto, comp_nrofact, comp_intervalo, \n"
-                            + "    comp_fecha, id_prov, idusuario, idestado, tipo_codigo, ordenc_nro)\n"
-                            + "    VALUES (?, ?, ?, ?, ?::date, ?, ?, ?, ?, ?);";
+                            + "    comp_fecha, id_prov, idusuario, idestado, tipo_codigo, ordenc_nro,iddeposito)\n"
+                            + "    VALUES (?, ?, ?, ?, ?::date, ?, ?, ?, ?, ?,?);";
                     preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
                     preparedStatement.setObject(1, dto.getComp_cantcuota());
                     preparedStatement.setObject(2, dto.getComp_monto());
@@ -257,6 +257,7 @@ public class facturacompradaoimple implements facturacompradao {
                     preparedStatement.setObject(8, dto.getIdestado());
                     preparedStatement.setObject(9, dto.getTipo_codigo());
                     preparedStatement.setObject(10, dto.getOrdenc_nro());
+                    preparedStatement.setObject(11, dto.getIddeposito());
                     filasAfectadas = preparedStatement.executeUpdate();
                     if (filasAfectadas > 0) {
                         conexion.comit();
@@ -278,7 +279,7 @@ public class facturacompradaoimple implements facturacompradao {
                     sintaxiSql = "UPDATE public.factura_compra\n"
                             + "   SET comp_cantcuota=?, comp_monto=?, comp_nrofact=?, comp_intervalo=?, \n"
                             + "       comp_fecha=?, id_prov=?, idusuario=?, idestado=1, tipo_codigo=?, \n"
-                            + "       ordenc_nro=?\n"
+                            + "       ordenc_nro=?,iddeposito=?\n"
                             + " WHERE idcompra=?";
                     preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
                     preparedStatement.setObject(1, dto.getComp_cantcuota());
@@ -290,7 +291,8 @@ public class facturacompradaoimple implements facturacompradao {
                     preparedStatement.setObject(7, dto.getIdusuario());
                     preparedStatement.setObject(8, dto.getTipo_codigo());
                     preparedStatement.setObject(9, dto.getOrdenc_nro());
-                    preparedStatement.setObject(10, dto.getIdcompra());
+                    preparedStatement.setObject(10, dto.getIddeposito());
+                    preparedStatement.setObject(11, dto.getIdcompra());
                     filasAfectadas = preparedStatement.executeUpdate();
                     if (filasAfectadas > 0) {
                         conexion.comit();

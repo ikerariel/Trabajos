@@ -77,7 +77,7 @@
                     <input id="Codsucursal" readonly="" name="sucursales"  style="font-weight: bold; display:none " >
                 </div>
                 <div class="form-group has-feedback">
-                    <input id="coddeposito" readonly=""  name="depositos" style="font-weight: bold; display:none " >
+                    <input id="coddeposito" readonly=""  name="depositos" style="font-weight: bold;display: none " >
                 </div>
                 <input  title="Conectarse al Sistema" class="btn btn-lg btn-primary btn-block"
                         value="Acceder" type="submit">

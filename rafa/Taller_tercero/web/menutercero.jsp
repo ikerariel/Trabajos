@@ -80,11 +80,10 @@
             <input style="display: none"type="text" id="vUser" value="${sessionScope.sessionON}"></a>
             <input style="display:none"type="text" id="CodvUser">
             <input style="display: none"type="text" value="${sessionScope.vSucursal}" id="Codsucur">
-            <input style="display:none"type="text" value="${sessionScope.vDeposito}" id="Coddepo">
+            <input style="display: none"type="text" value="${sessionScope.vDeposito}" id="Coddepo">
         </ul>
     </nav>
 
 </header>
-        <script src="Validador/acceso_v.js"></script>
 
 

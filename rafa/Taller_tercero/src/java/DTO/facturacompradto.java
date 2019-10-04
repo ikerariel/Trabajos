@@ -44,6 +44,15 @@ public class facturacompradto {
     private Integer idprocedencia;
     private Integer idimpuesto;
     private String codigogenerico;
+    private Integer iddeposito;
+
+    public Integer getIddeposito() {
+        return iddeposito;
+    }
+
+    public void setIddeposito(Integer iddeposito) {
+        this.iddeposito = iddeposito;
+    }
     
    
     

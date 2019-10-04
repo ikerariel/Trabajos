@@ -237,7 +237,8 @@ function  inserFacCompra() {
                     "fcomprausua": $('#factuCompIdUsuario').val(),
                     "fcompraestado": $('#factuCompIdEstado').val(),
                     "fcompratipo": $('#factuidtipocompras').val(),
-                    "fcompraordenc": pedido
+                    "fcompraordenc": pedido,
+                    "fdeposito":$('#Coddepo').val()
                 };
                 $.ajax({
                     url: "http://localhost:8084/Taller_tercero/facturacompracontrol",
