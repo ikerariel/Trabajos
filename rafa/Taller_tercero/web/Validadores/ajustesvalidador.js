@@ -2,6 +2,8 @@
 function getcodigoAjustes() {
     controlBotonesNuevoAjuste();
     $("#idmotivo").val(null);
+    $("#btnGuardarAjuste").show();
+    $("#btnModificarAjuste").hide();
     crearJSON(1);
     $.ajax({
         url: "http://localhost:8084/Taller_tercero/ajustescontrol",
@@ -22,7 +24,7 @@ function controlBotonesNuevoAjuste() {
     $(document).ready(function () {
         $('body').on('click', '#botonesAjuste a', function () {
             v = ($(this).attr('id'));
-            if (v === 'btnNuevo' && $('#estadoajuste').val() === 'CONFIRMADO' || $('#estadoajuste').val() === 'ANULADO') {               
+            if (v === 'btnNuevo' && $('#estadoajuste').val() === 'CONFIRMADO' || $('#estadoajuste').val() === 'ANULADO') {
                 document.getElementById("btnGuardar").style.display = '';
                 document.getElementById("btnGuardarModificado").style.display = 'none';
             } else {
@@ -38,7 +40,7 @@ function fechaactualAjuste() {
 }//----------
 function MostrarEstadoAjuste() {
 //    alert("llega al usuario")
-        user = {
+    user = {
         "opcion": 2
     };
     $.ajax({
@@ -114,19 +116,20 @@ function buscadorTablaMotivoAjust() {
     var found = false;
     var compareWith = "";
 // Recorremos todas las filas con contenido de la tabla
-    for (var i = 1; i < tableReg.rows.length; i++){
+    for (var i = 1; i < tableReg.rows.length; i++) {
         cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
         found = false;
 // Recorremos todas las celdas
-        for (var j = 0; j < cellsOfRow.length && !found; j++){
+        for (var j = 0; j < cellsOfRow.length && !found; j++) {
             compareWith = cellsOfRow[j].innerHTML.toLowerCase();
 // Buscamos el texto en el contenido de la celda
-            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)){
+            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
                 found = true;
             }
-        }if (found){
-                tableReg.rows[i].style.display = '';
-            } else {
+        }
+        if (found) {
+            tableReg.rows[i].style.display = '';
+        } else {
 // si no ha encontrado ninguna coincidencia, esconde la fila de la tabla
             tableReg.rows[i].style.display = 'none';
         }
@@ -175,17 +178,18 @@ function buscadorTablaMercaderiaAjuste() {
     var found = false;
     var compareWith = "";
 // Recorremos todas las filas con contenido de la tabla
-    for (var i = 1; i < tableReg.rows.length; i++){
+    for (var i = 1; i < tableReg.rows.length; i++) {
         cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
         found = false;
 // Recorremos todas las celdas
-        for (var j = 0; j < cellsOfRow.length && !found; j++){
+        for (var j = 0; j < cellsOfRow.length && !found; j++) {
             compareWith = cellsOfRow[j].innerHTML.toLowerCase();
 // Buscamos el texto en el contenido de la celda
-            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)){
+            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
                 found = true;
             }
-        }if (found){
+        }
+        if (found) {
             tableReg.rows[i].style.display = '';
         } else {
 // si no ha encontrado ninguna coincidencia, esconde la fila de la tabla
@@ -284,10 +288,12 @@ function  InsertarAjuste() {
             if (opcion === true) {
                 datosCabeceraJSON = {
                     "opcion": 6,
+                    "aValor": 1,
                     "codigoAj": $('#codigoAjus').val(),
+                    "codTipoAjustes": $('#vTtipoAjustes').val(),
                     "Ajustefecha": $('#fechaAjuste').val(),
                     "Ajustemotivo": $('#idmotivo').val(),
-                    "Ajusteusua": $('#idusuaAjuste').val(),
+                    "Ajusteusua": $('#CodvUser').val(),
                     "Ajusteestad": $('#idestadAjuste').val()
                 };
                 $.ajax({
@@ -298,8 +304,53 @@ function  InsertarAjuste() {
                     dataType: 'text',
                     success: function () {
                         InsertarDetalleAjustes();
-                        alert("Ajuste guardado correctamente.!!");
-                        window.location.reload();
+                    },
+                    error: function () {
+                    }
+                });
+            } else {
+
+            }
+        }
+    }
+}
+function  updateAjuste() {
+    var dato = "";
+    $('#miTablaDetalleAjustes').find('tbody').find('tr').each(function () {
+        dato = $(this).find("td").eq(0).html();
+    });
+    if (dato === "") {
+        alert('No hay detalle que guardar..!');
+        $("#motivoAjuste").focus();
+    } else {
+        if ($('#PresuCompProvee').val() === "") {
+            alert('Debe ingresar todos los datos requeridos..');
+            $("#idmercadGenerico").focus();
+        } else {
+            var opcion = confirm('Desea Guardar Ajuste..?');
+            if (opcion === true) {
+                datosCabeceraJSON = {
+                    "opcion": 6,
+                    "aValor": 2,
+                    "codAjuste": $('#codigoAjus').val(),
+                    "codTipoAjustes": $('#vTtipoAjustes').val(),
+                    "Ajustefecha": $('#fechaAjuste').val(),
+                    "Ajustemotivo": $('#idmotivo').val(),
+                    "Ajusteusua": $('#CodvUser').val(),
+                    "Ajusteestad": $('#idestadAjuste').val()
+                };
+                $.ajax({
+                    url: "http://localhost:8084/Taller_tercero/ajustescontrol",
+                    type: 'POST',
+                    data: datosCabeceraJSON,
+                    cache: false,
+                    dataType: 'text',
+                    success: function () {
+                        deleteajustes();
+                        setTimeout(function () {
+                            InsertarDetalleAjustes();
+                        }, 1200);
+
                     },
                     error: function () {
                     }
@@ -330,9 +381,29 @@ function  InsertarDetalleAjustes() {
             }
         });
     });
+    alert("Ajuste guardado correctamente.!!");
+    window.location.reload();
+}
+function  deleteajustes() {
+    deletajustes = {
+        "opcion": 11,
+        "codAjustes": $('#codigoAjus').val()
+    };
+    $.ajax({
+        url: "http://localhost:8084/Taller_tercero/ajustescontrol",
+        type: 'POST',
+        data: deletajustes,
+        cache: false,
+        dataType: 'text',
+        success: function () {
+        },
+        error: function () {
+        }
+    });
+
 }
 $(document).ready(function () {
-  
+
     cambioEstadoAjustes();
     MostrarAjuste();
 });
@@ -458,17 +529,18 @@ function buscadorPlanillaAjuste() {
     var found = false;
     var compareWith = "";
 // Recorremos todas las filas con contenido de la tabla
-    for (var i = 1; i < tableReg.rows.length; i++){
+    for (var i = 1; i < tableReg.rows.length; i++) {
         cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
         found = false;
 // Recorremos todas las celdas
-        for (var j = 0; j < cellsOfRow.length && !found; j++){
+        for (var j = 0; j < cellsOfRow.length && !found; j++) {
             compareWith = cellsOfRow[j].innerHTML.toLowerCase();
 // Buscamos el texto en el contenido de la celda
-            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)){
+            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
                 found = true;
             }
-        }if (found){
+        }
+        if (found) {
             tableReg.rows[i].style.display = '';
         } else {
 // si no ha encontrado ninguna coincidencia, esconde la fila de la tabla
@@ -478,6 +550,8 @@ function buscadorPlanillaAjuste() {
 }//---------------
 function recuperaDetalleAjustes() {
     controlBotonesAjuste();
+    $('#btnGuardarAjuste').hide();
+    $('#btnModificarAjuste').show();
     if ($('#ajusteNro').val() === "") {
         alert('Seleecione planilla para visualizar..');
     } else {
@@ -502,11 +576,12 @@ function recuperaDetalleAjustes() {
                         $("#estadAjuste").val(value.descri_estado);
                         $("#usuarioAjuste").val(value.usu_nombre);
                         $("#motivoAjuste").val(value.ajustmotiv_descri);
+                        $("#idmotivo").val(value.idmot_ajus);
                         ///////BLOQUEA LOS CAMPOS//////
                         $("#fechaAjuste").prop('disabled', true);
                         $("#estadAjuste").prop('disabled', true);
                         $("#usuarioAjuste").prop('disabled', true);
-                        $("#motivoAjuste").prop('disabled', true);
+                        $("#motivoAjuste").prop('disabled', false);
                         subtotal = value.detprescomp_precio * value.detprescomp_cantidad;
                         $('#miTablaDetalleAjustes').append("<tr id=\'prod" + tindex + "\'>\
                                     <td style=display:none>" + value.idmercaderia + "</td>\n\
@@ -514,7 +589,7 @@ function recuperaDetalleAjustes() {
                                     <td>" + value.mer_descripcion + "</td>\n\
                                     <td>" + value.ajuste_cantidad + "</td>\n\
                                     <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
-                                    \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>"); 
+                                    \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
                     });
                     $('#codigoAjus').val($('#ajusteNro').val());
                 } else {

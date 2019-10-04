@@ -142,30 +142,64 @@ public class ajustesdaoimple implements ajustesdao {
     }
 
     @Override
-    public boolean insertarCabeceraAjuste6(Ajustesdto dto) {
-        try {
-            sintaxiSql = null;
-            conexion = new Conexion();
-            sintaxiSql = "INSERT INTO ajuste(ajuste_fecha, idmot_ajus, idusuario, idestado)\n"
-                    + "VALUES (?::date, ?, ?, ?);";
-            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
-            preparedStatement.setObject(1, dto.getAjuste_fecha());
-            preparedStatement.setObject(2, dto.getIdmot_ajus());
-            preparedStatement.setObject(3, dto.getIdusuario());
-            preparedStatement.setObject(4, dto.getIdestado());
-            filasAfectadas = preparedStatement.executeUpdate();
-            if (filasAfectadas > 0) {
-                conexion.comit();
-                System.out.println("Comit() Realizado");
-                return true;
-            } else {
-                conexion.rollback();
-                System.out.println("Rollback() Realizado");
-            }
-            conexion.desConectarBD();
-        } catch (SQLException ex) {
-            Logger.getLogger(ajustesdaoimple.class.getName()).log(Level.SEVERE, null, ex);
+    public boolean insertarCabeceraAjuste6(Ajustesdto dto, Integer cod) {
+        switch (cod) {
+            case 1:
+                try {
+                    sintaxiSql = null;
+                    conexion = new Conexion();
+                    sintaxiSql = "INSERT INTO ajuste(ajuste_fecha, idmot_ajus, idusuario, idestado,idtipo_ajuste)\n"
+                            + "VALUES (?::date, ?, ?, ?,?);";
+                    preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+                    preparedStatement.setObject(1, dto.getAjuste_fecha());
+                    preparedStatement.setObject(2, dto.getIdmot_ajus());
+                    preparedStatement.setObject(3, dto.getIdusuario());
+                    preparedStatement.setObject(4, dto.getIdestado());
+                    preparedStatement.setObject(5, dto.getIdtipo_ajuste());
+                    filasAfectadas = preparedStatement.executeUpdate();
+                    if (filasAfectadas > 0) {
+                        conexion.comit();
+                        System.out.println("Comit() Realizado");
+                        return true;
+                    } else {
+                        conexion.rollback();
+                        System.out.println("Rollback() Realizado");
+                    }
+                    conexion.desConectarBD();
+                } catch (SQLException ex) {
+                    Logger.getLogger(ajustesdaoimple.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
+            case 2:
+                try {
+                    sintaxiSql = null;
+                    conexion = new Conexion();
+                    sintaxiSql = "UPDATE public.ajuste\n"
+                            + "   SET  ajuste_fecha=?::date, idmot_ajus=?, idusuario=?, idestado=1,idtipo_ajuste=?\n"
+                            + " WHERE idajuste=?";
+                    preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+                    preparedStatement.setObject(1, dto.getAjuste_fecha());
+                    preparedStatement.setObject(2, dto.getIdmot_ajus());
+                    preparedStatement.setObject(3, dto.getIdusuario());
+                    preparedStatement.setObject(4, dto.getIdtipo_ajuste());
+                    preparedStatement.setObject(5, dto.getIdajuste());
+
+                    filasAfectadas = preparedStatement.executeUpdate();
+                    if (filasAfectadas > 0) {
+                        conexion.comit();
+                        System.out.println("Comit() Realizado");
+                        return true;
+                    } else {
+                        conexion.rollback();
+                        System.out.println("Rollback() Realizado");
+                    }
+                    conexion.desConectarBD();
+                } catch (SQLException ex) {
+                    Logger.getLogger(ajustesdaoimple.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
         }
+
         return false;
     }
 
@@ -207,7 +241,7 @@ public class ajustesdaoimple implements ajustesdao {
                     + "FROM ajuste a\n"
                     + "inner join motivo_ajuste m on a.idmot_ajus = m.idmot_ajus\n"
                     + "inner join usuarios u on a.idusuario = u.idusuario\n"
-                    + "inner join estado e on a.idestado = e.idestado\n"
+                    + "inner join estado e on a.idestado = e.idestado where a.idestado in(1,2)\n"
                     + "order by idajuste desc";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             rs = preparedStatement.executeQuery();
@@ -256,7 +290,7 @@ public class ajustesdaoimple implements ajustesdao {
         try {
             sintaxiSql = null;
             conexion = new Conexion();
-            sintaxiSql = "SELECT a.idajuste, a.ajuste_fecha, m.ajustmotiv_descri, u.usu_nombre, e.descri_estado,\n"
+            sintaxiSql = "SELECT a.idajuste,a.idmot_ajus, a.ajuste_fecha, m.ajustmotiv_descri, u.usu_nombre, e.descri_estado,\n"
                     + "d.idmercaderia, d.ajuste_cantidad, me.codigogenerico, me.mer_descripcion\n"
                     + "FROM ajuste a\n"
                     + "inner join motivo_ajuste m on a.idmot_ajus = m.idmot_ajus\n"
@@ -278,12 +312,38 @@ public class ajustesdaoimple implements ajustesdao {
                         rs.getInt("idmercaderia"),
                         rs.getInt("ajuste_cantidad"),
                         rs.getString("codigogenerico"),
+                        rs.getInt("idmot_ajus"),
                         rs.getString("mer_descripcion")));
             }
         } catch (SQLException ex) {
             Logger.getLogger(ajustesdaoimple.class.getName()).log(Level.SEVERE, null, ex);
         }
         return new Gson().toJson(alldetalleAjuste);
+    }
+
+    @Override
+    public boolean deleteDetalleAjustes(Ajustesdto dto) {
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "DELETE FROM public.detalle_ajuste\n"
+                    + " WHERE idajuste=?";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            preparedStatement.setObject(1, dto.getIdajuste());
+            filasAfectadas = preparedStatement.executeUpdate();
+            if (filasAfectadas > 0) {
+                conexion.comit();
+                System.out.println("Comit() Realizado");
+                return true;
+            } else {
+                conexion.rollback();
+                System.out.println("Rollback() Realizado");
+            }
+            conexion.desConectarBD();
+        } catch (SQLException ex) {
+            Logger.getLogger(ajustesdaoimple.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
 }

@@ -17,8 +17,9 @@ public interface ajustesdao {
     String ListarUsuarioAjustes3();
     String ListarMotivoAjuste4();
     String ListarMercaderiaAjuste5();
-    boolean insertarCabeceraAjuste6(Ajustesdto dto);
+    boolean insertarCabeceraAjuste6(Ajustesdto dto, Integer cod);
     boolean insertarDetalleAjuste7(Ajustesdto dto);
+    boolean deleteDetalleAjustes(Ajustesdto dto);
     String ListarAjuste8();
     boolean confirmarAjuste9(Ajustesdto dto);
     String listarDetalleAjuste10(Integer id);

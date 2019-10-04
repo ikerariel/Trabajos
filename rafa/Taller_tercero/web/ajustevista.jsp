@@ -97,8 +97,8 @@
                 <div class="modal-content">
                     <!--HEADER DE LA VENTANA--->
                     <div class="modal-header">
-                        <a class="btn btn-lg btn-success col-md-1"  id="btnGuardar" title="" onclick="InsertarAjuste()" >Guardar</a>
-                        <a class="btn btn-lg btn-danger col-md-1"  id="btnModificar" title="" onclick="recuperaDetalleAjustes()" >Modificar</a>
+                        <a class="btn btn-lg btn-success col-md-1"  id="btnGuardarAjuste" title="" onclick="InsertarAjuste()" >Guardar</a>
+                        <a class="btn btn-lg btn-danger col-md-1"  id="btnModificarAjuste" title="" onclick="updateAjuste()" >Modificar</a>
                         <a class="close  btn btn-lg btn-danger glyphicon glyphicon-off" data-dismiss="modal" aria-hidden="true" onclick="limpiarcampoOrdenp()" title="Salir"></a>
                     </div>
                     <!--CONTENIDO DE LA VENTANA--->
@@ -139,6 +139,13 @@
                                     <div class="col-md-3">
                                         <input id="motivoAjuste" style="font-weight: bold;font-size: 12pt" 
                                                type="text" placeholder="Ingrese Motivo" class="form-control input-sm alert-info" onclick="abrirmotivoajust()">
+                                    </div>
+                                    <label class="col-md-1 control-label">Tipo Ajuste</label>  
+                                    <div class="col-md-3">
+                                        <select class="form-control" id="vTtipoAjustes">
+                                            <option value="1">SOBRANTE</option>
+                                            <option value="2">FALTANTE</option>
+                                        </select>
                                     </div>
                                     <div class="col-md-2">
                                         <input id="idmotivo" style="visibility: hidden;" type="text">

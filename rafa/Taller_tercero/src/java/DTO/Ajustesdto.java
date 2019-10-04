@@ -11,6 +11,7 @@ package DTO;
  */
 public class Ajustesdto {
     private Integer idajuste;
+    private Integer idtipo_ajuste;
     private String ajuste_fecha;
     private Integer idmot_ajus;
     private String ajustmotiv_descri;
@@ -31,12 +32,20 @@ public class Ajustesdto {
     private Integer idprocedencia;
     private Integer idimpuesto;
     private String codigogenerico;
+
+    public Integer getIdtipo_ajuste() {
+        return idtipo_ajuste;
+    }
+
+    public void setIdtipo_ajuste(Integer idtipo_ajuste) {
+        this.idtipo_ajuste = idtipo_ajuste;
+    }
     
     public Ajustesdto(){
     }
     
     public Ajustesdto(Integer idajuste, String ajuste_fecha, String ajustmotiv_descri, String usu_nombre,
-           String descri_estado, Integer idmercaderia, Integer ajuste_cantidad, String codigogenerico, String mer_descripcion){
+           String descri_estado, Integer idmercaderia, Integer ajuste_cantidad, String codigogenerico,Integer idmot_ajus, String mer_descripcion){
         this.idajuste=idajuste;
         this.ajuste_fecha=ajuste_fecha;
         this.ajustmotiv_descri=ajustmotiv_descri;
@@ -45,6 +54,7 @@ public class Ajustesdto {
         this.idmercaderia=idmercaderia;
         this.ajuste_cantidad=ajuste_cantidad;
         this.codigogenerico=codigogenerico;
+        this.idmot_ajus=idmot_ajus;
         this.mer_descripcion=mer_descripcion;
     }
 

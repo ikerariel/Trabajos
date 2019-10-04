@@ -37,11 +37,11 @@ public class ajustescontrol extends HttpServlet {
         response.setContentType("application/json, charset=UTF-8");
         PrintWriter out = response.getWriter();
         Integer opcion = Integer.parseInt(request.getParameter("opcion"));
-        
+
         ajustesdao ajustDAO = new ajustesdaoimple();
         Ajustesdto ajustDTO = new Ajustesdto();
-        
-        switch(opcion){
+
+        switch (opcion) {
             case 1:
                 System.out.println("codigoAjus" + ajustDAO.getUltimoCodigoAjustes1());
                 if (ajustDAO.getUltimoCodigoAjustes1() > 0) {
@@ -61,11 +61,22 @@ public class ajustescontrol extends HttpServlet {
                 out.println(ajustDAO.ListarMercaderiaAjuste5());
                 break;
             case 6:
-                ajustDTO.setAjuste_fecha(request.getParameter("Ajustefecha"));
-                ajustDTO.setIdmot_ajus(Integer.parseInt(request.getParameter("Ajustemotivo")));
-                ajustDTO.setIdusuario(Integer.parseInt(request.getParameter("Ajusteusua")));
-                ajustDTO.setIdestado(Integer.parseInt(request.getParameter("Ajusteestad")));
-                if (ajustDAO.insertarCabeceraAjuste6(ajustDTO)) {
+                Integer aValor = Integer.parseInt(request.getParameter("aValor"));
+                if (aValor == 1) {
+                    ajustDTO.setAjuste_fecha(request.getParameter("Ajustefecha"));
+                    ajustDTO.setIdmot_ajus(Integer.parseInt(request.getParameter("Ajustemotivo")));
+                    ajustDTO.setIdusuario(Integer.parseInt(request.getParameter("Ajusteusua")));
+                    ajustDTO.setIdestado(Integer.parseInt(request.getParameter("Ajusteestad")));
+                    ajustDTO.setIdtipo_ajuste(Integer.parseInt(request.getParameter("codTipoAjustes")));
+                } else if (aValor == 2) {
+                    ajustDTO.setAjuste_fecha(request.getParameter("Ajustefecha"));
+                    ajustDTO.setIdmot_ajus(Integer.parseInt(request.getParameter("Ajustemotivo")));
+                    ajustDTO.setIdusuario(Integer.parseInt(request.getParameter("Ajusteusua")));
+                     ajustDTO.setIdtipo_ajuste(Integer.parseInt(request.getParameter("codTipoAjustes")));
+                    ajustDTO.setIdajuste(Integer.parseInt(request.getParameter("codAjuste")));
+                }
+
+                if (ajustDAO.insertarCabeceraAjuste6(ajustDTO, aValor)) {
                     out.println("Exitoso");
                 }
                 break;
@@ -76,7 +87,7 @@ public class ajustescontrol extends HttpServlet {
                 if (ajustDAO.insertarDetalleAjuste7(ajustDTO)) {
                     out.println("Exitoso");
                 }
-                break; 
+                break;
             case 8:
                 out.println(ajustDAO.ListarAjuste8());
                 break;
@@ -86,13 +97,19 @@ public class ajustescontrol extends HttpServlet {
                 if (ajustDAO.confirmarAjuste9(ajustDTO)) {
                     out.println("Exitoso");
                 }
-                break; 
+                break;
             case 10:
                 if (ajustDAO.listarDetalleAjuste10(Integer.parseInt(request.getParameter("nroAjustes"))) != null) {
                     out.println(ajustDAO.listarDetalleAjuste10(Integer.parseInt(request.getParameter("nroAjustes"))));
                     System.out.println(ajustDAO.listarDetalleAjuste10(Integer.parseInt(request.getParameter("nroAjustes"))));
                 }
-                break;    
+                break;
+            case 11:
+                ajustDTO.setIdajuste(Integer.parseInt(request.getParameter("codAjustes")));
+                if (ajustDAO.deleteDetalleAjustes(ajustDTO)) {
+                    out.println("Exitoso");
+                }
+                break;
         }
     }
 
