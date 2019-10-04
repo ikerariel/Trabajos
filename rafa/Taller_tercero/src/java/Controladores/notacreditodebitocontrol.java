@@ -91,7 +91,7 @@ public class notacreditodebitocontrol extends HttpServlet {
                 }
                 break;
             case 9:
-                notaDTO.setIdcred_debD(Integer.parseInt(request.getParameter("codigoD")));
+//                notaDTO.setIdcred_debD(Integer.parseInt(request.getParameter("codigoD")));
                 notaDTO.setIdmercaderia(Integer.parseInt(request.getParameter("idmercaD")));
                 notaDTO.setCred_deb_cantidad(Integer.parseInt(request.getParameter("cantiD")));
                 notaDTO.setCred_deb_precio(Integer.parseInt(request.getParameter("precioD")));
@@ -118,6 +118,16 @@ public class notacreditodebitocontrol extends HttpServlet {
             case 13:
                 notaDTO.setIdcred_deb(Integer.parseInt(request.getParameter("codNCD")));
                 if (notaDAO.deleteNCD(notaDTO)) {
+                    out.println("Exitoso");
+                }
+                break;
+
+            case 14:
+                notaDTO.setNocred_motivo(request.getParameter("motivoND"));
+                notaDTO.setCred_deb_cantidad(Integer.parseInt(request.getParameter("cantND")));
+                notaDTO.setCred_deb_precio(Integer.parseInt(request.getParameter("precioND")));
+//                notaDTO.setIdcred_deb(Integer.parseInt(request.getParameter("condND")));
+                if (notaDAO.insertarDetalleND(notaDTO)) {
                     out.println("Exitoso");
                 }
                 break;

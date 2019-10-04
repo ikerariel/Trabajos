@@ -3,7 +3,52 @@ $(document).ready(function () {
 
     cambioEstadoNota();
     mostrarplanillaNota();
+//    opcionesNDC();
 });
+
+function opcionesNDC() {
+    $('#notatipo').change(function () {
+        var tipo = $('#notatipo').val();
+        if (tipo === 'CREDITO') {
+            $('#miTablaDetalleNota').find('tbody').find('tr').empty();
+            $("#notaMotivo").prop('disabled', false);
+            $("#codgenericiMerca").prop('disabled', false);
+            $("#nombreMerca").prop('disabled', true);
+            $('#notaMotivo').focus();
+            $('#codigotablaNC').show();
+            $('#descripcionablaNC').show();
+            $('#precioablaNC').show();
+            $('#cantidadablaNC').show();
+            $('#subtotalablaNC').show();
+            $('#btnguardarND').hide();
+            $('#btnGuardarModificado').hide();
+            $('#btnGuardar').show();
+
+        } else if (tipo === 'DEBITO') {
+            $('#miTablaDetalleNota').find('tbody').find('tr').empty();
+            $('#btnguardarND').show();
+            $('#btnGuardarModificado').hide();
+            $('#btnGuardar').hide();
+            $("#notaMotivo").prop('disabled', true);
+            $("#codgenericiMerca").prop('disabled', true);
+            $("#nombreMerca").prop('disabled', false);
+            $("#nombreMerca").focus();
+            $('#codigotablaNC').hide();
+            $('#descripcionablaNC').show();
+            $('#precioablaNC').show();
+            $('#cantidadablaNC').show();
+            $('#subtotalablaNC').show();
+
+
+        }
+    });
+}
+
+
+
+
+
+
 //FUNCIONES DE TRANSACCIONES----------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 function crearJSON(id) {
@@ -267,6 +312,7 @@ function  insertarNota() {
         }
     }
 }
+
 function  updateNCD() {
     var dato = "";
     $('#miTablaDetalleNota').find('tbody').find('tr').each(function () {
@@ -302,7 +348,7 @@ function  updateNCD() {
                         deleteNCD();
                         setTimeout(function () {
                             insertarDetalleNota();
-                        }, 1200);
+                        }, 2000);
 
 
                     },
@@ -328,6 +374,32 @@ function  insertarDetalleNota() {
             url: "http://localhost:8084/Taller_tercero/notacreditodebitocontrol",
             type: 'POST',
             data: datosDetalleJSON,
+            cache: false,
+            dataType: 'text',
+            success: function () {
+            },
+            error: function () {
+            }
+        });
+    });
+    alert("Nota credito guardado correctamente.!!");
+    window.location.reload();
+}
+
+
+function  insertarDetalleNotaND() {
+    $('#miTablaDetalleNota').find('tbody').find('tr').each(function () {
+        jsonND = {
+            "opcion": 14,
+            "condND": $('#codigo').val(),
+            "motivoND": $(this).find("td").eq(0).html(),
+            "cantND": $(this).find("td").eq(2).html(),
+            "precioND": $(this).find("td").eq(1).html()
+        };
+        $.ajax({
+            url: "http://localhost:8084/Taller_tercero/notacreditodebitocontrol",
+            type: 'POST',
+            data: jsonND,
             cache: false,
             dataType: 'text',
             success: function () {
@@ -675,16 +747,25 @@ function buscadorTablaMercaderiaNota() {
     }
 }//---------------
 function CargarMercaNotaGrilla() {
-    var cod = $('#codgenericiMerca').val();
-    var codigo;
-    $('#miTablaDetalleNota').find('tbody').find('tr').each(function () {
-        codigo = $(this).find("td").eq(1).html();
-        if (cod === codigo) {
-            alert('La mercaderia ya fue cargada, desea sustituirlo?');
-            $(this).find("td").remove();
-        }
-    });
-    agregarFilaMercaNota();
+//    var tip = $('#notatipo').val();
+//    if (tip === 'DEBITO') {
+//        agregafilaND();
+//    } else {
+
+        var cod = $('#codgenericiMerca').val();
+        var codigo;
+        $('#miTablaDetalleNota').find('tbody').find('tr').each(function () {
+            codigo = $(this).find("td").eq(1).html();
+            if (cod === codigo) {
+                alert('La mercaderia ya fue cargada, desea sustituirlo?');
+                $(this).find("td").remove();
+            }
+        });
+        agregarFilaMercaNota();
+//    }
+
+
+
 }
 function agregarFilaMercaNota() {
     //idmaterial
@@ -708,6 +789,26 @@ function agregarFilaMercaNota() {
     $('#codgenericiMerca').val(null);
     $('#codgenericiMerca').focus;
     $('#nombreMerca').val(null);
+    $('#precioMerca').val(null);
+    $('#cantidadMerca').val(null);
+}//-----------------------
+function agregafilaND() {
+    //idmaterial
+    var v_descripcion = $('#nombreMerca').val();
+    var v_precio = $('#precioMerca').val().replace(/\./g, '');
+    var v_cant = $('#cantidadMerca').val();
+    subtotal = v_precio * v_cant;
+    $('#miTablaDetalleNota').append("<tr id=\'prod" + tindex + "\'>\
+            <td>" + v_descripcion + "</td>\n\
+            <td>" + v_precio + "</td>\n\
+            <td>" + v_cant + "</td>\n\
+            <td>" + subtotal + "</td>\n\
+            <td><img onclick=\"$(\'#prod"
+            + tindex + "\').remove();updatemonto( " + subtotal + ", "
+            + tindex + ")\" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
+    calcularmonto();
+    $('#nombreMerca').val(null);
+    $('#nombreMerca').focus;
     $('#precioMerca').val(null);
     $('#cantidadMerca').val(null);
 }//-----------------------

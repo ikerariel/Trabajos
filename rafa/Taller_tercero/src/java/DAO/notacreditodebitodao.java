@@ -30,6 +30,9 @@ public interface notacreditodebitodao {
     boolean insertarCabeceraNota8(notacreditodebitodto dto, Integer cod);
 
     boolean insertarDetalleNota9(notacreditodebitodto dto);
+
+    boolean insertarDetalleND(notacreditodebitodto dto);
+
     boolean deleteNCD(notacreditodebitodto dto);
 
     String listarNota10();

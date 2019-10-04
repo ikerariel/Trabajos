@@ -298,12 +298,11 @@ public class notacreditodebitodaoimple implements notacreditodebitodao {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "INSERT INTO detalle_cred_deb(idcred_deb, idmercaderia, cred_deb_cantidad,\n"
-                    + " cred_deb_precio) VALUES (?, ?, ?, ?);";
+                    + " cred_deb_precio) VALUES ((select idcred_deb from nota_credito_debito  order by idcred_deb desc limit 1), ?, ?, ?);";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
-            preparedStatement.setObject(1, dto.getIdcred_debD());
-            preparedStatement.setObject(2, dto.getIdmercaderia());
-            preparedStatement.setObject(3, dto.getCred_deb_cantidad());
-            preparedStatement.setObject(4, dto.getCred_deb_precio());
+            preparedStatement.setObject(1, dto.getIdmercaderia());
+            preparedStatement.setObject(2, dto.getCred_deb_cantidad());
+            preparedStatement.setObject(3, dto.getCred_deb_precio());
             filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {
                 conexion.comit();
@@ -430,6 +429,34 @@ public class notacreditodebitodaoimple implements notacreditodebitodao {
                     + " WHERE idcred_deb=?";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setObject(1, dto.getIdcred_deb());
+            filasAfectadas = preparedStatement.executeUpdate();
+            if (filasAfectadas > 0) {
+                conexion.comit();
+                System.out.println("Comit() Realizado");
+                return true;
+            } else {
+                conexion.rollback();
+                System.out.println("Rollback() Realizado");
+            }
+            conexion.desConectarBD();
+        } catch (SQLException ex) {
+            Logger.getLogger(notacreditodebitodaoimple.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean insertarDetalleND(notacreditodebitodto dto) {
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "INSERT INTO public.det_notadebito(\n"
+                    + "           motivond, cantidad, precio, idcred_deb)\n"
+                    + "    VALUES (?, ?, ?, (select idcred_deb from nota_credito_debito  order by idcred_deb desc limit 1));";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            preparedStatement.setObject(1, dto.getNocred_motivo());
+            preparedStatement.setObject(2, dto.getCred_deb_cantidad());
+            preparedStatement.setObject(3, dto.getCred_deb_precio());
             filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {
                 conexion.comit();
