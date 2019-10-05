@@ -434,9 +434,9 @@ function cambioEstadoFCompras() {
                             "FacturaCNro": $('#nrofacturaP').val()
                         };
                         confirmarFacturaCompra();
-                        setTimeout(function (){
-                                generarCtas(); 
-                        },2000);
+                        setTimeout(function () {
+                            generarCtas();
+                        }, 2000);
                         alert('Factura Confirmado con éxito.!!');
                     }
                 }
@@ -471,7 +471,7 @@ function confirmarFacturaCompra() {
         success: function () {
             $('#miTablaPlanillaCompra').find('tbody').find('tr').empty();
             MostrarFacturaCompra();
-            
+
         },
         error: function () {
         }
@@ -565,7 +565,7 @@ function recuperarDetalleFacturaC() {
                                     <td>" + value.detfact_precio + "</td>\n\
                                     <td>" + value.detfact_cantidad + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
-                                    <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
+                                    <td><img onclick=\"$(\'#prod" + tindex + "\').remove(); calcularmonto();\n\
                                     \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
                     });
                     $('#codigo').val($('#nrofacturaP').val());
@@ -714,16 +714,18 @@ var monto = 0;
 var acumu = 0;
 
 function calcularmonto() {
-    monto = 0;
-    acumu = 0;
-    $('#miTablaDetalleFacturaCompra').find('tbody').find('tr').each(function () {
-        monto = parseInt($(this).find("td").eq(5).html());
-        acumu = acumu + monto;
-    });
-    $('#total').val(acumu);
-    tindex++;
-    $('#factuCompMonto').val($('#total').val());
-    puntodecimal('factuCompMonto');
+    setTimeout(function () {
+        monto = 0;
+        acumu = 0;
+        $('#miTablaDetalleFacturaCompra').find('tbody').find('tr').each(function () {
+            monto = parseInt($(this).find("td").eq(5).html());
+            acumu = acumu + monto;
+        });
+        $('#total').val(acumu);
+        $('#factuCompMonto').val($('#total').val());
+        puntodecimal('factuCompMonto');
+    }, 1200);
+
 }
 function updatemonto(valormonto, ind) {
     var monto = $('#total').val();
@@ -794,7 +796,7 @@ function CargarMercaCompraGrilla() {
         codigo = $(this).find("td").eq(1).html();
         if (cod === codigo) {
             alert('La mercaderia ya fue cargada, desea sustituirlo?');
-            $(this).find("td").remove();
+            $(this).closest("tr").remove();
         }
     });
     agregarFilaMercaCompra();
@@ -814,15 +816,16 @@ function agregarFilaMercaCompra() {
             <td>" + v_precio + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
-            <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
+            <td><img onclick=\"$(\'#prod" + tindex + "\').remove(); calcularmonto();\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
             </tr>");
-    calcularmonto();
+
 
     $('#codgenericiMerca').val(null);
     $('#codgenericiMerca').focus;
     $('#nombreMerca').val(null);
     $('#precioMerca').val(null);
     $('#cantidadMerca').val(null);
+    calcularmonto();
 }//-----------------------
 function seleccionarFacturaCompras() {
     $('#miTablaPlanillaCompra tr').click(function () {
@@ -908,7 +911,7 @@ function calculomontoconp() {
     if ($('#factuCompMonto').val() === "" || $('#total').val() === "") {
         $('#faccuotamonto').val(0);
     } else {
-        var calculo =  valormonto / cant;
+        var calculo = valormonto / cant;
         $('#faccuotamonto').val(calculo);
         valormonto = 1;
         puntodecimal('faccuotamonto');

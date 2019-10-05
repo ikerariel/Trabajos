@@ -322,11 +322,12 @@ function CargarMercaRemiGrilla() {
         codigo = $(this).find("td").eq(1).html();
         if (cod === codigo) {
             alert('La mercaderia ya fue cargada, desea sustituirlo?');
-            $(this).find("td").remove();
+            $(this).closest("tr").remove();
         }
     });
     agregarFilaMercaRemi();
 }
+var ind=0;
 function agregarFilaMercaRemi() {
     //idmaterial
     var v_codMaterialG = $('#codgenericiMerca').val();
@@ -334,14 +335,13 @@ function agregarFilaMercaRemi() {
     var v_descripcion = $('#nombreMerca').val();
     var v_precio = $('#precioMerca').val();
     var v_cant = $('#cantidadMerca').val();
-    $('#miTablaDetalleNotaRemision').append("<tr id=\'prod" + tindex + "\'>\
+    $('#miTablaDetalleNotaRemision').append("<tr id=\'prod" + ind + "\'>\
             <td style=display:none>" + v_codmaterial + "</td>\n\
             <td>" + v_codMaterialG + "</td>\n\
             <td>" + v_descripcion + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td><img onclick=\"$(\'#prod" 
-            + tindex + "\').remove();updatemonto( " + subtotal + ", " 
-            + tindex + ")\" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
+            + ind + "\').remove();\" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
     
     $('#codgenericiMerca').val(null);
     $('#codgenericiMerca').focus;
@@ -419,6 +419,7 @@ function  updaterNotaRemi() {
     var dato = "";
     $('#miTablaDetalleNotaRemision').find('tbody').find('tr').each(function () {
         dato = $(this).find("td").eq(0).html();
+        alert(dato);
     });
     if (dato === "") {
         alert('No hay detalle que guardar..!');

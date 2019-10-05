@@ -77,14 +77,14 @@ public class notacreditodebitocontrol extends HttpServlet {
                     notaDTO.setNocred_motivo(request.getParameter("motivonota"));
                     notaDTO.setIdcompra(Integer.parseInt(request.getParameter("factunota")));
                     notaDTO.setIdusuario(Integer.parseInt(request.getParameter("usunota")));
-                    notaDTO.setIddesposito(Integer.parseInt(request.getParameter("codDeposito")));
+                    notaDTO.setIddesposito(Integer.parseInt(request.getParameter("codDepo")));
                 } else if (dcValor == 2) {
                     notaDTO.setNocred_tipo(request.getParameter("tiponota"));
                     notaDTO.setNocred_fecha(request.getParameter("fechanota"));
                     notaDTO.setNocred_motivo(request.getParameter("motivonota"));
                     notaDTO.setIdcompra(Integer.parseInt(request.getParameter("factunota")));
                     notaDTO.setIdusuario(Integer.parseInt(request.getParameter("usunota")));
-                    notaDTO.setIddesposito(Integer.parseInt(request.getParameter("codDeposito")));
+                    notaDTO.setIddesposito(Integer.parseInt(request.getParameter("codDepos")));
                     notaDTO.setIdcred_deb(Integer.parseInt(request.getParameter("codND")));
                 }
 
