@@ -68,11 +68,13 @@ public class ajustescontrol extends HttpServlet {
                     ajustDTO.setIdusuario(Integer.parseInt(request.getParameter("Ajusteusua")));
                     ajustDTO.setIdestado(Integer.parseInt(request.getParameter("Ajusteestad")));
                     ajustDTO.setIdtipo_ajuste(Integer.parseInt(request.getParameter("codTipoAjustes")));
+                    ajustDTO.setIddeposito(Integer.parseInt(request.getParameter("codDeposito")));
                 } else if (aValor == 2) {
                     ajustDTO.setAjuste_fecha(request.getParameter("Ajustefecha"));
                     ajustDTO.setIdmot_ajus(Integer.parseInt(request.getParameter("Ajustemotivo")));
                     ajustDTO.setIdusuario(Integer.parseInt(request.getParameter("Ajusteusua")));
                      ajustDTO.setIdtipo_ajuste(Integer.parseInt(request.getParameter("codTipoAjustes")));
+                       ajustDTO.setIddeposito(Integer.parseInt(request.getParameter("codDeposito")));
                     ajustDTO.setIdajuste(Integer.parseInt(request.getParameter("codAjuste")));
                 }
 

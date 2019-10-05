@@ -26,6 +26,7 @@ public class notacreditodebitodto {
     private Integer idestado;
     private String descri_estado;
     private Integer id_prov;
+    public Integer iddesposito;
     private String prov_nombre;
 
     
@@ -42,6 +43,14 @@ public class notacreditodebitodto {
     private Integer idprocedencia;
     private Integer idimpuesto;
     private String codigogenerico;
+
+    public Integer getIddesposito() {
+        return iddesposito;
+    }
+
+    public void setIddesposito(Integer iddesposito) {
+        this.iddesposito = iddesposito;
+    }
     
     public notacreditodebitodto(){
         
@@ -64,13 +73,12 @@ public class notacreditodebitodto {
         this.codigogenerico = codigogenerico;
     }
     public notacreditodebitodto(Integer idcred_deb, String nocred_tipo, String nocred_fecha,
-             String usu_nombre, String descri_estado, String prov_nombre){
+             String usu_nombre, String descri_estado){
         this.idcred_deb = idcred_deb;
         this.nocred_tipo = nocred_tipo;
         this.nocred_fecha = nocred_fecha;
         this.usu_nombre = usu_nombre;
         this.descri_estado = descri_estado;
-        this.prov_nombre = prov_nombre;
     }
 
     public notacreditodebitodto(Integer idcred_deb, String nocred_tipo, String nocred_fecha, String nocred_motivo,

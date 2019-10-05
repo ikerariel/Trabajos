@@ -294,7 +294,8 @@ function  InsertarAjuste() {
                     "Ajustefecha": $('#fechaAjuste').val(),
                     "Ajustemotivo": $('#idmotivo').val(),
                     "Ajusteusua": $('#CodvUser').val(),
-                    "Ajusteestad": $('#idestadAjuste').val()
+                    "Ajusteestad": $('#idestadAjuste').val(),
+                    "codDeposito": $('#Coddepo').val()
                 };
                 $.ajax({
                     url: "http://localhost:8084/Taller_tercero/ajustescontrol",
@@ -337,7 +338,8 @@ function  updateAjuste() {
                     "Ajustefecha": $('#fechaAjuste').val(),
                     "Ajustemotivo": $('#idmotivo').val(),
                     "Ajusteusua": $('#CodvUser').val(),
-                    "Ajusteestad": $('#idestadAjuste').val()
+                    "Ajusteestad": $('#idestadAjuste').val(),
+                     "codDeposito": $('#Coddepo').val()
                 };
                 $.ajax({
                     url: "http://localhost:8084/Taller_tercero/ajustescontrol",

@@ -495,14 +495,11 @@ public class facturacompradaoimple implements facturacompradao {
 
     @Override
     public boolean generarCtasapagar(facturacompradto dto) {
-
         try {
             sintaxiSql = null;
             conexion = new Conexion();
-//            CallableStatement call = conexion.getConexion().prepareCall("{call sp_generarcuota(?))");
             CallableStatement call = conexion.getConexion().prepareCall("{call sp_generarctaspagar(?)}");
             call.setInt(1, dto.getIdcompra());
-
             call.execute();
             conexion.comit();
             return true;

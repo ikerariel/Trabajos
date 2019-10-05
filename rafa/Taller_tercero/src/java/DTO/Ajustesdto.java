@@ -11,6 +11,7 @@ package DTO;
  */
 public class Ajustesdto {
     private Integer idajuste;
+    private Integer iddeposito;
     private Integer idtipo_ajuste;
     private String ajuste_fecha;
     private Integer idmot_ajus;
@@ -32,6 +33,14 @@ public class Ajustesdto {
     private Integer idprocedencia;
     private Integer idimpuesto;
     private String codigogenerico;
+
+    public Integer getIddeposito() {
+        return iddeposito;
+    }
+
+    public void setIddeposito(Integer iddeposito) {
+        this.iddeposito = iddeposito;
+    }
 
     public Integer getIdtipo_ajuste() {
         return idtipo_ajuste;

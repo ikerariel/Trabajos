@@ -148,14 +148,15 @@ public class ajustesdaoimple implements ajustesdao {
                 try {
                     sintaxiSql = null;
                     conexion = new Conexion();
-                    sintaxiSql = "INSERT INTO ajuste(ajuste_fecha, idmot_ajus, idusuario, idestado,idtipo_ajuste)\n"
-                            + "VALUES (?::date, ?, ?, ?,?);";
+                    sintaxiSql = "INSERT INTO ajuste(ajuste_fecha, idmot_ajus, idusuario, idestado,idtipo_ajuste,iddeposito)\n"
+                            + "VALUES (?::date, ?, ?, ?,?,?);";
                     preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
                     preparedStatement.setObject(1, dto.getAjuste_fecha());
                     preparedStatement.setObject(2, dto.getIdmot_ajus());
                     preparedStatement.setObject(3, dto.getIdusuario());
                     preparedStatement.setObject(4, dto.getIdestado());
                     preparedStatement.setObject(5, dto.getIdtipo_ajuste());
+                    preparedStatement.setObject(6, dto.getIddeposito());
                     filasAfectadas = preparedStatement.executeUpdate();
                     if (filasAfectadas > 0) {
                         conexion.comit();
@@ -175,13 +176,14 @@ public class ajustesdaoimple implements ajustesdao {
                     sintaxiSql = null;
                     conexion = new Conexion();
                     sintaxiSql = "UPDATE public.ajuste\n"
-                            + "   SET  ajuste_fecha=?::date, idmot_ajus=?, idusuario=?, idestado=1,idtipo_ajuste=?\n"
+                            + "   SET  ajuste_fecha=?::date, idmot_ajus=?, idusuario=?, idestado=1,idtipo_ajuste=?, iddeposito=?\n"
                             + " WHERE idajuste=?";
                     preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
                     preparedStatement.setObject(1, dto.getAjuste_fecha());
                     preparedStatement.setObject(2, dto.getIdmot_ajus());
                     preparedStatement.setObject(3, dto.getIdusuario());
                     preparedStatement.setObject(4, dto.getIdtipo_ajuste());
+                    preparedStatement.setObject(5, dto.getIddeposito());
                     preparedStatement.setObject(5, dto.getIdajuste());
 
                     filasAfectadas = preparedStatement.executeUpdate();

@@ -288,7 +288,8 @@ function  insertarNota() {
                     "fechanota": $('#notaFecha').val(),
                     "motivonota": $('#notaMotivo').val(),
                     "factunota": $('#notafactuComp').val(),
-                    "usunota": $('#CodvUser').val()
+                    "usunota": $('#CodvUser').val(),
+                     "codDeposito": $('#Coddepo').val()
                 };
                 $.ajax({
                     url: "http://localhost:8084/Taller_tercero/notacreditodebitocontrol",
@@ -336,7 +337,8 @@ function  updateNCD() {
                     "motivonota": $('#notaMotivo').val(),
                     "factunota": $('#notafactuComp').val(),
                     "usunota": $('#CodvUser').val(),
-                    "codND": $('#codigo').val()
+                    "codND": $('#codigo').val(),
+                     "codDeposito": $('#Coddepo').val()
                 };
                 $.ajax({
                     url: "http://localhost:8084/Taller_tercero/notacreditodebitocontrol",

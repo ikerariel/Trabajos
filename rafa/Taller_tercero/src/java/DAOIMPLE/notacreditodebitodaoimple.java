@@ -235,13 +235,14 @@ public class notacreditodebitodaoimple implements notacreditodebitodao {
                     sintaxiSql = null;
                     conexion = new Conexion();
                     sintaxiSql = "INSERT INTO nota_credito_debito(nocred_tipo, nocred_fecha, nocred_motivo, idcompra, \n"
-                            + " idusuario, idestado) VALUES (?, ?::date, ?, ?,?, 1);";
+                            + " idusuario, idestado, iddeposito) VALUES (?, ?::date, ?, ?,?, 1,?);";
                     preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
                     preparedStatement.setObject(1, dto.getNocred_tipo());
                     preparedStatement.setObject(2, dto.getNocred_fecha());
                     preparedStatement.setObject(3, dto.getNocred_motivo());
                     preparedStatement.setObject(4, dto.getIdcompra());
                     preparedStatement.setObject(5, dto.getIdusuario());
+                    preparedStatement.setObject(6, dto.getIddesposito());
                     filasAfectadas = preparedStatement.executeUpdate();
                     if (filasAfectadas > 0) {
                         conexion.comit();
@@ -263,7 +264,7 @@ public class notacreditodebitodaoimple implements notacreditodebitodao {
                     conexion = new Conexion();
                     sintaxiSql = "UPDATE public.nota_credito_debito\n"
                             + "   SET nocred_tipo=?, nocred_fecha=?::date, nocred_motivo=?, \n"
-                            + "       idcompra=?, idusuario=?, idestado=1\n"
+                            + "       idcompra=?, idusuario=?, idestado=1,iddeposito=?\n"
                             + " WHERE idcred_deb=?";
                     preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
                     preparedStatement.setObject(1, dto.getNocred_tipo());
@@ -271,7 +272,8 @@ public class notacreditodebitodaoimple implements notacreditodebitodao {
                     preparedStatement.setObject(3, dto.getNocred_motivo());
                     preparedStatement.setObject(4, dto.getIdcompra());
                     preparedStatement.setObject(5, dto.getIdusuario());
-                    preparedStatement.setObject(6, dto.getIdcred_deb());
+                    preparedStatement.setObject(6, dto.getIddesposito());
+                    preparedStatement.setObject(7, dto.getIdcred_deb());
                     filasAfectadas = preparedStatement.executeUpdate();
                     if (filasAfectadas > 0) {
                         conexion.comit();
@@ -327,9 +329,8 @@ public class notacreditodebitodaoimple implements notacreditodebitodao {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "SELECT n.idcred_deb, n.nocred_tipo, n.nocred_fecha, \n"
-                    + "       u.usu_nombre, e.descri_estado, p.prov_nombre FROM nota_credito_debito n\n"
+                    + "       u.usu_nombre, e.descri_estado FROM nota_credito_debito n\n"
                     + "       left join usuarios u on n.idusuario = u.idusuario\n"
-                    + "       left join proveedores p on n.id_prov = p.id_prov\n"
                     + "       left join estado e on n.idestado = e.idestado where e.idestado in(1,2) order by idcred_deb desc;";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             rs = preparedStatement.executeQuery();
@@ -338,8 +339,7 @@ public class notacreditodebitodaoimple implements notacreditodebitodao {
                         rs.getString("nocred_tipo"),
                         rs.getString("nocred_fecha"),
                         rs.getString("usu_nombre"),
-                        rs.getString("descri_estado"),
-                        rs.getString("prov_nombre")));
+                        rs.getString("descri_estado")));
             }
         } catch (SQLException ex) {
             Logger.getLogger(notacreditodebitodaoimple.class.getName()).log(Level.SEVERE, null, ex);
@@ -380,11 +380,10 @@ public class notacreditodebitodaoimple implements notacreditodebitodao {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "SELECT n.idcred_deb, n.nocred_tipo, n.nocred_fecha, n.nocred_motivo, f.idcompra,\n"
-                    + "                     u.usu_nombre, e.descri_estado, p.prov_nombre, d.idmercaderia, d.cred_deb_cantidad,\n"
+                    + "                     u.usu_nombre, e.descri_estado, d.idmercaderia, d.cred_deb_cantidad,\n"
                     + "                      d.cred_deb_precio, m.codigogenerico, m.mer_descripcion\n"
                     + "                      FROM nota_credito_debito n\n"
                     + "                      left join factura_compra f on n.idcompra = f.idcompra\n"
-                    + "                      left join proveedores p on n.id_prov = p.id_prov\n"
                     + "                      left join usuarios u on n.idusuario = u.idusuario\n"
                     + "                      left join estado e on n.idestado = e.idestado\n"
                     + "                      left join detalle_cred_deb d on n.idcred_deb = d.idcred_deb\n"
@@ -402,7 +401,7 @@ public class notacreditodebitodaoimple implements notacreditodebitodao {
                         rs.getInt("idcompra"),
                         rs.getString("usu_nombre"),
                         rs.getString("descri_estado"),
-                        rs.getString("prov_nombre"),
+                        rs.getString("descri_estado"),
                         rs.getInt("idmercaderia"),
                         rs.getInt("cred_deb_cantidad"),
                         rs.getInt("cred_deb_precio"),

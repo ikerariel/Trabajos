@@ -434,7 +434,9 @@ function cambioEstadoFCompras() {
                             "FacturaCNro": $('#nrofacturaP').val()
                         };
                         confirmarFacturaCompra();
-                         generarCtas();
+                        setTimeout(function (){
+                                generarCtas(); 
+                        },2000);
                         alert('Factura Confirmado con éxito.!!');
                     }
                 }
