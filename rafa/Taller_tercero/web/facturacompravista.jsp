@@ -237,6 +237,7 @@
                                 </div>
 
                                 <label class="col-md-1 control-label">Cant*</label>
+                              
                                 <div class="col-md-1">
                                     <input id="cantidadMerca" type="text" placeholder="Cant" maxlength="3" class="form-control input-sm" 
                                            style="text-transform: uppercase; font-weight: bold; background-color:#e6ffe6; font-size: 12pt"
