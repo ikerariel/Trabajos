@@ -144,10 +144,15 @@ function RecuperarDetalleOrdenC() {
         cache: false,
         success: function (resp) {
             if (JSON.stringify(resp) != '[]') {
-                //alert(resp);
-                $.each(resp, function (indice, value) {
-                    subtotal = value.precio_orden * value.cant_orden;
-                    $('#miTablaDetalleFacturaCompra').append("<tr id=\'prod" + tindex + "\'>\
+                var vorden = JSON.stringify(resp);
+                var orden = JSON.parse(vorden);
+                var porden = orden[0].vorden;
+                if (porden != "") {
+                    alert("La Orden de Compra ya se encuentra procesado..!!");
+                } else {
+                    $.each(resp, function (indice, value) {
+                        subtotal = value.precio_orden * value.cant_orden;
+                        $('#miTablaDetalleFacturaCompra').append("<tr id=\'prod" + tindex + "\'>\
                                     <td style=display:none>" + value.idmercaderia + "</td>\n\
                                     <td>" + value.codigogenerico + "</td>\n\
                                     <td>" + value.mer_descripcion + "</td>\n\
@@ -156,7 +161,9 @@ function RecuperarDetalleOrdenC() {
                                     <td>" + subtotal + "</td>\n\
                                     <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
                                     \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
-                });
+                    });
+                }
+
             } else {
                 alert('Datos no encontrados..');
                 $("#factuCompSucursal").focus();
@@ -807,6 +814,7 @@ function CargarMercaCompraGrilla() {
     });
     agregarFilaMercaCompra();
 }
+var tind = 0;
 function agregarFilaMercaCompra() {
     //idmaterial
     var v_codMaterialG = $('#codgenericiMerca').val();
@@ -815,14 +823,14 @@ function agregarFilaMercaCompra() {
     var v_precio = $('#precioMerca').val();
     var v_cant = $('#cantidadMerca').val();
     subtotal = v_precio * v_cant;
-    $('#miTablaDetalleFacturaCompra').append("<tr id=\'prod" + tindex + "\'>\
+    $('#miTablaDetalleFacturaCompra').append("<tr id=\'prod" + tind + "\'>\
             <td style=display:none>" + v_codmaterial + "</td>\n\
             <td>" + v_codMaterialG + "</td>\n\
             <td>" + v_descripcion + "</td>\n\
             <td>" + v_precio + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
-            <td><img onclick=\"$(\'#prod" + tindex + "\').remove(); calcularmonto();\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
+            <td><img onclick=\"$(\'#prod" + tind + "\').remove(); calcularmonto();\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
             </tr>");
 
 

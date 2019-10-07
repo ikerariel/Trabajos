@@ -36,6 +36,7 @@ public class ordencompradto {
     private Integer idmarca;
     private Integer idprocedencia;
     private Integer idimpuesto;
+    private Integer nroorden;
     private String codigogenerico;
 
     public ordencompradto() {
@@ -76,7 +77,7 @@ public class ordencompradto {
 
     public ordencompradto(String ordenc_fecha, String prov_nombre, String usu_nombre,
             Integer pcomp_nro, String descri_estado, Integer idmercaderia, Integer cant_orden,
-            Integer precio_orden, String codigogenerico,Integer id_prov, String mer_descripcion) {
+            Integer precio_orden, String codigogenerico,Integer id_prov,Integer nroorden, String mer_descripcion) {
         this.ordenc_fecha = ordenc_fecha;
         this.prov_nombre = prov_nombre;
         this.usu_nombre = usu_nombre;
@@ -87,6 +88,7 @@ public class ordencompradto {
         this.precio_orden = precio_orden;
         this.codigogenerico = codigogenerico;
         this.id_prov = id_prov;
+        this.nroorden = nroorden;
         this.mer_descripcion = mer_descripcion;
         
     }

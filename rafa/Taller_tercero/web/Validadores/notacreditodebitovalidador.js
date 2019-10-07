@@ -214,6 +214,7 @@ function mostrarFacturaNota() {
         }
     });
 }
+var tind=0;
 function RecuperarDetalleFacturaNota() {
     $('#miTablaDetalleNota').find('tbody').find('tr').empty();
     datosDetalleJSON = {
@@ -227,19 +228,26 @@ function RecuperarDetalleFacturaNota() {
         cache: false,
         success: function (resp) {
             if (JSON.stringify(resp) != '[]') {
-                //alert(resp);
-                $.each(resp, function (indice, value) {
-                    subtotal = value.detfact_precio * value.detfact_cantidad;
-                    $('#miTablaDetalleNota').append("<tr id=\'prod" + tindex + "\'>\
+                var vorden = JSON.stringify(resp);
+                var orden = JSON.parse(vorden);
+                var porden = orden[0].nrocompra;
+                if (porden != "") {
+                    alert("La Factua Compra ya fue procesada..!!");
+                } else {
+                    $.each(resp, function (indice, value) {
+                        subtotal = value.detfact_precio * value.detfact_cantidad;
+                        $('#miTablaDetalleNota').append("<tr id=\'prod" + tind + "\'>\
                                     <td style=display:none>" + value.idmercaderia + "</td>\n\
                                     <td>" + value.codigogenerico + "</td>\n\
                                     <td>" + value.mer_descripcion + "</td>\n\
                                     <td>" + value.detfact_precio + "</td>\n\
                                     <td>" + value.detfact_cantidad + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
-                                    <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
+                                    <td><img onclick=\"$(\'#prod" + tind + "\').remove();calcularmonto()\n\
                                     \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
-                });
+                    });
+                }
+
             } else {
                 alert('Datos no encontrados..');
                 $("#notatipo").focus();
@@ -289,7 +297,7 @@ function  insertarNota() {
                     "motivonota": $('#notaMotivo').val(),
                     "factunota": $('#notafactuComp').val(),
                     "usunota": $('#CodvUser').val(),
-                     "codDepo": $('#Coddepo').val()
+                    "codDepo": $('#Coddepo').val()
                 };
                 $.ajax({
                     url: "http://localhost:8084/Taller_tercero/notacreditodebitocontrol",
@@ -338,7 +346,7 @@ function  updateNCD() {
                     "factunota": $('#notafactuComp').val(),
                     "usunota": $('#CodvUser').val(),
                     "codND": $('#codigo').val(),
-                     "codDepos": $('#Coddepo').val()
+                    "codDepos": $('#Coddepo').val()
                 };
                 $.ajax({
                     url: "http://localhost:8084/Taller_tercero/notacreditodebitocontrol",
@@ -754,16 +762,16 @@ function CargarMercaNotaGrilla() {
 //        agregafilaND();
 //    } else {
 
-        var cod = $('#codgenericiMerca').val();
-        var codigo;
-        $('#miTablaDetalleNota').find('tbody').find('tr').each(function () {
-            codigo = $(this).find("td").eq(1).html();
-            if (cod === codigo) {
-                alert('La mercaderia ya fue cargada, desea sustituirlo?');
-                $(this).find("td").remove();
-            }
-        });
-        agregarFilaMercaNota();
+    var cod = $('#codgenericiMerca').val();
+    var codigo;
+    $('#miTablaDetalleNota').find('tbody').find('tr').each(function () {
+        codigo = $(this).find("td").eq(1).html();
+        if (cod === codigo) {
+            alert('La mercaderia ya fue cargada, desea sustituirlo?');
+            $(this).find("td").remove();
+        }
+    });
+    agregarFilaMercaNota();
 //    }
 
 

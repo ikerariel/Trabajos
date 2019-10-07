@@ -162,7 +162,8 @@ public class notacreditodebitodaoimple implements notacreditodebitodao {
             sintaxiSql = "SELECT f.idcompra,f.id_prov,f.tipo_codigo, f.comp_cantcuota, f.comp_monto, f.comp_nrofact, f.comp_intervalo, \n"
                     + "       f.comp_fecha, p.prov_nombre, u.usu_nombre, e.descri_estado, \n"
                     + "       o.ordenc_nro, d.idmercaderia, d.detfact_cantidad, d.detfact_precio, m.codigogenerico,\n"
-                    + "       m.mer_descripcion FROM factura_compra f\n"
+                    + "       m.mer_descripcion, (select idcompra from nota_credito_debito where idcompra=?) as nrocompra "
+                    + "FROM factura_compra f\n"
                     + "       left join proveedores p on f.id_prov = p.id_prov\n"
                     + "       left join usuarios u on f.idusuario = u.idusuario\n"
                     + "       left join estado e on f.idestado = e.idestado\n"
@@ -172,6 +173,7 @@ public class notacreditodebitodaoimple implements notacreditodebitodao {
                     + "       where f.idcompra=?;";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, id);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 alldetalleFactura.add(new facturacompradto(
@@ -192,6 +194,7 @@ public class notacreditodebitodaoimple implements notacreditodebitodao {
                         rs.getString("codigogenerico"),
                         rs.getInt("id_prov"),
                         rs.getInt("tipo_codigo"),
+                        rs.getInt("nrocompra"),
                         rs.getString("mer_descripcion")));
             }
         } catch (SQLException ex) {

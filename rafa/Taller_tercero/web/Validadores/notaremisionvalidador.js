@@ -3,8 +3,8 @@ $(document).ready(function () {
     cambioEstadoNotaRemi();
     mostrarplanillaNotaRemi();
 });
-function limpiarcampoNotaremi(){
-   window.location.reload();
+function limpiarcampoNotaremi() {
+    window.location.reload();
 }
 
 function getcodigoNotaRemi() {// funciones de transaccion
@@ -30,7 +30,7 @@ function controlBotonNuevoRemi() {
     $(document).ready(function () {
         $('body').on('click', '#botonesRemi a', function () {
             v = ($(this).attr('id'));
-            if (v === 'btnNuevo' && $('#estadoRemi').val() === 'CONFIRMADO' || $('#estadoRemi').val() === 'ANULADO') {               
+            if (v === 'btnNuevo' && $('#estadoRemi').val() === 'CONFIRMADO' || $('#estadoRemi').val() === 'ANULADO') {
                 document.getElementById("btnGuardar").style.display = '';
                 document.getElementById("btnGuardarModificado").style.display = 'none';
             } else {
@@ -49,7 +49,7 @@ function fechaactualRemi() {// funciones muestra Fecha actual
 function mostrarEstadoRemi() {// funciones de transaccion
 //    alert("llega al usuario")
     user = {
-        "opcion":2
+        "opcion": 2
     };
     $.ajax({
         url: "http://localhost:8084/Taller_tercero/notaremisioncontrol",
@@ -124,19 +124,20 @@ function buscadorTablaProveeRemi() {// funciones secundarios validaciones creada
     var found = false;
     var compareWith = "";
 // Recorremos todas las filas con contenido de la tabla
-    for (var i = 1; i < tableReg.rows.length; i++){
+    for (var i = 1; i < tableReg.rows.length; i++) {
         cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
         found = false;
 // Recorremos todas las celdas
-        for (var j = 0; j < cellsOfRow.length && !found; j++){
+        for (var j = 0; j < cellsOfRow.length && !found; j++) {
             compareWith = cellsOfRow[j].innerHTML.toLowerCase();
 // Buscamos el texto en el contenido de la celda
-            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)){
+            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
                 found = true;
             }
-        }if (found){
-                tableReg.rows[i].style.display = '';
-            } else {
+        }
+        if (found) {
+            tableReg.rows[i].style.display = '';
+        } else {
 // si no ha encontrado ninguna coincidencia, esconde la fila de la tabla
             tableReg.rows[i].style.display = 'none';
         }
@@ -150,7 +151,7 @@ function AbrirFacturaRemi() {// funciones secundarios validaciones creadas
     } else {
     }
 }//---------------
-function mostrarFacturaNota(){// funciones de transaccion   
+function mostrarFacturaNota() {// funciones de transaccion   
     crearJSON(5);
     $.ajax({
         url: "http://localhost:8084/Taller_tercero/notaremisioncontrol",
@@ -184,19 +185,20 @@ function buscadorTablaFacturaRemi() {// funciones secundarios validaciones cread
     var found = false;
     var compareWith = "";
 // Recorremos todas las filas con contenido de la tabla
-    for (var i = 1; i < tableReg.rows.length; i++){
+    for (var i = 1; i < tableReg.rows.length; i++) {
         cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
         found = false;
 // Recorremos todas las celdas
-        for (var j = 0; j < cellsOfRow.length && !found; j++){
+        for (var j = 0; j < cellsOfRow.length && !found; j++) {
             compareWith = cellsOfRow[j].innerHTML.toLowerCase();
 // Buscamos el texto en el contenido de la celda
-            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)){
+            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
                 found = true;
             }
-        }if (found){
-                tableReg.rows[i].style.display = '';
-            } else {
+        }
+        if (found) {
+            tableReg.rows[i].style.display = '';
+        } else {
 // si no ha encontrado ninguna coincidencia, esconde la fila de la tabla
             tableReg.rows[i].style.display = 'none';
         }
@@ -214,16 +216,23 @@ function RecuperarDetalleFacturaRemi() {   // funciones de transaccion
         cache: false,
         success: function (resp) {
             if (JSON.stringify(resp) != '[]') {
-                    //alert(resp);
-                $.each(resp, function (indice, value) {
-                    $('#miTablaDetalleNotaRemision').append("<tr id=\'prod" + tindex + "\'>\
+                var vorden = JSON.stringify(resp);
+                var orden = JSON.parse(vorden);
+                var porden = orden[0].nrocompra;
+                if (porden != "") {
+                    alert("La Factua Compra ya fue procesada..!!");
+                } else {
+                    $.each(resp, function (indice, value) {
+                        $('#miTablaDetalleNotaRemision').append("<tr id=\'prod" + tindex + "\'>\
                                     <td style=display:none>" + value.idmercaderia + "</td>\n\
                                     <td>" + value.codigogenerico + "</td>\n\
                                     <td>" + value.mer_descripcion + "</td>\n\
                                     <td>" + value.detfact_cantidad + "</td>\n\
                                     <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
-                                    \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");                   
-                });
+                                    \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
+                    });
+                }
+
             } else {
                 alert('Datos no encontrados..');
                 $("#observaRemi").focus();
@@ -297,17 +306,18 @@ function buscadorTablaMercaderiaRemi() {
     var found = false;
     var compareWith = "";
 // Recorremos todas las filas con contenido de la tabla
-    for (var i = 1; i < tableReg.rows.length; i++){
+    for (var i = 1; i < tableReg.rows.length; i++) {
         cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
         found = false;
 // Recorremos todas las celdas
-        for (var j = 0; j < cellsOfRow.length && !found; j++){
+        for (var j = 0; j < cellsOfRow.length && !found; j++) {
             compareWith = cellsOfRow[j].innerHTML.toLowerCase();
 // Buscamos el texto en el contenido de la celda
-            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)){
+            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
                 found = true;
             }
-        }if (found){
+        }
+        if (found) {
             tableReg.rows[i].style.display = '';
         } else {
 // si no ha encontrado ninguna coincidencia, esconde la fila de la tabla
@@ -327,7 +337,7 @@ function CargarMercaRemiGrilla() {
     });
     agregarFilaMercaRemi();
 }
-var ind=0;
+var ind03 = 0;
 function agregarFilaMercaRemi() {
     //idmaterial
     var v_codMaterialG = $('#codgenericiMerca').val();
@@ -335,14 +345,14 @@ function agregarFilaMercaRemi() {
     var v_descripcion = $('#nombreMerca').val();
     var v_precio = $('#precioMerca').val();
     var v_cant = $('#cantidadMerca').val();
-    $('#miTablaDetalleNotaRemision').append("<tr id=\'prod" + ind + "\'>\
+    $('#miTablaDetalleNotaRemision').append("<tr id=\'prod" + ind03 + "\'>\
             <td style=display:none>" + v_codmaterial + "</td>\n\
             <td>" + v_codMaterialG + "</td>\n\
             <td>" + v_descripcion + "</td>\n\
             <td>" + v_cant + "</td>\n\
-            <td><img onclick=\"$(\'#prod" 
-            + ind + "\').remove();\" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
-    
+            <td><img onclick=\"$(\'#prod"
+            + ind03 + "\').remove();\" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
+
     $('#codgenericiMerca').val(null);
     $('#codgenericiMerca').focus;
     $('#nombreMerca').val(null);
@@ -369,7 +379,7 @@ function crearJSON(id) {
         "Remiprovee": $('#idproveedorRemi').val(),
         "Remiestad": $('#idestadRemi').val(),
         "Remiusu": $('#idusuaRemi').val(),
-        "RemifactuC": $('#idfacturacompRemi').val()  
+        "RemifactuC": $('#idfacturacompRemi').val()
     };
 }
 
@@ -405,7 +415,7 @@ function  insertarNotaRemi() {
                     dataType: 'text',
                     success: function () {
                         insertarDetalleNotaRemi();
-                       
+
                     },
                     error: function () {
                     }
@@ -448,11 +458,11 @@ function  updaterNotaRemi() {
                     dataType: 'text',
                     success: function () {
                         deleNotRemision();
-                        setTimeout(function (){
-                             insertarDetalleNotaRemi();
-                        },1200);
-                       ;
-                       
+                        setTimeout(function () {
+                            insertarDetalleNotaRemi();
+                        }, 1200);
+                        ;
+
                     },
                     error: function () {
                     }
@@ -482,25 +492,25 @@ function  insertarDetalleNotaRemi() {
             }
         });
     });
-     alert("Nota credito guardado correctamente.!!");
-                        window.location.reload();
+    alert("Nota credito guardado correctamente.!!");
+    window.location.reload();
 }
 function  deleNotRemision() {
-        jsondelete = {
-            "opcion": 13,
-            "codNRemision": $('#codigoRemi').val()
-        };
-        $.ajax({
-            url: "http://localhost:8084/Taller_tercero/notaremisioncontrol",
-            type: 'POST',
-            data: jsondelete,
-            cache: false,
-            dataType: 'text',
-            success: function () {
-            },
-            error: function () {
-            }
-        });
+    jsondelete = {
+        "opcion": 13,
+        "codNRemision": $('#codigoRemi').val()
+    };
+    $.ajax({
+        url: "http://localhost:8084/Taller_tercero/notaremisioncontrol",
+        type: 'POST',
+        data: jsondelete,
+        cache: false,
+        dataType: 'text',
+        success: function () {
+        },
+        error: function () {
+        }
+    });
 }
 function mostrarplanillaNotaRemi() {
     crearJSON(10);
@@ -548,17 +558,18 @@ function buscadorPlanillaNotaRemi() {
     var found = false;
     var compareWith = "";
 // Recorremos todas las filas con contenido de la tabla
-    for (var i = 1; i < tableReg.rows.length; i++){
+    for (var i = 1; i < tableReg.rows.length; i++) {
         cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
         found = false;
 // Recorremos todas las celdas
-        for (var j = 0; j < cellsOfRow.length && !found; j++){
+        for (var j = 0; j < cellsOfRow.length && !found; j++) {
             compareWith = cellsOfRow[j].innerHTML.toLowerCase();
 // Buscamos el texto en el contenido de la celda
-            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)){
+            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
                 found = true;
             }
-        }if (found){
+        }
+        if (found) {
             tableReg.rows[i].style.display = '';
         } else {
 // si no ha encontrado ninguna coincidencia, esconde la fila de la tabla
@@ -683,7 +694,7 @@ function recuperarDetalleNotaRemi() {
                                     <td>" + value.mer_descripcion + "</td>\n\
                                     <td>" + value.cantidadremi + "</td>\n\
                                     <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
-                                    \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>"); 
+                                    \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
                     });
                     $('#codigo').val($('#nroNotaP').val());
                 } else {

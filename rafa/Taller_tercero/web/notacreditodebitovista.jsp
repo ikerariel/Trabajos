@@ -97,10 +97,10 @@
                 <div class="modal-content">
                     <!--HEADER DE LA VENTANA--->
                     <div class="modal-header">
-                        <a class="btn btn-lg btn-danger col-md-1" style="display: none"  id="btnGuardar" title="" onclick="insertarNota()" >Guardar</a>
-                        <a class="btn btn-lg btn-danger col-md-1"  style="display: none"id="btnGuardarModificado" title="" onclick="updateNCD()" >Modificar</a>
-                        <a class="btn btn-lg btn-info col-md-1"  style="display: none"id="btnguardarND" title="" onclick="insertarNota()" >Guardar</a>
-                        <a class="close  btn btn-lg btn-danger glyphicon glyphicon-off" data-dismiss="modal" aria-hidden="true" title="Salir"></a>
+                        <a class="btn btn-md btn-danger col-md-1" style="display: none"  id="btnGuardar" title="" onclick="insertarNota()" >Guardar</a>
+                        <a class="btn btn-md btn-danger col-md-1"  style="display: none"id="btnGuardarModificado" title="" onclick="updateNCD()" >Modificar</a>
+                        <a class="btn btn-md btn-info col-md-1"  style="display: none"id="btnguardarND" title="" onclick="insertarNota()" >Guardar</a>
+                        <a class="close  btn btn-md btn-danger glyphicon glyphicon-off" data-dismiss="modal" aria-hidden="true" title="Salir"></a>
                     </div>
                     <div class="panel">
                         <div class="panel panel-default">
@@ -214,7 +214,7 @@
                         </div>
                         <div class="panel-body">
                             <!-- Tabla detalle -->
-                            <div class="table-responsive" style="height: 180px">
+                            <div class="table-responsive" style="height: 150px">
                                 <table class="table table-striped table-bordered table-hover table input-md" id="miTablaDetalleNota" onclick="SeleccionarDetalleFacturaNota()">
                                     <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
                                     <thead>

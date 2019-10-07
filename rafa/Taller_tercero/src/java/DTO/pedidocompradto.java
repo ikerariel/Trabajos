@@ -37,6 +37,7 @@ public class pedidocompradto {
 
     private Integer mer_costo;
     private Integer mer_precio;
+    private Integer nropedido;
     private String mer_descripcion;
     private Integer idcategoria;
     private Integer idmarca;
@@ -88,7 +89,7 @@ public class pedidocompradto {
 
     public pedidocompradto(String pcomp_fecha, String usu_nombre, String descri_estado, 
             String observacion, Integer idmercaderia, Integer cantidad,Integer precio, 
-            String codigogenerico, String mer_descripcion) {
+            String codigogenerico, Integer nropedido, String mer_descripcion) {
         this.pcomp_fecha = pcomp_fecha;
         this.usu_nombre = usu_nombre;
         this.descri_estado = descri_estado;
@@ -97,6 +98,7 @@ public class pedidocompradto {
         this.cantidad = cantidad;
         this.precio = precio;
         this.codigogenerico = codigogenerico;
+        this.nropedido = nropedido;
         this.mer_descripcion = mer_descripcion;
         
     }

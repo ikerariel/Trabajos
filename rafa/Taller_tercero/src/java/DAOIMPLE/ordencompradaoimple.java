@@ -417,7 +417,8 @@ public class ordencompradaoimple implements ordencompradao {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "select p.pcomp_fecha, u.usu_nombre, e.descri_estado, p.observacion,\n"
-                    + "d.idmercaderia,d.cantidad,d.precio, m.codigogenerico, m.mer_descripcion\n"
+                    + "d.idmercaderia,d.cantidad,d.precio, m.codigogenerico, m.mer_descripcion,"
+                    + "(select pcomp_nro from orden_compra where pcomp_nro=?) as nropedido\n"
                     + "from pedido_compra p\n"
                     + "inner join det_pedido_compra d on p.pcomp_nro=d.pcomp_nro\n"
                     + "inner join estado e on e.idestado=p.idestado\n"
@@ -426,6 +427,7 @@ public class ordencompradaoimple implements ordencompradao {
                     + "where p.pcomp_nro=?";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, id);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 alldetalle.add(new pedidocompradto(
@@ -437,6 +439,7 @@ public class ordencompradaoimple implements ordencompradao {
                         rs.getInt("cantidad"),
                         rs.getInt("precio"),
                         rs.getString("codigogenerico"),
+                        rs.getInt("nropedido"),
                         rs.getString("mer_descripcion")));
             }
         } catch (SQLException ex) {
@@ -477,6 +480,7 @@ public class ordencompradaoimple implements ordencompradao {
                         rs.getInt("cant_orden"),
                         rs.getInt("precio_orden"),
                         rs.getString("codigogenerico"),
+                        rs.getInt("id_prov"),
                         rs.getInt("id_prov"),
                         rs.getString("mer_descripcion")));
             }

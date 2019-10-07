@@ -98,9 +98,9 @@
                 <div class="modal-content">
                     <!--HEADER DE LA VENTANA--->
                     <div class="modal-header">
-                        <a class="btn btn-lg btn-success col-md-1"  id="btnGuardar" title="" onclick="InsertarOrden()" >Guardar</a>
-                        <a class="btn btn-lg btn-danger col-md-1"  id="btnModificar" title="" onclick="modificarOrdenC()" >Modificar</a>
-                        <a class="close  btn btn-lg btn-danger glyphicon glyphicon-off" data-dismiss="modal" aria-hidden="true" onclick="limpiarcampoOrdenp()" title="Salir"></a>
+                        <a class="btn btn-md btn-success col-md-1"  id="btnGuardar" title="" onclick="InsertarOrden()" >Guardar</a>
+                        <a class="btn btn-md btn-danger col-md-1"  id="btnModificar" title="" onclick="modificarOrdenC()" >Modificar</a>
+                        <a class="close  btn btn-md btn-danger glyphicon glyphicon-off" data-dismiss="modal" aria-hidden="true" onclick="limpiarcampoOrdenp()" title="Salir"></a>
                     </div>
                     <!--CONTENIDO DE LA VENTANA--->
                     <div class="panel">
@@ -199,7 +199,7 @@
                         </div>
                         <div class="panel-body">
                         <!-- Tabla detalle -->
-                        <div class="table-responsive" style="height: 180px">
+                        <div class="table-responsive" style="height: 150px">
                             <table class="table table-striped table-bordered table-hover table input-md" id="miTablaDetalleOrdenCompra" onclick="seleccionDetalleMerecadOrden()">
                                 <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
                                 <thead>

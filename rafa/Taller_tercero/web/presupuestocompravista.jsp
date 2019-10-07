@@ -97,9 +97,9 @@
                 <div class="modal-content">
                     <!--HEADER DE LA VENTANA--->
                     <div class="modal-header">
-                        <a class="btn btn-lg btn-warning col-md-1"  id="btnGuardar" title="" onclick="insertarpresuCompra()" >Guardar</a>
-                        <a class="btn btn-lg btn-danger col-md-1"  id="btnGuardarModificado" title="" onclick="ModificarPresupuestoCopmra()" >Modificar</a>
-                        <a class="close  btn btn-lg btn-danger glyphicon glyphicon-off" data-dismiss="modal" onclick="limpiarcampoPresupuesto()" aria-hidden="true" title="Salir"></a>
+                        <a class="btn btn-md btn-warning col-md-1"  id="btnGuardar" title="" onclick="insertarpresuCompra()" >Guardar</a>
+                        <a class="btn btn-md btn-danger col-md-1"  id="btnGuardarModificado" title="" onclick="ModificarPresupuestoCopmra()" >Modificar</a>
+                        <a class="close  btn btn-md btn-danger glyphicon glyphicon-off" data-dismiss="modal" onclick="limpiarcampoPresupuesto()" aria-hidden="true" title="Salir"></a>
                     </div>
                     <div class="panel">
                         <div class="panel panel-default">
@@ -225,7 +225,7 @@
                         </div>
                         <div class="panel-body">
                         <!-- Tabla detalle -->
-                        <div class="table-responsive" style="height: 180px">
+                        <div class="table-responsive" style="height: 150px">
                             <table class="table table-striped table-bordered table-hover table input-md" id="miTablaDetallePresuCompra" onclick="SeleccionarDetallePresuCompra()">
                                 <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
                                 <thead>

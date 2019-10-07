@@ -153,15 +153,17 @@ public class presupuestocompradaoimple implements presupuestocompradao {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "select p.pcomp_fecha, u.usu_nombre, e.descri_estado, p.observacion,\n"
-                    + "d.idmercaderia,d.cantidad,d.precio, m.codigogenerico, m.mer_descripcion\n"
+                    + "d.idmercaderia,d.cantidad,d.precio, m.codigogenerico, m.mer_descripcion, "
+                    + "(select pcomp_nro from presupuesto_compra where pcomp_nro=?) as nropedido\n"
                     + "from pedido_compra p\n"
-                    + "inner join det_pedido_compra d on p.pcomp_nro=d.pcomp_nro\n"
-                    + "inner join estado e on e.idestado=p.idestado\n"
-                    + "inner join usuarios u on u.idusuario=p.idusuario\n"
-                    + "inner join mercaderias m on m.idmercaderia=d.idmercaderia\n"
+                    + "left join det_pedido_compra d on p.pcomp_nro=d.pcomp_nro\n"
+                    + "left join estado e on e.idestado=p.idestado\n"
+                    + "left join usuarios u on u.idusuario=p.idusuario\n"
+                    + "left join mercaderias m on m.idmercaderia=d.idmercaderia\n"
                     + "where p.pcomp_nro=?";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, id);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 alldetalle.add(new pedidocompradto(
@@ -173,6 +175,7 @@ public class presupuestocompradaoimple implements presupuestocompradao {
                         rs.getInt("cantidad"),
                         rs.getInt("precio"),
                         rs.getString("codigogenerico"),
+                        rs.getInt("nropedido"),
                         rs.getString("mer_descripcion")));
             }
         } catch (SQLException ex) {

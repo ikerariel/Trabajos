@@ -238,10 +238,16 @@ function RecuperarDetallePedidoC() {
         cache: false,
         success: function (resp) {
             if (JSON.stringify(resp) != '[]') {
-                //alert(resp);
-                $.each(resp, function (indice, value) {
-                    subtotal = value.precio * value.cantidad;
-                    $('#miTablaDetallePresuCompra').append("<tr id=\'prod" + tindex + "\'>\
+                var vpedido = JSON.stringify(resp);
+                var p = JSON.parse(vpedido);
+                var pedido = p[0].nropedido;
+                if (pedido != "") {
+                    alert("El Pedido ya se encuentra procesado..!!");
+                } else {
+                    $.each(resp, function (indice, value) {
+
+                        subtotal = value.precio * value.cantidad;
+                        $('#miTablaDetallePresuCompra').append("<tr id=\'prod" + tindex + "\'>\
                                     <td style=display:none>" + value.idmercaderia + "</td>\n\
                                     <td>" + value.codigogenerico + "</td>\n\
                                     <td>" + value.mer_descripcion + "</td>\n\
@@ -250,7 +256,12 @@ function RecuperarDetallePedidoC() {
                                     <td>" + subtotal + "</td>\n\
                                     <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
                                     \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
-                });
+
+
+
+                    });
+                }
+
             } else {
                 alert('Datos no encontrados..');
                 $("#PresuCompPedidoC").focus();
@@ -474,11 +485,13 @@ function CargarMercaCompraGrillaPresu() {
         codigo = $(this).find("td").eq(1).html();
         if (cod === codigo) {
             alert('La mercaderia ya fue cargada, desea sustituirlo?');
-            $(this).find("td").remove();
+            $(this).closest("tr").remove();
         }
     });
     agregarFilaMercaCompraPresu();
 }
+
+var ind01 = 0;
 function agregarFilaMercaCompraPresu() {
     //idmaterial
     var v_codMaterialG = $('#codgenericiMerca').val();
@@ -487,14 +500,14 @@ function agregarFilaMercaCompraPresu() {
     var v_precio = $('#precioMerca').val();
     var v_cant = $('#cantidadMerca').val();
     subtotal = v_precio * v_cant;
-    $('#miTablaDetallePresuCompra').append("<tr id=\'prod" + tindex + "\'>\
+    $('#miTablaDetallePresuCompra').append("<tr id=\'prod" + ind01 + "\'>\
             <td style=display:none>" + v_codmaterial + "</td>\n\
             <td>" + v_codMaterialG + "</td>\n\
             <td>" + v_descripcion + "</td>\n\
             <td>" + v_precio + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
-            <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
+            <td><img onclick=\"$(\'#prod" + ind01 + "\').remove();calcularmontoPresu();\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
             </tr>");
     calcularmontoPresu();
     $('#codgenericiMerca').val(null);
@@ -585,13 +598,13 @@ function  ModificarPresupuestoCopmra() {
         } else {
             var opcion = confirm('Desea Guardar Presupuesto de Compras..?');
             if (opcion === true) {
-                    var pedidoC = $('#PresuCompPedidoC').val();
-                    var pedido = 0;
-                    if (pedidoC != "") {
-                        pedido = pedidoC;
-                    } else {
-                        pedido = 0;
-                    }
+                var pedidoC = $('#PresuCompPedidoC').val();
+                var pedido = 0;
+                if (pedidoC != "") {
+                    pedido = pedidoC;
+                } else {
+                    pedido = 0;
+                }
                 datosCabeceraJSON = {
                     "opcion": 9,
                     "pcValor": 2,

@@ -45,6 +45,7 @@ public class facturacompradto {
     private Integer idimpuesto;
     private String codigogenerico;
     private Integer iddeposito;
+    private Integer nrocompra;
 
     public Integer getIddeposito() {
         return iddeposito;
@@ -101,7 +102,7 @@ public class facturacompradto {
     public facturacompradto(Integer idcompra, Integer comp_cantcuota, Integer comp_monto, String comp_nrofact, 
             String comp_intervalo, String comp_fecha, String tipo_descri, String prov_nombre, 
             String usu_nombre, String descri_estado, Integer ordenc_nro, Integer idmercaderia, Integer detfact_cantidad, 
-            Integer detfact_precio, String codigogenerico, Integer id_prov, Integer tipo_codigo, String mer_descripcion) {
+            Integer detfact_precio, String codigogenerico, Integer id_prov, Integer tipo_codigo,Integer nrocompra, String mer_descripcion) {
         this.idcompra = idcompra;
         this.comp_cantcuota = comp_cantcuota;
         this.comp_monto = comp_monto;
@@ -119,6 +120,7 @@ public class facturacompradto {
         this.codigogenerico = codigogenerico;
         this.id_prov = id_prov;
         this.tipo_codigo = tipo_codigo;
+        this.nrocompra = nrocompra;
         this.mer_descripcion = mer_descripcion;
     }
 

@@ -154,7 +154,8 @@ public class facturacompradaoimple implements facturacompradao {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "SELECT o.ordenc_fecha, o.id_prov, p.prov_nombre, u.usu_nombre, pc.pcomp_nro, e.descri_estado, d.idmercaderia,\n"
-                    + "d.cant_orden, d.precio_orden, m.codigogenerico, m.mer_descripcion\n"
+                    + "d.cant_orden, d.precio_orden, m.codigogenerico, m.mer_descripcion,"
+                    + "   (select ordenc_nro from factura_compra where ordenc_nro = ?) as nroorden\n"
                     + "FROM orden_compra o\n"
                     + "inner join det_orden_compra d on o.ordenc_nro = d.ordenc_nro\n"
                     + "inner join proveedores p on o.id_prov = p.id_prov\n"
@@ -165,6 +166,7 @@ public class facturacompradaoimple implements facturacompradao {
                     + "where o.ordenc_nro=?;";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, id);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 alldetalleOrden.add(new ordencompradto(
@@ -178,6 +180,7 @@ public class facturacompradaoimple implements facturacompradao {
                         rs.getInt("precio_orden"),
                         rs.getString("codigogenerico"),
                         rs.getInt("id_prov"),
+                        rs.getInt("nroorden"),
                         rs.getString("mer_descripcion")));
             }
         } catch (SQLException ex) {
@@ -439,6 +442,7 @@ public class facturacompradaoimple implements facturacompradao {
                         rs.getInt("detfact_precio"),
                         rs.getString("codigogenerico"),
                         rs.getInt("id_prov"),
+                        rs.getInt("tipo_codigo"),
                         rs.getInt("tipo_codigo"),
                         rs.getString("mer_descripcion")));
             }

@@ -116,11 +116,12 @@ function CargarMercaderiaGrilla() {
 
         if (cod === codigo) {
             alert('La mercaderia ya fue cargada, desea sustituirlo?');
-            $(this).find("td").remove();
+            $(this).closest("tr").remove();
         }
     });
     agregarFilaMercad();
 }
+var index02;
 function agregarFilaMercad() {
 
     //idmaterial
@@ -132,23 +133,23 @@ function agregarFilaMercad() {
 
     subtotal = v_precio * v_cant;
 
-    $('#miTablaDetalleOrdenCompra').append("<tr id=\'prod" + tindex + "\'>\
+    $('#miTablaDetalleOrdenCompra').append("<tr id=\'prod" + index02 + "\'>\
             <td style=display:none>" + v_codmaterial + "</td>\n\
             <td>" + v_codMaterialG + "</td>\n\
             <td>" + v_descripcion + "</td>\n\
             <td>" + v_precio + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
-            <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
+            <td><img onclick=\"$(\'#prod" + index02 + "\').remove();calcularmonto();\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
             </tr>");
-
+    calcularmonto();
     $('#idmercadGenerico').val(null);
     $('#idmercadGenerico').focus;
     $('#idcanti').val(null);
     $('#iddescrip').val(null);
     $('#PrecioMer').val(null);
 //    $('#total').val(subtotal);
-    calcularmonto();
+
 
 }
 function calcularmonto() {
@@ -783,10 +784,15 @@ function recuperarDetallePedido() {
         success: function (resp) {
 
             if (JSON.stringify(resp) != '[]') {
-                //alert(resp);
-                $.each(resp, function (indice, value) {
-                    subtotal = value.precio * value.cantidad;
-                    $('#miTablaDetalleOrdenCompra').append("<tr id=\'prod" + tindex + "\'>\
+                var vpedido = JSON.stringify(resp);
+                var p = JSON.parse(vpedido);
+                var pedido = p[0].nropedido;
+                if (pedido != "") {
+                    alert("El Pedido ya se encuentra procesado..!!");
+                } else {
+                    $.each(resp, function (indice, value) {
+                        subtotal = value.precio * value.cantidad;
+                        $('#miTablaDetalleOrdenCompra').append("<tr id=\'prod" + tindex + "\'>\
                                     <td style=display:none>" + value.idmercaderia + "</td>\n\
                                     <td>" + value.codigogenerico + "</td>\n\
                                     <td>" + value.mer_descripcion + "</td>\n\
@@ -796,7 +802,9 @@ function recuperarDetallePedido() {
                                     <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
                                     \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
 
-                });
+                    });
+                }
+
             } else {
                 alert('Datos no encontrados..');
                 $("#pedoidoOrden").focus();
