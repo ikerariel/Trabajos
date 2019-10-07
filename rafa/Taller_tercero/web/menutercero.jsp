@@ -23,6 +23,7 @@
                     <li><a id="me_Notaremision" style="display: none" href="notaremisionvista.jsp">Nota Remision<span class="icon-price-tags"></span></a></li>
                     <li><a id="me_notacredito" style="display: none" href="notacreditodebitovista.jsp">Nota Credito<span class="icon-price-tags"></span></a></li>
                     <li><a id="me_ajuste" style="display: none" href="ajustevista.jsp">Ajuste<span class="icon-price-tags"></span></a></li>
+                    <li><a id="me_ajuste" style="" href="reportesCompras.jsp">Reportes<span class="icon-price-tags"></span></a></li>
                 </ul>
             </li>
             <li class="submenu">

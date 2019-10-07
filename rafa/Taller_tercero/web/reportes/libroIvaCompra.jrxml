@@ -6,37 +6,44 @@
 	<parameter name="vUser" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="fdesde" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fhasta" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[SELECT $P{vUser} as usuario,f.idcompra, f.comp_nrofact, f.comp_fecha, p.prov_nombre,
+		<![CDATA[SELECT $P{vUser} as usuario,f.idcompra, f.comp_nrofact, f.comp_fecha, p.prov_nombre,$P{fdesde} as fechadessde, $P{fhasta} as fechahasta,
 coalesce(a.total,0) as totalporfactura,coalesce(i.total10,0) as total10,coalesce(im.total5,0) as total5, coalesce(imp.totalexe,0) as totalexe,
 coalesce(grb.grav10,0) as grav10, coalesce(grba.grav5,0) as grav5
 	FROM public.factura_compra f
 	left join proveedores p on  f.id_prov = p.id_prov
-	left join (select f.idcompra, sum(d.detfact_cantidad*d.detfact_precio)as total 
-            from factura_compra f
+	left join (select f.idcompra, sum(d.detfact_cantidad*d.detfact_precio)as total
+		from factura_compra f
 	    left join det_factura_compra d on f.idcompra=d.idcompra
-             where f.idestado=2 group by f.idcompra) a  on a.idcompra = f.idcompra
+             where f.idestado=2 and f.comp_fecha between $P{fdesde} and  $P{fhasta}
+	group by f.idcompra) a  on a.idcompra = f.idcompra
 left join (select f.idcompra, sum(d.detfact_cantidad*d.detfact_precio)as total10 
             from factura_compra f
 	    left join det_factura_compra d on f.idcompra=d.idcompra
-	             where f.idestado=2 and d.idimpuesto= 1 group by f.idcompra) i  on i.idcompra = f.idcompra
+	             where f.idestado=2 and d.idimpuesto= 1 and f.comp_fecha between $P{fdesde} and  $P{fhasta} group by f.idcompra) i  on i.idcompra = f.idcompra
 left join (select f.idcompra, sum(d.detfact_cantidad*d.detfact_precio)as total5 
             from factura_compra f
 	    left join det_factura_compra d on f.idcompra=d.idcompra
-	             where f.idestado=2 and d.idimpuesto= 2 group by f.idcompra) im  on im.idcompra = f.idcompra
+	             where f.idestado=2 and d.idimpuesto= 2 and f.comp_fecha between $P{fdesde} and  $P{fhasta} group by f.idcompra) im  on im.idcompra = f.idcompra
 left join (select f.idcompra, sum(d.detfact_cantidad*d.detfact_precio)as totalexe 
             from factura_compra f
 	    left join det_factura_compra d on f.idcompra=d.idcompra
-	             where f.idestado=2 and d.idimpuesto= 3 group by f.idcompra) imp  on imp.idcompra = f.idcompra
+	             where f.idestado=2 and d.idimpuesto= 3 and f.comp_fecha between $P{fdesde} and  $P{fhasta} group by f.idcompra) imp  on imp.idcompra = f.idcompra
 left join (select f.idcompra, sum(d.detfact_cantidad*d.detfact_precio)/11as grav10 
             from factura_compra f
 	    left join det_factura_compra d on f.idcompra=d.idcompra
-	             where f.idestado=2 and d.idimpuesto= 1 group by f.idcompra) grb  on grb.idcompra = f.idcompra
+	             where f.idestado=2 and d.idimpuesto= 1 and f.comp_fecha between $P{fdesde} and  $P{fhasta} group by f.idcompra) grb  on grb.idcompra = f.idcompra
 left join (select f.idcompra, sum(d.detfact_cantidad*d.detfact_precio)/21as grav5 
             from factura_compra f
 	    left join det_factura_compra d on f.idcompra=d.idcompra
-	             where f.idestado=2 and d.idimpuesto= 2 group by f.idcompra) grba  on grba.idcompra = f.idcompra
-	where f.idestado=2
+	             where f.idestado=2 and d.idimpuesto= 2 and f.comp_fecha between $P{fdesde} and  $P{fhasta} group by f.idcompra) grba  on grba.idcompra = f.idcompra
+	where f.idestado=2 and f.comp_fecha between $P{fdesde} and  $P{fhasta}
 	group by  f.comp_nrofact, coalesce(a.total, 0),
 	f.idcompra, f.comp_fecha, p.prov_nombre,
 	coalesce(i.total10,0),total10,coalesce(im.total5,0),coalesce(imp.totalexe,0),coalesce(grb.grav10,0),coalesce(grba.grav5,0) 
@@ -47,6 +54,8 @@ left join (select f.idcompra, sum(d.detfact_cantidad*d.detfact_precio)/21as grav
 	<field name="comp_nrofact" class="java.lang.String"/>
 	<field name="comp_fecha" class="java.lang.String"/>
 	<field name="prov_nombre" class="java.lang.String"/>
+	<field name="fechadessde" class="java.lang.String"/>
+	<field name="fechahasta" class="java.lang.String"/>
 	<field name="totalporfactura" class="java.lang.Long"/>
 	<field name="total10" class="java.lang.Long"/>
 	<field name="total5" class="java.lang.Long"/>
@@ -172,7 +181,7 @@ left join (select f.idcompra, sum(d.detfact_cantidad*d.detfact_precio)/21as grav
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="13" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Informe de Recargas]]></text>
+				<text><![CDATA[Informe Libro Iva Compra ]]></text>
 			</staticText>
 			<textField>
 				<reportElement mode="Opaque" x="446" y="1" width="59" height="13" backcolor="#FFFFFF" uuid="24a067de-0dbb-4212-8b29-638612d90c9a"/>
@@ -226,26 +235,33 @@ left join (select f.idcompra, sum(d.detfact_cantidad*d.detfact_precio)/21as grav
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement mode="Opaque" x="4" y="1" width="100" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ff6696d1-368b-424f-9612-5d5a6431f089"/>
-				<textElement>
-					<font size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Nro. Registro:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="148" y="1" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="17c8431a-1803-476d-840e-021fcce34122"/>
+				<reportElement mode="Opaque" x="95" y="1" width="110" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="17c8431a-1803-476d-840e-021fcce34122"/>
 				<textElement textAlignment="Center">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Fecha Apertura:]]></text>
+				<text><![CDATA[Fecha Desde :]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="366" y="1" width="75" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="1e38e8e7-a2fe-4750-859b-42560ba630ff"/>
+				<reportElement mode="Opaque" x="313" y="1" width="75" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="1e38e8e7-a2fe-4750-859b-42560ba630ff"/>
 				<textElement textAlignment="Right">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Fecha Cierre:]]></text>
+				<text><![CDATA[Fecha Hasta :]]></text>
 			</staticText>
+			<textField pattern="MM/dd/yyyy">
+				<reportElement x="197" y="2" width="128" height="20" uuid="f93ca64b-de33-4b10-89f7-f96027a36ca8"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechadessde}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MM/dd/yyyy">
+				<reportElement x="396" y="2" width="128" height="20" uuid="78cd5c92-a86a-4170-9fb7-fcae31d44971"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechahasta}]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnHeader>
 	<detail>

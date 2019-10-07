@@ -14,8 +14,9 @@
 
 <%
         Conexion cn = new Conexion();
-
-        File reporFile = new File(application.getRealPath("/reportes/pedidoorden.jasper"));
+  Integer codigo = Integer.parseInt(request.getParameter("codigo"));
+    if (codigo == 1) {
+          File reporFile = new File(application.getRealPath("/reportes/pedidoorden.jasper"));
         Map parameters = new HashMap();
         parameters.put("pcomp_nro" , Integer.parseInt(request.getParameter("cod")));
         byte[] bytes = JasperRunManager.runReportToPdf(reporFile.getPath(), parameters, cn.getConexion());
@@ -24,5 +25,21 @@
         outputStream.write(bytes, 0, bytes.length);
         outputStream.flush();
         outputStream.close();
+    }if (codigo == 2) {
+  
+        File reporFile = new File(application.getRealPath("/reportes/libroIvaCompra.jasper"));
+        Map parameters = new HashMap();
+        parameters.put("fdesde", request.getParameter("fdesde"));
+        parameters.put("fhasta", request.getParameter("fhasta"));
+         parameters.put("vUser", request.getParameter("vUser"));
+        byte[] bytes = JasperRunManager.runReportToPdf(reporFile.getPath(), parameters, cn.getConexion());
+        response.setContentLength(bytes.length);
+        ServletOutputStream outputStream = response.getOutputStream();
+        outputStream.write(bytes, 0, bytes.length);
+        outputStream.flush();
+        outputStream.close();
+        
+    }
+      
 %>
 
