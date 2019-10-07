@@ -52,6 +52,8 @@
         </style>
 
         <title>Acceso al Sistema</title>
+        <title>Acceso al Sistema</title>
+        <title>Acceso al Sistema</title>
     </head>
     <body>
         <div class="container well" id="sha">
