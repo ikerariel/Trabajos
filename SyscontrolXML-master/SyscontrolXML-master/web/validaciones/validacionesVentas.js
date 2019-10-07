@@ -6,12 +6,14 @@ $(document).ready(function () {
 
 function validad() {
     getTimbrados();
-    $('#vNrotimbrado').keyup(function () {
+    $('#vNrotimbrado').blur(function () {
         var counNrotimb = $('#vNrotimbrado').val().length;
-        if (parseInt(counNrotimb) > 8) {
+         verificarcampoentero('vNrotimbrado');
+        if (parseInt(counNrotimb) === 8) {
+        } else {
             $.confirm({
                 title: 'AVISO!',
-                content: 'El número de timbrado no debe superar 8 carácteres.. ',
+                content: 'El número de timbrado debe contener 8 carácteres.. ',
                 type: 'red',
                 buttons: {
                     Ok: {
@@ -30,14 +32,15 @@ function validad() {
 
             });
         }
-        verificarcampoentero('vNrotimbrado');
+
     });
-    $('#vNroCaja').keyup(function () {
+    $('#vNroCaja').blur(function () {
         var counNrotimb = $('#vNroCaja').val().length;
-        if (parseInt(counNrotimb) > 3) {
+        verificarcampoentero('vNroCaja');
+        if (parseInt(counNrotimb) != 3) {
             $.confirm({
                 title: 'AVISO!',
-                content: 'El número de caja no debe superar 3 carácteres.. ',
+                content: 'El número de caja  debe contener superar 3 carácteres.. ',
                 type: 'red',
                 buttons: {
                     Ok: {
@@ -56,7 +59,7 @@ function validad() {
 
             });
         }
-        verificarcampoentero('vNroCaja');
+        
     });
     $('#vEstablecimiento').keyup(function () {
         var counNrotimb = $('#vEstablecimiento').val().length;
@@ -372,7 +375,7 @@ function infTimbrado(v_cod) {
         v_timbrados(t, v_cod);
     });
 
-    function v_timbrados(valor,cod) {
+    function v_timbrados(valor, cod) {
         var vUser = $('#vUsername').val();
         window.open(`reportesVentas.jsp?idtimbrado=${valor}&vUser=${vUser}&vcodigo=${cod}`, "_blank");
         location.reload();

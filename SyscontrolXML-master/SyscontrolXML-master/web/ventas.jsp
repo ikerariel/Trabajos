@@ -277,7 +277,7 @@
 
 
 
-                <div class="tab-pane container" id="Apertura">
+                <div class="tab-pane container" style="display: none" id="Apertura">
 
                     <!-- contenido apertura -->
                     <br>
@@ -583,9 +583,6 @@
 
             <!-- fin contenido -->
         </div>
-    </div>
-
-
     <!-- Bootstrap core JavaScript -->
     <script src="Recursos/vendor/jquery/jquery.min.js"></script>
     <script src="Recursos/vendor/jquery/bootstrap.bundle.min.js"></script>
