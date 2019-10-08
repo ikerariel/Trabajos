@@ -273,11 +273,11 @@
 
                     <!-- fin contenido cajas -->
 
-                </div>
+               
 
 
 
-                <div class="tab-pane container" style="display: none" id="Apertura">
+                <div class="tab-pane container" style="" id="Apertura">
 
                     <!-- contenido apertura -->
                     <br>
@@ -286,124 +286,33 @@
                             <!-- contenido cards -->
                             <form>
                                 <div class="form-row">
-                                    <div class="col-md-4 mb-3" style="display: none">
-                                        <label for="validationDefaultUsername">Caja</label>
-                                        <select class="custom-select">
-                                            <option value="1">Caja #1</option>
-                                            <option value="2">Caja #2</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="validationDefault02">Fecha</label>
-                                        <input type="text" class="form-control" id="v_fechaactual" placeholder="fecha" disabled="true">
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="validationDefault02">Montos</label>
-                                        <br>
-                                        <!-- Button trigger modal -->
-                                        <button type="button" id="btnagregarMontos"  class="btn btn-outline-info" data-toggle="modal">
-                                            Agregar montos
-                                        </button>
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="apertura" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h6 class="modal-title" id="exampleModalLabel">Montos por Operadoras</h6>
+                                    <div class="form-row">
+                                                    <div class="col-md-3 mb-3">
+                                                        <label for="validationDefault02">Feha Apertura :</label>
+                                                        <input disabled="" type="text" class="form-control form-control-sm"  id="apeFecha"  >
+                                                    </div>
+                                                    <div class="col-md-2 mb-3">
+                                                        <label for="validationDefault02">Monto Apertura :</label>
+                                                        <input type="text" class="form-control form-control-sm "  id="apeMontoapertura" >
+                                                    </div>
+                                                    <div class="col-md-2 mb-3">
+                                                        <label for="validationDefault02">Caja :</label>
+                                                        <input disabled="" type="text" class="form-control form-control-sm" id="aperCaja" placeholder="CAJA 1" >
+                                                    </div>
+                                                    <div class="col-md-2 mb-3">
+                                                        <label for="validationDefault02">Cajero :</label>
+                                                        <input disabled="" type="text" class="form-control form-control-sm" id="vMNroDesde"  >
+                                                    </div>
+                                                    <div class="col-md-2 mb-3">
+                                                        <label for="validationDefault02">Factura :</label>
+                                                        <input disabled="" type="text"  class="form-control form-control-sm" id="vMNroHasta"  >
                                                     </div>
 
-                                                    <div class="modal-body">
-                                                        <div class="form-group row">
-                                                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Tigo</label>
-                                                            <div class="col-sm-9">
-                                                                <input type="text" class="form-control form-control-sm"  id="v_montotigo"  onblur="" placeholder="monto tigo">
-                                                            </div>
-                                                            <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Gs.</label>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Claro</label>
-                                                            <div class="col-sm-9">
-                                                                <input type="text" class="form-control form-control-sm" id="v_montoclaro"  placeholder="monto claro">
-                                                            </div>
-                                                            <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Gs.</label>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Personal</label>
-                                                            <div class="col-sm-9">
-                                                                <input type="text" class="form-control form-control-sm" id="v_montopersonal"   placeholder="monto personal">
-                                                            </div>
-                                                            <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Gs.</label>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Vox</label>
-                                                            <div class="col-sm-9">
-                                                                <input type="text" class="form-control form-control-sm" id="v_montovox"  placeholder="monto vox">
-                                                            </div>
-                                                            <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Gs.</label>
-                                                        </div>
-                                                        <div>
-                                                            <h6 class="modal-title" id="exampleModalLabel">Giros/Billeteras</h6>
-                                                        </div>
-                                                        <br>
-                                                        <div class="form-group row">
-                                                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Tigo</label>
-                                                            <div class="col-sm-9">
-                                                                <input type="text" class="form-control form-control-sm" id="giro_tigo" placeholder="monto tigo">
-                                                            </div>
-                                                            <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Gs.</label>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Claro</label>
-                                                            <div class="col-sm-9">
-                                                                <input type="text" class="form-control form-control-sm" id="giro_claro"   placeholder="monto claro">
-                                                            </div>
-                                                            <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Gs.</label>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Personal</label>
-                                                            <div class="col-sm-9">
-                                                                <input type="text" class="form-control form-control-sm" id="giro_personal"  placeholder="monto personal">
-                                                            </div>
-                                                            <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Gs.</label>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Vox</label>
-                                                            <div class="col-sm-9">
-                                                                <input type="text" class="form-control form-control-sm" id="giro_vox"    placeholder="monto vox">
-                                                            </div>
-                                                            <label for="colFormLabelSm" class="col-sm-1 col-form-label col-form-label-sm">Gs.</label>
-                                                        </div>
-                                                        <div class="col-md-12 mb-3">
-                                                            <label for="validationDefault01">Observacion :</label>
-                                                            <input type="text" class="form-control" id="v_observación" placeholder="observación" required="" >
-                                                        </div>
-                                                        <div class="input-group mb-2">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="inputGroup-sizing-default">Total Recargas: </span>
-                                                            </div>
-                                                            <input type="text" class="form-control" disabled="" id="total_recarga" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="inputGroup-sizing-default">Total Giros/Billetera: </span>
-                                                            </div>
-                                                            <input type="text" class="form-control" disabled="" id="total_girobilletera" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="inputGroup-sizing-default">Total Gral.: </span>
-                                                            </div>
-                                                            <input type="text" class="form-control" disabled="" id="total_general"  aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                        <button type="button" style="display: none" class="btn btn-primary" id="btnguardarapertura" title="Guardar Registros">Guardar</button>
-                                                        <button type="button" style="display: none" class="btn btn-primary" id="btnupdateapertura" title="Modificar Registros">Guardar</button>
-                                                    </div>
+
 
                                                 </div>
-
-                                            </div>
-                                        </div>
-                                        <!-- fin contenido modal -->
-                                    </div>
+                                    
+                                    
                                 </div>
                             </form>
                             <!-- fin contenido cards -->
@@ -577,6 +486,7 @@
                     <!-- fin contenido Cierre -->
 
                 </div>
+                     </div>
             </div>
 
             <!-- Nav tabs end -->

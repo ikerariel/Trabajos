@@ -14,6 +14,7 @@ function fechaactual() {
     $('#v_fechaactual').val(fv.getDate() + "/" + (fv.getMonth() + 1) + "/" + fv.getFullYear());
     $('#fecha_ciere').val(fv.getDate() + "/" + (fv.getMonth() + 1) + "/" + fv.getFullYear());
     $('#vFechaalta').val(fv.getDate() + "/" + (fv.getMonth() + 1) + "/" + fv.getFullYear());
+    $('#apeFecha').val(fv.getDate() + "/" + (fv.getMonth() + 1) + "/" + fv.getFullYear());
 
 }
 

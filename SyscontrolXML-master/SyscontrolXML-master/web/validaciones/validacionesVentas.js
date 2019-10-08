@@ -173,6 +173,10 @@ function validad() {
         }
 
     });
+    
+    $('#apeMontoapertura').keyup(function (){
+         puntodecimal('apeMontoapertura');
+    });
 }
 
 
