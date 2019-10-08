@@ -154,15 +154,15 @@ public class facturacompradaoimple implements facturacompradao {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "SELECT o.ordenc_fecha, o.id_prov, p.prov_nombre, u.usu_nombre, pc.pcomp_nro, e.descri_estado, d.idmercaderia,\n"
-                    + "d.cant_orden, d.precio_orden, m.codigogenerico, m.mer_descripcion,"
-                    + "   (select ordenc_nro from factura_compra where ordenc_nro = ?) as nroorden\n"
+                    + "d.cant_orden, d.precio_orden, m.codigogenerico, m.mer_descripcion,m.idimpuesto,"
+                    + "   (select ordenc_nro from factura_compra where ordenc_nro = ? and idestado in(1,2)) as nroorden\n"
                     + "FROM orden_compra o\n"
-                    + "inner join det_orden_compra d on o.ordenc_nro = d.ordenc_nro\n"
-                    + "inner join proveedores p on o.id_prov = p.id_prov\n"
-                    + "inner join usuarios u on o.idusuario = u.idusuario\n"
-                    + "inner join pedido_compra pc on o.pcomp_nro = pc.pcomp_nro\n"
-                    + "inner join estado e on o.idestado = e.idestado\n"
-                    + "inner join mercaderias m on m.idmercaderia=d.idmercaderia\n"
+                    + "left join det_orden_compra d on o.ordenc_nro = d.ordenc_nro\n"
+                    + "left join proveedores p on o.id_prov = p.id_prov\n"
+                    + "left join usuarios u on o.idusuario = u.idusuario\n"
+                    + "left join pedido_compra pc on o.pcomp_nro = pc.pcomp_nro\n"
+                    + "left join estado e on o.idestado = e.idestado\n"
+                    + "left join mercaderias m on m.idmercaderia=d.idmercaderia\n"
                     + "where o.ordenc_nro=?;";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, id);
@@ -181,6 +181,7 @@ public class facturacompradaoimple implements facturacompradao {
                         rs.getString("codigogenerico"),
                         rs.getInt("id_prov"),
                         rs.getInt("nroorden"),
+                        rs.getInt("idimpuesto"),
                         rs.getString("mer_descripcion")));
             }
         } catch (SQLException ex) {

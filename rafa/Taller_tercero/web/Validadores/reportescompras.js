@@ -31,10 +31,11 @@ function ver() {
 
         } else if ($('#vlibrocompra').is(':checked')) {
             $('#vComprasresumen').prop('checked', false);
-            cod = 3;
+            cod = 2;
             window.open(`reportesCompra_v.jsp?fdesde=${fdesde}&fhasta=${fhasta}&vUser=${vUser}&codigo=${cod}`, "_blank");
             location.reload();
         } else if ($('#vComprasresumen').is(':checked')) {
+             cod = 3;
             $('#vlibrocompra').prop('checked', false);
                window.open(`reportesCompra_v.jsp?fdesde=${fdesde}&fhasta=${fhasta}&vUser=${vUser}&codigo=${cod}`, "_blank");
             location.reload();

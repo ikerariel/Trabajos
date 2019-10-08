@@ -768,7 +768,7 @@ function CargarMercaNotaGrilla() {
         codigo = $(this).find("td").eq(1).html();
         if (cod === codigo) {
             alert('La mercaderia ya fue cargada, desea sustituirlo?');
-            $(this).find("td").remove();
+            $(this).closest("tr").remove();
         }
     });
     agregarFilaMercaNota();
@@ -793,8 +793,7 @@ function agregarFilaMercaNota() {
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
             <td><img onclick=\"$(\'#prod"
-            + tindex + "\').remove();updatemonto( " + subtotal + ", "
-            + tindex + ")\" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
+            + tindex + "\').remove(); calcularmonto();\" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
     calcularmonto();
     $('#codgenericiMerca').val(null);
     $('#codgenericiMerca').focus;

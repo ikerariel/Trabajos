@@ -274,6 +274,7 @@
                                             <th class="alert-info">PRECIO</th>
                                             <th class="alert-info">CANTIDAD</th>
                                             <th class="alert-info">SUB TOTAL</th>
+                                            <th  style="display: none" class="alert-info" >imp</th>
                                             <th  class="alert-danger" style="width: 30px"><div><center><img src="Recursos/img/delete.png"/></center></div></th>
                                     </tr>
                                 </thead>

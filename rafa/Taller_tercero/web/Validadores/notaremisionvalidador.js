@@ -396,7 +396,7 @@ function  insertarNotaRemi() {
             alert('Debe ingresar todos los datos requeridos para la consulta..');
             $("#codgenericiMerca").focus();
         } else {
-            var opcion = confirm('Desea Guardar Nota credito debito..?');
+            var opcion = confirm('Desea Guardar Nota de Remisión..?');
             if (opcion === true) {
                 datosCabeceraJSON = {
                     "opcion": 8,
@@ -429,7 +429,6 @@ function  updaterNotaRemi() {
     var dato = "";
     $('#miTablaDetalleNotaRemision').find('tbody').find('tr').each(function () {
         dato = $(this).find("td").eq(0).html();
-        alert(dato);
     });
     if (dato === "") {
         alert('No hay detalle que guardar..!');
@@ -439,7 +438,7 @@ function  updaterNotaRemi() {
             alert('Debe ingresar todos los datos requeridos para la consulta..');
             $("#codgenericiMerca").focus();
         } else {
-            var opcion = confirm('Desea Guardar Nota credito debito..?');
+            var opcion = confirm('Desea Guardar Nota de Remisíón..?');
             if (opcion === true) {
                 datosCabeceraJSON = {
                     "opcion": 8,
@@ -492,7 +491,7 @@ function  insertarDetalleNotaRemi() {
             }
         });
     });
-    alert("Nota credito guardado correctamente.!!");
+    alert("Nota de remisión guardado correctamente.!!");
     window.location.reload();
 }
 function  deleNotRemision() {

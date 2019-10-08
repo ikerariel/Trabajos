@@ -146,11 +146,13 @@ function RecuperarDetalleOrdenC() {
             if (JSON.stringify(resp) != '[]') {
                 var vorden = JSON.stringify(resp);
                 var orden = JSON.parse(vorden);
-                var porden = orden[0].vorden;
+                var porden = orden[0].nroorden;
                 if (porden != "") {
                     alert("La Orden de Compra ya se encuentra procesado..!!");
                 } else {
                     $.each(resp, function (indice, value) {
+                        $('#factuCompProvee').val(value.prov_nombre);
+                        $('#factuCompIdProvee').val(value.id_prov);
                         subtotal = value.precio_orden * value.cant_orden;
                         $('#miTablaDetalleFacturaCompra').append("<tr id=\'prod" + tindex + "\'>\
                                     <td style=display:none>" + value.idmercaderia + "</td>\n\
@@ -159,6 +161,7 @@ function RecuperarDetalleOrdenC() {
                                     <td>" + value.precio_orden + "</td>\n\
                                     <td>" + value.cant_orden + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
+                                    <td style=display:none>" + value.idimpuesto + "</td>\n\
                                     <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
                                     \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
                     });
@@ -219,7 +222,7 @@ function  inserFacCompra() {
         alert('No hay detalle que guardar..!');
         $("#codgenericiMerca").focus();
     } else {
-        if ($('#factuCompProvee').val() === "") {
+        if ($('#factuCompProvee').val() === "" || $('#facturatipoC').val() === "") {
             alert('Debe ingresar todos los datos requeridos para la consulta..');
             $("#codgenericiMerca").focus();
         } else {
@@ -547,6 +550,9 @@ function recuperarDetalleFacturaC() {
                         $("#factuCompIntervalo").val(value.comp_intervalo);
                         $("#factuCompFecha").val(value.comp_fecha);
                         $("#facturatipoC").val(value.tipo_descri);
+                        if($("#facturatipoC").val()=== 'contado'){
+                            $('#faccuotamonto').val(0);
+                        }
                         $("#factuCompProvee").val(value.prov_nombre);
                         $("#factuCompIdProvee").val(value.id_prov);
                         $("#factuidtipocompras").val(value.tipo_codigo);
@@ -574,8 +580,8 @@ function recuperarDetalleFacturaC() {
                                     <td>" + value.detfact_precio + "</td>\n\
                                     <td>" + value.detfact_cantidad + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
-                                    <td>" + value.nrocompra + "</td>\n\
-                                    <td><img onclick=\"$(\'#prod" + tindex + "\').remove(); calcularmonto();\n\
+                                    <td style=display:none>" + value.nrocompra + "</td>\n\
+                                    <td ><img onclick=\"$(\'#prod" + tindex + "\').remove(); calcularmonto();\n\
                                     \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
                     });
                     $('#codigo').val($('#nrofacturaP').val());
