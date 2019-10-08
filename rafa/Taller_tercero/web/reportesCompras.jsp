@@ -44,9 +44,12 @@
                 <BR>
                 <BR>
                 <div class="panel panel-default"> 
-                    <div class="panel-footer" style="font-weight: bold" >
-                        <a id="btnNuevo" class="btn btn-lg btn-success" style=" font-weight: bold" onclick="infreportes(2)" >Generar Reporte </a>
-                    </div>
+                      <div class="panel-footer" style="font-weight: bold; text-align: center" >
+                          <label class="control-label">Libro Compra <span class="">  <input style="height: 20px; width: 20px" id="vlibrocompra" type="checkbox"></span></label> 
+                      </div>
+                      <div class="panel-footer" style="font-weight: bold; text-align: center" >
+                          <label class="control-label">Resumen Compra <span class="">  <input style="height: 20px; width: 20px" id="vComprasresumen" type="checkbox"></span></label> 
+                      </div>
                     <BR>
                     <div class="">
                         <div class="form-horizontal">
@@ -55,7 +58,7 @@
                                 <div class="col-md-3">
                                     <input  id="vFechadesde" style="text-transform: uppercase; font-weight: bold; font-size: 12pt;
                                             background-color: #d9edf7 " type="date" placeholder="Registro" class="form-control input-sm" required=""
-                                        onkeydown=" if (event.keyCode === 13) { listarEstadoSegunFiltro(); }">
+                                       >
                                 </div>
                                 <label class="col-md-2 control-label" style=" font-weight: bold">FECHA HASTA</label>  
                                 <div class="col-md-3">
@@ -65,6 +68,9 @@
                             </div>
                         </div> 
                     </div> 
+                       <div class="panel-footer col-lg-offset-9" style="font-weight: bold" >
+                        <a id="btnNuevo" class="btn btn-lg btn-success" style=" font-weight: bold" onclick="ver()" >Generar Reporte </a>
+                    </div>
                     <BR>
                 
                 </div>

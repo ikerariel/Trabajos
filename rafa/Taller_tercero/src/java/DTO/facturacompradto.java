@@ -123,6 +123,30 @@ public class facturacompradto {
         this.nrocompra = nrocompra;
         this.mer_descripcion = mer_descripcion;
     }
+//    public facturacompradto(Integer idcompra, Integer comp_cantcuota, Integer comp_monto, String comp_nrofact, 
+//            String comp_intervalo, String comp_fecha, String tipo_descri, String prov_nombre, 
+//            String usu_nombre, String descri_estado, Integer ordenc_nro, Integer idmercaderia, Integer detfact_cantidad, 
+//            Integer detfact_precio, String codigogenerico, Integer id_prov, Integer tipo_codigo,Integer idimpuesto, String mer_descripcion) {
+//        this.idcompra = idcompra;
+//        this.comp_cantcuota = comp_cantcuota;
+//        this.comp_monto = comp_monto;
+//        this.comp_nrofact = comp_nrofact;
+//        this.comp_intervalo = comp_intervalo;
+//        this.comp_fecha = comp_fecha;
+//        this.tipo_descri = tipo_descri;
+//        this.prov_nombre = prov_nombre;
+//        this.usu_nombre = usu_nombre;
+//        this.descri_estado = descri_estado;
+//        this.ordenc_nro = ordenc_nro;
+//        this.idmercaderia = idmercaderia;
+//        this.detfact_cantidad = detfact_cantidad;
+//        this.detfact_precio = detfact_precio;
+//        this.codigogenerico = codigogenerico;
+//        this.id_prov = id_prov;
+//        this.tipo_codigo = tipo_codigo;
+//        this.idimpuesto = idimpuesto;
+//        this.mer_descripcion = mer_descripcion;
+//    }
 
     public Integer getIdciudad() {
         return idciudad;

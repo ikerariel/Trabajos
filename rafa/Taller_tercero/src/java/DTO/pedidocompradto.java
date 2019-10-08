@@ -19,6 +19,8 @@ public class pedidocompradto {
     private String descri_estado;
     private Integer iddeposito;
 
+
+
     public Integer getIddeposito() {
         return iddeposito;
     }
@@ -86,6 +88,22 @@ public class pedidocompradto {
         this.idimpuesto = idimpuesto;
         this.codigogenerico = codigogenerico;
     }
+        public pedidocompradto(String pcomp_fecha, 
+                String usu_nombre, String descri_estado, 
+                String observacion, Integer idmercaderia, Integer cantidad,
+                Integer precio, String codigogenerico, String mer_descripcion) {
+            this.pcomp_fecha = pcomp_fecha;
+            this.usu_nombre = usu_nombre;
+            this.descri_estado = descri_estado;
+            this.observacion = observacion;
+            this.idmercaderia = idmercaderia;
+            this.cantidad = cantidad;
+            this.precio = precio;
+            this.codigogenerico = codigogenerico;
+            this.mer_descripcion = mer_descripcion;
+
+        
+        }
 
     public pedidocompradto(String pcomp_fecha, String usu_nombre, String descri_estado, 
             String observacion, Integer idmercaderia, Integer cantidad,Integer precio, 

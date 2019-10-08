@@ -178,6 +178,10 @@
                                     <div class="col-md-2">
                                         <input id="factuidtipocompras" style="visibility: hidden;" type="text">
                                     </div>
+                                    <div class="col-md-1">
+                                         <input disabled="" id="codimpuesto" type="text" placeholder="" maxlength="3" class="form-control input-sm" 
+                                           style="visibility: hidden;">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-horizontal">
@@ -212,6 +216,7 @@
                                                type="text" placeholder="Ingrese Monto" class="form-control input-sm alert-danger"
                                                onkeyup="ValidacionesSoloNumerosFac(this)" onchange="ValidacionesSoloNumerosFac(this)">
                                     </div>
+                                     
                                 </div>
                             </div>
                         </div>
@@ -251,6 +256,9 @@
                                     <input disabled="" id="codMerca" type="text" placeholder="" maxlength="3" class="form-control input-sm" 
                                            style="visibility: hidden;">
                                 </div>
+                                
+                                 
+                             
                             </div>
                         </div>
                         <div class="panel-body">

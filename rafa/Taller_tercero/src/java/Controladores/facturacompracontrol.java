@@ -109,6 +109,7 @@ public class facturacompracontrol extends HttpServlet {
                 compraDTO.setIdmercaderia(Integer.parseInt(request.getParameter("idmercaFa")));
                 compraDTO.setDetfact_cantidad(Integer.parseInt(request.getParameter("cantiFa")));
                 compraDTO.setDetfact_precio(Integer.parseInt(request.getParameter("precioFa")));
+                compraDTO.setIdimpuesto(Integer.parseInt(request.getParameter("codimp")));
                 if (compraDAO.insertarDetalleCompra10(compraDTO)) {
                     out.println("Exitoso");
                 }

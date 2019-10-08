@@ -204,7 +204,8 @@ function MostrarMercaderia() {
                         "<td style=display:none>" + value.idmercaderia + "</td>" +
                         "<td>" + value.codigogenerico + "</td>" +
                         "<td>" + value.mer_descripcion + "</td>" +
-                        "<td>" + value.mer_precio + "</td>")));
+                        "<td>" + value.mer_precio + "</td>" +
+                        "<td style=display:none>" + value.idimpuesto + "</td>")));
             });
         }
     });
@@ -333,7 +334,8 @@ function  InsertarDetalleFacturaCopr() {
             "codigoFa": $('#codigo').val(),
             "idmercaFa": $(this).find("td").eq(0).html(),
             "precioFa": $(this).find("td").eq(3).html(),
-            "cantiFa": $(this).find("td").eq(4).html()
+            "cantiFa": $(this).find("td").eq(4).html(),
+            "codimp": $(this).find("td").eq(6).html()
         };
         $.ajax({
             url: "http://localhost:8084/Taller_tercero/facturacompracontrol",
@@ -572,6 +574,7 @@ function recuperarDetalleFacturaC() {
                                     <td>" + value.detfact_precio + "</td>\n\
                                     <td>" + value.detfact_cantidad + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
+                                    <td>" + value.nrocompra + "</td>\n\
                                     <td><img onclick=\"$(\'#prod" + tindex + "\').remove(); calcularmonto();\n\
                                     \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
                     });
@@ -766,6 +769,7 @@ function seleccionarMercaderiaCompra() {
         $('#cantidadMerca').val(1);
         $('#nombreMerca').val($(this).find("td").eq(2).html());
         $('#precioMerca').val($(this).find("td").eq(3).html());
+         $('#codimpuesto').val($(this).find("td").eq(4).html());
         $('#cantidadMerca').focus();
         $('#ModalMercaderia').modal('hide');
     });
@@ -822,6 +826,7 @@ function agregarFilaMercaCompra() {
     var v_descripcion = $('#nombreMerca').val();
     var v_precio = $('#precioMerca').val();
     var v_cant = $('#cantidadMerca').val();
+    var v_imp = $('#codimpuesto').val();
     subtotal = v_precio * v_cant;
     $('#miTablaDetalleFacturaCompra').append("<tr id=\'prod" + tind + "\'>\
             <td style=display:none>" + v_codmaterial + "</td>\n\
@@ -830,6 +835,7 @@ function agregarFilaMercaCompra() {
             <td>" + v_precio + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
+            <td style=display:none>" + v_imp + "</td>\n\
             <td><img onclick=\"$(\'#prod" + tind + "\').remove(); calcularmonto();\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
             </tr>");
 
