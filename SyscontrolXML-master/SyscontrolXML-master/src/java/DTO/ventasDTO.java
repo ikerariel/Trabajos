@@ -10,28 +10,82 @@ package DTO;
  * @author Usuario
  */
 public class ventasDTO {
-       private Integer idtimbrado;
-      private Integer numero;
-     private String fecha_carga;
-     private String fecha_vigencia_inicio;
-     private String fecha_vigencia_final;
-    private String factura_desde;
-     private String factura_hasta;
-     private String estado;
-     private String tipodocumento;
-     private String numerodocumento;
-    private Integer idestado;
-    private Integer secuencia;
-    
-     private String factura_establesimiento;
-     private String factura_caja;
-    
-   
-     private Integer idusuario;
-     private Integer idtipodocumento;
-     private Integer idsucursal;
 
-    public ventasDTO(Integer idtimbrado, Integer numero, String fecha_carga, String fecha_vigencia_inicio, String fecha_vigencia_final, String factura_desde, String factura_hasta,String estado, String tipodocumento, Integer idestado) {
+    private Integer idaperturacierre;
+    private String fecha_apertura;
+    private Integer monto_apertura;
+    private String cajero;
+    private String fecha_cierre;
+    private String estado;
+    private Integer idestado;
+
+    private Integer idtimbrado;
+    private Integer numero;
+    private String fecha_carga;
+    private String fecha_vigencia_inicio;
+    private String fecha_vigencia_final;
+    private String factura_desde;
+    private String factura_hasta;
+    private String tipodocumento;
+    private String numerodocumento;
+
+    private Integer secuencia;
+    private Integer idcajero;
+    private String usuario;
+    private String factura_establesimiento;
+    private String factura_caja;
+
+    private Integer idusuario;
+    private Integer idtipodocumento;
+    private Integer idsucursal;
+    private Integer idGenerico;
+    private String decripGenerico;
+    private String caja;
+    private Integer idcaja;
+
+    public Integer getMonto_apertura() {
+        return monto_apertura;
+    }
+
+    public void setMonto_apertura(Integer monto_apertura) {
+        this.monto_apertura = monto_apertura;
+    }
+
+    public Integer getIdcajero() {
+        return idcajero;
+    }
+
+    public void setIdcajero(Integer idcajero) {
+        this.idcajero = idcajero;
+    }
+
+    public Integer getIdcaja() {
+        return idcaja;
+    }
+
+    public void setIdcaja(Integer idcaja) {
+        this.idcaja = idcaja;
+    }
+
+    public ventasDTO(Integer idaperturacierre, String fecha_apertura, Integer monto_apertura, String cajero, String fecha_cierre, String estado,String caja,Integer idcaja, Integer idcajero, Integer idestado) {
+        this.idaperturacierre = idaperturacierre;
+        this.fecha_apertura = fecha_apertura;
+        this.monto_apertura = monto_apertura;
+        this.cajero = cajero;
+        this.fecha_cierre = fecha_cierre;
+        this.estado = estado;
+        this.caja = caja;
+        this.idcaja = idcaja;
+        this.idcajero = idcajero;
+        this.idestado = idestado;
+    }
+
+    public ventasDTO(Integer idtimbrado, Integer numero) {
+        this.idtimbrado = idtimbrado;
+        this.numero = numero;
+    }
+
+    public ventasDTO(Integer idtimbrado, Integer numero, String fecha_carga, String fecha_vigencia_inicio, String fecha_vigencia_final, String factura_desde, String factura_hasta, String estado, String tipodocumento, Integer idestado) {
         this.idtimbrado = idtimbrado;
         this.numero = numero;
         this.fecha_carga = fecha_carga;
@@ -42,6 +96,11 @@ public class ventasDTO {
         this.estado = estado;
         this.tipodocumento = tipodocumento;
         this.idestado = idestado;
+    }
+
+    public ventasDTO(Integer idGenerico, String decripGenerico) {
+        this.idGenerico = idGenerico;
+        this.decripGenerico = decripGenerico;
     }
 
     public String getNumerodocumento() {
@@ -167,5 +226,4 @@ public class ventasDTO {
         this.idsucursal = idsucursal;
     }
 
-    
 }

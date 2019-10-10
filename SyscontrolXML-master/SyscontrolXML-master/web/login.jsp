@@ -16,7 +16,8 @@
         <title>Login - Sistema</title>
         <!-- Bootstrap CSS -->
         <link href="Recursos/css/bootstrap.min.css" rel="stylesheet">
-        <!-- Custom styles for this template -->
+        <!-- Custom styles for this template 
+        -->
         <link href="Recursos/css/sigmin.css" rel="stylesheet">
        
         <title>Login</title>
@@ -25,7 +26,8 @@
     <body class="text-center">
         <div class="form-signin">
             <form action="accesoSERVLETXML" method="POST">
-                <img style="margin:50px auto;display:block" src="Recursos/img/5TRrpRAGc.png"/>
+                <img style="margin:20px auto;display:block" src="Recursos/img/5TRrpRAGc.png"/>
+            
                 <h1 class="h3 mb-3 font-weight-normal">Por favor, registrese</h1>
                 <label for="inputUsuario" class="sr-only">Usuario</label>
                 <input type="text" name="inputUsuario" id="IDinputUsuario" class="form-control" placeholder="Usuario" required="" autofocus="">

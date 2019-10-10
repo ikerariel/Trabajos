@@ -14,6 +14,12 @@ import DTO.ventasDTO;
 public interface ventasDAO {
     boolean insertartimbrado(ventasDTO dto,Integer codOpcion);
     boolean insertarFacturas(ventasDTO dto);
+    boolean insertarAperturaCierreVenta(ventasDTO dto);
     String getTimbrados();
+    String getCajeros();
+    String getCajas();
+    String getTipoDoc();
+    String getFacturasPorTimbrados(Integer TipDoc);
+    String getAperCierreCajaVentas();
     
 }

@@ -9,6 +9,7 @@ import DAO.ventasDAO;
 import DTO.ventasDTO;
 import Genericos.Conexion;
 import com.google.gson.Gson;
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -131,6 +132,161 @@ public class ventasDAOIMPLE implements ventasDAO {
         }
 
         return false;
+    }
+
+    @Override
+    public String getCajeros() {
+        ResultSet rs;
+        ArrayList<ventasDTO> allCajero = new ArrayList<>();
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "SELECT c.idcajero, c.idusuario, c.idestado, c.fecha_alta, c.fecha_baja, u.usuario\n"
+                    + "  FROM ventas.cajero c\n"
+                    + "LEFT JOIN usuario u on c.idusuario=u.idusuario\n"
+                    + "where c.idestado=5";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                allCajero.add(new ventasDTO(rs.getInt("idcajero"),
+                        rs.getString("usuario")));
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ventasDAOIMPLE.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new Gson().toJson(allCajero);
+    }
+
+    @Override
+    public String getTipoDoc() {
+        ResultSet rs;
+        ArrayList<ventasDTO> alltipodoc = new ArrayList<>();
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "SELECT idtipodocumento, descripcion from ventas.tipo_documento";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                alltipodoc.add(new ventasDTO(rs.getInt("idtipodocumento"),
+                        rs.getString("descripcion")));
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ventasDAOIMPLE.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new Gson().toJson(alltipodoc);
+    }
+
+    @Override
+    public String getFacturasPorTimbrados(Integer TipDoc) {
+        ResultSet rs;
+        ArrayList<ventasDTO> alltipodocfac = new ArrayList<>();
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "SELECT idtimbrado, numero\n"
+                    + "  FROM ventas.timbrado\n"
+                    + "  where idestado = 5 and idtipodocumento=?";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            preparedStatement.setObject(1, TipDoc);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                alltipodocfac.add(new ventasDTO(rs.getInt("idtimbrado"),
+                        rs.getInt("numero")));
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ventasDAOIMPLE.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new Gson().toJson(alltipodocfac);
+    }
+
+    @Override
+    public String getAperCierreCajaVentas() {
+        ResultSet rs;
+        ArrayList<ventasDTO> alltimbrados = new ArrayList<>();
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "SELECT a.idaperturacierre,a.idcaja,a.idcajero, a.fecha_apertura::date, a.monto_apertura,  (cc.descripcion) as caja, (u.usuario) as cajero,\n"
+                    + "       a.monto_cierre, a.fecha_cierre::date, a.idestado, (e.descripcion) as estado\n"
+                    + "  FROM ventas.aperturacierrecajas a\n"
+                    + "  left join ventas.cajero c on a.idcajero=c.idcajero\n"
+                    + "  left join usuario u on c.idusuario=u.idusuario\n"
+                    + "  left join ventas.caja cc on a.idcaja=cc.idcaja\n"
+                    + "  left join estado e on a.idestado=e.idestado\n"
+                    + "WHERE a.idestado in(1,2) order by a.idaperturacierre desc";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                alltimbrados.add(new ventasDTO(rs.getInt("idaperturacierre"),
+                        rs.getString("fecha_apertura"),
+                        rs.getInt("monto_apertura"),
+                        rs.getString("cajero"),
+                        rs.getString("fecha_cierre"),
+                        rs.getString("estado"),
+                        rs.getString("caja"),
+                        rs.getInt("idcaja"),
+                        rs.getInt("idcajero"),
+                        rs.getInt("idestado")));
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ventasDAOIMPLE.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new Gson().toJson(alltimbrados);
+    }
+
+    @Override
+    public String getCajas() {
+        ResultSet rs;
+        ArrayList<ventasDTO> allcajas = new ArrayList<>();
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "SELECT idcaja, descripcion\n"
+                    + "  FROM ventas.caja;";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                allcajas.add(new ventasDTO(rs.getInt("idcaja"),
+                        rs.getString("descripcion")));
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ventasDAOIMPLE.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new Gson().toJson(allcajas);
+    }
+
+    @Override
+    public boolean insertarAperturaCierreVenta(ventasDTO dto) {
+        
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            CallableStatement call = conexion.getConexion().prepareCall("{call abm_aperturacierrecaja(1,?,?,?,?,?,1,?)}");
+            call.setInt(1, dto.getMonto_apertura());
+            call.setInt(2, dto.getIdcaja());
+            call.setInt(3, dto.getIdcajero());
+            call.setInt(4, dto.getIdsucursal());
+            call.setInt(5, dto.getIdusuario());
+            call.setInt(6, dto.getIdtimbrado());
+            call.execute();
+            conexion.comit();
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(ventasDAOIMPLE.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+  
     }
 
 }

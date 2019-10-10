@@ -60,7 +60,7 @@
                             <a class="nav-link active" data-toggle="tab" href="#registrarTimbrados">Registrar Timbrados</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link " data-toggle="tab" href="#Apertura">Apertura de Caja</a>
+                            <a class="nav-link " data-toggle="tab" href="#vAperturaCaja">Apertura de Caja</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#Cierre">Cierre</a>
@@ -273,233 +273,236 @@
 
                     <!-- fin contenido cajas -->
 
-               
 
 
 
-                <div class="tab-pane container" style="" id="Apertura">
 
-                    <!-- contenido apertura -->
-                    <br>
-                    <div class="card">
-                        <div class="card-body">
-                            <!-- contenido cards -->
-                            <form>
-                                <div class="form-row">
+                    <div class="tab-pane container" style="" id="vAperturaCaja">
+
+                        <!-- contenido apertura -->
+                        <br>
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- contenido cards -->
+                                <form>
                                     <div class="form-row">
-                                                    <div class="col-md-3 mb-3">
-                                                        <label for="validationDefault02">Feha Apertura :</label>
-                                                        <input disabled="" type="text" class="form-control form-control-sm"  id="apeFecha"  >
-                                                    </div>
-                                                    <div class="col-md-2 mb-3">
-                                                        <label for="validationDefault02">Monto Apertura :</label>
-                                                        <input type="text" class="form-control form-control-sm "  id="apeMontoapertura" >
-                                                    </div>
-                                                    <div class="col-md-2 mb-3">
-                                                        <label for="validationDefault02">Caja :</label>
-                                                        <input disabled="" type="text" class="form-control form-control-sm" id="aperCaja" placeholder="CAJA 1" >
-                                                    </div>
-                                                    <div class="col-md-2 mb-3">
-                                                        <label for="validationDefault02">Cajero :</label>
-                                                        <input disabled="" type="text" class="form-control form-control-sm" id="vMNroDesde"  >
-                                                    </div>
-                                                    <div class="col-md-2 mb-3">
-                                                        <label for="validationDefault02">Factura :</label>
-                                                        <input disabled="" type="text"  class="form-control form-control-sm" id="vMNroHasta"  >
-                                                    </div>
+                                        <div class="form-row col-md-2">
+
+                                            <label for="validationDefault02">Monto Apertura :</label>
+                                            <input type="text" class="form-control form-control-sm "  id="apeMontoapertura" >
+
+                                            <label for="validationDefault02">Caja :</label>
+                                            <select disabled=""  type="text" class="form-control form-control-sm" id="aperCaja"  ></select>
+
+                                            <label for="validationDefault02">Cajero :</label>
+                                            <select id="listacajeros"  class="form-control form-control-sm"  >
+                                            </select>
+
+                                            <label for="validationDefault02">Documento :</label>
+                                            <select id="listaDoc"  class="form-control form-control-sm" >
+                                            </select>
+
+                                            <label for="validationDefault02">Factura :</label>
+                                            <select type="text"  class="form-control form-control-sm" id="aperFactTimrbados"  ></select>
+                                            <input disabled=""  type="text"  class="form-control form-control-sm" id="aperIDfacTimbrados"  >
 
 
+                                        </div>
 
+                                        <div class="form-row col-md-10">
+                                            <div class="container">
+                                                <div class="table-responsive" id="scroll" style="height: 290px;">
+                                                    <table class="table table-striped table-sm table-hover "   id="mitablaaperturaCierreCajaVentas">
+                                                        <thead class="thead-dark">
+                                                            <tr>
+                                                                <th scope="col">#</th>
+                                                                <th scope="col" style="height: 50px">Fecha Apertura</th>
+                                                                <th scope="col">Monto Apertura</th>
+                                                                <th scope="col">Cajero</th>
+                                                                <th scope="col">Caja</th>
+                                                                <th scope="col">Fecha Cierre</th>
+                                                                <th scope="col">Estado</th>
+                                                                <th scope="col">Opción</th>
+
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
                                                 </div>
-                                    
-                                    
-                                </div>
-                            </form>
-                            <!-- fin contenido cards -->
-                            <br>
-                            <!-- tablas -->
-                            <div class="table-responsive" id="scroll">
-                                <table class="table table-striped table-sm table-hover" id="mitablaapertura">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Fecha Apertura</th>
-                                            <th scope="col">Monto Recarga</th>
-                                            <th scope="col">Monto Giro/Billetera</th>
-                                            <th scope="col">Monto Total</th>
-                                            <th scope="col">Estado</th>
-                                            <th scope="col">Opción</th>
-                                            <th scope="col">Usuario</th>
+                                            </div>
 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                                        </div>
+                                    </div><br>
+                                    <div class="">
+                                        <button type="button" class="btn btn-secondary" style="">Nuevo</button> 
+                                        <button type="button" class="btn btn-success" id="btnGuardarAperVenta" style="">Guardar</button>  
+
+                                    </div>
+
+                                </form>
+                                <br>
+                                <br>
                             </div>
-                            <!-- fin tablas -->
-                            <br>
-                            <!-- botones -->
-                            <button type="button" class="btn btn-secondary" style="display: none">Nuevo</button> 
-                            <button type="button" class="btn btn-success" style="display: none">Guardar</button>
+
                         </div>
+
+                        <!-- fin contenido Aperturas -->
+
                     </div>
 
-                    <!-- fin contenido Aperturas -->
+                    <div class="tab-pane container fade" id="Cierre">
 
-                </div>
-                <div class="tab-pane container fade" id="Cierre">
-
-                    <!-- contenido cierre -->
-                    <br>
-                    <div class="card">
-                        <div class="card-body">
-                            <!-- contenido cards -->
-                            <form>
-                                <div class="form-row">
-                                    <div class="col-md-4 mb-3" style="display: none">
-                                        <label for="validationDefaultUsername">Caja</label>
-                                        <select class="custom-select">
-                                            <option value="1">Caja #1</option>
-                                            <option value="2">Caja #2</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label for="validationDefault02">Fecha</label>
-                                        <input type="text" class="form-control" id="fecha_ciere" placeholder="fecha" disabled="true">
-                                    </div>
-                                    <div class="col-md-4 mb-3" style="display: none">
-                                        <label for="validationDefault02">Montos</label>
-                                        <br>
-                                        <!-- Button trigger modal -->
-                                        <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#cierre">
-                                            Agregar montos
-                                        </button>
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="cierre" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Montos por Operadoras</h5>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <div class="form-group row">
-                                                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Tigo</label>
-                                                            <div class="col-sm-10">
-                                                                <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="monto tigo">
+                        <!-- contenido cierre -->
+                        <br>
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- contenido cards -->
+                                <form>
+                                    <div class="form-row">
+                                        <div class="col-md-4 mb-3" style="display: none">
+                                            <label for="validationDefaultUsername">Caja</label>
+                                            <select class="custom-select">
+                                                <option value="1">Caja #1</option>
+                                                <option value="2">Caja #2</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label for="validationDefault02">Fecha</label>
+                                            <input type="text" class="form-control" id="fecha_ciere" placeholder="fecha" disabled="true">
+                                        </div>
+                                        <div class="col-md-4 mb-3" style="display: none">
+                                            <label for="validationDefault02">Montos</label>
+                                            <br>
+                                            <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-outline-info" data-toggle="modal" data-target="#cierre">
+                                                Agregar montos
+                                            </button>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="cierre" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Montos por Operadoras</h5>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="form-group row">
+                                                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Tigo</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="monto tigo">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Claro</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="monto claro">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Personal</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="monto personal">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Vox</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="monto vox">
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <h6 class="modal-title" id="exampleModalLabel">Giros/Billeteras</h6>
+                                                            </div>
+                                                            <br>
+                                                            <div class="form-group row">
+                                                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Tigo</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="monto tigo">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Claro</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="monto claro">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Personal</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="monto personal">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Vox</label>
+                                                                <div class="col-sm-10">
+                                                                    <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="monto vox">
+                                                                </div>
+                                                            </div>
+                                                            <div class="input-group mb-2">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text" id="inputGroup-sizing-default">Total</span>
+                                                                </div>
+                                                                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                                                             </div>
                                                         </div>
-                                                        <div class="form-group row">
-                                                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Claro</label>
-                                                            <div class="col-sm-10">
-                                                                <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="monto claro">
-                                                            </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                                            <button type="button" class="btn btn-primary">Guardar</button>
                                                         </div>
-                                                        <div class="form-group row">
-                                                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Personal</label>
-                                                            <div class="col-sm-10">
-                                                                <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="monto personal">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Vox</label>
-                                                            <div class="col-sm-10">
-                                                                <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="monto vox">
-                                                            </div>
-                                                        </div>
-                                                        <div>
-                                                            <h6 class="modal-title" id="exampleModalLabel">Giros/Billeteras</h6>
-                                                        </div>
-                                                        <br>
-                                                        <div class="form-group row">
-                                                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Tigo</label>
-                                                            <div class="col-sm-10">
-                                                                <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="monto tigo">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Claro</label>
-                                                            <div class="col-sm-10">
-                                                                <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="monto claro">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Personal</label>
-                                                            <div class="col-sm-10">
-                                                                <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="monto personal">
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group row">
-                                                            <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Vox</label>
-                                                            <div class="col-sm-10">
-                                                                <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="monto vox">
-                                                            </div>
-                                                        </div>
-                                                        <div class="input-group mb-2">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="inputGroup-sizing-default">Total</span>
-                                                            </div>
-                                                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                                        <button type="button" class="btn btn-primary">Guardar</button>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- fin contenido modal -->
                                         </div>
-                                        <!-- fin contenido modal -->
                                     </div>
+                                </form>
+                                <!-- fin contenido cards -->
+                                <br>
+                                <!-- tablas -->
+                                <div class="table-responsive" id="scroll">
+                                    <table class="table table-striped table-sm table-hover" id="mitablacierreapertura">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th scope="col">Nro. Apertura</th>
+                                                <th scope="col">Fecha Apertura</th>
+                                                <th scope="col">Total Tigo</th>
+                                                <th scope="col">Total Claro</th>
+                                                <th scope="col">Total Personal</th>
+                                                <th scope="col">Total Vox</th>
+                                                <th scope="col" style="text-align: center">Informes</th>
+                                                <th scope="col">Opción</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </form>
-                            <!-- fin contenido cards -->
-                            <br>
-                            <!-- tablas -->
-                            <div class="table-responsive" id="scroll">
-                                <table class="table table-striped table-sm table-hover" id="mitablacierreapertura">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th scope="col">Nro. Apertura</th>
-                                            <th scope="col">Fecha Apertura</th>
-                                            <th scope="col">Total Tigo</th>
-                                            <th scope="col">Total Claro</th>
-                                            <th scope="col">Total Personal</th>
-                                            <th scope="col">Total Vox</th>
-                                            <th scope="col" style="text-align: center">Informes</th>
-                                            <th scope="col">Opción</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    </tbody>
-                                </table>
+                                <!-- fin tablas -->
+                                <br>
+                                <!-- botones -->
+                                <button type="button" class="btn btn-secondary" style="display: none">Nuevo</button>
+                                <button type="button" class="btn btn-success" style="display: none">Guardar</button>
                             </div>
-                            <!-- fin tablas -->
-                            <br>
-                            <!-- botones -->
-                            <button type="button" class="btn btn-secondary" style="display: none">Nuevo</button>
-                            <button type="button" class="btn btn-success" style="display: none">Guardar</button>
                         </div>
+
+                        <!-- fin contenido Cierre -->
+
                     </div>
-
-                    <!-- fin contenido Cierre -->
-
                 </div>
-                     </div>
             </div>
 
             <!-- Nav tabs end -->
 
             <!-- fin contenido -->
         </div>
-    <!-- Bootstrap core JavaScript -->
-    <script src="Recursos/vendor/jquery/jquery.min.js"></script>
-    <script src="Recursos/vendor/jquery/bootstrap.bundle.min.js"></script>
-    <!-- Menu Toggle Script -->
-    <script src="Recursos/js/menu.js"></script>
-    <script src="validaciones/validacionesVentas.js"></script>
-    <script src="validaciones/validacionesgenericos.js"></script>
-    <script src="Recursos/js/jquery-confirm.min.js"></script>
-</body>
+        <!-- Bootstrap core JavaScript -->
+        <script src="Recursos/vendor/jquery/jquery.min.js"></script>
+        <script src="Recursos/vendor/jquery/bootstrap.bundle.min.js"></script>
+        <!-- Menu Toggle Script -->
+        <script src="Recursos/js/menu.js"></script>
+        <script src="validaciones/validacionesVentas.js"></script>
+        <script src="validaciones/validacionesgenericos.js"></script>
+        <script src="Recursos/js/jquery-confirm.min.js"></script>
+    </body>
 </html>

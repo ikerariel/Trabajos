@@ -1,14 +1,111 @@
 $(document).ready(function () {
     validad();
+    getCombos(4, 'listacajeros');
+    getCombos(5, 'listaDoc');
+    getCombos(8, 'aperCaja');
 
 
 });
 
+function validacionAperturaVenta() {
+    var opcion = false;
+    var vCaja;
+    var vCajero;
+    var vEstado;
+    var v_Caja = $('#aperCaja').val();
+    var v_Cajero = $('#listacajeros').val();
+    var v_TipoDoc = $('#listaDoc').val();
+    var v_MontoAper = $('#apeMontoapertura').val().replace(/\./g, '');
+    var v_CodTimbrado = $('#aperFactTimrbados').val();
+    $('#mitablaaperturaCierreCajaVentas').find('tbody').find('tr').each(function () {
+        vCaja = $(this).find("td").eq(7).html(); //caja
+        vCajero = $(this).find("td").eq(8).html();//cajero
+        vEstado = $(this).find("td").eq(6).html();//estado de la apertura
+        if (vCaja === v_Caja && vEstado === "ABIERTA") {
+            $.alert({
+                title: 'AVISO..!!',
+                icon: 'glyphicon glyphicon-remove',
+                content: 'La Caja selecciona esta Abierta..!',
+                type: 'red',
+                animation: 'scaleY'
+
+
+            });
+        } else
+        if (vCajero === v_Cajero && vEstado === "ABIERTA") {
+            $.alert({
+                title: 'AVISO..!!',
+                icon: 'glyphicon glyphicon-remove',
+                content: 'El Cajero se encuentra en una Caja Abierta.!',
+                type: 'red',
+                animation: 'scaleY'
+
+
+            });
+
+        } else {
+            opcion = true;
+
+        }
+    });
+    if (opcion) {
+//        function guardarAperCajaVentas() {
+            $.confirm({
+                title: 'Guardar',
+                content: 'Desea Guardar los Registros ?',
+                buttons: {
+                    Si: {
+                        text: 'SI',
+                        btnClass: 'btn-success',
+                        keys: ['enter', 'shift'],
+                        action: function () {
+                            jsonAperVenta = {
+                                'opcion': 9,
+                                'aperMonto': v_MontoAper,
+                                'aperCaja': v_Caja,
+                                'aperCajero': v_Cajero,
+                                'aperSucursal': 1,
+                                'aperUsuario': $('#vCodIDuser').val(),
+                                'aperTimbrado': v_CodTimbrado
+                            };
+                            $.ajax({
+                                url: "/syscontrol/ventasSERVLET",
+                                type: 'POST',
+                                data: jsonAperVenta,
+                                cache: false,
+                                dataType: 'text',
+                                success: function () {
+                                    getAperCierreVentas();
+                                }
+
+                            });
+                        }
+                    },
+                    No: {
+                        text: 'No',
+                        btnClass: 'btn-red',
+                        keys: ['enter', 'shift'],
+                        action: function () {
+                            $.alert('Cancelado !!');
+                        }
+                    }
+                }
+            });
+
+
+        
+    }
+
+
+}
+
 function validad() {
     getTimbrados();
+    getAperCierreVentas();
+    $('#aperIDfacTimbrados').hide();
     $('#vNrotimbrado').blur(function () {
         var counNrotimb = $('#vNrotimbrado').val().length;
-         verificarcampoentero('vNrotimbrado');
+        verificarcampoentero('vNrotimbrado');
         if (parseInt(counNrotimb) === 8) {
         } else {
             $.confirm({
@@ -59,7 +156,7 @@ function validad() {
 
             });
         }
-        
+
     });
     $('#vEstablecimiento').keyup(function () {
         var counNrotimb = $('#vEstablecimiento').val().length;
@@ -173,9 +270,29 @@ function validad() {
         }
 
     });
-    
-    $('#apeMontoapertura').keyup(function (){
-         puntodecimal('apeMontoapertura');
+
+    $('#apeMontoapertura').keyup(function () {
+        puntodecimal('apeMontoapertura');
+    });
+    $('#apeMontoapertura').blur(function () {
+        var monto = $('#apeMontoapertura').val().replace(/\./g, '');
+        if (parseInt(monto) < 100000) {
+            $.alert({
+                title: 'AVISO..!!',
+                icon: 'glyphicon glyphicon-remove',
+                content: 'El monto de Apertura debe ser mayor a 100.000GS!',
+                type: 'red',
+                animation: 'scaleY'
+
+
+            });
+        }
+    });
+    $('#listaDoc').change(function () {
+        gettipofacturaTimbrado();
+    });
+    $('#btnGuardarAperVenta').click(function () {
+        validacionAperturaVenta();
     });
 }
 
@@ -370,6 +487,102 @@ function getTimbrados() {
         }
 
     });
+}
+var idxAperCierre = 0;
+function getAperCierreVentas() {
+    $('#mitablaaperturaCierreCajaVentas').find('tbody').find('tr').empty();
+    jsonAperCierreVentas = {
+        'opcion': 7
+    };
+    $.ajax({
+        url: "/syscontrol/ventasSERVLET",
+        type: 'POST',
+        data: jsonAperCierreVentas,
+        cache: false,
+        success: function (resp) {
+            $.each(resp, function (indice, valor) {
+                var id = valor.idestado;
+                var color;
+                if (parseInt(id) === 1) {
+                    color = '#d9edf7';
+                    Informe = "<button class='btn btn-sm btn-outline-primary' onclick=\"$(\'#prod" + idxAperCierre + "\');infTimbrado(1)\">Informe</button>";
+                    cerrar = "<button class='btn btn-sm btn-outline-danger' onclick=\"$(\'#prod" + idxAperCierre + "\');infTimbrado(1)\">Cerrar</button>";
+                } else if (parseInt(id) === 2) {
+                    color = 'red';
+                    Informe = "<button class='btn btn-sm btn-outline-primary' onclick=\"$(\'#prod" + idxAperCierre + "\');infTimbrado(1)\">Informe</button>";
+                    cerrar = "<button disabled class='btn btn-sm btn-outline-danger' onclick=\"$(\'#prod" + idxAperCierre + "\');infTimbrado(1)\">Cerrar</button>";
+                }
+                $("#mitablaaperturaCierreCajaVentas").append($("<tr>").append($(
+                        "<td>" + valor.idaperturacierre + "</td>" +
+                        "<td>" + valor.fecha_apertura + "</td>" +
+                        "<td>" + valor.monto_apertura + "</td>" +
+                        "<td>" + valor.cajero + "</td>" +
+                        "<td>" + valor.caja + "</td>" +
+                        "<td>" + valor.fecha_cierre + "</td>" +
+                        "<td bgcolor=" + color + ">" + valor.estado + "</td>" +
+                        "<td style=display:none>" + valor.idcaja + "</td>" +
+                        "<td style=display:none>" + valor.idcajero + "</td>" +
+                        "<td style='text-align: center'> " + Informe + "" + cerrar + "</td>")));
+            });
+
+
+        }
+
+    });
+}
+function getCombos(cod, variable) {
+    $('#' + variable).find('tbody').find('tr').empty();
+    jsonCajero = {
+        'opcion': cod
+    };
+    $.ajax({
+        url: "/syscontrol/ventasSERVLET",
+        type: 'POST',
+        data: jsonCajero,
+        cache: false,
+        success: function (resp) {
+            $.each(resp, function (indice, valor) {
+                $("#" + variable).append("<option value= \"" + valor.idGenerico + "\"> " + valor.decripGenerico + "</option>");
+            });
+
+
+        }
+
+    });
+}
+function gettipofacturaTimbrado() {
+//    $('#aperFactTimrbados').find('tbody').find('tr').empty();
+    josn = {
+        'opcion': 6,
+        'vTipoDoc': $('#listaDoc').val()
+    };
+    $.ajax({
+        url: "/syscontrol/ventasSERVLET",
+        type: 'POST',
+        data: josn,
+        cache: false,
+        success: function (resp) {
+            if (JSON.stringify(resp) != '[]') {
+                $.each(resp, function (indice, valor) {
+                    $('#aperFactTimrbados').val(valor.numero);
+                    $('#aperIDfacTimbrados').val(valor.idtimbrado);
+                    $("#aperFactTimrbados").append("<option value= \"" + valor.idtimbrado + "\"> " + valor.numero + "</option>");
+                });
+            } else {
+                $('#aperFactTimrbados').val(null);
+                $('#aperIDfacTimbrados').val(null);
+            }
+
+
+
+        }
+
+    });
+}
+
+function seleccion() {
+    var a = $('#listacajeros option:selected').text();
+    alert(a);
 }
 
 function infTimbrado(v_cod) {
