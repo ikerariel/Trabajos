@@ -123,7 +123,7 @@ function agregarFilaMercaderia() {
             <td>" + v_precio + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
-            <td><img onclick=\"$(\'#prod" + indpe + "\').remove();calcularmontopedic()\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
+            <td><img onclick=\"$(\'#prod" + indpe + "\');removepco();calcularmontopedic()\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
             </tr>");
     $('#idmaterialGenerico').val(null);
     $('#iddescripcion').val(null);
