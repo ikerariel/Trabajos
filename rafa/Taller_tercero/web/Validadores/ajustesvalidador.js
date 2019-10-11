@@ -19,6 +19,14 @@ function getcodigoAjustes() {
         }
     });
 }
+
+
+function reporteajuste() {
+    valor = $("#ajusteNro").val();
+    var cod = 5;
+      window.open(`reportesCompra_v.jsp?codigo=${cod}&idajuste=${valor}`, "_blank");
+
+}
 function controlBotonesNuevoAjuste() {
     v = "";
     $(document).ready(function () {

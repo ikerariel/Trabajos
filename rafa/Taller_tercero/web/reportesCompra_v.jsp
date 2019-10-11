@@ -63,6 +63,16 @@
         outputStream.write(bytes, 0, bytes.length);
         outputStream.flush();
         outputStream.close();
+    }if (codigo == 5) {
+          File reporFile = new File(application.getRealPath("/reportes/c_ajusteCompra.jasper"));
+        Map parameters = new HashMap();
+        parameters.put("idajuste" , Integer.parseInt(request.getParameter("idajuste")));
+        byte[] bytes = JasperRunManager.runReportToPdf(reporFile.getPath(), parameters, cn.getConexion());
+        response.setContentLength(bytes.length);
+        ServletOutputStream outputStream = response.getOutputStream();
+        outputStream.write(bytes, 0, bytes.length);
+        outputStream.flush();
+        outputStream.close();
     }
       
 %>
