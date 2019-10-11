@@ -43,10 +43,6 @@ d.cant_orden, d.precio_orden, m.mer_descripcion, p.prov_nombre,d.idmercaderia]]>
 	</background>
 	<title>
 		<band height="81">
-			<image>
-				<reportElement x="5" y="-3" width="348" height="83" uuid="877802cb-853c-4a2c-b411-b7bf25c7feea"/>
-				<imageExpression><![CDATA["C:\\Users\\Usuario\\Desktop\\Trabajos\\rafa\\Taller_tercero\\web\\Recursos\\img\\casa.jpg"]]></imageExpression>
-			</image>
 			<staticText>
 				<reportElement x="334" y="0" width="221" height="39" forecolor="#000000" uuid="8e80dfac-5bdc-469b-899b-fdc7ea77e19d"/>
 				<textElement textAlignment="Center">
