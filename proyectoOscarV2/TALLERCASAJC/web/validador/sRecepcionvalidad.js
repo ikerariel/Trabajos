@@ -311,7 +311,7 @@ function cargaGrilla() {
             if (parseInt(filas)>0) {
                 var sms = confirm('Recepción cargado..desea sustituir ??');
                 if (sms === true) {
-                    $(this).closest("tr").remove();
+                    $(this).closest("td").remove();
                     ban = true;
                     vCargarGrilla();
                 } else {
@@ -346,13 +346,19 @@ function vCargarGrilla() {
             <td>" + v_codmaterial + "</td>\n\
             <td>" + v_descripcion + "</td>\n\
             <td>" + v_cant + "</td>\n\
-            <td><img onclick=\"$(\'#prod" + tindex + "\').remove()\n\
+            <td><img onclick=\"$(\'#prod" + tindex + "\');remover()\n\
             \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
 
     $('#v_articulosRecepcion').val(null);
     $('#v_articulosRecepcion').focus;
     $('#cantArtRecepcion').val(null);
     $('#descriparticuloRecepcion').val(null);
+}
+function remover() {
+    $('#mitabladetallerecepcion tr').click(function () {
+       $(this).closest('tr').remove();
+
+    });
 }
 
 

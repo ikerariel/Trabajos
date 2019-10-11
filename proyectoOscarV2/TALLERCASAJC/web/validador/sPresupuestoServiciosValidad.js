@@ -179,7 +179,7 @@ function vCargarGrillaPS() {
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
             <td><button type=button title='Quitar el registro de la lista' \n\
-                                 style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + i_dex + "\').remove();totalPServicio()\">\n\
+                                 style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + i_dex + "\');removep();totalPServicio()\">\n\
                                  <span class='glyphicon glyphicon-remove'></span></button></td></tr>");
     totalPServicio();
     $('#v_articusPS').val(null);
@@ -187,6 +187,12 @@ function vCargarGrillaPS() {
     $('#descripArtPServicio').val(null);
     $('#precioPServicio').val(null);
     $('#cantArtPServicio').val(null);
+}
+function removep() {
+    $('#mitabladetallePServicio tr').click(function () {
+       $(this).closest('tr').remove();
+
+    });
 }
 
 function totalPServicio() {
