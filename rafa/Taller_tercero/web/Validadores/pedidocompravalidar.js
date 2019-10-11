@@ -105,7 +105,7 @@ var subtotal = 0;
 var tindex = 0;
 var monto = 0;
 var acumu = 0;
-
+var indpe=0;
 function agregarFilaMercaderia() {
     var v_codMaterialG = $('#idmaterialGenerico').val();
     var v_codmaterial = $('#idmaterial').val();
@@ -115,14 +115,14 @@ function agregarFilaMercaderia() {
 
     subtotal = v_precio * v_cant;
 
-    $('#miTablaDetalleMercaderia').append("<tr id=\'prod" + tindex + "\'>\
+    $('#miTablaDetalleMercaderia').append("<tr id=\'prod" + indpe + "\'>\
             <td style=display:none>" + v_codmaterial + "</td>\n\
             <td>" + v_codMaterialG + "</td>\n\
             <td>" + v_descripcion + "</td>\n\
             <td>" + v_precio + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
-            <td><img onclick=\"$(\'#prod" + tindex + "\').remove();calcularmontopedic()\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
+            <td><img onclick=\"$(\'#prod" + indpe + "\').remove();calcularmontopedic()\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
             </tr>");
     $('#idmaterialGenerico').val(null);
     $('#iddescripcion').val(null);
