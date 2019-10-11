@@ -507,7 +507,7 @@ function agregarFilaMercaCompraPresu() {
             <td>" + v_precio + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
-            <td><img onclick=\"$(\'#prod" + ind01 + "\').remove();calcularmontoPresu();\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
+            <td><img onclick=\"$(\'#prod" + ind01 + "\');removepresu();calcularmontoPresu();\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
             </tr>");
     calcularmontoPresu();
     $('#codgenericiMerca').val(null);
@@ -519,7 +519,15 @@ function agregarFilaMercaCompraPresu() {
 
 }//-----------------------
 
+function removepresu() {
+    $('#miTablaDetallePresuCompra tr').click(function () {
+       $(this).closest('tr').remove();
+
+    });
+}
+
 function  insertarpresuCompra() {
+    
     var tipocompra = $('#PresuCompTipo').val();
     if (tipocompra === "") {
         alert("Debes cargar el tipo de compra.!!");

@@ -214,7 +214,7 @@ function mostrarFacturaNota() {
         }
     });
 }
-var tind=0;
+var tind = 0;
 function RecuperarDetalleFacturaNota() {
     $('#miTablaDetalleNota').find('tbody').find('tr').empty();
     datosDetalleJSON = {
@@ -275,51 +275,58 @@ function MostrarMercaderia() {
     });
 }
 function  insertarNota() {
-    var dato = "";
-    $('#miTablaDetalleNota').find('tbody').find('tr').each(function () {
-        dato = $(this).find("td").eq(0).html();
-    });
-    if (dato === "") {
-        alert('No hay detalle que guardar..!');
-        $("#codgenericiMerca").focus();
+    if ($('#notatipo').val() === "" || $('#notafactuComp').val() === "" ||
+            $('#notaMotivo').val() === "") {
+        alert('Algunos datos no fueron cargados correctamente..');
     } else {
-        if ($('#notatipo').val() === "") {
-            alert('Debe ingresar todos los datos requeridos para la consulta..');
+
+        var dato = "";
+        $('#miTablaDetalleNota').find('tbody').find('tr').each(function () {
+            dato = $(this).find("td").eq(0).html();
+        });
+        if (dato === "") {
+            alert('No hay detalle que guardar..!');
             $("#codgenericiMerca").focus();
         } else {
-            var opcion = confirm('Desea Guardar Nota credito debito..?');
-            if (opcion === true) {
-                datosCabeceraJSON = {
-                    "opcion": 8,
-                    "dcValor": 1,
-                    "tiponota": $('#notatipo').val(),
-                    "fechanota": $('#notaFecha').val(),
-                    "motivonota": $('#notaMotivo').val(),
-                    "factunota": $('#notafactuComp').val(),
-                    "usunota": $('#CodvUser').val(),
-                    "codDepo": $('#Coddepo').val()
-                };
-                $.ajax({
-                    url: "http://localhost:8084/Taller_tercero/notacreditodebitocontrol",
-                    type: 'POST',
-                    data: datosCabeceraJSON,
-                    cache: false,
-                    dataType: 'text',
-                    success: function () {
-                        setTimeout(function () {
-                            insertarDetalleNota();
-                        }, 1200);
-
-
-                    },
-                    error: function () {
-                    }
-                });
+            if ($('#notatipo').val() === "") {
+                alert('Debe ingresar todos los datos requeridos para la consulta..');
+                $("#codgenericiMerca").focus();
             } else {
+                var opcion = confirm('Desea Guardar Nota credito debito..?');
+                if (opcion === true) {
+                    datosCabeceraJSON = {
+                        "opcion": 8,
+                        "dcValor": 1,
+                        "tiponota": $('#notatipo').val(),
+                        "fechanota": $('#notaFecha').val(),
+                        "motivonota": $('#notaMotivo').val(),
+                        "factunota": $('#notafactuComp').val(),
+                        "usunota": $('#CodvUser').val(),
+                        "codDepo": $('#Coddepo').val()
+                    };
+                    $.ajax({
+                        url: "http://localhost:8084/Taller_tercero/notacreditodebitocontrol",
+                        type: 'POST',
+                        data: datosCabeceraJSON,
+                        cache: false,
+                        dataType: 'text',
+                        success: function () {
+                            setTimeout(function () {
+                                insertarDetalleNota();
+                            }, 1200);
 
+
+                        },
+                        error: function () {
+                        }
+                    });
+                } else {
+
+                }
             }
         }
     }
+
 }
 
 function  updateNCD() {
@@ -793,7 +800,7 @@ function agregarFilaMercaNota() {
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
             <td><img onclick=\"$(\'#prod"
-            + tindex + "\').remove(); calcularmonto();\" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
+            + tindex + "\');removenc();calcularmonto();\" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
     calcularmonto();
     $('#codgenericiMerca').val(null);
     $('#codgenericiMerca').focus;
@@ -801,6 +808,14 @@ function agregarFilaMercaNota() {
     $('#precioMerca').val(null);
     $('#cantidadMerca').val(null);
 }//-----------------------
+
+
+function removenc() {
+    $('#miTablaDetalleNota tr').click(function () {
+        $(this).closest('tr').remove();
+
+    });
+}
 function agregafilaND() {
     //idmaterial
     var v_descripcion = $('#nombreMerca').val();

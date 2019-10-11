@@ -20,6 +20,14 @@ var tindex = 0;
 var monto = 0;
 var acumu = 0;
 
+
+function reportesordencompra() {
+    valor = $("#ordenNro").val();
+    var cod = 4;
+      window.open(`reportesCompra_v.jsp?codigo=${cod}&ordenc_nro=${valor}`, "_blank");
+
+}
+
 function fechaactual() {
     controlBotonesNueva();
     var fecha = new Date();
@@ -140,7 +148,7 @@ function agregarFilaMercad() {
             <td>" + v_precio + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
-            <td><img onclick=\"$(\'#prod" + index02 + "\').remove();calcularmonto();\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
+            <td><img onclick=\"$(\'#prod" + index02 + "\');removeorden();calcularmonto();\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
             </tr>");
     calcularmonto();
     $('#idmercadGenerico').val(null);
@@ -152,6 +160,15 @@ function agregarFilaMercad() {
 
 
 }
+
+
+function removeorden() {
+    $('#miTablaDetalleOrdenCompra tr').click(function () {
+       $(this).closest('tr').remove();
+
+    });
+}
+
 function calcularmonto() {
     monto = 0;
     acumu = 0;

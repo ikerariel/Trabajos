@@ -222,14 +222,21 @@ function agregarFilaMercaAjus() {
             <td>" + v_codMaterialG + "</td>\n\
             <td>" + v_descripcion + "</td>\n\
             <td>" + v_cant + "</td>\n\
-            <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
+            <td><img onclick=\"$(\'#prod" + tindex + "\');removeajustes()\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
             </tr>");
-    calcularmontoAjus();
     $('#idmercadGenerico').val(null);
     $('#idmercadGenerico').focus;
     $('#iddescrip').val(null);
     $('#idcanti').val(null);
 }//-----------------------
+
+
+function removeajustes() {
+    $('#miTablaDetalleAjustes tr').click(function () {
+        $(this).closest('tr').remove();
+
+    });
+}
 function SeleccionarDetalleAjuste() {
     $('#miTablaDetalleAjustes tr').click(function () {
         $('#idmercad').val($(this).find("td").eq(0).html());
@@ -272,48 +279,55 @@ function crearJSON(id) {
     };
 }
 function  InsertarAjuste() {
-    var dato = "";
-    $('#miTablaDetalleAjustes').find('tbody').find('tr').each(function () {
-        dato = $(this).find("td").eq(0).html();
-    });
-    if (dato === "") {
-        alert('No hay detalle que guardar..!');
-        $("#motivoAjuste").focus();
+    if ($('#motivoAjuste').val() === "") {
+        alert('Algunos datos no fueron cargados correctamente..');
     } else {
-        if ($('#PresuCompProvee').val() === "") {
-            alert('Debe ingresar todos los datos requeridos..');
-            $("#idmercadGenerico").focus();
+        var dato = "";
+        $('#miTablaDetalleAjustes').find('tbody').find('tr').each(function () {
+            dato = $(this).find("td").eq(0).html();
+        });
+        if (dato === "") {
+            alert('No hay detalle que guardar..!');
+            $("#motivoAjuste").focus();
         } else {
-            var opcion = confirm('Desea Guardar Ajuste..?');
-            if (opcion === true) {
-                datosCabeceraJSON = {
-                    "opcion": 6,
-                    "aValor": 1,
-                    "codigoAj": $('#codigoAjus').val(),
-                    "codTipoAjustes": $('#vTtipoAjustes').val(),
-                    "Ajustefecha": $('#fechaAjuste').val(),
-                    "Ajustemotivo": $('#idmotivo').val(),
-                    "Ajusteusua": $('#CodvUser').val(),
-                    "Ajusteestad": $('#idestadAjuste').val(),
-                    "codDepoAjustes": $('#Coddepo').val()
-                };
-                $.ajax({
-                    url: "http://localhost:8084/Taller_tercero/ajustescontrol",
-                    type: 'POST',
-                    data: datosCabeceraJSON,
-                    cache: false,
-                    dataType: 'text',
-                    success: function () {
-                        InsertarDetalleAjustes();
-                    },
-                    error: function () {
-                    }
-                });
+            if ($('#PresuCompProvee').val() === "") {
+                alert('Debe ingresar todos los datos requeridos..');
+                $("#idmercadGenerico").focus();
             } else {
+                var opcion = confirm('Desea Guardar Ajuste..?');
+                if (opcion === true) {
+                    datosCabeceraJSON = {
+                        "opcion": 6,
+                        "aValor": 1,
+                        "codigoAj": $('#codigoAjus').val(),
+                        "codTipoAjustes": $('#vTtipoAjustes').val(),
+                        "Ajustefecha": $('#fechaAjuste').val(),
+                        "Ajustemotivo": $('#idmotivo').val(),
+                        "Ajusteusua": $('#CodvUser').val(),
+                        "Ajusteestad": $('#idestadAjuste').val(),
+                        "codDepoAjustes": $('#Coddepo').val()
+                    };
+                    $.ajax({
+                        url: "http://localhost:8084/Taller_tercero/ajustescontrol",
+                        type: 'POST',
+                        data: datosCabeceraJSON,
+                        cache: false,
+                        dataType: 'text',
+                        success: function () {
+                            InsertarDetalleAjustes();
+                        },
+                        error: function () {
+                        }
+                    });
+                } else {
 
+                }
             }
         }
     }
+
+
+
 }
 function  updateAjuste() {
     var dato = "";
@@ -339,7 +353,7 @@ function  updateAjuste() {
                     "Ajustemotivo": $('#idmotivo').val(),
                     "Ajusteusua": $('#CodvUser').val(),
                     "Ajusteestad": $('#idestadAjuste').val(),
-                     "codDepoAjus": $('#Coddepo').val()
+                    "codDepoAjus": $('#Coddepo').val()
                 };
                 $.ajax({
                     url: "http://localhost:8084/Taller_tercero/ajustescontrol",

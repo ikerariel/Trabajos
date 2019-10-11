@@ -16,7 +16,8 @@ function limpiarcampopedidoc() {
 //-------------------------------------------------------------------------------------------------------
 function reportes() {
     valor = $("#v_nropedido").val();
-    window.open("reportesCompra_v.jsp?cod=" + valor + "", "_blank");
+    var cod = 1;
+      window.open(`reportesCompra_v.jsp?codigo=${cod}&pcomp_nro=${valor}`, "_blank");
 
 }
 function fechaactual() {
@@ -122,7 +123,7 @@ function agregarFilaMercaderia() {
             <td>" + v_precio + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
-            <td><img onclick=\"$(\'#prod" + tindex + "\').remove();calcularmontopedic()\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
+            <td><img onclick=\"$(\'#prod" + tindex + "\');removepco();calcularmontopedic()\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
             </tr>");
     $('#idmaterialGenerico').val(null);
     $('#iddescripcion').val(null);
@@ -130,6 +131,13 @@ function agregarFilaMercaderia() {
     $('#idcantidad').val(null);
     $('#idpreci').val(null);
     calcularmontopedic();
+}
+
+function removepco() {
+    $('#miTablaDetalleMercaderia tr').click(function () {
+        $(this).closest('tr').remove();
+
+    });
 }
 
 function calcularmontopedic() {
@@ -324,49 +332,54 @@ function allPedidos() {
     });
 }
 function  InsertarPedidoCompra() {
-    var dato = "";
-    $('#miTablaDetalleMercaderia').find('tbody').find('tr').each(function () {
-        dato = $(this).find("td").eq(0).html();
-    });
-    if (dato === "") {
-        alert('No hay detalle que guardar..!');
-        $("#idmaterialGenerico").focus();
+    if ($('#observ').val() === "") {
+        alert('Algunos datos no fueron cargados correctamente..');
     } else {
-        if ($('#usuario').val() === "") {
-            alert('Debe ingresar todos los datos requeridos para la consulta..');
+        var dato = "";
+        $('#miTablaDetalleMercaderia').find('tbody').find('tr').each(function () {
+            dato = $(this).find("td").eq(0).html();
+        });
+        if (dato === "") {
+            alert('No hay detalle que guardar..!');
             $("#idmaterialGenerico").focus();
         } else {
-            var opcion = confirm('Desea Guardar el Pedido.?');
-            if (opcion === true) {
-                datosCabeceraJSON = {
-                    "opcion": 2,
-                    "pdValor": 1,
-                    "fechav": $('#fechapedido').val(),
-                    "usuariov": $('#CodvUser').val(),
-                    "observacionv": $('#observ').val(),
-                    "depositov": $('#Coddepo').val()
-                };
-                $.ajax({
-                    url: "http://localhost:8084/Taller_tercero/pedidocompracontrol",
-                    type: 'POST',
-                    data: datosCabeceraJSON,
-                    cache: false,
-                    dataType: 'text',
-                    success: function () {
-                        DetalleMercaderia();
-                        alert("Pedido guardado correctamente.!!");
-                        window.location.reload();
-                    },
-                    error: function () {
-                    }
-                });
-
+            if ($('#usuario').val() === "") {
+                alert('Debe ingresar todos los datos requeridos para la consulta..');
+                $("#idmaterialGenerico").focus();
             } else {
+                var opcion = confirm('Desea Guardar el Pedido.?');
+                if (opcion === true) {
+                    datosCabeceraJSON = {
+                        "opcion": 2,
+                        "pdValor": 1,
+                        "fechav": $('#fechapedido').val(),
+                        "usuariov": $('#CodvUser').val(),
+                        "observacionv": $('#observ').val(),
+                        "depositov": $('#Coddepo').val()
+                    };
+                    $.ajax({
+                        url: "http://localhost:8084/Taller_tercero/pedidocompracontrol",
+                        type: 'POST',
+                        data: datosCabeceraJSON,
+                        cache: false,
+                        dataType: 'text',
+                        success: function () {
+                            DetalleMercaderia();
+                            alert("Pedido guardado correctamente.!!");
+                            window.location.reload();
+                        },
+                        error: function () {
+                        }
+                    });
+
+                } else {
+
+                }
 
             }
-
         }
     }
+
 
 }
 function  DetalleMercaderia() {
@@ -437,12 +450,12 @@ function  EliminarDetalleMercaderia() {
                                 success: function () {
                                     DetalleMercaderia();
                                     alert("Pedido guardado correctamente.!!");
-                            window.location.reload();
+                                    window.location.reload();
                                 },
                                 error: function () {
                                 }
                             });
-                        
+
                         }, 1100);
 
                     },
@@ -465,42 +478,42 @@ function  EliminarDetalleMercaderia() {
 
 function recuperarDetallePedidoCompras() {
     var estadopc = $('#v_estado').val();
-    if(estadopc === 'CONFIRMADO'){
+    if (estadopc === 'CONFIRMADO') {
         alert('Pedido Confirmado ya no se puede modificar.!!');
-    }else{
-       controlBotones();
-    if ($('#v_nropedido').val() === "") {
-        alert('Seleecione un pedido para visualizar..');
     } else {
-        $('#ventanaPedido').modal('show');
-        $('#miTablaDetalleMercaderia').find('tbody').find('tr').empty();
-        datosDetalleJSON = {
-            "opcion": 11,
-            "nropedidov": $('#v_nropedido').val()
-        };
-        $.ajax({
-            url: "http://localhost:8084/Taller_tercero/pedidocompracontrol",
-            type: 'POST',
-            data: datosDetalleJSON,
-            cache: false,
-            success: function (resp) {
-                if (JSON.stringify(resp) != '[]') {
+        controlBotones();
+        if ($('#v_nropedido').val() === "") {
+            alert('Seleecione un pedido para visualizar..');
+        } else {
+            $('#ventanaPedido').modal('show');
+            $('#miTablaDetalleMercaderia').find('tbody').find('tr').empty();
+            datosDetalleJSON = {
+                "opcion": 11,
+                "nropedidov": $('#v_nropedido').val()
+            };
+            $.ajax({
+                url: "http://localhost:8084/Taller_tercero/pedidocompracontrol",
+                type: 'POST',
+                data: datosDetalleJSON,
+                cache: false,
+                success: function (resp) {
+                    if (JSON.stringify(resp) != '[]') {
 //                    alert(resp);
-                    $.each(resp, function (indice, value) {
-                        ///RECUPERA LA CABECERA/////////
-                        $("#fechapedido").val(value.pcomp_fecha);
-                        $("#estado").val(value.descri_estado);
-                        $("#usuario").val(value.usu_nombre);
-                        $("#observ").val(value.observacion);
+                        $.each(resp, function (indice, value) {
+                            ///RECUPERA LA CABECERA/////////
+                            $("#fechapedido").val(value.pcomp_fecha);
+                            $("#estado").val(value.descri_estado);
+                            $("#usuario").val(value.usu_nombre);
+                            $("#observ").val(value.observacion);
 
-                        ///////BLOQUE LOS CAMPOS//////
-                        $("#usuario").prop('disabled', true);
-                        $("#observ").prop('disabled', false);
-                        //$("#idmaterialGenerico").prop('disabled', true);
-                        $("#idmaterial").prop('disabled', true);
-                        //$("#idcantidad").prop('disabled', true);
-                        subtotal = value.precio * value.cantidad;
-                        $('#miTablaDetalleMercaderia').append("<tr id=\'prod" + tindex + "\'>\
+                            ///////BLOQUE LOS CAMPOS//////
+                            $("#usuario").prop('disabled', true);
+                            $("#observ").prop('disabled', false);
+                            //$("#idmaterialGenerico").prop('disabled', true);
+                            $("#idmaterial").prop('disabled', true);
+                            //$("#idcantidad").prop('disabled', true);
+                            subtotal = value.precio * value.cantidad;
+                            $('#miTablaDetalleMercaderia').append("<tr id=\'prod" + tindex + "\'>\
                                     <td style=display:none>" + value.idmercaderia + "</td>\n\
                                     <td>" + value.codigogenerico + "</td>\n\
                                     <td>" + value.mer_descripcion + "</td>\n\
@@ -509,20 +522,20 @@ function recuperarDetallePedidoCompras() {
                                     <td>" + subtotal + "</td>\n\
                                     <td><img onclick=\"$(\'#prod" + tindex + "\').remove();calcularmontopedic();;\n\
                                     \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
-                    });
-                    $('#codigo').val($('#v_nropedido').val());
-                } else {
-                    alert('Datos no encontrados..');
-                    $("#nrosolicitud").focus();
+                        });
+                        $('#codigo').val($('#v_nropedido').val());
+                    } else {
+                        alert('Datos no encontrados..');
+                        $("#nrosolicitud").focus();
+                    }
+                    calcularmontopedic();
                 }
-                calcularmontopedic();
-            }
-        });
+            });
 
 
-    }  
+        }
     }
-   
+
 }
 function  ModificarDetallepedidoc() {
     $('#miTablaDetalleMercaderia').find('tbody').find('tr').each(function () {

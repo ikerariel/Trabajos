@@ -214,61 +214,67 @@ function MostrarMercaderia() {
     });
 }
 function  inserFacCompra() {
-    var dato = "";
-    $('#miTablaDetalleFacturaCompra').find('tbody').find('tr').each(function () {
-        dato = $(this).find("td").eq(0).html();
-    });
-    if (dato === "") {
-        alert('No hay detalle que guardar..!');
-        $("#codgenericiMerca").focus();
+    if ($('#factuCompProvee').val() === "" || $('#factuCompNroFactura').val() === ""
+            || $('#facturatipoC').val() === "") {
+        alert('Algunos datos no fueron cargados correctamente..');
     } else {
-        if ($('#factuCompProvee').val() === "" || $('#facturatipoC').val() === "") {
-            alert('Debe ingresar todos los datos requeridos para la consulta..');
+        var dato = "";
+        $('#miTablaDetalleFacturaCompra').find('tbody').find('tr').each(function () {
+            dato = $(this).find("td").eq(0).html();
+        });
+        if (dato === "") {
+            alert('No hay detalle que guardar..!');
             $("#codgenericiMerca").focus();
         } else {
-            var opcion = confirm('Desea Guardar Factura Compras..?');
-            if (opcion === true) {
-                var pedidofc = $('#factuCompOrdenC').val();
-                var pedido = 0;
-                if (pedidofc != "") {
-                    pedido = pedidofc;
-                } else {
-                    pedido = 0;
-                }
-                dadoscompra = {
-                    "opcion": 9,
-                    "cValor": 1,
-                    "codigoC": $('#codigo').val(),
-                    "fcompracuota": $('#factuCompNroCuota').val(),
-                    "fcompramonto": $('#faccuotamonto').val().replace(/\./g, ''),
-                    "fcompraNfactu": $('#factuCompNroFactura').val(),
-                    "fcompraintervalo": $('#factuCompIntervalo').val(),
-                    "fcomprafecha": $('#factuCompFecha').val(),
-                    "fcompraprovee": $('#factuCompIdProvee').val(),
-                    "fcomprausua": $('#factuCompIdUsuario').val(),
-                    "fcompraestado": $('#factuCompIdEstado').val(),
-                    "fcompratipo": $('#factuidtipocompras').val(),
-                    "fcompraordenc": pedido,
-                    "fdeposito": $('#Coddepo').val()
-                };
-                $.ajax({
-                    url: "http://localhost:8084/Taller_tercero/facturacompracontrol",
-                    type: 'POST',
-                    data: dadoscompra,
-                    cache: false,
-                    dataType: 'text',
-                    success: function () {
-                        InsertarDetalleFacturaCopr();
-
-                    },
-                    error: function () {
-                    }
-                });
+            if ($('#factuCompProvee').val() === "" || $('#facturatipoC').val() === "") {
+                alert('Debe ingresar todos los datos requeridos para la consulta..');
+                $("#codgenericiMerca").focus();
             } else {
+                var opcion = confirm('Desea Guardar Factura Compras..?');
+                if (opcion === true) {
+                    var pedidofc = $('#factuCompOrdenC').val();
+                    var pedido = 0;
+                    if (pedidofc != "") {
+                        pedido = pedidofc;
+                    } else {
+                        pedido = 0;
+                    }
+                    dadoscompra = {
+                        "opcion": 9,
+                        "cValor": 1,
+                        "codigoC": $('#codigo').val(),
+                        "fcompracuota": $('#factuCompNroCuota').val(),
+                        "fcompramonto": $('#faccuotamonto').val().replace(/\./g, ''),
+                        "fcompraNfactu": $('#factuCompNroFactura').val(),
+                        "fcompraintervalo": $('#factuCompIntervalo').val(),
+                        "fcomprafecha": $('#factuCompFecha').val(),
+                        "fcompraprovee": $('#factuCompIdProvee').val(),
+                        "fcomprausua": $('#factuCompIdUsuario').val(),
+                        "fcompraestado": $('#factuCompIdEstado').val(),
+                        "fcompratipo": $('#factuidtipocompras').val(),
+                        "fcompraordenc": pedido,
+                        "fdeposito": $('#Coddepo').val()
+                    };
+                    $.ajax({
+                        url: "http://localhost:8084/Taller_tercero/facturacompracontrol",
+                        type: 'POST',
+                        data: dadoscompra,
+                        cache: false,
+                        dataType: 'text',
+                        success: function () {
+                            InsertarDetalleFacturaCopr();
 
+                        },
+                        error: function () {
+                        }
+                    });
+                } else {
+
+                }
             }
         }
     }
+
 }
 function  updatfacCompra() {
     var dato = "";
@@ -550,7 +556,7 @@ function recuperarDetalleFacturaC() {
                         $("#factuCompIntervalo").val(value.comp_intervalo);
                         $("#factuCompFecha").val(value.comp_fecha);
                         $("#facturatipoC").val(value.tipo_descri);
-                        if($("#facturatipoC").val()=== 'contado'){
+                        if ($("#facturatipoC").val() === 'contado') {
                             $('#faccuotamonto').val(0);
                         }
                         $("#factuCompProvee").val(value.prov_nombre);
@@ -775,7 +781,7 @@ function seleccionarMercaderiaCompra() {
         $('#cantidadMerca').val(1);
         $('#nombreMerca').val($(this).find("td").eq(2).html());
         $('#precioMerca').val($(this).find("td").eq(3).html());
-         $('#codimpuesto').val($(this).find("td").eq(4).html());
+        $('#codimpuesto').val($(this).find("td").eq(4).html());
         $('#cantidadMerca').focus();
         $('#ModalMercaderia').modal('hide');
     });
@@ -842,7 +848,7 @@ function agregarFilaMercaCompra() {
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
             <td style=display:none>" + v_imp + "</td>\n\
-            <td><img onclick=\"$(\'#prod" + tind + "\').remove(); calcularmonto();\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
+            <td><img onclick=\"$(\'#prod" + tind + "\');removecompra();calcularmonto();\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
             </tr>");
 
 
@@ -853,6 +859,13 @@ function agregarFilaMercaCompra() {
     $('#cantidadMerca').val(null);
     calcularmonto();
 }//-----------------------
+
+function removecompra() {
+    $('#miTablaDetalleFacturaCompra tr').click(function () {
+        $(this).closest('tr').remove();
+
+    });
+}
 function seleccionarFacturaCompras() {
     $('#miTablaPlanillaCompra tr').click(function () {
         $('#nrofacturaP').val($(this).find("td").eq(0).html());

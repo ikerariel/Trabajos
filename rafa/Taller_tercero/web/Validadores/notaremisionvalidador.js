@@ -351,7 +351,7 @@ function agregarFilaMercaRemi() {
             <td>" + v_descripcion + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td><img onclick=\"$(\'#prod"
-            + ind03 + "\').remove();\" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
+            + ind03 + "\');removeremi();\" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
 
     $('#codgenericiMerca').val(null);
     $('#codgenericiMerca').focus;
@@ -359,6 +359,13 @@ function agregarFilaMercaRemi() {
     $('#precioMerca').val(null);
     $('#cantidadMerca').val(null);
 }//-----------------------
+
+function removeremi() {
+    $('#miTablaDetalleNotaRemision tr').click(function () {
+        $(this).closest('tr').remove();
+
+    });
+}
 function SeleccionarDetalleFacturaRemi() {
     $('#miTablaDetalleNotaRemision tr').click(function () {
         $('#codMerca').val($(this).find("td").eq(0).html());
@@ -384,46 +391,51 @@ function crearJSON(id) {
 }
 
 function  insertarNotaRemi() {
-    var dato = "";
-    $('#miTablaDetalleNotaRemision').find('tbody').find('tr').each(function () {
-        dato = $(this).find("td").eq(0).html();
-    });
-    if (dato === "") {
-        alert('No hay detalle que guardar..!');
-        $("#codgenericiMerca").focus();
+    if ($('#facturacompRemi').val() === "") {
+        alert('Algunos datos no fueron cargados correctamente..');
     } else {
-        if ($('#observaRemi').val() === "") {
-            alert('Debe ingresar todos los datos requeridos para la consulta..');
+        var dato = "";
+        $('#miTablaDetalleNotaRemision').find('tbody').find('tr').each(function () {
+            dato = $(this).find("td").eq(0).html();
+        });
+        if (dato === "") {
+            alert('No hay detalle que guardar..!');
             $("#codgenericiMerca").focus();
         } else {
-            var opcion = confirm('Desea Guardar Nota de Remisión..?');
-            if (opcion === true) {
-                datosCabeceraJSON = {
-                    "opcion": 8,
-                    "rValor": 1,
-                    "Remiobserv": $('#observaRemi').val(),
-                    "Remifecha": $('#fechaRemi').val(),
-                    "Remiestad": $('#idestadRemi').val(),
-                    "Remiusu": $('#CodvUser').val(),
-                    "RemifactuC": $('#idfacturacompRemi').val()
-                };
-                $.ajax({
-                    url: "http://localhost:8084/Taller_tercero/notaremisioncontrol",
-                    type: 'POST',
-                    data: datosCabeceraJSON,
-                    cache: false,
-                    dataType: 'text',
-                    success: function () {
-                        insertarDetalleNotaRemi();
-
-                    },
-                    error: function () {
-                    }
-                });
+            if ($('#observaRemi').val() === "") {
+                alert('Debe ingresar todos los datos requeridos para la consulta..');
+                $("#codgenericiMerca").focus();
             } else {
+                var opcion = confirm('Desea Guardar Nota de Remisión..?');
+                if (opcion === true) {
+                    datosCabeceraJSON = {
+                        "opcion": 8,
+                        "rValor": 1,
+                        "Remiobserv": $('#observaRemi').val(),
+                        "Remifecha": $('#fechaRemi').val(),
+                        "Remiestad": $('#idestadRemi').val(),
+                        "Remiusu": $('#CodvUser').val(),
+                        "RemifactuC": $('#idfacturacompRemi').val()
+                    };
+                    $.ajax({
+                        url: "http://localhost:8084/Taller_tercero/notaremisioncontrol",
+                        type: 'POST',
+                        data: datosCabeceraJSON,
+                        cache: false,
+                        dataType: 'text',
+                        success: function () {
+                            insertarDetalleNotaRemi();
+
+                        },
+                        error: function () {
+                        }
+                    });
+                } else {
+                }
             }
         }
     }
+
 }
 function  updaterNotaRemi() {
     var dato = "";
