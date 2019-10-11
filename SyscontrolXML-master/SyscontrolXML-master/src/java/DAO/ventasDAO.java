@@ -15,6 +15,7 @@ public interface ventasDAO {
     boolean insertartimbrado(ventasDTO dto,Integer codOpcion);
     boolean insertarFacturas(ventasDTO dto);
     boolean insertarAperturaCierreVenta(ventasDTO dto);
+    boolean cerrarCaja(ventasDTO dto);
     String getTimbrados();
     String getCajeros();
     String getCajas();

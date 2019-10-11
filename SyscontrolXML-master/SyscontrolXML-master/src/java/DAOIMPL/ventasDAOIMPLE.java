@@ -268,17 +268,18 @@ public class ventasDAOIMPLE implements ventasDAO {
 
     @Override
     public boolean insertarAperturaCierreVenta(ventasDTO dto) {
-        
+
         try {
             sintaxiSql = null;
             conexion = new Conexion();
-            CallableStatement call = conexion.getConexion().prepareCall("{call abm_aperturacierrecaja(1,?,?,?,?,?,1,?)}");
+            CallableStatement call = conexion.getConexion().prepareCall("{call abm_aperturacierrecaja(1,?,?,?,?,?,?,?)}");
             call.setInt(1, dto.getMonto_apertura());
             call.setInt(2, dto.getIdcaja());
             call.setInt(3, dto.getIdcajero());
             call.setInt(4, dto.getIdsucursal());
             call.setInt(5, dto.getIdusuario());
-            call.setInt(6, dto.getIdtimbrado());
+            call.setInt(6, dto.getIdestado());
+            call.setInt(7, dto.getIdtimbrado());
             call.execute();
             conexion.comit();
             return true;
@@ -286,7 +287,31 @@ public class ventasDAOIMPLE implements ventasDAO {
             Logger.getLogger(ventasDAOIMPLE.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-  
+
+    }
+
+    @Override
+    public boolean cerrarCaja(ventasDTO dto) {
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "UPDATE ventas.aperturacierrecajas\n"
+                    + "   SET idestado=2\n"
+                    + " WHERE idaperturacierre =?";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            preparedStatement.setObject(1, dto.getIdaperturacierre());
+            filasAfectadas = preparedStatement.executeUpdate();
+            if (filasAfectadas > 0) {
+                conexion.comit();
+            } else {
+                conexion.rollback();
+                System.out.println("Rollback() Realizado");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ventasDAOIMPLE.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return false;
     }
 
 }

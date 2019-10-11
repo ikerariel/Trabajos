@@ -8,6 +8,8 @@ $(document).ready(function () {
 });
 
 function validacionAperturaVenta() {
+
+
     var opcion = false;
     var vCaja;
     var vCajero;
@@ -17,84 +19,81 @@ function validacionAperturaVenta() {
     var v_TipoDoc = $('#listaDoc').val();
     var v_MontoAper = $('#apeMontoapertura').val().replace(/\./g, '');
     var v_CodTimbrado = $('#aperFactTimrbados').val();
-    $('#mitablaaperturaCierreCajaVentas').find('tbody').find('tr').each(function () {
+    $('#mitablaaperturaCierreCajaVentas').each(function () {
         vCaja = $(this).find("td").eq(7).html(); //caja
         vCajero = $(this).find("td").eq(8).html();//cajero
         vEstado = $(this).find("td").eq(6).html();//estado de la apertura
-        if (vCaja === v_Caja && vEstado === "ABIERTA") {
-            $.alert({
-                title: 'AVISO..!!',
-                icon: 'glyphicon glyphicon-remove',
-                content: 'La Caja selecciona esta Abierta..!',
-                type: 'red',
-                animation: 'scaleY'
 
-
-            });
-        } else
-        if (vCajero === v_Cajero && vEstado === "ABIERTA") {
-            $.alert({
-                title: 'AVISO..!!',
-                icon: 'glyphicon glyphicon-remove',
-                content: 'El Cajero se encuentra en una Caja Abierta.!',
-                type: 'red',
-                animation: 'scaleY'
-
-
-            });
-
-        } else {
-            opcion = true;
-
-        }
     });
-    if (opcion) {
-//        function guardarAperCajaVentas() {
-            $.confirm({
-                title: 'Guardar',
-                content: 'Desea Guardar los Registros ?',
-                buttons: {
-                    Si: {
-                        text: 'SI',
-                        btnClass: 'btn-success',
-                        keys: ['enter', 'shift'],
-                        action: function () {
-                            jsonAperVenta = {
-                                'opcion': 9,
-                                'aperMonto': v_MontoAper,
-                                'aperCaja': v_Caja,
-                                'aperCajero': v_Cajero,
-                                'aperSucursal': 1,
-                                'aperUsuario': $('#vCodIDuser').val(),
-                                'aperTimbrado': v_CodTimbrado
-                            };
-                            $.ajax({
-                                url: "/syscontrol/ventasSERVLET",
-                                type: 'POST',
-                                data: jsonAperVenta,
-                                cache: false,
-                                dataType: 'text',
-                                success: function () {
-                                    getAperCierreVentas();
-                                }
+    if (vCaja === v_Caja && vEstado === "ABIERTA") {
+        $.alert({
+            title: 'AVISO..!!',
+            icon: 'glyphicon glyphicon-remove',
+            content: 'La Caja selecciona esta Abierta..!',
+            type: 'red',
+            animation: 'scaleY'
 
-                            });
-                        }
-                    },
-                    No: {
-                        text: 'No',
-                        btnClass: 'btn-red',
-                        keys: ['enter', 'shift'],
-                        action: function () {
-                            $.alert('Cancelado !!');
-                        }
+
+        });
+    } else
+    if (vCajero === v_Cajero && vEstado === "ABIERTA") {
+        $.alert({
+            title: 'AVISO..!!',
+            icon: 'glyphicon glyphicon-remove',
+            content: 'El Cajero se encuentra en una Caja Abierta.!',
+            type: 'red',
+            animation: 'scaleY'
+
+
+        });
+
+    } else {
+        $.confirm({
+            title: 'Guardar',
+            content: 'Desea Guardar los Registros ?',
+            buttons: {
+                Si: {
+                    text: 'SI',
+                    btnClass: 'btn-success',
+                    keys: ['enter', 'shift'],
+                    action: function () {
+                        jsonAperVenta = {
+                            'opcion': 9,
+                            'aperMonto': v_MontoAper,
+                            'aperCaja': v_Caja,
+                            'aperCajero': v_Cajero,
+                            'aperSucursal': 1,
+                            'aperUsuario': $('#vCodIDuser').val(),
+                            'aperestado': 1,
+                            'aperTimbrado': v_CodTimbrado
+                        };
+                        $.ajax({
+                            url: "/syscontrol/ventasSERVLET",
+                            type: 'POST',
+                            data: jsonAperVenta,
+                            cache: false,
+                            dataType: 'text',
+                            success: function () {
+                                getAperCierreVentas();
+                            }
+
+                        });
+                    }
+                },
+                No: {
+                    text: 'No',
+                    btnClass: 'btn-red',
+                    keys: ['enter', 'shift'],
+                    action: function () {
+                        $.alert('Cancelado !!');
                     }
                 }
-            });
+            }
+        });
 
-
-        
     }
+
+
 
 
 }
@@ -292,7 +291,20 @@ function validad() {
         gettipofacturaTimbrado();
     });
     $('#btnGuardarAperVenta').click(function () {
-        validacionAperturaVenta();
+        if ($('#apeMontoapertura').val() === "" || $('#aperFactTimrbados').val() === "") {
+            $.alert({
+                title: 'AVISO..!!',
+                icon: 'glyphicon glyphicon-remove',
+                content: 'Algunso datos no fueron cargados correctamente..',
+                type: 'red',
+                animation: 'scaleY'
+
+
+            });
+        } else {
+            validacionAperturaVenta();
+        }
+
     });
 }
 
@@ -350,6 +362,47 @@ function insertarTimbrado(op, codventa) {
                                 });
                             }, 1200);
 
+                        }
+
+                    });
+
+                }
+            },
+            No: {
+                text: 'No',
+                btnClass: 'btn-red',
+                keys: ['enter', 'shift'],
+                action: function () {
+                    $.alert('Cancelado !!');
+                }
+            }
+        }
+    });
+
+}
+
+function cerrarCaja(codigo) {
+    $.confirm({
+        title: 'Cerrar Caja',
+        content: 'Desea Cerar la Caja ?',
+        buttons: {
+            Si: {
+                text: 'SI',
+                btnClass: 'btn-success',
+                keys: ['enter', 'shift'],
+                action: function () {
+                    jsonCerarCaja = {
+                        'opcion': 10,
+                        'codApertura': codigo
+                    };
+                    $.ajax({
+                        url: "/syscontrol/ventasSERVLET",
+                        type: 'POST',
+                        data: jsonCerarCaja,
+                        cache: false,
+                        dataType: 'text',
+                        success: function () {
+//                            getAperCierreVentas();
                         }
 
                     });
@@ -488,6 +541,8 @@ function getTimbrados() {
 
     });
 }
+
+
 var idxAperCierre = 0;
 function getAperCierreVentas() {
     $('#mitablaaperturaCierreCajaVentas').find('tbody').find('tr').empty();
@@ -503,26 +558,34 @@ function getAperCierreVentas() {
             $.each(resp, function (indice, valor) {
                 var id = valor.idestado;
                 var color;
+                var fcierre;
                 if (parseInt(id) === 1) {
                     color = '#d9edf7';
-                    Informe = "<button class='btn btn-sm btn-outline-primary' onclick=\"$(\'#prod" + idxAperCierre + "\');infTimbrado(1)\">Informe</button>";
-                    cerrar = "<button class='btn btn-sm btn-outline-danger' onclick=\"$(\'#prod" + idxAperCierre + "\');infTimbrado(1)\">Cerrar</button>";
+                    Informe = "<button class='btn btn-sm btn-outline-primary' onclick=\"$(\'#prod" + idxAperCierre + "\')\">Informe</button>";
+                    cerrarv = "<button class='btn btn-sm btn-outline-danger' onclick=\"$(\'#prod" + idxAperCierre + "\');caja()\">Cerrar</button>";
                 } else if (parseInt(id) === 2) {
                     color = 'red';
-                    Informe = "<button class='btn btn-sm btn-outline-primary' onclick=\"$(\'#prod" + idxAperCierre + "\');infTimbrado(1)\">Informe</button>";
-                    cerrar = "<button disabled class='btn btn-sm btn-outline-danger' onclick=\"$(\'#prod" + idxAperCierre + "\');infTimbrado(1)\">Cerrar</button>";
+                    Informe = "<button class='btn btn-sm btn-outline-primary' onclick=\"$(\'#prod" + idxAperCierre + "\')\">Informe</button>";
+                    cerrarv = "<button disabled class='btn btn-sm btn-outline-danger'>Cerrar</button>";
                 }
-                $("#mitablaaperturaCierreCajaVentas").append($("<tr>").append($(
+                $("#mitablaaperturaCierreCajaVentas").append($("<tr id=\'cod" + idxAperCierre + "\'>").append($(
                         "<td>" + valor.idaperturacierre + "</td>" +
                         "<td>" + valor.fecha_apertura + "</td>" +
                         "<td>" + valor.monto_apertura + "</td>" +
                         "<td>" + valor.cajero + "</td>" +
                         "<td>" + valor.caja + "</td>" +
-                        "<td>" + valor.fecha_cierre + "</td>" +
+                        "<td style='text-align: center'>" + valor.fecha_cierre + "</td>" +
                         "<td bgcolor=" + color + ">" + valor.estado + "</td>" +
                         "<td style=display:none>" + valor.idcaja + "</td>" +
                         "<td style=display:none>" + valor.idcajero + "</td>" +
-                        "<td style='text-align: center'> " + Informe + "" + cerrar + "</td>")));
+                        "<td style='text-align: center'> " + Informe + "" + cerrarv + "</td>")));
+
+                $('#mitablaaperturaCierreCajaVentas').each(function () {
+                    var v = $(this).find("td").eq(5).html();
+                    if (v === 'undefined')
+                        $(this).find("td").eq(5).html("   /   /    ");
+
+                });
             });
 
 
@@ -530,6 +593,55 @@ function getAperCierreVentas() {
 
     });
 }
+
+function caja() {
+    var num;
+    $('#mitablaaperturaCierreCajaVentas tr').click(function () {
+        num = $(this).find("td").eq(0).html();
+        v_cerrarCaja(num);
+    });
+    function v_cerrarCaja(valor) {
+        $.confirm({
+            title: 'Cerrar Caja',
+            content: 'Desea Cerar la Caja ?',
+            buttons: {
+                Si: {
+                    text: 'SI',
+                    btnClass: 'btn-success',
+                    keys: ['enter', 'shift'],
+                    action: function () {
+                        jsonCerarCaja = {
+                            'opcion': 10,
+                            'codApertura': valor
+                        };
+                        $.ajax({
+                            url: "/syscontrol/ventasSERVLET",
+                            type: 'POST',
+                            data: jsonCerarCaja,
+                            cache: false,
+                            dataType: 'text',
+                            success: function () {
+//                            getAperCierreVentas();
+                            }
+
+                        });
+
+                    }
+                },
+                No: {
+                    text: 'No',
+                    btnClass: 'btn-red',
+                    keys: ['enter', 'shift'],
+                    action: function () {
+                        $.alert('Cancelado !!');
+                    }
+                }
+            }
+        });
+
+    }
+}
+
 function getCombos(cod, variable) {
     $('#' + variable).find('tbody').find('tr').empty();
     jsonCajero = {

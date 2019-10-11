@@ -320,7 +320,7 @@
                                                                 <th scope="col">Monto Apertura</th>
                                                                 <th scope="col">Cajero</th>
                                                                 <th scope="col">Caja</th>
-                                                                <th scope="col">Fecha Cierre</th>
+                                                                <th scope="col" >Fecha Cierre</th>
                                                                 <th scope="col">Estado</th>
                                                                 <th scope="col">Opción</th>
 

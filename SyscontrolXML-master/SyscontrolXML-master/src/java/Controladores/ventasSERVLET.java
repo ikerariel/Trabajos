@@ -93,12 +93,21 @@ public class ventasSERVLET extends HttpServlet {
                 vDTO.setIdcajero(Integer.parseInt(request.getParameter("aperCajero")));
                 vDTO.setIdsucursal(Integer.parseInt(request.getParameter("aperSucursal")));
                 vDTO.setIdusuario(Integer.parseInt(request.getParameter("aperUsuario")));
+                vDTO.setIdestado(Integer.parseInt(request.getParameter("aperestado")));
                 vDTO.setIdtimbrado(Integer.parseInt(request.getParameter("aperTimbrado")));
 
                 if (vDAO.insertarAperturaCierreVenta(vDTO)) {
                     out.println("Exitoso");
                 }
                 break;
+                
+            case 10:
+                vDTO.setIdaperturacierre(Integer.parseInt(request.getParameter("codApertura")));
+                if (vDAO.cerrarCaja(vDTO)) {
+                    out.println("Exitoso");
+                }
+                break;
+                
         }
 
 //        try (PrintWriter out = response.getWriter()) {

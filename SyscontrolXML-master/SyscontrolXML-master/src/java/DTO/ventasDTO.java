@@ -43,6 +43,14 @@ public class ventasDTO {
     private String caja;
     private Integer idcaja;
 
+    public Integer getIdaperturacierre() {
+        return idaperturacierre;
+    }
+
+    public void setIdaperturacierre(Integer idaperturacierre) {
+        this.idaperturacierre = idaperturacierre;
+    }
+
     public Integer getMonto_apertura() {
         return monto_apertura;
     }
