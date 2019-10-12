@@ -24,6 +24,7 @@
         <a href="reportes.jsp" class="list-group-item list-group-item-action bg-light">Reportes</a>
         <hr>
         <a href="ventas.jsp" class="list-group-item list-group-item-action bg-light">Ventas</a>
+        <a href="Facturacion.jsp" class="list-group-item list-group-item-action bg-light">Facturación</a>
         <a href="out.jsp" class="list-group-item list-group-item-action bg-light">Salir</a>
     </div>
 </div>
