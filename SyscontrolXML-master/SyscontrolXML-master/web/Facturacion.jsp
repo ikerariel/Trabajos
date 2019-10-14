@@ -52,22 +52,15 @@
             <!-- Page Content -->
             <div id="page-content-wrapper">
                 <%@ include file="navbar.jsp"%>
-                <!-- contenido -->
-
-
-                <!-- Nav tabs -->
                 <div class="paneles">
-                    <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#recarga">Facturación</a>
-                        </li>
-                    </ul>
+                    <button type="button" id="btnnro" onclick="nro()" class="btn btn-success">Guardar Venta</button>
+                    <button type="button" class="btn btn-secondary"  id="btnnuevacarga" onclick="">Nuevo</button>
+                    <button type="button" class="btn btn-danger" style="display: none">Modificar</button>
                 </div>
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div class="tab-pane container active" id="Recarga">
+                    <div class="tab-pane container active" id="">
                         <!-- contenido cajas -->
-                        <br>
                         <div class="card">
 
                             <div class="card-body">
@@ -92,6 +85,13 @@
 
                                             </select>
                                         </div>
+                                        <div class="col-md-1 mb-2" >
+                                            <span class="form-control-plaintext" style="font-size: 15pt;position: relative;left: 60px;font-weight: bold ">Total :</span>
+                                        </div>
+                                        <div class="col-md-2 mb-2" >
+                                            <input style="text-align:  center; border: transparent; background-color: transparent" disabled="" class="form-control" id="totalVenta"  >
+                                            <input style="display: none" id="ftotalventa"  >
+                                        </div>
 
                                     </div>
                                     <div class="form-row">
@@ -109,8 +109,8 @@
                                             <div class="col-md-1">
                                                 <label for="validationDefaultUsername" style="display: none">..</label>
                                                 <input   style="display: none" id="fDIcliente"disabled="" >
-                                                <input  type="text" style="display: none" i id="fIDfactura">
-                                                <input  type="text" style="display: none" i id="fIDimpuesto">
+                                                <input  type="text" style="display: none"  id="fIDfactura">
+                                                <input  type="text" style="display: none"  id="fIDimpuesto">
                                             </div>
 
                                         </div>
@@ -128,19 +128,19 @@
                                             <label for="validationDefaultUsername">Precio </label>
                                             <input type="text" class="form-control" id="fprecio"  disabled="" aria-describedby="inputGroupPrepend2">
                                         </div>
-                                           <div class="col-md-2">
+                                        <div class="col-md-2">
                                             <label for="validationDefaultUsername">Impuesto </label>
                                             <input disabled="" type="text" class="form-control" id="fimpuesto" aria-describedby="inputGroupPrepend2">
                                         </div>
                                         <div class="col-md-1">
                                             <label for="validationDefaultUsername">Cantidad </label>
                                             <input type="text" class="form-control" id="fcantidad" aria-describedby="inputGroupPrepend2"
-                                                     onkeydown="
-                                                       if (event.keyCode === 13) {
-                                                           agregarfilaventas();
-                                                       }">
+                                                   onkeydown="
+                                                           if (event.keyCode === 13) {
+                                                               agregarfilaventas();
+                                                           }">
                                         </div>
-                                     
+
                                     </div>
 
                                 </form>
@@ -169,10 +169,17 @@
                                     </table>
                                 </div>
                                 <br>
-                                <!-- botones -->
-                                <button type="button" class="btn btn-secondary"  id="btnnuevacarga" onclick="">Nuevo</button>
-                                <button type="button" id="btnguardarecarga" style="display: none" class="btn btn-success">Guardar</button>
-                                <button type="button" class="btn btn-danger" style="display: none">Modificar</button>
+                              
+                                <div>
+                                      <span style="font-size: 8pt; font-weight: bold" >Total a pagar :</span> <span id="numTexto" ></span>
+                                </div>
+                                <div>
+                                      <span style="font-size: 8pt; font-weight: bold" >Liquidación de Iva :
+                                      </span> <span style="font-size: 8pt; font-weight: bold" >IVA 5% </span> <input style="border: transparent; background-color: transparent" disabled="" type="text" id="valor5">
+                                      <span style="font-size: 8pt; font-weight: bold" >IVA 10% </span> <input style="border: transparent; background-color: transparent" disabled=""  type="text" id="valor10">
+                                      <span style="font-size: 8pt; font-weight: bold" >Total Iva : </span> <input style="border: transparent; background-color: transparent" disabled=""  type="text" id="totalIVA">
+                                </div>
+                              
                             </div>
                         </div>
 
@@ -222,9 +229,9 @@
                         </div>
 
                         <div class="modal-body">
-                                 <div class="col-md-12 mb-2">
-                                    <input type="text" class="form-control" id="fbuscadorArticulo" placeholder="Buscar Articulo" required="" >
-                                </div>
+                            <div class="col-md-12 mb-2">
+                                <input type="text" class="form-control" id="fbuscadorArticulo" placeholder="Buscar Articulo" required="" >
+                            </div>
                             <div class="form-row">
 
                                 <div class="table-responsive"> 
@@ -247,9 +254,9 @@
                                         </div>
                                     </div>     
                                 </div>
-                                    <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                </div>
 
                             </div>
                         </div>

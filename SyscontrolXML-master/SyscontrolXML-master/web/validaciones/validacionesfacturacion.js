@@ -1,10 +1,15 @@
 $(document).ready(function () {
     opcionesFacturacion();
-
 });
 function opcionesFacturacion() {
     getfacturas();
     comboCondVenta();
+    numaletras();
+    $('#ftotalventa').val("0");
+    $('#totalVenta').val("0");
+    $('#valor10').val("0");
+    $('#valor5').val("0");
+    $('#totalIVA').val("0");
     $('#fclienteci').blur(function () {
         getclientefactura();
     });
@@ -216,7 +221,7 @@ function agregarfilaventas() {
         }
 
     }
-    idx++;
+//    idx++;
     $('#mitablaDetlleVentas').append("<tr id=\'prod" + idx + "\'>\
             <td>" + v_cod + "</td>\n\
             <td>" + v_producto + "</td>\n\
@@ -227,12 +232,74 @@ function agregarfilaventas() {
             <td>" + v_impuexe + "</td>\n\
             <td>" + v_subtotal + "</td>\n\
              <td style='display: none'>" + v_idimpuesto + "</td>\n\
-          <td ><button type=button title='Quitar el registro de la lista' style=text-align:center class='btn btn-sm btn-danger' onclick=\"$(\'#prod" + idx + "\').remove(),subtotal()\">Quitar</button></td>\n\
+          <td ><button type=button title='Quitar el registro de la lista' style=text-align:center class='btn btn-sm btn-danger' onclick=\"$(\'#prod" + idx + "\');removeventa();totalventa();\">Quitar</button></td>\n\
             </tr>");
-
+    totalventa();
 //    $('#canti_v').focus();
 //    subtotal();
 
+}
+function removeventa() {
+    $('#mitablaDetlleVentas tr').click(function () {
+        $(this).closest('tr').remove();
+
+    });
+    var nfila = $('#mitablaDetlleVentas tr').length - 1;
+    if (parseInt(nfila) <= 1) {
+        $('#ftotalventa').val("0");
+        $('#totalVenta').val("0");
+        $('#valor10').val("0");
+        $('#valor5').val("0");
+        $('#totalIVA').val("0");
+    }
+}
+
+function totalventa() {
+    setInterval(function () {
+        var total = 0;
+        var total10 = 0;
+        var total5 = 0;
+        var totaliva = 0;
+        var valorimp = 0;
+        var acumu = 0;
+        var acumu10 = 0;
+        var acumu5 = 0;
+        var acumtotaliva = 0;
+        $('#mitablaDetlleVentas').find('tbody').find('tr').each(function () {
+            total = parseInt($(this).find("td").eq(7).html());
+            valorimp = parseInt($(this).find("td").eq(8).html());
+            if (valorimp === 1) {
+                total10 = parseInt($(this).find("td").eq(7).html()) / 11;
+                acumu10 = acumu10 + total10;
+            } else
+            if (valorimp === 2) {
+                total5 = parseInt($(this).find("td").eq(7).html()) / 21;
+                acumu5 = acumu5 + total5;
+            }
+            acumu = acumu + total;
+            $('#ftotalventa').val(acumu);
+            $('#totalVenta').val(acumu);
+            $('#valor10').val(Math.trunc(acumu10));
+            $('#valor5').val(Math.trunc(acumu5));
+            $('#totalVenta').css('font-size', '15pt');
+            $('#totalVenta').css('color', 'blue');
+            $('#totalVenta').css('font-weight', 'bold');
+        });
+        numaletras();
+        puntodecimal('totalVenta');
+        puntodecimal('valor10');
+        puntodecimal('valor5');
+
+        var iva5 = $('#valor5').val().replace(/\./g, '');
+        var iva10 = $('#valor10').val().replace(/\./g, '');
+        totaliva = totaliva + parseInt(iva5) + parseInt(iva10);
+        $('#totalIVA').val(Math.trunc(totaliva));
+        puntodecimal('totalIVA');
+
+        $('#valor10').css('font-size', '8pt');
+        $('#valor5').css('font-size', '8pt');
+        $('#totalIVA').css('font-size', '8pt');
+    }, 500);
 }
 function  getfacturas() {
     jsonfactura = {
@@ -278,3 +345,211 @@ function  getfacturas() {
         }
     });
 }
+
+function numaletras() {
+    $('#ftotalventa').val(function (e) {
+        document.getElementById("numTexto").innerHTML = NumeroALetras(this.value);
+        $('#numTexto').css('font-size', '8pt');
+    });
+
+    function Unidades(num) {
+
+        switch (num)
+        {
+            case 1:
+                return "UN";
+            case 2:
+                return "DOS";
+            case 3:
+                return "TRES";
+            case 4:
+                return "CUATRO";
+            case 5:
+                return "CINCO";
+            case 6:
+                return "SEIS";
+            case 7:
+                return "SIETE";
+            case 8:
+                return "OCHO";
+            case 9:
+                return "NUEVE";
+        }
+
+        return "";
+    }
+    function Decenas(num) {
+        decena = Math.floor(num / 10);
+        unidad = num - (decena * 10);
+
+        switch (decena)
+        {
+            case 1:
+            switch (unidad)
+            {
+                case 0:
+                    return "DIEZ";
+                case 1:
+                    return "ONCE";
+                case 2:
+                    return "DOCE";
+                case 3:
+                    return "TRECE";
+                case 4:
+                    return "CATORCE";
+                case 5:
+                    return "QUINCE";
+                default:
+                    return "DIECI" + Unidades(unidad);
+            }
+            case 2:
+            switch (unidad)
+            {
+                case 0:
+                    return "VEINTE";
+                default:
+                    return "VEINTI" + Unidades(unidad);
+            }
+            case 3:
+                return DecenasY("TREINTA", unidad);
+            case 4:
+                return DecenasY("CUARENTA", unidad);
+            case 5:
+                return DecenasY("CINCUENTA", unidad);
+            case 6:
+                return DecenasY("SESENTA", unidad);
+            case 7:
+                return DecenasY("SETENTA", unidad);
+            case 8:
+                return DecenasY("OCHENTA", unidad);
+            case 9:
+                return DecenasY("NOVENTA", unidad);
+            case 0:
+                return Unidades(unidad);
+        }
+    }//Unidades()
+
+    function DecenasY(strSin, numUnidades) {
+        if (numUnidades > 0)
+            return strSin + " Y " + Unidades(numUnidades)
+
+        return strSin;
+    }//DecenasY()
+
+    function Centenas(num) {
+
+        centenas = Math.floor(num / 100);
+        decenas = num - (centenas * 100);
+
+        switch (centenas)
+        {
+            case 1:
+                if (decenas > 0)
+                    return "CIENTO " + Decenas(decenas);
+                return "CIEN";
+            case 2:
+                return "DOSCIENTOS " + Decenas(decenas);
+            case 3:
+                return "TRESCIENTOS " + Decenas(decenas);
+            case 4:
+                return "CUATROCIENTOS " + Decenas(decenas);
+            case 5:
+                return "QUINIENTOS " + Decenas(decenas);
+            case 6:
+                return "SEISCIENTOS " + Decenas(decenas);
+            case 7:
+                return "SETECIENTOS " + Decenas(decenas);
+            case 8:
+                return "OCHOCIENTOS " + Decenas(decenas);
+            case 9:
+                return "NOVECIENTOS " + Decenas(decenas);
+        }
+
+        return Decenas(decenas);
+    }//Centenas()
+
+    function Seccion(num, divisor, strSingular, strPlural) {
+        cientos = Math.floor(num / divisor)
+        resto = num - (cientos * divisor)
+
+        letras = "";
+
+        if (cientos > 0)
+            if (cientos > 1)
+                letras = Centenas(cientos) + " " + strPlural;
+            else
+                letras = strSingular;
+
+        if (resto > 0)
+            letras += "";
+
+        return letras;
+    }//Seccion()
+
+    function Miles(num) {
+        divisor = 1000;
+        cientos = Math.floor(num / divisor)
+        resto = num - (cientos * divisor)
+
+        strMiles = Seccion(num, divisor, "MIL", "MIL");
+        strCentenas = Centenas(resto);
+
+        if (strMiles == "")
+            return strCentenas;
+
+        return strMiles + " " + strCentenas;
+
+        //return Seccion(num, divisor, "UN MIL", "MIL") + " " + Centenas(resto);
+    }//Miles()
+
+    function Millones(num) {
+        divisor = 1000000;
+        cientos = Math.floor(num / divisor)
+        resto = num - (cientos * divisor)
+
+        strMillones = Seccion(num, divisor, "UN MILLON", "MILLONES");
+        strMiles = Miles(resto);
+
+        if (strMillones == "")
+            return strMiles;
+
+        return strMillones + " " + strMiles;
+
+        //return Seccion(num, divisor, "UN MILLON", "MILLONES") + " " + Miles(resto);
+    }//Millones()
+
+    function NumeroALetras(num, centavos) {
+        var data = {
+            numero: num,
+            enteros: Math.floor(num),
+            centavos: (((Math.round(num * 100)) - (Math.floor(num) * 100))),
+            letrasCentavos: "",
+        };
+        if (centavos == undefined || centavos == false) {
+            data.letrasMonedaPlural = "GUARANIES";
+            data.letrasMonedaSingular = "GUARANIES";
+        } else {
+            data.letrasMonedaPlural = "CENTIMOS";
+            data.letrasMonedaSingular = "CENTIMO";
+        }
+
+        if (data.centavos > 0)
+            data.letrasCentavos = "CON " + NumeroALetras(data.centavos, true);
+
+        if (data.enteros == 0)
+            return "CERO " + data.letrasMonedaPlural + " " + data.letrasCentavos;
+        if (data.enteros == 1)
+            return Millones(data.enteros) + " " + data.letrasMonedaSingular + " " + data.letrasCentavos;
+
+
+        else
+            return Millones(data.enteros) + " " + data.letrasMonedaPlural + " " + data.letrasCentavos;
+    }
+
+
+}
+// 
+//}
+
+
+
