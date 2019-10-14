@@ -19,7 +19,38 @@
 <body>
  
     <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
+    <p>Este código convierte desde 0.01 hasta 100 millones</p>
  
+    <input type="text" id="numero" placeholder="introduce un numero">
+    <input type="text" id="numero" placeholder="introduce un numero">
+    <input type="text" id="numero" placeholder="introduce un numero">
+    <input type="text" id="numero" placeholder="introduce un numero">
+    <input type="text" id="numero" placeholder="introduce un numero">
+    <input type="text" id="numero" placeholder="introduce un numero">
+    <input type="text" id="numero" placeholder="introduce un numero">
+    <input type="text" id="numero" placeholder="introduce un numero">
+    <input type="text" id="numero" placeholder="introduce un numero">
+    <input type="text" id="numero" placeholder="introduce un numero">
     <input type="text" id="numero" placeholder="introduce un numero">
     <span id="texto"></span>
  
