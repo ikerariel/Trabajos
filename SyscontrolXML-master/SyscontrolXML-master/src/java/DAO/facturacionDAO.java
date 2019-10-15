@@ -15,5 +15,7 @@ public interface facturacionDAO {
     
     String getFacturas(Integer Cajero);
     String getArticulos();
+    public boolean insertarVenta(facturacionDTO dto);
+    public boolean insertarVentaDetalle(facturacionDTO dto);
     
 }

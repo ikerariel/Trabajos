@@ -107,4 +107,64 @@ public class facturacionDAOIMPL implements facturacionDAO {
         return new Gson().toJson(getarticulos);
     }
 
+    @Override
+    public boolean insertarVenta(facturacionDTO dto) {
+
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "INSERT INTO ventas.venta(\n"
+                    + "           idcliente, iddocfactura, idvendedor, idaperturacierre, \n"
+                    + "            idcondicionventa, idestado,iddeposito,montoventa)\n"
+                    + "    VALUES (?, ?, ?, ?, ?, 11,1,?)";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            preparedStatement.setObject(1, dto.getIdcliente());
+            preparedStatement.setObject(2, dto.getIddocfactura());
+            preparedStatement.setObject(3, dto.getIdvendedor());
+            preparedStatement.setObject(4, dto.getIdaperturacierre());
+            preparedStatement.setObject(5, dto.getIdcondicionventa());
+            preparedStatement.setObject(6, dto.getMontoventa());
+            filasAfectadas = preparedStatement.executeUpdate();
+            if (filasAfectadas > 0) {
+                conexion.comit();
+            } else {
+                conexion.rollback();
+                System.out.println("Rollback() Realizado");
+                return false;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(facturacionDAOIMPL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean insertarVentaDetalle(facturacionDTO dto) {
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "INSERT INTO ventas.venta_detalle(\n"
+                    + "             idarticulo, idventa, cantidad, preciounitario, idimpuesto)\n"
+                    + "    VALUES (?, (select idventa from ventas.venta order by idventa desc limit 1), ?, ?, ?);";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            preparedStatement.setObject(1, dto.getIdarticulo());
+            preparedStatement.setObject(2, dto.getCant());
+            preparedStatement.setObject(3, dto.getPreciou());
+            preparedStatement.setObject(4, dto.getIdimpuesto());
+            filasAfectadas = preparedStatement.executeUpdate();
+            if (filasAfectadas > 0) {
+                conexion.comit();
+            } else {
+                conexion.rollback();
+                System.out.println("Rollback() Realizado");
+                return false;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(facturacionDAOIMPL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
 }

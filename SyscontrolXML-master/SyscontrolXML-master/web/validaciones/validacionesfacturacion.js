@@ -10,6 +10,54 @@ function opcionesFacturacion() {
     $('#valor10').val("0");
     $('#valor5').val("0");
     $('#totalIVA').val("0");
+    $('#btnguardarVenta').click(function () {
+        var nfilas = $('#mitablaDetlleVentas tr').length - 1;
+        if (parseInt(nfilas) < 1) {
+            $.confirm({
+                title: 'AVISO!',
+                content: 'No hay detalle que Guardar!',
+                type: 'red',
+                buttons: {
+                    Ok: {
+                        text: 'OK',
+                        btnClass: 'btn-dark',
+                        keys: ['enter', 'shift'],
+                        action: function () {
+
+                        }
+                    }
+
+                }
+
+            });
+
+        } else if ($('#fclienteci').val() === "" || $('#fclientenombre').val() === "" ||
+                $('#fvendedor').val() === "") {
+            $.confirm({
+                title: 'AVISO!',
+                content: 'Algunos datos no fueron cargados correctamente.!',
+                type: 'red',
+                buttons: {
+                    Ok: {
+                        text: 'OK',
+                        btnClass: 'btn-dark',
+                        keys: ['enter', 'shift'],
+                        action: function () {
+
+                        }
+                    }
+
+                }
+
+            });
+
+
+        } else {
+            mensajeVenta();
+        }
+
+
+    });
     $('#fclienteci').blur(function () {
         getclientefactura();
     });
@@ -140,15 +188,17 @@ function getclientefactura() {
 function comboCondVenta() {
 
     var array = ["Contado", "Credito"];
-
+    var cont = 0;
     for (var i in array) {
-        document.getElementById("fpago").innerHTML += "<option value='" + array[i] + "'>" + array[i] + "</option>";
+        cont++;
+        document.getElementById("fpago").innerHTML += "<option value='" + cont + "'>" + array[i] + "</option>";
     }
 
 }
 
 var index = 0;
 function getarticulos() {
+    $('#miTablaarticulos').find('tbody').find('tr').empty();
     jsonarticulos = {
         'opcion': 2
     };
@@ -197,6 +247,34 @@ function agregarArticulo() {
     });
 }
 
+function CargarArticulo() {
+    var ban = false;
+    if ($('#fCODarticulo').val() === "") {
+        alert('DEBES INGRESAR UN ARTICULO');
+    } else {
+        var cod = $('#fCODarticulo').val();
+        var codigo;
+        $('#mitablaDetlleVentas').find('tbody').find('tr').each(function () {
+            codigo = parseInt($(this).find("td").eq(0).html());
+            if (parseInt(cod) === codigo) {
+                var sms = confirm('Articulo cargado, desea sustituirlo ??');
+                if (sms === true) {
+                    $(this).closest("tr").remove();
+                    ban = true;
+                    agregarfilaventas();
+                } else {
+                    ban = true;
+                }
+
+            } else {
+
+            }
+        });
+        if (ban === false) {
+            agregarfilaventas();
+        }
+    }
+}
 var idx = 0;
 function agregarfilaventas() {
     var v_cod = $('#fCODarticulo').val();
@@ -221,7 +299,7 @@ function agregarfilaventas() {
         }
 
     }
-//    idx++;
+    idx++;
     $('#mitablaDetlleVentas').append("<tr id=\'prod" + idx + "\'>\
             <td>" + v_cod + "</td>\n\
             <td>" + v_producto + "</td>\n\
@@ -232,18 +310,21 @@ function agregarfilaventas() {
             <td>" + v_impuexe + "</td>\n\
             <td>" + v_subtotal + "</td>\n\
              <td style='display: none'>" + v_idimpuesto + "</td>\n\
-          <td ><button type=button title='Quitar el registro de la lista' style=text-align:center class='btn btn-sm btn-danger' onclick=\"$(\'#prod" + idx + "\');removeventa();totalventa();\">Quitar</button></td>\n\
+          <td ><button type=button title='Quitar el registro de la lista' style=text-align:center class='btn btn-sm btn-danger' onclick=\"$(\'#prod" + idx + "\').remove();totalventa();removeventa()\">Quitar</button></td>\n\
             </tr>");
     totalventa();
-//    $('#canti_v').focus();
-//    subtotal();
+    $('#fCODarticulo').val(null);
+    $('#fCODproducto').val(null);
+    $('#fcantidad').val(null);
+    $('#fprecio').val(null);
+    $('#fimpuesto').val(null);
+    $('#fIDimpuesto').val(null);
+    $('#fCODarticulo').focus();
+
+
 
 }
 function removeventa() {
-    $('#mitablaDetlleVentas tr').click(function () {
-        $(this).closest('tr').remove();
-
-    });
     var nfila = $('#mitablaDetlleVentas tr').length - 1;
     if (parseInt(nfila) <= 1) {
         $('#ftotalventa').val("0");
@@ -251,6 +332,7 @@ function removeventa() {
         $('#valor10').val("0");
         $('#valor5').val("0");
         $('#totalIVA').val("0");
+    } else {
     }
 }
 
@@ -314,24 +396,24 @@ function  getfacturas() {
         success: function (resp) {
             $.each(resp, function (indice, valor) {
                 var cantFac = valor.cant;
-                if (cantFac < 12) {
-//                           $.confirm({
-//                title: 'AVISO!',
-//                content: 'Solo quedan "'+cantFac+'" facturas. ',
-//                type: 'red',
-//                buttons: {
-//                    Ok: {
-//                        text: 'OK',
-//                        btnClass: 'btn-dark',
-//                        keys: ['enter', 'shift'],
-//                        action: function () {
-//
-//                        }
-//                    }
-//
-//                }
-//
-//            });
+                if (cantFac < 5) {
+                           $.confirm({
+                title: 'AVISO!',
+                content: 'Solo quedan "'+cantFac+'" facturas. ',
+                type: 'red',
+                buttons: {
+                    Ok: {
+                        text: 'OK',
+                        btnClass: 'btn-dark',
+                        keys: ['enter', 'shift'],
+                        action: function () {
+
+                        }
+                    }
+
+                }
+
+            });
                 } else {
 
                 }
@@ -339,6 +421,7 @@ function  getfacturas() {
                 $('#fcaja').val(valor.caja);
                 $('#fcajero').val(valor.cajero);
                 $('#fIDfactura').val(valor.iddocfactura);
+                $('#fIdapertura').val(valor.idaperturacierre);
 
             });
 
@@ -548,8 +631,89 @@ function numaletras() {
 
 
 }
+
+function mensajeVenta() {
+    $.confirm({
+        title: 'Guardar',
+        content: 'Desea Guardar la Venta ?',
+        buttons: {
+            Si: {
+                text: 'SI',
+                btnClass: 'btn-success',
+                keys: ['enter', 'shift'],
+                action: function () {
+                    guardarVenta();
+                }
+            },
+            No: {
+                text: 'No',
+                btnClass: 'btn-red',
+                keys: ['enter', 'shift'],
+                action: function () {
+                    $.alert('Cancelado !!');
+                }
+            }
+        }
+    });
+}
 // 
 //}
+function guardarVenta() {
+    jsonVenta = {
+        "opcion": 3,
+        "fidcliente": $('#fDIcliente').val(),
+        "fidfactura": $('#fIDfactura').val(),
+        "fidvemdedor": 3,
+        "fidaperturacierre": $('#fIdapertura').val(),
+        "fidcondventa": $('#fpago').val(),
+        "fmontoventa": $('#totalVenta').val().replace(/\./g, '')
+    };
+    $.ajax({
+        url: "/syscontrol/facturacionSERVLETXML",
+        type: 'POST',
+        data: jsonVenta,
+        cache: false,
+        dataType: 'text',
+        success: function () {
+            setTimeout(function () {
+                insertarVentaDetalle();
+                $.alert('Guardado correctamente !!');
+                $('#mitablaDetlleVentas').find('tbody').find('tr').empty();
+                location.reload();
+            }, 1000);
+        },
+        error: function () {
+            $.alert('No se puedo realizar la operación !!');
+        }
+    });
+
+}
+
+
+function  insertarVentaDetalle() {
+    $('#mitablaDetlleVentas').find('tbody').find('tr').each(function () {
+        jsonventaDetalle = {
+            "opcion": 4,
+            "fidarticulo": parseInt($(this).find("td").eq(0).html()),
+            "fcantidad": $(this).find("td").eq(3).html(),
+            "fpreciou": $(this).find("td").eq(2).html(),
+            "fidimpuesto": parseInt($(this).find("td").eq(8).html())
+        };
+        
+//        alert(jsonventaDetalle.fidarticulo);
+        $.ajax({
+            url: "/syscontrol/facturacionSERVLETXML",
+            type: 'POST',
+            data: jsonventaDetalle,
+            cache: false,
+            dataType: 'text',
+            success: function () {
+            },
+            error: function () {
+            }
+        });
+    });
+}
 
 
 

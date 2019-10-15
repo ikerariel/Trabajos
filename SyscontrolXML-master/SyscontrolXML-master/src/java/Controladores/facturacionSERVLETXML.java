@@ -47,6 +47,26 @@ public class facturacionSERVLETXML extends HttpServlet {
             case 2:
                 out.println(fDAO.getArticulos());
                 break;
+            case 3:
+                fDTO.setIdcliente(Integer.parseInt(request.getParameter("fidcliente")));
+                fDTO.setIddocfactura(Integer.parseInt(request.getParameter("fidfactura")));
+                fDTO.setIdvendedor(Integer.parseInt(request.getParameter("fidvemdedor")));
+                fDTO.setIdaperturacierre(Integer.parseInt(request.getParameter("fidaperturacierre")));
+                fDTO.setIdcondicionventa(Integer.parseInt(request.getParameter("fidcondventa")));
+                fDTO.setMontoventa(Integer.parseInt(request.getParameter("fmontoventa")));
+                 if (fDAO.insertarVenta(fDTO)) {
+                    out.println("Exitoso");
+                }
+                break;
+            case 4:
+                fDTO.setIdarticulo(Integer.parseInt(request.getParameter("fidarticulo")));
+                fDTO.setCant(Integer.parseInt(request.getParameter("fcantidad")));
+                fDTO.setPreciou(Integer.parseInt(request.getParameter("fpreciou")));
+                fDTO.setIdimpuesto(Integer.parseInt(request.getParameter("fidimpuesto")));
+                 if (fDAO.insertarVentaDetalle(fDTO)) {
+                    out.println("Exitoso");
+                }
+                break;
         }
         
         

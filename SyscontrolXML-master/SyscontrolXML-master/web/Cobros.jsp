@@ -69,78 +69,21 @@
                                 <form>
 
                                     <div class="form-row">
-                                        <div class="col-md-3 mb-3">
-                                            <input type="text" disabled="" class="form-control" id="fnrofactura" placeholder="Monto" required="" >
-                                        </div>
-                                        <div class="col-md-2">
-                                            <input disabled="" class="form-control" id="fcaja">
-                                        </div>
-                                        <div class="col-md-2 mb-3">
-                                            <input disabled="" class="form-control" id="fcajero">
-
-                                        </div>
-
                                         <div class="col-md-2 mb-2">
-                                            <select disabled="" class="custom-select" id="fpago" >
-
-                                            </select>
+                                            <select type="text" class="form-control" id="ctipodoac"  required>
+                                                
+                                            </select> 
                                         </div>
-                                        <div class="col-md-1 mb-2" >
-                                            <span class="form-control-plaintext" style="font-size: 15pt;position: relative;left: 60px;font-weight: bold ">Total :</span>
-                                        </div>
-                                        <div class="col-md-2 mb-2" >
-                                            <input style="text-align:  center; border: transparent; background-color: transparent" disabled="" class="form-control" id="totalVenta"  >
-                                            <input style="display: none" id="ftotalventa"  >
-                                        </div>
-
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="col-md-2 mb-2">
-                                            <input type="text" class="form-control" id="fclienteci"  placeholder="Cedula" required> 
+                                           <div class="col-md-2 mb-2">
+                                            <input type="text" class="form-control" id="fclienteci"  placeholder="Nro." required> 
                                         </div>
                                         <div class="col-md-6">
                                             <input type="text" class="form-control" id="fclientenombre"disabled="" placeholder="Nombre del cliente" required> 
                                         </div>
-                                        <div class="col-md-4">
-                                            <input type="text" class="form-control" id="fvendedor"disabled=""  value="VENDEDOR MOSTRADOR" required> 
-                                        </div>
-                                        <div class="col-md-4">
-
-                                            <div class="col-md-1">
-                                                <label for="validationDefaultUsername" style="display: none">..</label>
-                                                <input   type="text" style="display: none" id="fDIcliente" >
-                                                <input  type="text" style="display: none"  id="fIDfactura">
-                                                <input  type="text" style="display: none"  id="fIDimpuesto">
-                                                <input  type="text" style="display: none"  id="fIdapertura">
-                                            </div>
-
-                                        </div>
+                                        
                                     </div>
                                     <div class="form-row">
-                                        <div class="col-md-1">
-                                            <label for="validationDefaultUsername">Cod. </label>
-                                            <input type="text" class="form-control" id="fCODarticulo" placeholder="Escriba una observaciòn" aria-describedby="inputGroupPrepend2">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="validationDefaultUsername">Producto </label>
-                                            <input type="text" class="form-control" id="fCODproducto" disabled="" aria-describedby="inputGroupPrepend2">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <label for="validationDefaultUsername">Precio </label>
-                                            <input type="text" class="form-control" id="fprecio"  disabled="" aria-describedby="inputGroupPrepend2">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <label for="validationDefaultUsername">Impuesto </label>
-                                            <input disabled="" type="text" class="form-control" id="fimpuesto" aria-describedby="inputGroupPrepend2">
-                                        </div>
-                                        <div class="col-md-1">
-                                            <label for="validationDefaultUsername">Cantidad </label>
-                                            <input type="text" class="form-control" id="fcantidad" aria-describedby="inputGroupPrepend2"
-                                                   onkeydown="
-                                                           if (event.keyCode === 13) {
-                                                               CargarArticulo();
-                                                           }">
-                                        </div>
+                                      
 
                                     </div>
 
@@ -152,15 +95,11 @@
                                     <table class="table table-striped table-sm table-hover" id="mitablaDetlleVentas">
                                         <thead class="thead-dark">
                                             <tr>
-                                                <th scope="col" >Codigo</th>
-                                                <th scope="col">Producto</th>
-                                                <th scope="col">Precio Un.</th>
-                                                <th scope="col">Cantidad.</th>
-                                                <th scope="col">10%</th>
-                                                <th scope="col">5%</th>
-                                                <th scope="col">Exenta</th>
-                                                <th scope="col">Sub Total</th>
-                                                <th scope="col" style="display: none">codImpuesto</th>
+                                                <th scope="col" >#</th>
+                                                <th scope="col">Monto a Pagar</th>
+                                                <th scope="col">Fecha Emitida.</th>
+                                                <th scope="col">Saldo</th>
+                                                <th scope="col">Estado.</th>
                                                 <th scope="col">Opcion</th>
                                             </tr>
                                         </thead>
@@ -170,16 +109,6 @@
                                     </table>
                                 </div>
                                 <br>
-                              
-                                <div>
-                                      <span style="font-size: 8pt; font-weight: bold" >Total a pagar :</span> <span id="numTexto" ></span>
-                                </div>
-                                <div>
-                                      <span style="font-size: 8pt; font-weight: bold" >Liquidación de Iva :
-                                      </span> <span style="font-size: 8pt; font-weight: bold" >IVA 5% </span> <input style="border: transparent; background-color: transparent" disabled="" type="text" id="valor5">
-                                      <span style="font-size: 8pt; font-weight: bold" >IVA 10% </span> <input style="border: transparent; background-color: transparent" disabled=""  type="text" id="valor10">
-                                      <span style="font-size: 8pt; font-weight: bold" >Total Iva : </span> <input style="border: transparent; background-color: transparent" disabled=""  type="text" id="totalIVA">
-                                </div>
                               
                             </div>
                         </div>
@@ -277,7 +206,7 @@
         <script src="Recursos/js/jquery-confirm.min.js"></script>
         <!-- Vlidaciones Script -->
         <script src="validaciones/validacionesgenericos.js"></script>
-        <script src="validaciones/validacionesfacturacion.js"></script>
+        <script src="validaciones/validacionesCobros.js"></script>
 
     </body>
 </html>
