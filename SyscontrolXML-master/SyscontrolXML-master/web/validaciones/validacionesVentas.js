@@ -1,5 +1,7 @@
 $(document).ready(function () {
     validad();
+    getTimbrados();
+    getAperCierreVentas();
     getCombos(4, 'listacajeros');
     getCombos(5, 'listaDoc');
     getCombos(8, 'aperCaja');
@@ -8,8 +10,6 @@ $(document).ready(function () {
 });
 
 function validacionAperturaVenta() {
-
-
     var opcion = false;
     var vCaja;
     var vCajero;
@@ -99,8 +99,7 @@ function validacionAperturaVenta() {
 }
 
 function validad() {
-    getTimbrados();
-    getAperCierreVentas();
+
     $('#aperIDfacTimbrados').hide();
     $('#vNrotimbrado').blur(function () {
         var counNrotimb = $('#vNrotimbrado').val().length;
@@ -272,6 +271,22 @@ function validad() {
 
     $('#apeMontoapertura').keyup(function () {
         puntodecimal('apeMontoapertura');
+    });
+    $('#btnCerrarCaja').click(function () {
+        if ($('#CodigoApertura').val() === "") {
+            $.alert({
+                title: 'AVISO..!!',
+                icon: 'glyphicon glyphicon-remove',
+                content: 'Debes Selecciona una caja.!!',
+                type: 'red',
+                animation: 'scaleY'
+
+
+            });
+        } else {
+            v_cerrarCaja();
+        }
+
     });
     $('#apeMontoapertura').blur(function () {
         var monto = $('#apeMontoapertura').val().replace(/\./g, '');
@@ -561,12 +576,12 @@ function getAperCierreVentas() {
                 var fcierre;
                 if (parseInt(id) === 1) {
                     color = '#d9edf7';
-                    Informe = "<button class='btn btn-sm btn-outline-primary' onclick=\"$(\'#prod" + idxAperCierre + "\')\">Informe</button>";
-                    cerrarv = "<button class='btn btn-sm btn-outline-danger' onclick=\"$(\'#prod" + idxAperCierre + "\');caja()\">Cerrar</button>";
+//                    Informe = "<button class='btn btn-sm btn-outline-primary' onclick=\"$(\'#prod" + idxAperCierre + "\');seleccionCaja()\">Informe</button>";
+//                    cerrarv = "<button class='btn btn-sm btn-outline-danger' onclick=\"$(\'#prod" + idxAperCierre + "\');caja()\">Cerrar</button>";
                 } else if (parseInt(id) === 2) {
                     color = 'red';
-                    Informe = "<button class='btn btn-sm btn-outline-primary' onclick=\"$(\'#prod" + idxAperCierre + "\')\">Informe</button>";
-                    cerrarv = "<button disabled class='btn btn-sm btn-outline-danger'>Cerrar</button>";
+//                    Informe = "<button class='btn btn-sm btn-outline-primary' onclick=\"$(\'#prod" + idxAperCierre + "\')\">Informe</button>";
+//                    cerrarv = "<button disabled class='btn btn-sm btn-outline-danger'>Cerrar</button>";
                 }
                 $("#mitablaaperturaCierreCajaVentas").append($("<tr id=\'cod" + idxAperCierre + "\'>").append($(
                         "<td>" + valor.idaperturacierre + "</td>" +
@@ -577,8 +592,7 @@ function getAperCierreVentas() {
                         "<td style='text-align: center'>" + valor.fecha_cierre + "</td>" +
                         "<td bgcolor=" + color + ">" + valor.estado + "</td>" +
                         "<td style=display:none>" + valor.idcaja + "</td>" +
-                        "<td style=display:none>" + valor.idcajero + "</td>" +
-                        "<td style='text-align: center'> " + Informe + "" + cerrarv + "</td>")));
+                        "<td style=display:none>" + valor.idcajero + "</td>")));
 
                 $('#mitablaaperturaCierreCajaVentas').each(function () {
                     var v = $(this).find("td").eq(5).html();
@@ -594,52 +608,60 @@ function getAperCierreVentas() {
     });
 }
 
-function caja() {
-    var num;
-    $('#mitablaaperturaCierreCajaVentas tr').click(function () {
-        num = $(this).find("td").eq(0).html();
-        v_cerrarCaja(num);
+function seleccionCaja() {
+    var caja = 0;
+    $('#mitablaaperturaCierreCajaVentas tr').dblclick(function () {
+        vcaja = $(this).find("td").eq(6).html();
+        if (vcaja === 'CERRADA') {
+
+        } else {
+            $(this).find("td").css('color', 'blue');
+            caja = $(this).find("td").eq(0).html();
+            $('#CodigoApertura').val(caja);
+        }
     });
-    function v_cerrarCaja(valor) {
-        $.confirm({
-            title: 'Cerrar Caja',
-            content: 'Desea Cerar la Caja ?',
-            buttons: {
-                Si: {
-                    text: 'SI',
-                    btnClass: 'btn-success',
-                    keys: ['enter', 'shift'],
-                    action: function () {
-                        jsonCerarCaja = {
-                            'opcion': 10,
-                            'codApertura': valor
-                        };
-                        $.ajax({
-                            url: "/syscontrol/ventasSERVLET",
-                            type: 'POST',
-                            data: jsonCerarCaja,
-                            cache: false,
-                            dataType: 'text',
-                            success: function () {
-//                            getAperCierreVentas();
-                            }
 
-                        });
+}
 
-                    }
-                },
-                No: {
-                    text: 'No',
-                    btnClass: 'btn-red',
-                    keys: ['enter', 'shift'],
-                    action: function () {
-                        $.alert('Cancelado !!');
-                    }
+function v_cerrarCaja() {
+    $.confirm({
+        title: 'Cerrar Caja',
+        content: 'Desea Cerar la Caja ?',
+        buttons: {
+            Si: {
+                text: 'SI',
+                btnClass: 'btn-success',
+                keys: ['enter', 'shift'],
+                action: function () {
+                    jsonCerarCaja = {
+                        'opcion': 10,
+                        'codApertura': $('#CodigoApertura').val()
+                    };
+                    $.ajax({
+                        url: "/syscontrol/ventasSERVLET",
+                        type: 'POST',
+                        data: jsonCerarCaja,
+                        cache: false,
+                        dataType: 'text',
+                        success: function () {
+                          location.reload();
+                        }
+
+                    });
+
+                }
+            },
+            No: {
+                text: 'No',
+                btnClass: 'btn-red',
+                keys: ['enter', 'shift'],
+                action: function () {
+                    $.alert('Cancelado !!');
                 }
             }
-        });
+        }
+    });
 
-    }
 }
 
 function getCombos(cod, variable) {

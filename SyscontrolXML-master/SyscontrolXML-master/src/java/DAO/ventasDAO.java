@@ -22,5 +22,6 @@ public interface ventasDAO {
     String getTipoDoc();
     String getFacturasPorTimbrados(Integer TipDoc);
     String getAperCierreCajaVentas();
+    String getCobros(Integer numero);
     
 }

@@ -314,4 +314,9 @@ public class ventasDAOIMPLE implements ventasDAO {
         return false;
     }
 
+    @Override
+    public String getCobros(Integer numero) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

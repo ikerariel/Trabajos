@@ -24,6 +24,10 @@
         <servlet-name>ventasSERVLET</servlet-name>
         <servlet-class>Controladores.ventasSERVLET</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>facturacionSERVLETXML</servlet-name>
+        <servlet-class>Controladores.facturacionSERVLETXML</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>accesoSERVLETXML</servlet-name>
         <url-pattern>/accesoSERVLETXML</url-pattern>
@@ -47,6 +51,10 @@
     <servlet-mapping>
         <servlet-name>ventasSERVLET</servlet-name>
         <url-pattern>/ventasSERVLET</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>facturacionSERVLETXML</servlet-name>
+        <url-pattern>/facturacionSERVLETXML</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
