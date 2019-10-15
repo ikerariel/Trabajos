@@ -587,7 +587,7 @@ function recuperarDetalleFacturaC() {
                                     <td>" + value.detfact_cantidad + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
                                     <td style=display:none>" + value.nrocompra + "</td>\n\
-                                    <td ><img onclick=\"$(\'#prod" + tindex + "\').remove(); calcularmonto();\n\
+                                    <td ><img onclick=\"$(\'#prod" + tindex + "\');removecompra(); calcularmonto();\n\
                                     \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
                     });
                     $('#codigo').val($('#nrofacturaP').val());

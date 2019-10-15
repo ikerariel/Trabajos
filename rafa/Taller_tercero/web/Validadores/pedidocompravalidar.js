@@ -520,7 +520,7 @@ function recuperarDetallePedidoCompras() {
                                     <td>" + value.precio + "</td>\n\
                                     <td>" + value.cantidad + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
-                                    <td><img onclick=\"$(\'#prod" + tindex + "\').remove();calcularmontopedic();;\n\
+                                    <td><img onclick=\"$(\'#prod" + tindex + "\');removepco();calcularmontopedic();;\n\
                                     \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
                         });
                         $('#codigo').val($('#v_nropedido').val());
