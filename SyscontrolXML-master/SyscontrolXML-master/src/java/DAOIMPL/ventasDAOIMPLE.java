@@ -315,8 +315,41 @@ public class ventasDAOIMPLE implements ventasDAO {
     }
 
     @Override
-    public String getCobros(Integer numero) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getCobros(String fac, String ci) {
+        ResultSet rs;
+        ArrayList<ventasDTO> allcobros = new ArrayList<>();
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "SELECT c.idcobro,df.numerodocumento, coalesce(c.importe,0) as importe, c.fecha_cobro::date, c.idtipocobro, c.idventa, c.saldo, c.fechasaldo::date, \n"
+                    + "       c.idestado, (cl.cedula||' - '||cl.nombrecliente) as cliente, nombrecliente,(e.descripcion) as estado\n"
+                    + "  FROM ventas.cobro c\n"
+                    + "  left join ventas.venta v on c.idventa=v.idventa\n"
+                    + "  left join cliente cl on v.idcliente = cl.idcliente\n"
+                    + "  left join estado e on c.idestado=e.idestado\n"
+                    + "left join ventas.documentos_facturas df on v.iddocfactura=df.iddocfactura\n"
+                    + "where (df.numerodocumento=?) or (cl.cedula=?) and c.idestado=4";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            preparedStatement.setObject(1, fac);
+            preparedStatement.setObject(2, ci);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                allcobros.add(new ventasDTO(rs.getInt("idcobro"),
+                        rs.getString("fechasaldo"),
+                        rs.getInt("saldo"),
+                        rs.getInt("importe"),
+                        rs.getString("estado"),
+                        rs.getString("cliente"),
+                        rs.getString("nombrecliente"),
+                        rs.getString("numerodocumento"),
+                        rs.getInt("idestado")));
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ventasDAOIMPLE.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new Gson().toJson(allcobros);
     }
 
 }

@@ -100,14 +100,17 @@ public class ventasSERVLET extends HttpServlet {
                     out.println("Exitoso");
                 }
                 break;
-                
+
             case 10:
                 vDTO.setIdaperturacierre(Integer.parseInt(request.getParameter("codApertura")));
                 if (vDAO.cerrarCaja(vDTO)) {
                     out.println("Exitoso");
                 }
                 break;
-                
+
+            case 11:
+                out.println(vDAO.getCobros(request.getParameter("cfac"),request.getParameter("cCi")));
+                break;
         }
 
 //        try (PrintWriter out = response.getWriter()) {

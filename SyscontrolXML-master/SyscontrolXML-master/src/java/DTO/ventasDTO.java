@@ -11,13 +11,19 @@ package DTO;
  */
 public class ventasDTO {
 
+    private Integer idcobro;
+    private String fechasaldo;
+    private Integer saldo;
+    private Integer importe;
+    private String estado;
+    private Integer idestado;
+    private String numerodocumento;
+
     private Integer idaperturacierre;
     private String fecha_apertura;
     private Integer monto_apertura;
     private String cajero;
     private String fecha_cierre;
-    private String estado;
-    private Integer idestado;
 
     private Integer idtimbrado;
     private Integer numero;
@@ -27,7 +33,7 @@ public class ventasDTO {
     private String factura_desde;
     private String factura_hasta;
     private String tipodocumento;
-    private String numerodocumento;
+ 
 
     private Integer secuencia;
     private Integer idcajero;
@@ -41,7 +47,21 @@ public class ventasDTO {
     private Integer idGenerico;
     private String decripGenerico;
     private String caja;
+    private String nombrecliente;
+    private String cliente;
     private Integer idcaja;
+
+    public ventasDTO(Integer idcobro, String fechasaldo, Integer saldo, Integer importe, String estado,String cliente, String nombrecliente, String numerodocumento,Integer idestado) {
+        this.idcobro = idcobro;
+        this.fechasaldo = fechasaldo;
+        this.saldo = saldo;
+        this.importe = importe;
+        this.estado = estado;
+        this.cliente = cliente;
+        this.nombrecliente = nombrecliente;
+        this.numerodocumento = numerodocumento;
+        this.idestado = idestado;
+    }
 
     public Integer getIdaperturacierre() {
         return idaperturacierre;
@@ -75,7 +95,7 @@ public class ventasDTO {
         this.idcaja = idcaja;
     }
 
-    public ventasDTO(Integer idaperturacierre, String fecha_apertura, Integer monto_apertura, String cajero, String fecha_cierre, String estado,String caja,Integer idcaja, Integer idcajero, Integer idestado) {
+    public ventasDTO(Integer idaperturacierre, String fecha_apertura, Integer monto_apertura, String cajero, String fecha_cierre, String estado, String caja, Integer idcaja, Integer idcajero, Integer idestado) {
         this.idaperturacierre = idaperturacierre;
         this.fecha_apertura = fecha_apertura;
         this.monto_apertura = monto_apertura;
