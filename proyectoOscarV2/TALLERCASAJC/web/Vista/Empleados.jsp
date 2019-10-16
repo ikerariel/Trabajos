@@ -7,6 +7,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+     <%
+
+        HttpSession sessionActivaUser = request.getSession();
+        if (sessionActivaUser.getAttribute("user") == null) {
+            response.sendRedirect("/TALLERCASAJC/acceso.jsp");
+        }
+
+    %>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -24,6 +32,7 @@
         <title>EMPLEADOS</title>
     </head>
     <body>
+        <%@include file="../viwmenu.jsp" %>
     <center>
         <h1>EMPLEADOS</h1>
         <section>
@@ -87,13 +96,15 @@
                                 <label class="col-md-1 control-label" style=" font-weight: bold">CI</label>  
                                 <div class="col-md-3">
                                     <input id="ciemple"  type="text" style="text-transform: uppercase; font-weight: bold;font-size: 12pt;
-                                           background-color: #d9edf7" placeholder="Ingrese ci" class="form-control input-sm" required autofocus="">
+                                           background-color: #d9edf7" placeholder="Ingrese ci" class="form-control input-sm" required autofocus=""
+                                           onkeyup="ValidacionesSoloNumerosempl(this)" onchange="ValidacionesSoloNumerosempl(this)">
                                 </div>
 
                                 <label class="col-md-1 control-label" style=" font-weight: bold">TEL</label>  
                                 <div class="col-md-3">
                                     <input id="telemple"  type="text" style="text-transform: uppercase; font-weight: bold;font-size: 12pt;
-                                           background-color: #d9edf7" placeholder="Ingrese descripcion" class="form-control input-sm" required autofocus="">
+                                           background-color: #d9edf7" placeholder="Ingrese descripcion" class="form-control input-sm" required autofocus=""
+                                           onkeyup="ValidacionesSoloNumerosempl(this)" onchange="ValidacionesSoloNumerosempl(this)">
                                 </div>
 
                                 <label class="col-md-1 control-label" style=" font-weight: bold">DIRECCION</label>  

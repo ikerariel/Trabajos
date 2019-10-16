@@ -123,6 +123,39 @@ function allPerfiles() {
     });
 }
 
+function campovacioPerfiles() { //Para verificar campos vacio
+    var a = $('#descrperfil').val(); //nombre del campos
+    if (a === "") {
+        alert('campo vacio');
+        $('#descrperfil');
+    } else {
+        ambPerfiles(1);
+    }
+}
+
+function ControlarCampoPerfiles(){  // Para que no se repita nombre
+    var dato;
+    var Perfiles = $('#descrperfil').val();
+    // alert(Perfiles);
+    $('#miTablaPerfiles tr').each(function () {
+        dato = $(this).find('td').eq(1).html();
+        if (dato === Perfiles) {
+            alert('ESTE PERFIL YA EXISTE');
+            $('#descrperfil').val(null); //Vaciar Campos
+            $('#descrperfil').focus(); 
+        } else {
+        }
+    });
+}
+
 function reportesPerfiles() {
     window.open("reportesPerfiles.jsp");
+}
+
+function validarsololetras(e) {
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==8) return true;
+        patron =/[A-Za-z\s]/;
+        te = String.fromCharCode(tecla);
+    return patron.test(te);
 }

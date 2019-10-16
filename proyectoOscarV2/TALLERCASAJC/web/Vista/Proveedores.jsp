@@ -7,6 +7,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    <%
+        HttpSession sessionActivaUser = request.getSession();
+        if (sessionActivaUser.getAttribute("user") == null) {
+            response.sendRedirect("/TALLERCASAJC/acceso.jsp");
+        }
+    %>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -24,6 +30,7 @@
         <title>PROVEEDORES</title>
     </head>
     <body>
+         <%@include file="../viwmenu.jsp" %>
        <center>
         <section>
             <form class="form-horizontal"  id="defaultForm">
@@ -95,13 +102,15 @@
                                     <label class="col-md-1 control-label" style=" font-weight: bold">TELEFONO: </label>  
                                     <div class="col-md-3">
                                         <input id="provtelefono"  type="text" style="text-transform: uppercase; font-weight: bold;font-size: 10pt;
-                                               background-color: #d9edf7" placeholder="Ingrese telefono" class="form-control input-sm" required autofocus="">
+                                               background-color: #d9edf7" placeholder="Ingrese telefono" class="form-control input-sm" required autofocus=""
+                                               onkeyup="ValidacionesSoloNumerosprovee(this)" onchange="ValidacionesSoloNumerosprovee(this)">
                                     </div>
 
                                     <label class="col-md-1 control-label" style=" font-weight: bold">RUC: </label>  
                                     <div class="col-md-3">
                                         <input id="provruc"  type="text" style="text-transform: uppercase; font-weight: bold;font-size: 10pt;
-                                               background-color: #d9edf7" placeholder="Ingrese ruc" class="form-control input-sm" required autofocus="">
+                                               background-color: #d9edf7" placeholder="Ingrese ruc" class="form-control input-sm" required autofocus=""
+                                               onkeyup="ValidacionesSoloNumerosprovee(this)" onchange="ValidacionesSoloNumerosprovee(this)">
                                     </div>
                                
 

@@ -7,8 +7,8 @@ $(document).ready(function () {
 
 function opcionesDiagnostico() {
     traerarticulosD();
-    traerRecepcionList();
-    $("#mitabladetallediagnostico").prop('disabled', true);
+     traerRecepcionList();
+      $("#mitabladetallediagnostico").prop('disabled', true);
     $('#btnNuevoDiagnostico').click(function () {
         $('#nrorecpecionDiagnostico').val(null);
         $('#clinteNombrediagnostico').val(null);
@@ -172,11 +172,11 @@ function traerRecepcionList() {
         success: function (resp) {
             $.each(resp, function (indice, value) {
                 var estado = value.id_estado;
-                if (parseInt(estado) === 1) {
-                    $("#lisrecepc").append("<option value= \"" + value.id_recepcion + "\"> " + "Fecha : " + value.fecha + "" + " / Cliente :" + value.cliente + "</option>");
+                if(parseInt(estado)===1){
+                       $("#lisrecepc").append("<option value= \"" + value.id_recepcion + "\"> " +"Fecha : " + value.fecha + ""+ " / Cliente :" + value.cliente + "</option>");
 
                 }
-
+             
             });
 
         }
@@ -233,7 +233,7 @@ function cargaGrillaD() {
             if (cod === codigo) {
                 var sms = confirm('Articulo cargado, desea sustituirlo ??');
                 if (sms === true) {
-                    $(this).closest('tr').remove();
+                    $(this).closest("tr").remove();
                     ban = true;
                     vCargarGrillaD();
                 } else {
@@ -257,31 +257,25 @@ function cargaGrillaD() {
     }
 
 }
-var inx = 0;
+var tindex = 0;
 function vCargarGrillaD() {
     //idmaterial
     var v_codmaterial = $('#v_articusD').val();
     var v_descripcion = $('#descriparticuloRecepcion').val();
     var v_cant = $('#cantArtRecepcion').val();
 
-    $('#mitabladetallediagnostico').append("<tr id=\'prod" + inx + "\'>\
+    $('#mitabladetallediagnostico').append("<tr id=\'prod" + tindex + "\'>\
             <td>" + v_codmaterial + "</td>\n\
             <td>" + v_descripcion + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td><button type=button title='Quitar el registro de la lista' \n\
-                                 style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + inx + "\');remove()\">\n\
+                                 style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + tindex + "\').remove()\">\n\
                                  <span class='glyphicon glyphicon-remove'></span></button></td></tr>");
 
     $('#v_articusD').val(null);
     $('#v_articusD').focus;
     $('#cantArtRecepcion').val(null);
     $('#descriparticuloRecepcion').val(null);
-}
-function remove() {
-    $('#mitabladetallediagnostico tr').click(function () {
-       $(this).closest('tr').remove();
-
-    });
 }
 
 
@@ -441,7 +435,7 @@ function recuperarRecepcionDiagnostico() {
 
 }
 
-var indexx = 0;
+var indexx=0;
 function getDetalleRececionDiagnostico(cod) {
     detallejsonR = {
         'opcion': 7,

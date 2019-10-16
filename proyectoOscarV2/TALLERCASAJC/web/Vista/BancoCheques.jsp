@@ -7,6 +7,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    <%
+
+        HttpSession sessionActivaUser = request.getSession();
+        if (sessionActivaUser.getAttribute("user") == null) {
+            response.sendRedirect("/TALLERCASAJC/acceso.jsp");
+        }
+
+    %>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -27,6 +35,7 @@
         <title>BANCO CHEQUES</title>
     </head>
     <body>
+         <%@include file="../viwmenu.jsp" %>
     <center>
         <section>
             <form class="form-horizontal"  id="defaultForm">

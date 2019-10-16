@@ -28,8 +28,8 @@ public class Conexion {
     private final String baseDatos = "oscar";
 //    private final String baseDatos = "bd_casajctesiss";
     private final String usuario = "postgres";
+//    private final String password = "123456";
     private final String password = "carlos123";
-//    private final String password = "carlos123";
 
 
     private ResultSet ResultSet;

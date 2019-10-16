@@ -13,23 +13,32 @@ import ModelDTO.NotaRemisionDTO;
  */
 public interface NotaRemisionDAO {
     
-    String getNotaRemision();
+    Integer getUltimoCodigoNotaRemision1();
 
-    String getDetalleNotaRemision(Integer id);
+    String ListarEstadosNotaRemision2();
 
-    String getfacturas(Integer facturaNRO);
+    String ListarUsuariosNotaRemision3();
 
-    public boolean eliminarDetalleNotaRemision(Integer id);
+    String ListarProveedoresNotaRemision4();
 
-    boolean insertarNotaRemision(NotaRemisionDTO Dto);
+    String ListarFacturasComprasNotaRemision5();
 
-    boolean updateCabeceraNotaRemision(NotaRemisionDTO Dto);
+    String ListarDetFacturasComprasRemision6(Integer id);
 
-    boolean updateNotaRemision(Integer _estadoNR, Integer _idNR);
+    String ListarSucursalesNotaRemision7();
 
-    boolean insertarDetalleNotaRemision(NotaRemisionDTO Dto);
+    String ListarArticulosNotaRemision8();
 
-    boolean insertarDetllaNr(NotaRemisionDTO DTO);
+    boolean insertarCabeceraNotaRemision9(NotaRemisionDTO dto);
 
-    Integer getUltimoCodigoNotaRemision();
+    boolean modificarCabeceraNotaRemision10(NotaRemisionDTO dto);
+
+    boolean insertarDetNotaRemision11(NotaRemisionDTO dto);
+
+    String ListarNotaRemision12();
+
+    boolean confirmarNotaRemision13(NotaRemisionDTO dto);
+
+    String listarDetNotaRemision14(Integer id);
+    
 }

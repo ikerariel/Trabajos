@@ -1,448 +1,567 @@
 $(document).ready(function () {
-
-    $(":text").val("");
-    fechaactual();
-    allNotasCreditos();
-     document.getElementById('btnGuardarM').style.display = 'none';
+//    combos('comboproveedor', 3);
+//    combos('combotipomneda', 4);
+    fechaac();
+//    $('#coddeposito').val($('#coddeposito_v').val());
+//    $('#depositodescrip').val($('#depos_v').val());
+    getarticulos();
+    getNotaCreCompras();
 });
-function fechaactual() {
-    var fecha = new Date();
-    $('#fechanotacredito').val(fecha
-            .getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear());
+
+function verNotaCreCompras() {
+    $('#mitabladetallenotacrecompras').find('tbody').find('tr').each(function () {
+        alert($(this).find("td").eq(5).html());
+    });
 }
-
-function abrirVentanaModal() {
-    getcodNC();
+function fechaacNotaCreCompras() {
+    var fv = new Date();
+    $('#fechanotacrecompras').val(fv.getDate() + "/" + (fv.getMonth() + 1) + "/" + fv.getFullYear());
 }
-
-var tindex = 0;
-
-// °°°°°Funcion Agregar filas y Validaciones°°°°"
-
-function agregarFilaNC() {
-    var _notaNC = $('#observNC').val();
-
-    if (_notaNC === "") {
-        alert('No se encuentra algun concepto cargado..!!');
-    } else {
-        if (_importe === "") {
-            alert('No se ecuentra importe cargado..!!');
-        } else {
-            var v_nrofac = $('#nrofacturaNC').val();
-            var v_obs = $('#observNC').val();
-
-            // °°°°style=display:none°°° PARA ocultar ej. "Nro Factura"
-
-            $('#miTablaDetalleNC').append("<tr id=\'prod" + tindex + "\'>\
-            <td style=display:none>" + v_nrofac + "</td>\n\
-            <td>" + v_obs + "</td>\n\
-            <td><img onclick=\"$(\'#prod" + tindex + "\').remove()\n\
-            \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
-            $('#observND').val(null);
-            $('#observND').focus;
-        }
-    }
-}//-----------------------
-
-function crearJSON(id) {
-    datosJSON = {
-        "opcion": id
+function insertarNotaCreCompras(op, caso) {
+    movimiento = {
+        'opcion': op,
+        'vv_caso': caso,
+        '_nronocred': $('#NCnronocred_').val(),
+        '_nrotimbrado': $('#NCnrotimbrado_').val(),
+        '_obsnocred': $('#NCobsnocred_').val(),
+        '_codusuario': $('#NCcodusuario_').val(),
+        '_codnotacrecompra': $('#NCcodnotacrecompra_').val(),
+        '_nrofacturaC': $('#NCnrofacturaC_').val()
     };
-}
-function allNotasCreditos() {
-    crearJSON(1);
     $.ajax({
-        url: "http://localhost:8084/TALLERCASAJC/NotaCreComprascontrol",
+        url: "/TALLERCASAJC/NotaCreComprasControl",
         type: 'POST',
-        data: datosJSON,
+        data: movimiento,
+        cache: false,
+        dataType: 'text',
+        success: function () {
+            deletejson = {
+                'opcion': 7,
+                '_codnotacrecompra': $('#NCcodnotacrecompra_').val()
+            };
+            $.ajax({
+                url: "/TALLERCASAJC/NotaCreComprasControl",
+                type: 'POST',
+                data: deletejson,
+                cache: false,
+                dataType: 'text',
+                success: function (resp) {
+                    $('#mitabladetallenotacrecompras').find('tbody').find('tr').each(function () {
+                        movimiento = {
+                            'opcion': 2,
+                            '_codarticulo': $(this).find("td").eq(0).html(),
+                            '_cantidad': $(this).find("td").eq(3).html(),
+                            '_preciounitario': $(this).find("td").eq(2).html().replace(/\./g, ''),
+                            '_codnotacrecompra': $('#NCcodnotacrecompra_').val()
+                        };
+                        $.ajax({
+                            url: "/TALLERCASAJC/NotaCreComprasControl",
+                            type: 'POST',
+                            data: movimiento,
+                            cache: false,
+                            dataType: 'text',
+                            success: function (resp) {
+                                $('#ventananotacrecompras').modal('hide');
+                                location.reload();
+                            }
+                        });
+                    });
+                }
+            });
+        }
+    });
+}
+
+function modificarNotaCreCompras() {
+    movimiento = {
+        'opcion': 1,
+        '_nronocred': $('#NCnronocred_').val(),
+        '_nrotimbrado': $('#NCnrotimbrado_').val(),
+        '_obsnocred': $('#NCobsnocred_').val(),
+        '_codusuario': $('#NCcodusuario_').val()
+    };
+    $.ajax({
+        url: "/TALLERCASAJC/NotaCreComprasControl",
+        type: 'POST',
+        data: movimiento,
+        cache: false,
+        dataType: 'text',
+        success: function () {
+
+            $('#mitabladetallenotacrecompras').find('tbody').find('tr').each(function () {
+                movimiento = {
+                    'opcion': 2,
+                    '_codarticulo': $(this).find("td").eq(0).html(),
+                    '_cantidad': $(this).find("td").eq(3).html(),
+                    '_preciounitario': $(this).find("td").eq(2).html().replace(/\./g, '')
+
+                };
+                $.ajax({
+                    url: "/TALLERCASAJC/NotaCreComprasControl",
+                    type: 'POST',
+                    data: movimiento,
+                    cache: false,
+                    dataType: 'text',
+                    success: function (resp) {
+                        $('#ventananotacrecompras').modal('hide');
+                        getpresupuesto();
+                    }
+                });
+            });
+        }
+
+    });
+
+
+}
+////////////////////////////////////////////////////////////////////
+function combosNotaCreCompras(cb, cod) {
+    combosjson = {
+        "opcion": cod
+    };
+    $.ajax({
+        url: "/TALLERCASAJC/NotaCreComprasControl",
+        type: 'POST',
+        data: combosjson,
         cache: false,
         success: function (resp) {
             $.each(resp, function (indice, value) {
-                $("#miTablaNotaCredito").append($("<tr>").append($(
-                        "<td style=display;none>" + value.id_notacrecompra + "</td>" +
-                        "<td>" + value.fecha_nocred + "</td>" +
-                        "<td bgcolor='#d9edf7'>" + value.est_descripcion + "</td>")));
+                $('#' + cb).append("<option value= \"" + value.cod + "\"> " + value.descrip + "</option>");
+
             });
+
         }
     });
 }
+/////////////////////////////////////////////////////////////////////////////////////
 
-function  insertarNCredito() {
-    var _nfilas = $('#miTablaDetalleNC tr').length - 1; // funcion para contar filas de una tabla
-    if (parseInt(_nfilas) <= 0) {
-        alert('No hay registros para guardar..!!');
+
+//function getarticulosNotaCreCompras() {
+//    articulos = {
+//        "opcion": 20,
+//        "codDepo": $('#coddeposito_v').val()
+//    };
+//    $.ajax({
+//        url: "http://localhost:8084/TALLERCASAJC/OrdenComprascontrol",
+//        type: 'POST',
+//        data: articulos,
+//        cache: false,
+//        success: function (resp) {
+//            $.each(resp, function (indice, value) {
+//                $("#lisart").append("<option value= \"" + value.id_articulo + "\"> " + value.art_descripcion + " Cantidad : " + value.cantidad + "</option>");
+//            });
+//        }
+//    });
+//}
+
+//function obarticulos() {
+//    art = {
+//        "opcion": 19,
+//        "codArticulo": $('#v_articulos').val(),
+//        "coddepos": $('#coddeposito_v').val()
+//    };
+//    $.ajax({
+//        url: "http://localhost:8084/TALLERCASAJC/OrdenComprascontrol",
+//        type: 'POST',
+//        data: art,
+//        cache: false,
+//        success: function (resp) {
+//            $.each(resp, function (indice, value) {
+//                $('#descriparticulo').val(value.art_descripcion);
+//                $('#precioarticulo').val(value.preccompras);
+//                $('#cantarticulo').val(1);
+//                $('#cantarticulo').focus();
+//                valores('precioarticulo');
+//            });
+//        }
+//    });
+//}
+
+function valores(numero) {
+    var num = document.getElementById(numero).value.replace(/\./g, '');
+    if (!isNaN(num)) {
+        num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g, '$1.');
+        num = num.split('').reverse().join('').replace(/^[\.]/, '');
+        document.getElementById(numero).value = num;
     } else {
-//        var notad = $('#NroNotaCreditos').val();
-//        var nrot = $('#NroTimbrados').val();
+        alert('Solo se permiten numeros');
+        document.getElementById(numero).value = document.getElementById(numero).value.replace(/[^\d\.]*/g, '');
+    }
 
-        if ($('#NroNotaCreditos').val() === "" || $('#TipoMonedas').val() === "" || $('#NroTimbrados').val() === "") {
-            alert('Algunos datos no fueron cargados correctamente..');
-        } else {
-            var opcion = confirm('Desea Guardar el registro..?');
-            if (opcion === true) {
-                datos = {
-                    "opcion": 2,
-                    "_nronocred": $('#NroNotaCreditos').val(),
-                    "_nrotimbrado": $('#NroTimbrados').val(),
-                    "_obsnocred": $('#ObsNoCred').val(),
-                    "_codcompra": $('#IdCompra').val(),
-                    "_codestado": 3,
-                    "_codusuario": 1
-                };
-
-                $.ajax({
-                    url: "http://localhost:8084/TALLERCASAJC/NotaCreComprascontrol",
-                    type: 'POST',
-                    data: datos,
-                    cache: false,
-                    dataType: 'text',
-                    success: function () {
+}
 
 
-                        alert("Registro guardado correctamente.!!");
-                    },
-                    error: function () {
-                    }
-                });
+
+function verificarfilaNotaCreCompras() {
+    var ban = false;
+    if ($('#_articulos').val() === "") {
+        alert('DEBES INGRESAR UN ARTICULO');
+    } else {
+        var cod = $('#_articulos').val();
+        var codigo;
+        var vdetalle = 0;
+        $('#mitabladetallenotacrecompras').find('tbody').find('tr').each(function () {
+            codigo = $(this).find("td").eq(0).html();
+            if (cod === codigo) {
+                vdetalle = $(this).find("td").eq(5).html();
+                var sms = confirm('Articulo cargado, desea sustituirlo ??');
+                if (sms === true) {
+                    $(this).closest("tr").remove();
+                    ban = true;
+                    cargarfilaNotaCreCompras(vdetalle);
+                } else {
+                    ban = true;
+                }
             } else {
             }
-            insetarDetalleNC();
-        }
-    }
-}
-
-function  insetarDetalleNC() {
-    setTimeout(function () {
-        $('#miTablaDetalleNC').find('tbody').find('tr').each(function () {
-            datosDetalleNC = {
-                "opcion": 4,
-                "DtNC_codigoNC": $('#codigoNC').val(),
-                "DtNC_codarticulo": $(this).find("td").eq(2).html(),
-                "DtNC_cantidaddetnocre": $(this).find("td").eq(3).html(),
-                "DtMC_montounidetnocre": $(this).find("td").eq(4).html()
-            };
-            $.ajax({
-                url: "http://localhost:8084/TALLERCASAJC/NotaCreComprascontrol",
-                type: 'POST',
-                data: datosDetalleNC,
-                cache: false,
-                dataType: 'text',
-                success: function () {
-                    window.location.reload();
-                },
-                error: function () {
-                }
-            });
         });
-    }, 2000);
-}
-
-function getcodNC() {
-  
-    crearJSON(3);
-    $.ajax({
-        url: "http://localhost:8084/TALLERCASAJC/NotaCreComprascontrol",
-        data: datosJSON,
-        type: 'POST',
-        dataType: 'text',
-        success: function (resp) {
-            $("#codigoNC").val(resp);
-            $("#nrofacturaNC").focus();
-        },
-        error: function () {
-            alert('No se pudo obtener ultimo valor...!!!');
-        }
-    });
-}
-
-function selectDetalleNc() {
-    $('#miTablaNotaCrdedito tr').click(function () {
-        $('#v_nroNC').val($(this).find("td").eq(0).html());
-        $('#v_estado').val($(this).find("td").eq(2).html());
-
-    });
-}
-
-function recuperarDetalleNC() {
-    if ($('#v_nroNC').val() === "") {
-        alert('Seleecione una Nota de Credito para visualizar..');
-    } else {
-        if ($('#v_estado').val() === 'Aprobado') {
-            alert('La nota ya fue APROBADA..');
-        } else {
-            json = {
-                "opcion": 5,
-                "_nroNC": $('#v_nroNC').val()
-            };
-            $.ajax({
-                url: "http://localhost:8084/TALLERCASAJC/NotaCreComprascontrol",
-                type: 'POST',
-                data: json,
-                cache: false,
-                success: function (resp) {
-//                  alert(resp);
-                    if (JSON.stringify(resp) != '[]') {
-                        $('#ventanaNotaCredito').modal('show');
-                        $('#miTablaDetalleNC').find('tbody').find('tr').empty(); //codigo para vaciar una tabla     
-                        $.each(resp, function (indice, value) {
-
-                            ///RECUPERA LA CABECERA/////////
-
-                            $("#codigoNC").val($("#v_nroNC").val());
-                            $("#fechanotacredito").val(value.fecha);
-                            $("#estadoNC").val(value.estado);
-                            $("#NroNotaCreditos").val(value.nro_notadebito);
-                            $("#NroTimbrados").val(value.nro_timbradonotadebito);
-                            $("#nrofacturaNC").val(value.factura);
-                            $("#idcompraNC").val(value.id_compra);
-
-                            $("#miTablaDetalleNC").append($("<tr>").append($(
-                                    "<td>" + value.conceptos + "</td>")));
-                                   
-
-                        });
-                    } else {
-                        alert('Datos no encontrados..');
-                    }
-                }
-            });
+        if (ban === false) {
+            cargarfilaNotaCreCompras(vdetalle);
         }
     }
 }
 
-function consultaFactura() {
-    jsonfactura = {
-        "opcion": 6,
-        "_nroFactura": $('#nrofacturaNC').val()
+var tindex = 0;
+function cargarfilaNotaCreCompras(v) {
+    //idmaterial
+    var v_codmaterial = $('#_articulos').val();
+    var v_descripcion = $('#descriparticulo').val();
+    var v_precio = $('#precioarticulo').val();
+    var v_cant = $('#cantarticulo').val();
+    var codD = v;
+
+    subtotal = (v_precio.replace(/\./g, '')) * v_cant;
+    tindex++;
+    $('#mitabladetallenotacrecompras').append("<tr id=\'prod" + tindex + "\'>\
+            <td>" + v_codmaterial + "</td>\n\
+            <td>" + v_descripcion + "</td>\n\
+            <td>" + v_precio + "</td>\n\
+            <td>" + v_cant + "</td>\n\
+            <td>" + subtotal + "</td>\n\
+            <td style=display:none>" + codD + "</td>\n\
+            <td><button type=button title='Quitar el registro de la lista' \n\
+                                 style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\">\n\
+                                 <span class='glyphicon glyphicon-remove'></span></button></td></tr>");
+
+
+    totalesNotaCreCompras();
+    $('#_articulos').val(null);
+    $('#_articulos').focus;
+    $('#descriparticulo').val(null);
+    $('#precioarticulo').val(null);
+    $('#cantarticulo').val(null);
+}
+
+function totalesNotaCreCompras() {
+    setTimeout(function () {
+        $('#totalarticulos').val(null);
+        monto = 0;
+        acumu = 0;
+        $('#mitabladetallenotacrecompras').find('tbody').find('tr').each(function () {
+            monto = parseInt($(this).find("td").eq(4).html());
+            acumu = acumu + monto;
+        });
+        $('#totalarticulos').val(acumu);
+        numeroDecimal('totalarticulos');
+        tindex++;
+        
+    }, 1800);
+// valores('totalarticulos');
+}
+
+function getNotaCreCompras() {
+    $('#mitablanotacrecompras').find('tbody').find('tr').empty();
+    presupuestoJSON = {
+        'opcion': 3
     };
     $.ajax({
-        url: "http://localhost:8084/TALLERCASAJC/NotaCreComprascontrol",
+        url: "/TALLERCASAJC/NotaCreComprasControl",
         type: 'POST',
-        data: jsonfactura,
+        data: presupuestoJSON,
+        cache: false,
+        success: function (resp) {
+            $.each(resp, function (indice, valor) {
+                $("#mitablanotacrecompras").append($("<tr>").append($(
+                        "<td>" + valor.id_notacrecompra + "</td>" +
+                        "<td>" + valor.fecha_nocred + "</td>" +
+                        "<td>" + valor.nro_nocred + "</td>" +
+                        "<td>" + valor.obs_nocred + "</td>" +
+                        "<td bgcolor='#d9edf7'>" + valor.estado + "</td>" +
+                        "<td bgcolor='#d9edf7'>" + valor.usuario + "</td>")));
+            });
+        }
+    });
+}
+
+function buscarNotaCreCompras() {
+    var tableReg = document.getElementById('mitablanotacrecompras');
+    var searchText = document.getElementById('filtronotacrecompras').value.toLowerCase();
+    var cellsOfRow = "";
+    var found = false;
+    var compareWith = "";
+// Recorremos todas las filas con contenido de la tabla
+    for (var i = 1; i < tableReg.rows.length; i++) {
+        cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+        found = false;
+// Recorremos todas las celdas
+        for (var j = 0; j < cellsOfRow.length && !found; j++) {
+            compareWith = cellsOfRow[j].innerHTML.toLowerCase();
+// Buscamos el texto en el contenido de la celda
+            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
+                found = true;
+            }
+        }
+        if (found) {
+            tableReg.rows[i].style.display = '';
+        } else {
+// si no ha encontrado ninguna coincidencia, esconde la fila de la tabla
+            tableReg.rows[i].style.display = 'none';
+        }
+    }
+}//--------------
+
+function seleccionNotaCreCompras() {
+    $('#mitablanotacrecompras tr').click(function () {
+        $('#nronotacrecompra').val($(this).find("td").eq(0).html());
+        $('#estadonotacrecompra').val($(this).find("td").eq(4).html()); /*Extrae el valor de la fila seleccionada y lo muestra en el campo
+         //         * v_nroPlanilla*/
+        var estado = $('#estadonotacrecompra').val();
+        if (estado === 'PENDIENTE') {
+            document.getElementById('estadonotacrecompra').style.color = "#000000";
+            document.getElementById('estadonotacrecompra').style.background = "PaleGoldenrod";
+        }
+        if (estado === 'CONFIRMADO') {
+            document.getElementById('estadonotacrecompra').style.background = "firebrick";
+            document.getElementById('estadonotacrecompra').style.color = "#ffffff";
+        }
+    });
+}//----------------------------
+
+function abrirnuevoNotaCreCompras() {
+    $('#_articulos').val(null);
+    $('#descriparticulo').val(null);
+    $('#precioarticulo').val(null);
+    $('#cantarticulo').val(null);
+    $('#totalarticulos').val(null);
+    
+    $('#codigoNrofacturasCompras').val(null);
+     $("#codigoNrofacturasCompras").prop('disabled', false);
+     
+    $('#mitabladetallenotacrecompras').find('tbody').find('tr').empty();
+    $('#notacrecompras').show();
+    $('#btntmodificarnotacrecompras').hide();
+    $('#ventananotacrecompras').modal('show');
+    var num;
+    $('#mitablanotacrecompras').each(function () {
+        num = parseInt($(this).find("td").eq(0).html());
+
+    });
+    $('#codigonotacrecompras').val(parseInt(num) + 1);
+
+}
+
+
+function getdetalleNotaCreCompras() {
+    $('#mitabladetallenotacrecompras').find('tbody').find('tr').empty();
+    $('#btnguardarnotacrecompras').hide();
+    $('#totalarticulos').val(null);
+    $('#btntmodificarnotacrecompras').show();
+    $('#_articulos').val(null);
+    $('#descriparticulo').val(null);
+    $('#precioarticulo').val(null);
+    $('#cantarticulo').val(null);
+    detallejson = {
+        'opcion': 6,
+        'nronotacrecompra': $('#nronotacrecompra').val()
+    };
+   
+    $.ajax({
+        url: "/TALLERCASAJC/NotaCreComprasControl",
+        type: 'POST',
+        data: detallejson,
+        cache: false,
+        success: function (resp) {
+            $.each(resp, function (indice, valor) {
+                $('#codigonotacrecompras').val(valor.id_notacrecompra);
+                $('#NCnrofacturaC_').val(valor.id_compra);
+                 $("#NCnrofacturaC_").prop('disabled', true);
+                $('#NCnrofacturaC_').val(valor.id_compra);
+                sum = valor.precio_detcomp * valor.cantidad_detcomp;
+                tindex++;
+                $('#mitabladetallenotacrecompras').append("<tr id=\'prod" + tindex + "\'>\
+            <td>" + valor.id_articulo + "</td>\n\
+            <td>" + valor.articulo + "</td>\n\
+            <td>" + valor.preciounitario + "</td>\n\
+            <td>" + valor.cantidad + "</td>\n\
+            <td>" + sum + "</td>\n\
+            <td style=display:none>" + valor.iddetalle + "</td>\n\
+            <td><button type=button title='Quitar el registro de la lista' \n\
+                                 style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + idx + "\').remove();updatemonto( " + sum + ", " + tindex + ")\">\n\
+                                 <span class='glyphicon glyphicon-remove'></span></button></tr>");
+
+
+
+            });
+
+        }
+
+    });
+    totales();
+}
+ ////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////
+    
+function recuperarmodificarNotaCreCompras() {
+    if ($('#estadonotacrecompra').val() === "") {
+        alert('Debes seleccionar un registro');
+    } else if ($('#estadonotacrecompra').val() === "CONFIRMADO") {
+        alert('No se puede modificar el registro, el mismo se encuentra CONFIRMADO');
+    }
+    if ($('#estadonotacrecompra').val() === "PENDIENTE") {
+        $('#ventananotacrecompra').modal('show');
+        $('#codigopresupuesto').val($('#nroprespuesto').val());
+        getdetallepresupuesto();
+
+
+
+    } else {
+
+    }
+}
+function actualizarpresupuesto(estado) {
+    if ($('#nroprespuesto').val() === "") {
+        alert('Debes seleccionar un registo..');
+    } else {
+        var sms;
+        var confir;
+        var codpresupuesto = $('#nroprespuesto').val();
+        var codestado = $('#estadopresupuesto').val();
+        if (estado === 1) {
+            sms = "Desea Confirmar el presupuesto??";
+            confir = "El presupuesto ya esta confirmado..!";
+        }
+        if (estado === 2) {
+            sms = "Desea Anulaar el presupuesto??";
+            confir = "El presupuesto no se puede Anular, el mismo ya esta CONFIRMADO..!!";
+        }
+        if (estado === 3) {
+            sms = "Desea Revertir la operación??";
+            confir = "El presupuesto no se puede REVERTIR, el mismo esta PENDIENTE..!!";
+        }
+
+        var v_sms = confirm(sms);
+        if (v_sms === true) {
+            if (estado === 1) {
+                if (codestado === "CONFIRMADO") {
+                    alert(confir);
+                } else {
+                    actualizarestados(codpresupuesto, estado);
+                }
+            }
+            if (estado === 2) {
+                if (codestado === "CONFIRMADO") {
+                    alert(confir);
+                } else {
+                    actualizarestados(codpresupuesto, estado);
+                }
+            }
+            if (estado === 3) {
+                if (codestado === "PENDIENTE") {
+                    alert(confir);
+                } else {
+                    actualizarestados(codpresupuesto, estado);
+                }
+            }
+
+        } else {
+
+        }
+    }
+
+}
+
+function informepresupuesto() {
+    if ($('#nroprespuesto').val() === "") {
+        alert('DEBES SELECCIONAR UN REGISTRO');
+    } else {
+        var cod = $('#nroprespuesto').val();
+        var valor = 1;
+        window.open(`reportesgenericos.jsp?id_presucompra=${cod}&vCodigo=${valor}`, "_blank");
+
+//        });
+
+    }
+
+}
+function actualizarestados(codpresupuesto, estado) {
+    estadojson = {
+        'opcion': 8,
+        'v_estado': estado,
+        'v_presupuesto': codpresupuesto
+    };
+    $.ajax({
+        url: "/TALLERCASAJC/presupuestoControl",
+        type: 'POST',
+        data: estadojson,
+        cache: false,
+        dataType: 'text',
+        success: function () {
+            location.reload();
+        }
+
+    });
+
+
+}
+
+var idx = 0;
+function recuperarDetallePedido() {
+    $('#mitabladetallepresupuesto').find('tbody').find('tr').empty();
+    datosDetalleJSON = {
+        "opcion": 11,
+        "nropedidov": $('#codigoNropedido').val()
+    };
+    $.ajax({
+        url: "http://localhost:8084/TALLERCASAJC/PedidosComprasServlet",
+        type: 'POST',
+        data: datosDetalleJSON,
         cache: false,
         success: function (resp) {
             if (JSON.stringify(resp) != '[]') {
-                $.each(resp, function (indice, value) {
-                    $('#observNC').focus();
-                    $('#idcompraNC').val(value.id_compra);
-                    alert('Factura emitida');
-                });
+                var v = JSON.stringify(resp);
+                var vv = JSON.parse(v);
+//                for(var i in vv){
+                var estado = vv[0].id_estado;
+//                }
+                if (parseInt(estado) === 1) {
+                    $.each(resp, function (indice, value) {
+                        $("#mitabladetallepresupuesto").append($("<tr id=\'prod" + idx + "\'>").append($(
+                                "<td>" + value.id_articulo + "</td>" +
+                                "<td>" + value.art_descripcion + "</td>" +
+                                "<td style='color:red'>" + "0" + "</td>" +
+                                "<td>" + value.cantidad + "</td>" +
+                                "<td style='color:red'>" + "0" + "</td>" +
+                                "<td><button type=button title='Quitar el registro de la lista' \n\
+                                 style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + idx + "\').remove()\">\n\
+                                 <span class='glyphicon glyphicon-remove'></span></button></td>")));
+
+
+
+                    });
+                } else {
+                    alert('Pedido Pendiente.!!');
+                }
+
+
             } else {
-                alert('Factura NO emitida..');
-                $('#nrofacturaNC').val(null);
-//                    $("#nrosolicitud").focus();
+                alert('Datos no encontrados..');
             }
         }
     });
 
+
+
 }
 
-function actualizarNC(_valor) {
-//    var sms = "";
-//    if (parseInt(_valor) === 1) {
-//        var sms = 'Desea Aprobar Registro..?';
-//    } else {
-//        if (parseInt(_valor) === 3) {
-//            var sms = 'Desea Revertir el estado del  Registro..?';
-//        }
-//    }
-
-    valorEstado = $('#v_estado').val();
-
-    if (valorEstado === "") {
-        alert('No se ha seleccionado ningún registro');
-    } else {
-        if (valorEstado === 'Aprobado') {
-            alert('El registro ya fue aprobado.!!');
-        } else {
-            if (valorEstado === 'Pendiente') {
-                var opcion = confirm('Desea Aprobar Registro..? : ' + $('#v_nroNC').val());
-
-                if (opcion === true) {
-                    jsonEstado = {
-                        "opcion": 7,
-                        "_estado": _valor,
-                        "_idNC": $('#v_nroNC').val()
-                    };
-                    $.ajax({
-                        url: "http://localhost:8084/TALLERCASAJC/NotaCreComprascontrol",
-                        type: 'POST',
-                        data: jsonEstado,
-                        cache: false,
-                        success: function () {
-
-                        }
-                    });
-                    $('#miTablaNotaCredito').find('tbody').find('tr').empty();
-                    allnotasCreditos();
-                } else {
-                }
-            }
-        }
-    }
-}
-
-function revertirNC(_valor) {
-//    var sms = "";
-//    if (parseInt(_valor) === 1) {
-//        var sms = 'Desea Aprobar Registro..?';
-//    } else {
-//        if (parseInt(_valor) === 3) {
-//            var sms = 'Desea Revertir el estado del  Registro..?';
-//        }
-//    }
-
-    valorEstado = $('#v_estado').val();
-
-    if (valorEstado === "") {
-        alert('No se ha seleccionado ningún registro');
-    } else {
-        if (valorEstado === 'Pendiente') {
-            alert('El registro ya fue revertido.!!');
-        } else {
-            if (valorEstado === 'Aprobado') {
-                var opcion = confirm('Desea Revertir Registro..? : ' + $('#v_nroNC').val());
-
-                if (opcion === true) {
-                    jsonEstado = {
-                        "opcion": 7,
-                        "_estado": _valor,
-                        "_idNC": $('#v_nroNC').val()
-                    };
-                    $.ajax({
-                        url: "http://localhost:8084/TALLERCASAJC/NotaCreComprascontrol",
-                        type: 'POST',
-                        data: jsonEstado,
-                        cache: false,
-                        success: function () {
-
-                        }
-                    });
-                    $('#miTablaNotaCredito').find('tbody').find('tr').empty();
-                    allnotasCreditos();
-                } else {
-                }
-            }
-        }
-    }
-}
-
-function anularNC(_valor) {
-//    var sms = "";
-//    if (parseInt(_valor) === 1) {
-//        var sms = 'Desea Aprobar Registro..?';
-//    } else {
-//        if (parseInt(_valor) === 3) {
-//            var sms = 'Desea Revertir el estado del  Registro..?';
-//        }
-//    }
-
-    valorEstado = $('#v_estado').val();
-
-    if (valorEstado === "") {
-        alert('No se ha seleccionado ningún registro');
-    } else {
-        if (valorEstado === 'Aprobado') {
-            alert('No se puede anular por que esta aprobado.!!');
-        } else {
-            if (valorEstado === 'Pendiente') {
-                var opcion = confirm('Desea Anular Registro..? : ' + $('#v_nroNC').val());
-
-                if (opcion === true) {
-                    jsonEstado = {
-                        "opcion": 7,
-                        "_estado": _valor,
-                        "_idNC": $('#v_nroNC').val()
-                    };
-                    $.ajax({
-                        url: "http://localhost:8084/TALLERCASAJC/NotaCreComprascontrol",
-                        type: 'POST',
-                        data: jsonEstado,
-                        cache: false,
-                        success: function () {
-                        }
-                    });
-                    $('#miTablaNotaCredito').find('tbody').find('tr').empty();
-                    allnotasCreditos();
-                } else {
-                }
-            }
-        }
-    }
-}
-
-function revertirNC(_valor) {
-//    var sms = "";
-//    if (parseInt(_valor) === 1) {
-//        var sms = 'Desea Aprobar Registro..?';
-//    } else {
-//        if (parseInt(_valor) === 3) {
-//            var sms = 'Desea Revertir el estado del  Registro..?';
-//        }
-//    }
-    valorEstado = $('#v_estado').val();
-    if (valorEstado === "") {
-        alert('No se ha seleccionado ningún registro');
-    } else {
-        if (valorEstado === 'Pendiente') {
-            alert('El registro ya fue revertido.!!');
-        } else {
-            if (valorEstado === 'Aprobado') {
-                var opcion = confirm('Desea Revertir Registro..? : ' + $('#v_nroNC').val());
-                if (opcion === true) {
-                    jsonEstado = {
-                        "opcion": 7,
-                        "_estado": _valor,
-                        "_idNC": $('#v_nroNC').val()
-                    };
-                    $.ajax({
-                        url: "http://localhost:8084/TALLERCASAJC/NotaCreComprascontrol",
-                        type: 'POST',
-                        data: jsonEstado,
-                        cache: false,
-                        success: function () {
-                        }
-                    });
-                    $('#miTablaNotaCredito').find('tbody').find('tr').empty();
-                    allnotasCreditos();
-                } else {
-                }
-            }
-        }
-    }
-}
-
-function updateCabeceraNotaCreditos() {
-    var opcion = confirm('Desea Modificar el registro..?');
-    if (opcion === true) {
-        datosCabecera = {
-            "opcion": 8,
-            "_nronocred": $('#NroNotaCreditos').val(),
-            "_nrotimbrado": $('#NroTimbrados').val(),
-            "_obsnocred": $('#ObsNoCred').val(),
-            "_codcompra": $('#IdCompra').val(),
-            "_codusuario": 1,
-            "_codNC": $('#codigoNC').val()
-        };
-        $.ajax({
-            url: "http://localhost:8084/TALLERCASAJC/NotaCreComprascontrol",
-            type: 'POST',
-            data: datosCabecera,
-            cache: false,
-            dataType: 'text',
-            success: function () {
-
-
-                alert("Registro modificado correctamente.!!");
-            },
-            error: function () {
-            }
-
-        });
-
-    } else {
-
-    }
-}
 
 

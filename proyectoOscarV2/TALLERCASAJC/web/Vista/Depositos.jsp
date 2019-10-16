@@ -7,6 +7,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    <%
+        HttpSession sessionActivaUser = request.getSession();
+        if (sessionActivaUser.getAttribute("user") == null) {
+            response.sendRedirect("/TALLERCASAJC/acceso.jsp");
+        }
+    %>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -26,6 +32,7 @@
         <title>DEPOSITOS</title>
     </head>
     <body>
+         <%@include file="../viwmenu.jsp" %> 
     <center>
         <section>
             <form class="form-horizontal"  id="defaultForm">

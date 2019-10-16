@@ -7,86 +7,57 @@ package ModelDTO;
 
 /**
  *
- * @author user
+ * @author Oscar
  */
-public class NotaCreComprasdto {
+public class NotaCreComprasDTO {
+    
+    Integer id_notacrecompra;
+    String fecha_nocred;
+    Integer nro_nocred;
+    Integer nro_timbrado;
+    String obs_nocred;
+    Integer id_compra;
+    Integer id_usuario;
+    Integer id_estado;
+    
+    Integer id_articulo;
+    Integer cantidad_detnocre;
+    Integer preciouni_detnocre;
+    Integer cod;
+    
+    Integer iddetnotacrecompras;
+    String descrip;
+    String estado;
+    String usuario;
+    String articulo;
+    String factura;
 
-    private Integer id_notacrecompra;
-    private String fecha_nocred;
-    private Integer nro_nocred;
-    private Integer nro_timbrado;
-    private String obs_nocred;
-    private Integer id_compra;
-    private Integer id_usuario;
-    private String usu_nombre;
-    private Integer id_estado;
-    private String est_descripcion;
+    public NotaCreComprasDTO(Integer id_notacrecompra, Integer id_compra, String fecha_nocred, Integer nro_nocred,  Integer nro_timbrado, String obs_nocred, Integer id_articulo, String articulo, Integer preciouni_detnocre, Integer iddetnotacrecompras, Integer cantidad_detnocre) {
+        this.id_notacrecompra=id_notacrecompra;
+        this.id_compra=id_compra;
+        this.fecha_nocred=fecha_nocred;
+        this.nro_nocred=nro_nocred;
+        this.nro_timbrado=nro_timbrado;
+        this.obs_nocred=obs_nocred;
+        this.id_articulo=id_articulo;
+        this.articulo=articulo;
+        this.preciouni_detnocre=preciouni_detnocre;
+        this.iddetnotacrecompras=iddetnotacrecompras;
+        this.cantidad_detnocre=cantidad_detnocre;
+  }
 
-    private Integer id_notacrecompraD;
-    private Integer id_articulo;
-    private Integer cantidad_detnocre;
-    private Integer montouni_detnocre;
-    private String art_descripcion;
-    private Integer co_nrofact;
-    private Integer factura;
-    private String usuarios;
-    private String estados;
-
-    public NotaCreComprasdto() {
+    public NotaCreComprasDTO(Integer id_notacrecompra, String fecha_nocred, Integer nro_nocred,  Integer nro_timbrado, String obs_nocred, String estado, String usuario) {
+    this.id_notacrecompra=id_notacrecompra;    
+    this.fecha_nocred=fecha_nocred;    
+    this.nro_nocred=nro_nocred;    
+    this.nro_timbrado=nro_timbrado;    
+    this.obs_nocred=obs_nocred;    
+    this.estado=estado;    
+    this.usuario=usuario;    
     }
 
-    public NotaCreComprasdto(Integer id_notacrecompra, String fecha_nocred, Integer nro_nocred, Integer nro_timbrado,
-            String obs_nocred, Integer id_compra, Integer id_usuario,
-            String usu_nombre, Integer id_estado, Integer est_descripcion) {
-        this.id_notacrecompra = id_notacrecompra;
-        this.fecha_nocred = fecha_nocred;
-        this.nro_nocred = nro_nocred;
-        this.nro_timbrado = nro_timbrado;
-        this.obs_nocred = obs_nocred;
-        this.id_compra = id_compra;
-        this.id_usuario = id_usuario;
-        this.usu_nombre = usu_nombre;
-        this.id_usuario = id_estado;
-        this.id_usuario = est_descripcion;
-    }
-
-    public NotaCreComprasdto(Integer id_notacrecompraD, Integer id_articulo, Integer cantidad_detnocre, String art_descripcion) {
-        this.id_notacrecompraD = id_notacrecompraD;
-        this.id_articulo = id_articulo;
-        this.cantidad_detnocre = cantidad_detnocre;
-        this.art_descripcion = art_descripcion;
-
-    }
-
-    public NotaCreComprasdto(Integer id_notacrecompra, String fecha_nocred, Integer id_estado, String est_descripcion) {
-        this.id_notacrecompra = id_notacrecompra;
-        this.fecha_nocred = fecha_nocred;
-        this.id_estado = id_estado;
-        this.est_descripcion = est_descripcion;
-
-    }
-
-    public NotaCreComprasdto(String fecha_nocred, Integer nro_nocred, Integer nro_timbrado,String obs_nocred,
-            Integer id_compra, Integer factura, Integer id_usuario,String usuarios, Integer id_estado,
-            String estados, Integer id_articulo, Integer cantidad_detnocre, Integer montouni_detnocre) {
-        this.fecha_nocred = fecha_nocred;
-        this.nro_nocred = nro_nocred;
-        this.nro_timbrado = nro_timbrado;
-        this.id_compra = id_compra;
-        this.factura = factura;
-        this.id_usuario = id_usuario;
-        this.usuarios = usuarios;
-        this.id_estado = id_estado;
-        this.estados = estados;
-        this.id_articulo = id_articulo;
-        this.cantidad_detnocre = cantidad_detnocre;
-        this.montouni_detnocre = montouni_detnocre;
-    }
-
-    public NotaCreComprasdto(Integer id_compra, Integer co_nrofact) {
-        this.id_compra = id_compra;
-        this.co_nrofact = co_nrofact;
-    }
+    public NotaCreComprasDTO() {
+            }
 
     public Integer getId_notacrecompra() {
         return id_notacrecompra;
@@ -135,6 +106,7 @@ public class NotaCreComprasdto {
     public void setId_compra(Integer id_compra) {
         this.id_compra = id_compra;
     }
+
     public Integer getId_usuario() {
         return id_usuario;
     }
@@ -143,36 +115,12 @@ public class NotaCreComprasdto {
         this.id_usuario = id_usuario;
     }
 
-    public String getUsu_nombre() {
-        return usu_nombre;
-    }
-
-    public void setUsu_nombre(String usu_nombre) {
-        this.usu_nombre = usu_nombre;
-    }
-
     public Integer getId_estado() {
         return id_estado;
     }
 
     public void setId_estado(Integer id_estado) {
         this.id_estado = id_estado;
-    }
-
-    public String getEst_descripcion() {
-        return est_descripcion;
-    }
-
-    public void setEst_descripcion(String est_descripcion) {
-        this.est_descripcion = est_descripcion;
-    }
-
-    public Integer getId_notacrecompraD() {
-        return id_notacrecompraD;
-    }
-
-    public void setId_notacrecompraD(Integer id_notacrecompraD) {
-        this.id_notacrecompraD = id_notacrecompraD;
     }
 
     public Integer getId_articulo() {
@@ -191,19 +139,68 @@ public class NotaCreComprasdto {
         this.cantidad_detnocre = cantidad_detnocre;
     }
 
-    public Integer getMontouni_detnocre() {
-        return montouni_detnocre;
+    public Integer getPreciouni_detnocre() {
+        return preciouni_detnocre;
     }
 
-    public void setMontouni_detnocre(Integer montouni_detnocre) {
-        this.montouni_detnocre = montouni_detnocre;
+    public void setPreciouni_detnocre(Integer preciouni_detnocre) {
+        this.preciouni_detnocre = preciouni_detnocre;
     }
 
-    public String getArt_descripcion() {
-        return art_descripcion;
+    public Integer getCod() {
+        return cod;
     }
 
-    public void setArt_descripcion(String art_descripcion) {
-        this.art_descripcion = art_descripcion;
+    public void setCod(Integer cod) {
+        this.cod = cod;
     }
+
+    public Integer getIddetnotacrecompras() {
+        return iddetnotacrecompras;
+    }
+
+    public void setIddetnotacrecompras(Integer iddetnotacrecompras) {
+        this.iddetnotacrecompras = iddetnotacrecompras;
+    }
+
+    public String getDescrip() {
+        return descrip;
+    }
+
+    public void setDescrip(String descrip) {
+        this.descrip = descrip;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getArticulo() {
+        return articulo;
+    }
+
+    public void setArticulo(String articulo) {
+        this.articulo = articulo;
+    }
+
+    public String getFactura() {
+        return factura;
+    }
+
+    public void setFactura(String factura) {
+        this.factura = factura;
+    }
+    
 }

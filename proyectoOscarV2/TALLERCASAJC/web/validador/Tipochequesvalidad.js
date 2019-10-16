@@ -130,6 +130,31 @@ function allTipocheques() {
     });
 }
 
+function campovacioTipocheques() { //Para verificar campos vacio
+    var a = $('#descr').val(); //nombre del campos
+    if (a === "") {
+        alert('campo vacio');
+        $('#descr');
+    } else {
+        ambTipocheques(1);
+    }
+}
+
+function ControlarCampoTipocheques(){  // Para que no se repita nombre
+    var dato;
+    var Depositos = $('#descr').val();
+    // alert(ciudades);
+    $('#miTablaTipocheques tr').each(function () {
+        dato = $(this).find('td').eq(1).html();
+        if (dato === Depositos) {
+            alert('ESTE TIPO CHEQUE YA EXISTE');
+            $('#descr').val(null); //Vaciar Campos
+            $('#descr').focus(); 
+        } else {
+        }
+    });
+}
+
 function reportesTipocheques() {
     window.open("reportesTipocheques.jsp");
 }

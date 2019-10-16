@@ -150,3 +150,11 @@ function ControlarCampoEntidadEmisoras(){  // Para que no se repita Descripcion
 function reportesEntidadEmisoras() {
     window.open("reportesEntidadEmisoras.jsp");
 }
+
+function validarsololetras(e) {
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==8) return true;
+        patron =/[A-Za-z\s]/;
+        te = String.fromCharCode(tecla);
+    return patron.test(te);
+}

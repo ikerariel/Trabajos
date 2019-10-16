@@ -1,6 +1,6 @@
 <%-- 
     Document   : NotaRemision
-    Created on : 19/08/2019, 02:09:30 AM
+    Created on : 05/10/2019, 01:16:38 AM
     Author     : Oscar
 --%>
 
@@ -9,6 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="Recursos/css/estilos_1.css">
         <link rel="stylesheet" href="Recursos/css/iconos.css">
         <link rel="stylesheet" href="Recursos/css/bootstrap.css">
@@ -23,198 +24,248 @@
         <script src="Recursos/js/bootstrapValidator.js"></script>
         <script src="Recursos/js/bootstrap-select.js"></script>
         <script src="Recursos/js/bootstrap-select.min.js"></script>
+        <script src="Recursos/js/jquery.backstretch.min.js"></script>
         <script src="Recursos/js/ImagenFondo.js"></script> 
-        <script src="validador/NotaRemisionvalidad.js"></script>
-        
-         <title>NOTA REMISION</title>
-         
-         <style>
-               #scrollPlanilla{
+        <script src="validador/NotaRemisionvalidad.js"></script>  
+        <title>NOTA DE REMISION</title>
+
+        <style>
+            #scrollPlanilla{
                 overflow: scroll;
                 height:200px;
             }  
         </style> 
     </head>
     <body>
-       <section>
+        <section>
             <form class="form-horizontal"  id="defaultForm">
 
-                <div class="col-md-9" id="botonPedido">
-                    <a id="btnNuevo" href="#ventanaNotaRemision" class="btn btn-lg btn-success" style=" font-weight: bold"  title="Nuevo Pedido" data-toggle="modal" onclick="abrirVentanaRemision()">Nuevo </a>
-                    <a id="btnModificar" class="btn btn-lg btn-info" style=" font-weight: bold" title="Modificar Nota Remision" data-toggle="modal" onclick="recuperarDetalleNR()">Modificar </a>
-                    <a id="btnAnular" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Anular Nota Remision" onclick="anularNR(2)">Anular*</a>
-                    <a id="btnConfirmar" class="btn btn-lg btn-warning glyphicon glyphicon-ok" style=" font-weight: bold" title="Confirmar Nota de Remision" onclick="actualizarNR(1)"></a>
-                    <a id="btnRevertir" class="btn btn-lg btn-danger glyphicon glyphicon-minus-sign" style=" font-weight: bold" title="Revertir Confirmacion" onclick="revertirNR(3)"></a>
-                    <a id="btnReporte" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="reportesNotaRemision()"></a>
-
+                <div class="col-md-9" id="botonesNotaRemision">
+                    <a id="btnNuevoNR" href="#ventanaNotaRemision" class="btn btn-lg btn-success" style=" font-weight: bold"   title="Nuevo Nota Remision" data-toggle="modal"
+                       onclick="getcodigoRemision(); fechaactualRemision(); MostrarUsuariosRemision(); MostrarSucursalesRemision()">Nuevo </a>
+                    <a id="btnModificarNR" class="btn btn-lg btn-info" style=" font-weight: bold" title="Modificar Nota Remision" data-toggle="modal" onclick="recuperarNotaRemision()">Recuperar </a>
+                    <a id="btnAnularNR" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Anular Nota Remision">Anular*</a>
+                    <a id="btnConfirmarNR" class="btn btn-lg btn-warning glyphicon glyphicon-ok" style=" font-weight: bold" title="Confirmar Nota Remision" onclick=></a>
+                    <a id="btnRevertirNR" class="btn btn-lg btn-danger glyphicon glyphicon-minus-sign" style=" font-weight: bold" title="Revertir Confirmacion Nota Remision" onclick=""></a>
+                    <a id="btnReporteNR" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="reportes()"></a>
                 </div>
+
                 <br>
                 <br>
                 <br>
 
                 <div class="panel panel-default">
-                    <div class="panel-footer" style="font-weight: bold">Planilla de Nota Remision</div>
+                    <div class="panel-footer" style="font-weight: bold">PLANILLA DE NOTA REMISION</div>
 
                     <div class="">
                         <div class="input-group  input-sm">
-                                <span class="input-group-addon" style=" font-weight: bold">Nro. NotaRemision*</span>
-                            <input id="v_nroNR" type="text" style="background-color: #d9edf7" class="form-control" disabled="" placeholder="Numero de NotaRemision">
+                            <span class="input-group-addon" style=" font-weight: bold">NotaRemi. Nro:*</span>
+                            <input id="_nro_NreC" type="text" style="background-color: #d9edf7" class="form-control" disabled="" placeholder="Numero de Nota Remision">
                             <span class="input-group-addon" style=" font-weight: bold" >Estado*</span>
-                            <input id="v_estado" type="text" style="" class="form-control" disabled="" placeholder="Estado de NotaRemision">
-                        </div>
-                        <div class="input-group  input-sm">
-                            <span class="input-group-addon" style=" font-weight: bold" >Obs.*</span>
-                            <input id="v_obs" type="text" style="" class="form-control" disabled="" placeholder="Observaciones">
+                            <input id="estadoRemisionC" type="text" style="" class="form-control" disabled="" placeholder="Estado de Nota Remision">
                         </div>
                     </div>
+
                     <div class="">
                         <div class="input-group input-sm">
                             <span class="input-group-addon" style=" font-weight: bold">Buscar</span>
-                            <input id="filtrarPedido" type="text" style="text-transform: uppercase; font-weight: bold" class="form-control " maxlength="20" onkeyup="buscadorTablaPedido()"placeholder="Buscar NotaRemision...">
+                            <input id="filtrarPlanillaRemisionN" type="text" style="text-transform: uppercase; font-weight: bold" 
+                                   class="form-control " maxlength="20" onkeyup="buscadorPlanillaRemision()"placeholder="Buscar Nota Remision...">
                         </div>
                     </div>
-
                     <div class="panel-body">
 
-
-                        <!-- Tabla detalle plailla -->
-
+                        <!-- TABLAS DETALLES DE PLANILLA -->
 
                         <div id="scrollPlanilla" class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover table input-lg" id="miTablaNotaRemision" onclick="selectDetalleNr()">
+                            <table class="table table-striped table-bordered table-hover table input-md" id="miTablaPlanillaRemisionN" onclick="seleccionarNotaRemision()">
                                 <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
                                 <thead>
                                     <tr class="alert-dismissable" >
-                                        <th>NRO. NOTA REMISION</th>
-                                        <th>FECHA</th>
-                                        <th style="background: #003eff">ESTADO</th>
+                                        <th class="alert-success">CODIGO</th>
+                                        <th class="alert-info">FECHA</th>
+                                        <th class="alert-success">REMISION NRO</th>
+                                        <th class="alert-danger">OBSERVACION</th>
+                                        <th class="alert-success">PROVEEDOR</th>
+                                        <th class="alert-success">SUCURSAL</th>
+                                        <th class="alert-info">USUARIO</th>
+                                        <th class="alert-info">ESTADO</th>
 
                                     </tr>
                                 </thead>
-                                <tbody id="table_deta">
-                                </tbody>
+                                <tbody id="table_deta"></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-                <!--<div class="form-group">
-                    <div class="col-md-12" >
-                        <div class=" col-md-4" id="datos">
-                             <input id="usernameD" value="" style="text-transform: uppercase;background: #919292; border: 1px solid #919292; font-weight: bold"  type="text"  class="form-control">
-                        </div>
-                        <div class=" col-md-4">
-                             <input id="" readonly=""style="text-transform: uppercase; font-weight: bold"  type="text"  class="form-control">
-                        </div>
-                        <div class=" col-md-4">
-                             <input id="" readonly=""style="text-transform: uppercase; font-weight: bold"  type="text"  class="form-control">
-                        </div>              
-                    </div>
-                </div>-->
             </form>
         </section>
+
+        <!--/////////////  CABECERAS VENTANA DE NOTA REMISION //////////////////////////////////////////--->
+
         <div class="modal fade" id="ventanaNotaRemision">
-            <div class="modal-dialog" style="width: 1200px;">
+            <div class="modal-dialog" style="width: 1300px;">
                 <div class="modal-content">
-                    <!--HEADER DE LA VENTANA--->
-                    <div class="modal-header">
+
+                    <!--HEADER DE LA VENTANA//////////////////////////////////////////////////////////////////////--->
+
+                    <div class="modal-header" >
+                        <a class="btn btn-lg btn-primary col-md-1"  id="btnGuardarNR" title="" onclick="InsertarNotaRemision()" >Guardar</a>
+                        <a class="btn btn-lg btn-success col-md-1"  id="btnGuardarModificado" title="" onclick="ModificarDetFacturasComprasRemision()" >Guardar</a>
                         <a class="close  btn btn-lg btn-danger glyphicon glyphicon-off" data-dismiss="modal" aria-hidden="true" title="Salir"></a>
                     </div>
-                    <!--CONTENIDO DE LA VENTANA--->
-                    <div class="modal-body">
-                        <a class="btn btn-lg btn-primary col-lg-1"  id="btnGuardar" title="" onclick="insertarNremision()" >Guardar*</a>
-                        <a class="btn btn-lg btn-success col-lg-1"  id="btnM" title="" onclick="updateCabecera()" >Modificar*</a>
-                    </div>
-                    <br>
-                    <br>
+
+                    <!-- //////PLANILLA DE CARGA DE DETALLES ////--->
+
                     <div class="panel">
                         <div class="panel panel-default">
-                            <br>
-                            <div class="panel-footer" style="font-weight: bold">Nueva Nota Remision</div>
+                            <div class="panel-footer" style="font-weight: bold">NOTA DE REMISION</div>
                             <br> 
                             <div class="form-horizontal">
                                 <div class="form-group">
-                                    <label id="texNR" class="col-md-1 control-label">Codigo</label>  
+
+                                    <label class="col-md-1 control-label">Id</label>  
                                     <div class="col-md-2">
-                                        <input  disabled="" id="codigoNR" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" name="codigo" type="text" placeholder="Registro" class="form-control input-sm" required=""  autofocus >
+                                        <input disabled="" id="codigoNRemision" style="text-transform: uppercase; font-weight: bold; font-size: 12pt" 
+                                               name="codigo" type="text" placeholder="Codigo" class="form-control input-sm alert-danger">
                                     </div>
+
                                     <label class="col-md-1 control-label">Fecha</label>  
                                     <div class="col-md-3">
-                                        <input readonly="" id="fechanotaremision" type="datetime" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"
+                                        <input disabled id="_fecha_Nre" type="datetime" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"
                                                placeholder="Ingrese fecha" class="form-control input-sm alert-danger">
                                     </div>
+
                                     <label class="col-md-1 control-label">Estado</label>  
                                     <div class="col-md-3">
-                                        <input disabled id="estadoNR"  type="text" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" placeholder="PENDIENTE" value="PENDIENTE" class="form-control input-sm alert-danger">
+                                        <input disabled id="_estado_Nre"    type="text" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"
+                                               placeholder="PENDIENTE" class="form-control input-sm alert-success">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <input id="_Idestado_Nre" style="visibility: hidden;" type="text">
                                     </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <label id="texNR" class="col-md-2 control-label">Nro. Nota Remision</label>  
-                                    <div class="col-md-3">
-                                        <input   id="NroNotaRemision" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" name="codigo" type="number" placeholder="Ingrese Nro Nota Remision" class="form-control input-sm" required=""  autofocus >
-                                    </div>
-
-                                    <label class="col-md-2 control-label">Nro. Timbrados</label>  
-                                    <div class="col-md-3">
-                                        <input  id ="NroTimbrados" type="number" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"
-                                                placeholder="Ingrese nro timbrado" class="form-control input-sm ">
-                                    </div>
-                                </div>
-
                             </div>
                             <div class="form-horizontal">
                                 <div class="form-group">
                                     <label class="col-md-1 control-label">Usuario</label>  
                                     <div class="col-md-2">
-                                        <input disabled  id="usuario" type="text" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" placeholder="Ivan" value="Ivan" class="form-control input-sm alert-danger">
+                                        <input disabled id="_usuario_Nre" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"
+                                               type="text" placeholder="Ingrese Usuario" class="form-control input-sm alert-danger">
                                     </div>
-                                    <label class="col-md-2 control-label">Nro Factura.*</label>  
+
+                                    <label class="col-md-1 control-label">Proveedores</label>  
                                     <div class="col-md-3">
-                                        <input maxlength="60" id="nrofacturaNR" type="number" 
+                                        <input id="_proveedor_Nre" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" autofocus=""
+                                               type="text" placeholder="Ingrese Proveedor" class="form-control input-sm alert-danger" onclick="abrirproveedoresRemision()">
+                                    </div>
+
+
+                                    <label class="col-md-1 control-label">Facturas Compras</label>  
+                                    <div class="col-md-3">
+                                        <input id="_Idfactcompra_Nre" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" 
+                                               type="text" placeholder="Ingrese Factuta Compra" class="form-control input-sm alert-danger" 
+                                               onkeyup="ValidacionesSoloNumeros()" onchange="ValidacionesSoloNumeros()" onclick="AbrirFacturasComprasRemision()"
                                                onkeydown="
                                                        if (event.keyCode === 13) {
-                                                           consultaFactura();
-                                                       }"
-                                               style="text-transform: uppercase; font-weight: bold;font-size: 12pt"  class="form-control input-sm" required=""  autofocus onkeydown="">
+                                                           RecuperarDetFacturasComprasRemision();
+                                                       }">
                                     </div>
-                                    <div class="col-md-1">
-                                        <input  id="NRIdUsuario" type="text" style="visibility: hidden;">
+                                    <div class="col-md-2">
+                                        <input id="_Idproveedor_Nre" style="visibility: hidden;" type="text">
                                     </div>
+
                                     <div class="col-md-1">
-                                        <input  id="idcompraNR" type="text" style="visibility:">
+                                        <input  id="_Idusuario_Nre" type="text" style="visibility: hidden;">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-horizontal">
                                 <div class="form-group">
 
-                                    <label class="col-md-1 control-label">Obs.*</label>  
-                                    <div class="col-md-7">
-                                        <textarea maxlength="98" id="observNR" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"  class="form-control input-sm" required=""  autofocus onkeydown=""></textarea>
-                                    </div>
-                                    <label class="col-md-1 control-label">Importe.*</label>  
+                                    <label class="col-md-1 control-label">Sucursales</label>  
                                     <div class="col-md-2">
-                                        <input   id="importeNR" type="number" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" placeholder="Importe"  class="form-control input-sm"
-                                                 onkeydown="
-                                                         if (event.keyCode === 13) {
-                                                             agregarFilaNR();
-                                                         }">
+                                        <input disabled id="_sucursal_Nre" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"
+                                               type="text" placeholder="Ingrese Sucursal" class="form-control input-sm alert-danger">
                                     </div>
+
+                                    <label class="col-md-1 control-label">N.Remision</label>  
+                                    <div class="col-md-3">
+                                        <input id="_nro_Nre" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" 
+                                               type="text" placeholder="Ingrese Nro de Remision" class="form-control input-sm alert-danger" onclick="abrirproveedoresRemision()">
+                                    </div>
+                                    
+                                    <label class="col-md-1 control-label">Obs.*</label>  
+                                    <div class="col-md-2">
+                                        <textarea maxlength="98" id="_obse_Nre" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"  class="form-control input-sm" required=""  autofocus onkeydown=""></textarea>
+                                    </div>
+
+
+                                    
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!--HEADER DE LA VENTANA detalle de Articulo////////////////////////////////////////////////////--->
+
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-md-1 control-label">Cod*</label>
+                                <div class="col-md-1">
+                                    <input id="codgenericiArti" type="text" placeholder="Cod" class="form-control input-sm" onclick="abrirModalArticulosRemision()"
+                                           style="text-transform: uppercase; font-weight: bold; background-color:#e6ffe6; font-size: 12pt"
+                                           onkeyup="ValidacionesSoloNumeros()" onchange="ValidacionesSoloNumeros()">
+                                </div>
+
+                                <label class="col-md-1 control-label">Desciprción</label>
+                                <div class="col-md-3">
+                                    <input class="form-control input-sm" disabled="" id="nombreArti" type="text" placeholder="Descirpcion del articulo"
+                                           style="text-transform: uppercase; font-weight: bold; background-color:#e6ffe6;font-size: 12pt"
+                                           onkeyup="separadorMiles(this)" onchange="separadorMiles(this)">
+                                </div>
+
+                                <label class="col-md-1 control-label">Precio</label>
+                                <div class="col-md-2">
+                                    <input id="precioArti" disabled="" class="form-control input-sm" type="text" placeholder="Ingrese precio"
+                                           style="text-transform: uppercase; font-weight: bold; background-color: #e6ffe6; font-size: 12pt"
+                                           onkeyup="ValidacionesSoloNumeros(this)" onchange="ValidacionesSoloNumeros(this)">
+                                </div>
+
+                                <label class="col-md-1 control-label">Cantidad*</label>
+                                <div class="col-md-1">
+                                    <input id="cantidadArti" type="text" placeholder="Cant" maxlength="3" class="form-control input-sm" 
+                                           style="text-transform: uppercase; font-weight: bold; background-color:#e6ffe6; font-size: 12pt"
+                                           onkeyup="ValidacionesSoloNumeros(this)" onchange="ValidacionesSoloNumeros(this)"
+                                           onkeydown="
+                                                   if (event.keyCode === 13) {
+                                                       CargarArtiRemisionGrilla();
+                                                   }">
+                                </div>
+
+                                <div class="col-md-1">
+                                    <input disabled="" id="codArti" type="text" placeholder="" maxlength="3" class="form-control input-sm" 
+                                           style="visibility: hidden;">
                                 </div>
                             </div>
                         </div>
-
                         <div class="panel-body">
-                            <!-- Tabla detalle -->
+
+                            <!-- Tabla detalle para cargar aeticulo -->
+
                             <div class="table-responsive" style="height: 180px">
-                                <table class="table table-striped table-bordered table-hover table input-md" id="miTablaDetalleNR">
+                                <table class="table table-striped table-bordered table-hover table input-md" id="miTablaDetNotaRemision" onclick="SeleccionarDetNotaRemision()">
                                     <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
                                     <thead>
                                         <tr class="alert-dismissable" >
-                                            <th style="display: none">cod</th>
-                                            <th>CONCEPTOS</th>
-                                            <th>IMPORTE</th>    
-                                            <th style="display: none"></th>    
+                                            <th style="display: none"></th>
+                                            <th class="alert-info">ID</th>
+                                            <th class="alert-info">DESCRIPCION</th>
+                                            <th class="alert-info">PRECIO</th>
+                                            <th class="alert-info">CANTIDAD</th>
+                                            <th class="alert-info">SUB TOTAL</th>
+                                            <th  class="alert-danger" style="width: 30px"><div><center><img src="../Recursos/img/delete.png"/></center></div></th>
                                         </tr>
                                     </thead>
                                     <tbody id="table_deta" style="font-weight: bold;font-size: 10pt">
@@ -222,35 +273,41 @@
                                 </table>
                             </div>
                         </div>
+                        <div class="col-xs-3 col-xs-offset-9 input-group input-group-sm">
+                            <span class="input-group-addon">Total a Pagar:</span>
+                            <input class="form-control" id="total" style="font-size: 15px" type="text"
+                                   onkeyup="ValidacionesSoloNumeros(this)" onchange="ValidacionesSoloNumeros(this)">
+                        </div>
                     </div>
                 </div>
             </div> 
         </div>
-        <div class="modal fade" id="grillaArtic">
-            <div class="modal-dialog" style="width: 800px;">
+        <div class="modal fade" id="ModalProveedorRemi">
+            <div class="modal-dialog" style="width: 400px;">
                 <div class="modal-content">
+
                     <!--HEADER DE LA VENTANA--->
+
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >&times;</button>
                     </div>
                     <DIV class="modal-body">
                         <div class="container-fluid">
                             <div class="form-group">
-                                <input id="filtrarArtic" type="text" style="text-transform: uppercase; font-weight: bold" maxlength="20"
-                                       class="form-control input-md" placeholder="Buscar Articulos..." onkeyup="buscarTablaArtic()">
+                                <input id="filtrarProveedoresRemision" type="text" style="text-transform: uppercase; font-weight: bold" maxlength="20"
+                                       class="form-control input-md" placeholder="Buscar Articulos..." onkeyup="buscadorTablaProveedoresRemision()">
                             </div>
                         </div>
-
                         <div class="panel-body">
+
                             <!-- Tabla detalle -->
+
                             <div id="scroll" class="table-responsive" style="height: 200px" >
-                                <table class="table table-striped table-bordered table-hover table input-md" id="TablaArtic" onclick="seleccionArticulosS()">
+                                <table class="table table-striped table-bordered table-hover table input-md" id="miTablaProveedoresRemision" onclick="seleccionarProveedoresRemision()">
+                                    <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
                                     <thead>
                                         <tr class="alert-dismissable" >
-                                            <th style="display: none">Cod.</th>
-                                            <th>Cod.Material</th>
-                                            <th>Matarial</th>
-                                            <th>Precio</th>
+                                            <th>Proveedor</th>
                                         </tr>
                                     </thead>
                                     <tbody id="table_deta"></tbody>
@@ -260,6 +317,88 @@
                     </div>
                 </div>
             </div> 
+        </div>
+        <div class="modal fade" id="ModalNotaRemision">
+            <div class="modal-dialog" style="width: 600px;">
+                <div class="modal-content">
+
+
+
+                    <!--HEADER DE LA VENTANA                                     FACTURA COMPRAS--->
+
+
+                    <div class="modal-header">
+                        <div>Planilla Factura Remision</div>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >&times;</button>
+                    </div>
+                    <!--CONTENIDO DE LA VENTANA        FACTURA COMPRAS--->
+                    <DIV class="modal-body">
+
+                        <div class="container-fluid">
+                            <div class="form-group">
+                                <input id="filtrarFacturasComprasRemision" type="text" style="text-transform: uppercase; font-weight: bold" maxlength="20" 
+                                       class="form-control input-md" placeholder="Buscar Pedidos..." onkeyup="buscadorTablaFacturasComprasRemision()">
+                            </div>
+                        </div>
+                        <div class="panel-body">
+
+                            <!-- Tabla detalle -->
+                            <div id="scrollPlanilla" class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover table input-md" id="miTablaFacturasComprasRemision" onclick="seleccionarFaccturasComprasRemision()">
+                                    <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
+                                    <thead>
+                                        <tr class="alert-dismissable" >
+                                            <th>NRO.FACTURA</th>
+                                            <th>FECHA</th>
+                                            <th>USUARIO</th>
+                                            <th class="alert-info">ESTADOS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="table_deta"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <div class="modal fade" id="ModalArticulosRemision">
+            <div class="modal-dialog" style="width: 600px;">
+                <div class="modal-content">
+
+                    <!--HEADER DE LA VENTANA--->
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >&times;</button>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="form-group">
+                            <input id="filtrarArticulosRemision" type="text" style="text-transform: uppercase; font-weight: bold" maxlength="20" 
+                                   class="form-control input-md" placeholder="Buscar Articulos..." onkeyup="buscadorTablaArticulosRemision()">
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <!-- Tabla detalle -->
+                        <div id="scroll" class="table-responsive" style="height: 300px" >
+                            <table class="table table-striped table-bordered table-hover table input-md" id="miTablaArticulosRemision"
+                                   onclick="seleccionarArticulosRemision()">
+                                <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
+                                <thead>
+                                    <tr class="alert-dismissable" >
+                                        <th style="display: none">Cod.</th>
+                                        <th>Cod.Articulo</th>
+                                        <th>Descripcion</th>
+                                        <th>Precio</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table_deta"></tbody>
+                            </table>
+                        </div>
+                    </div>                       
+                </div>
+            </div>
         </div> 
+    </div>
+   <!--  <script src="validador/NotaRemisionvalidad.js.jsp"></script>  -->
     </body>
 </html>

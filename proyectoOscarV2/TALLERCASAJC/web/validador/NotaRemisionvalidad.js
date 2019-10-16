@@ -6,60 +6,112 @@
 
 
 $(document).ready(function () {
-
     $(":text").val("");
-    fechaactual();
-    allNotaRemision();
+    cambioEstadosNotaRemision();
+    MostrarNotaRemision();
+    MostrarArticulosRemision();
+    MostrarModalProveedoresRemision();
+    MostrarFacrurasComprasRemision();
 });
-function fechaactual() {
-    var fecha = new Date();
-    $('#fechanotaremision').val(fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear());
-}
 
-function abrirVentanaRemision() {
-    $('#btnM').hide();
-    $('#btnGuardar').show();
-    getcodNR();
-}
+//FUNCIONES DE TRANSACCIONES ----------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
 
-var tindex = 0;
-
-function agregarFilaNR() {
-    var _notaD = $('#observNR').val();
-    var _importe = $('#importeNR').val();
-
-    if (_notaR === "") {
-        alert('No se encuentra algun concepto cargado..!!');
-    } else {
-        if (_importe === "") {
-            alert('No se ecuentra importe cargado..!!');
-        } else {
-            var v_nrofac = $('#nrofacturaNR').val();
-            var v_obs = $('#observNR').val();
-            var v_importe = $('#importeNR').val();
-
-            // °°°°style=display:none°°° PARA ocultar ej. "Nro Factura"
-            $('#miTablaDetalleNR').append("<tr id=\'prod" + tindex + "\'>\
-            <td style=display:none>" + v_nrofac + "</td>\n\
-            <td>" + v_obs + "</td>\n\
-            <td>" + v_importe + "</td>\n\
-            <td><img onclick=\"$(\'#prod" + tindex + "\').remove()\n\
-            \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
-            $('#importeNR').val(null);
-            $('#observNR').val(null);
-            $('#observNR').focus;
-        }
-    }
-}
-//-----------------------
 
 function crearJSON(id) {
     datosJSON = {
-        "opcion": id
+        "opcion": id,
+        "codigoR": $('#codigoNRemision').val(),
+        "Nre_fecha": $('#_fecha_Nre').val(),
+        "Nre_nro": $('#_nro_Nre').val(),
+        "Nre_obse": $('#_obse_Nre').val(),
+        "Nre_estado": $('#_Idestado_Nre').val(),
+        "Nre_usuario": $('#_Idusuario_Nre').val(),
+        "Nre_proveedor": $('#_Idproveedor_Nre').val(),
+        "Nre_sucursal": $('#_Idsucursal_Nre').val(),
+        "Nre_factcompra": $('#_Idfactcompra_Nre').val()
     };
 }
-function allNotaRemision() {
+
+function getcodigoRemision() {
+//    vaciarCamposNuevo();
+//    controlBotonesNuevo();
+    $("#_proveedor_Nre").val(null);
     crearJSON(1);
+
+// document.getElementById('usuario').value = document.getElementById('usenameD').value;
+    $.ajax({
+        url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
+        data: datosJSON,
+        type: 'POST',
+        dataType: 'text',
+        success: function (resp) {
+            $("#codigoNRemision").val(resp);
+            $("#_proveedor_Nre").focus();
+        },
+        error: function () {
+            alert('No se pudo obtener ultimo valor...!!!');
+        }
+    });
+}
+///////////////////////////////ESTADOS ANULAR CONFIRMAR APROBADO////////////////////////////////////////////////////
+
+//function controlBotonesNuevo() {
+//    v = "";
+//    $(document).ready(function () {
+//        $('body').on('click', '#botonesFacturaCompra a', function () {
+//            v = ($(this).attr('id'));
+//            if (v === 'btnNuevo' && $('#estadofacturaP').val() === 'CONFIRMADO' || $('#estadofacturaP').val() === 'ANULADO') {
+//                document.getElementById("btnGuardar").style.display = '';
+//                document.getElementById("btnGuardarModificado").style.display = 'none';
+//            } else {
+//                document.getElementById("btnGuardar").style.display = '';
+//                document.getElementById("btnGuardarModificado").style.display = 'none';
+//            }
+//        });
+//    });
+//}
+function MostrarEstadosRemision() {
+//    alert("llega al usuario")
+    user = {
+        "opcion": 2
+    };
+    $.ajax({
+        url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
+        data: user,
+        type: 'POST',
+        success: function (resp) {
+//            alert(resp);
+            $.each(resp, function (indice, value) {
+                $("#_Idestado_Nre").val(value.id_estado);
+                $("#_estado_Nre").val(value.est_descripcion);
+            });
+        },
+        error: function () {
+        }
+    });
+}
+function MostrarUsuariosRemision() {
+//    alert("llega al usuario")
+    user = {
+        "opcion": 3
+    };
+    $.ajax({
+        url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
+        data: user,
+        type: 'POST',
+        success: function (resp) {
+            $.each(resp, function (indice, value) {
+                $("#_Idusuario_Nre").val(value.id_usuario);
+                $("#_usuario_Nre").val(value.usu_nombre);
+            });
+        },
+        error: function () {
+        }
+    });
+}
+function MostrarModalProveedoresRemision() {
+    crearJSON(4);
     $.ajax({
         url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
         type: 'POST',
@@ -67,419 +119,751 @@ function allNotaRemision() {
         cache: false,
         success: function (resp) {
             $.each(resp, function (indice, value) {
-                $("#miTablaNotaRemision").append($("<tr>").append($(
-                        "<td style=display;none>" + value.id_notaremi + "</td>" +
-                        "<td>" + value.fecha_notaremi + "</td>" +
-                        "<td bgcolor='#d9edf7'>" + value.est_descripcion + "</td>")));
+                $("#miTablaProveedoresRemision").append($("<tr>").append($(
+                        "<td style=display:none>" + value.id_proveedor + "</td>" +
+                        "<td>" + value.ras_social + "</td>")));
             });
         }
     });
 }
 
-function  insertarNRemision() {
-    var _nfilas = $('#miTablaDetalleNR tr').length - 1; // funcion para contar filas de una tabla
-    if (parseInt(_nfilas) <= 0) {
-        alert('No hay registros para guardar..!!');
+
+function MostrarFacturasComprasRemision() {
+    crearJSON(5);
+    $.ajax({
+        url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
+        type: 'POST',
+        data: datosJSON,
+        cache: false,
+        success: function (resp) {
+            $.each(resp, function (indice, value) {
+                $("#miTablaFacturasComprasRemision").append($("<tr>").append($(
+                        "<td>" + value.id_compra + "</td>" +
+                        "<td>" + value.co_fecha + "</td>" +
+                        "<td>" + value.usu_nombre + "</td>" +
+                        "<td>" + value.est_descripcion + "</td>")));
+            });
+        }
+    });
+}
+function RecuperarDetFacturasComprasRemision() {
+    datosDetalleJSON = {
+        "opcion": 6,
+        "id_FacturacompraC": $('#_Idfactcompra_Nre').val()
+    };
+    $.ajax({
+        url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
+        type: 'POST',
+        data: datosDetalleJSON,
+        cache: false,
+        success: function (resp) {
+            if (JSON.stringify(resp) != '[]') {
+                //alert(resp);
+                $.each(resp, function (indice, value) {
+                    subtotal = value.precio_detcomp * value.cantidad_detcomp;
+                    $('#miTablaDetNotaRemision').append("<tr id=\'prod" + tindex + "\'>\
+                 <td style=display:none>" + value.id_articulo + "</td>\n\
+                                    <td>" + value.codigenerico + "</td>\n\
+                                    <td>" + value.art_descripcion + "</td>\n\
+                                    <td>" + value.cantidad_detcomp + "</td>\n\
+                                    <td>" + value.precio_detcomp + "</td>\n\
+                                    <td>" + subtotal + "</td>\n\
+                                    <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
+                                    \" src='../Recursos/img/delete.png' width=14 height=14/></td></tr>");
+
+                });
+            } else {
+                alert('Datos no encontrados..');
+                $("#_sucursal_Nre").focus();
+            }
+            calcularmonto();
+        }
+    });
+}
+function MostrarSucursalesRemision() {
+//    alert("llega al usuario")
+    user = {
+        "opcion": 7
+    };
+    $.ajax({
+        url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
+        data: user,
+        type: 'POST',
+        success: function (resp) {
+            $.each(resp, function (indice, value) {
+                $("#_Idsucursal_Nre").val(value.id_sucursal);
+                $("#_sucursal_Nre").val(value.suc_descripcion);
+            });
+        },
+        error: function () {
+        }
+    });
+}
+function MostrarArticulosRemision() {
+    crearJSON(8);
+    $.ajax({
+        url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
+        type: 'POST',
+        data: datosJSON,
+        cache: false,
+        success: function (resp) {
+            $.each(resp, function (indice, value) {
+                $("#miTablaArticulosRemision").append($("<tr>").append($(
+                        "<td style=display:none>" + value.id_articulo + "</td>" +
+                        "<td>" + value.codigenerico + "</td>" +
+                        "<td>" + value.art_descripcion + "</td>" +
+                        "<td>" + value.preccompras + "</td>")));
+            });
+        }
+    });
+}
+
+
+function  InsertarNotaRemision() {
+
+    var dato = "";
+    $('#miTablaDetNotaRemision').find('tbody').find('tr').each(function () {
+        dato = $(this).find("td").eq(0).html();
+    });
+    if (dato === "") {
+        alert('No hay detalle que guardar..!');
+        $("#codgenericiArti").focus();
     } else {
-//        var notad = $('#NroNotaDebitos').val();
-//        var nrot = $('#NroTimbrados').val();
-     // if ($('#nronotaremi').val() === "" || $('#observ').val() === "") {
-        if ($('#nronotaremi').val() === "" || $('#observ').val() === "" || $('#nrofacturaNR').val() === "") {
-            alert('Algunos datos no fueron cargados correctamente..');
+        if ($('#_proveedor_Nre').val() === "") {
+            alert('Debe ingresar todos los datos requeridos para la consulta..');
+            $("#codgenericiArti").focus();
         } else {
-            var opcion = confirm('Desea Guardar el registro..?');
+            var opcion = confirm('Desea Guardar Nota Remision..?');
             if (opcion === true) {
-                datos = {
-                    "opcion": 2,
-                    "_nronotaremi": $('#nronotaremi').val(),
-                    "_observ": $('#observ').val(),
-                     "_codestado": 3,
-                    "_codusuario": 1,
-                    "_codcompra": $('#idcompraNR').val()
-                   
+                datosCabeceraJSON = {
+                    "opcion": 9,
+                    "Nre_fecha": $('#_fecha_Nre').val(),
+                    "Nre_nro": $('#_nro_Nre').val(),
+                    "Nre_obse": $('#_obse_Nre').val(),
+
+                    "Nre_estado": 3,
+                    "Nre_usuario": $('#_Idusuario_Nre').val(),
+                    "Nre_proveedor": $('#_Idproveedor_Nre').val(),
+                    "Nre_sucursal": $('#_Idsucursal_Nre').val(),
+                    "Nre_factcompra": $('#_Idfactcompra_Nre').val()
+                };
+                $.ajax({
+                    url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
+                    type: 'POST',
+                    data: datosCabeceraJSON,
+                    cache: false,
+                    dataType: 'text',
+                    success: function () {
+                        InsertarDetNotaRemision();
+                        alert("Nota Remision guardado correctamente.!!");
+                        window.location.reload();
+                    },
+                    error: function () {
+                    }
+                });
+            } else {
+            }
+        }
+    }
+}
+
+function  InsertarDetNotaRemision() {
+    $('#miTablaDetNotaRemision').find('tbody').find('tr').each(function () {
+        datosDetalleJSON = {
+            "opcion": 10,
+            "codigoRD": $('#codigo').val(),
+            "idartiRD": $(this).find("td").eq(0).html(),
+            "precioRD": $(this).find("td").eq(3).html(),
+            "cantiRD": $(this).find("td").eq(4).html()
+        };
+        $.ajax({
+            url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
+            type: 'POST',
+            data: datosDetalleJSON,
+            cache: false,
+            dataType: 'text',
+            success: function () {
+            },
+            error: function () {
+            }
+        });
+    });
+}
+function MostrarNotaRemision() {
+    crearJSON(11);
+    $.ajax({
+        url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
+        type: 'POST',
+        data: datosJSON,
+        cache: false,
+        success: function (resp) {
+            $.each(resp, function (indice, value) {
+                $("#miTablaPlanillaRemisionN").append($("<tr>").append($(
+                        "<td>" + value.id_notaremi + "</td>" +
+                        "<td>" + value.fecha_notaremi + "</td>" +
+                        "<td>" + value.nro_notaremi + "</td>" +
+                        "<td>" + value.obser_notaremi + "</td>" +
+                        "<td>" + value.est_descripcion + "</td>" +
+                        "<td>" + value.usu_nombre + "</td>" +
+                        "<td>" + value.ras_social + "</td>" +
+                        "<td>" + value.suc_descripcion + "</td>")));
+            });
+        }
+    });
+}
+
+function cambioEstadosNRemision() {
+    var btn = "";
+    $(document).ready(function () {
+        $('body').on('click', '#botonesNotaRemision a', function () {
+            btn = ($(this).attr('id'));
+            if (btn === 'btnAnularNR') {
+                if ($('#estadoRemisionC').val() === "") {
+                    alert('Seleccione una Remision compras.!');
+                } else if ($('#estadoRemisionC').val() === 'CONFIRMADO' || $('#estadoRemisionC').val() === 'ANULADO') {
+                    alert('La NotaRemision ya fue confirmado o ya esta Anulada..');
+                } else if ($('#estadoRemisionC').val() === 'PENDIENTE') {
+                    var opcion = confirm('Desea Anular la nota remision.??');
+                    if (opcion === true) {
+                        datoJson = {
+                            "opcion": 12,
+                            "CambioEstadoNR": 2,
+                            "NotaReCNro": $('#nroNotaReC').val()
+                        };
+                        confirmarNotaRemision();
+                        alert('Nota Remision Anulado con éxito.!!');
+                    }
+                }
+            } else if (btn === 'btnConfirmarNR') {
+                if ($('#estadoRemisionC').val() === "") {
+                    alert('Seleccione una nota remison.!');
+                } else if ($('#estadoRemisionC').val() === 'CONFIRMADO' || $('#estadoRemisionC').val() === 'ANULADO') {
+                    alert('La nota remision ya fué Confirmado o esta Anulada..');
+                } else if ($('#estadoRemisionC').val() === 'PENDIENTE') {
+                    var opcion = confirm('Desea Confirmar la nota remision.??');
+                    if (opcion === true) {
+                        datoJson = {
+                            "opcion": 12,
+                            "CambioEstadoNR": 1,
+                            "NotaReCNro": $('#nroNotaReC').val()
+                        };
+                        confirmarNotaRemision();
+                        alert('Nota Remision Confirmado con éxito.!!');
+                    }
+                }
+            } else if (btn === 'btnRevertirNR') {
+                if ($('#estadoRemisionC').val() === "") {
+                    alert('Seleccione una nota remision de Compras.!');
+                } else if ($('#estadoRemisionC').val() === 'PENDIENTE' || $('#estadoRemisionC').val() === 'ANULADO') {
+                    alert('La nota remision no se puede Revertir..');
+                } else if ($('#estadoRemisionC').val() === 'CONFIRMADO') {
+                    var opcion = confirm('Desea Revertir la nota remision.??');
+                    if (opcion === true) {
+                        datoJson = {
+                            "opcion": 12,
+                            "CambioEstadoNR": 3,
+                            "NotaReCNro": $('#nroNotaReC').val()
+                        };
+                        confirmarNotaRemision();
+                        alert('La nota remision ha vuelto a su estado de Origen.!!');
+                    }
+                }
+            }
+//            else if (btn === 'btnNuevo') {
+//                document.getElementById('btnGuardarModificado').style.display = "none";
+//                document.getElementById('btnGuardar').style.display = "";
+//            } else if (btn === 'btnModificar') {
+//                document.getElementById('btnGuardar').style.display = "none";
+//                document.getElementById('btnGuardarModificado').style.display = "";
+//            }
+
+        });
+    });
+}
+
+function confirmarNotaRemision() {
+    $.ajax({
+        url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
+        type: 'POST',
+        data: datoJson,
+        cache: false,
+        dataType: 'text',
+        success: function () {
+            $('#miTablaPlanillaRemisionN').find('tbody').find('tr').empty();
+            MostrarNotaRemision();
+        },
+        error: function () {
+        }
+    });
+}
+
+function confirmarNotaRemision() {
+    if ($('#estadoRemisionC').val() === "") {
+        alert('Seleccione una nota remision.!');
+    } else {
+        if ($('#estadoRemisionC').val() === 'PENDIENTE') {
+            var opcion = confirm('Desea confirmar la nota remision.??');
+            if (opcion === true) {
+            }
+        } else {
+            if ($('#estadoRemisionC').val() === 'CONFIRMADO') {
+                alert('La Nota Remision ya fue confirmado..');
+            }
+        }
+    }
+}
+
+function controlBotonesNotaRemision() {
+    v = "";
+    $(document).ready(function () {
+        $('body').on('click', '#botonesNotaRemision a', function () {
+            v = ($(this).attr('id'));
+            if (v === 'btnModificarNR' && $('#estadoRemisionC').val() === 'CONFIRMADO' || $('#estadoRemisionC').val() === 'ANULADO') {
+//                $("#btnGuardar").attr("disabled", true);
+                document.getElementById("btnGuardarNR").style.display = 'none';
+                document.getElementById("btnGuardarModificado").style.display = 'none';
+            } else {
+                document.getElementById("btnGuardarNR").style.display = 'none';
+                document.getElementById("btnGuardarModificado").style.display = '';
+            }
+        });
+    });
+}
+function vaciarCamposNuevoRemision() {
+    $("#_fecha_Nre").val(null);
+    $("#_nro_Nre").val(null);
+    $("#_obse_Nre").val(null);
+    $("#_Idestado_Nre").val(null);
+    $("#_Idusuario_Nre").val(null);
+    $("#_usuario_Nre").val(null);
+    $("#_Idproveedor_Nre").val(null);
+    $("#_proveedor_Nre").val(null);
+    $("#_Idsucursal_Nre").val(null);
+    $("#_sucursal_Nre").val(null);
+    $("#_Idfactcompra_Nre").val(null);
+    $('#miTablaDetNotaRemision').find('tbody').find('tr').empty();
+    document.getElementById('btnGuardarModificado').style.display = "none";
+    document.getElementById('btnGuardarNR').style.display = "";
+}
+function recuperarNotaRemision() {
+    if ($('#estadoRemisionC').val() === "CONFIRMADO" || $('#estadoRemisionC').val() === "ANULADO") {
+        $('#ventanaNotaRemision').modal('show');
+        document.getElementById('btnGuardarModificado').style.display = "none";
+        document.getElementById('btnGuardarNR').style.display = "none";
+        recuperarDetNotaRemision();
+        ///////DESBLOBLOQUEA LOS CAMPOS//////
+        $("#_fecha_Nre").prop('disabled', true);
+        $("#_nro_Nre").prop('disabled', true);
+        $("#_obse_Nre").prop('disabled', true);
+
+        $("#_estado_Nre").prop('disabled', true);
+        $("#_usuario_Nre").prop('disabled', true);
+        $("#_proveedor_Nre").prop('disabled', true);
+        $("#_sucursal_Nre").prop('disabled', true);
+        $("#_Idfactcompra_Nre").prop('disabled', true);
+
+    } else {
+        $('#ventanaNotaRemision').modal('show');
+        document.getElementById('btnGuardarModificado').style.display = "";
+        document.getElementById('btnGuardarNR').style.display = "none";
+        recuperarDetNotaRemision();
+        ///////DESBLOBLOQUEA LOS CAMPOS//////
+        $("#_fecha_Nre").prop('disabled', false);
+        $("#_nro_Nre").prop('disabled', false);
+        $("#_obse_Nre").prop('disabled', false);
+
+        $("#_estado_Nre").prop('disabled', false);
+        $("#_usuario_Nre").prop('disabled', false);
+        $("#_proveedor_Nre").prop('disabled', false);
+        $("#_sucursal_Nre").prop('disabled', false);
+        $("#_Idfactcompra_Nre").prop('disabled', false);
+    }
+}
+
+function recuperarDetNotaRemision() {
+    $('#miTablaDetNotaRemision').find('tbody').find('tr').empty();
+    datosDetalleJSON = {
+        "opcion": 13,
+        "NroRemisionC": $('#nroNotaRemiC').val()
+    };
+    $.ajax({
+        url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
+        type: 'POST',
+        data: datosDetalleJSON,
+        cache: false,
+        success: function (resp) {
+            if (JSON.stringify(resp) != '[]') {
+//                    alert(resp);
+                $.each(resp, function (indice, value) {
+                    ///RECUPERA LA CABECERA/////////
+                    $("#_fecha_Nre").val(value.fecha_notaremi);
+                    $("#_nro_Nre").val(value.nro_notaremi);
+                    $("#_obse_Nre").val(value.obser_notaremi);
+
+                    $("#_estado_Nre").val(value.est_descripcion);
+                    $("#_Idusuario_Nre").val(value.id_usuario);
+                    $("#_usuario_Nre").val(value.usu_nombre);
+                    $("#_Idproveedor_Nre").val(value.id_proveedor);
+                    $("#_proveedor_Nre").val(value.ras_social);
+                    $("#_Idsucursal_Nre").val(value.id_sucursal);
+                    $("#_sucursal_Nre").val(value.suc_descripcion);
+                    $("#_Idfactcompra_Nre").val(value.id_compra);
+
+                    subtotal = value.precionotaremi * value.cantinotaremi;
+                    $('#miTablaDetNotaRemision').append("<tr id=\'prod" + tindex + "\'>\
+                                    <td style=display:none>" + value.id_articulo + "</td>\n\
+                                    <td>" + value.codigenerico + "</td>\n\
+                                    <td>" + value.art_descripcion + "</td>\n\
+                                    <td>" + value.precionotaremi + "</td>\n\
+                                    <td>" + value.cantinotaremi + "</td>\n\
+                                    <td>" + subtotal + "</td>\n\
+                                    <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
+                                    \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
+                });
+                $('#codigo').val($('#nroNotaRemiC').val());
+            } else {
+                alert('Datos no encontrados..');
+                $("#nroNotaRemiC").focus();
+            }
+            calcularmonto();
+        }
+    });
+
+}
+
+//---------FUNCIONES SECUNDARIOS VALIDADACIONES CREADOS -------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------
+
+function ValidacionesSoloNumeros(input) {
+    var num = input.value.replace(/\./g, '');
+//    alert("estees" +num);
+    if (!isNaN(num)) {
+        num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g, '$1.');
+        num = num.split('').reverse().join('').replace(/^[\.]/, '');
+        input.value = num;
+    } else {
+        alert('Solo se permiten numeros');
+        input.value = input.value.replace(/[^\d\.]*/g, '');
+    }
+}//--------------
+
+function fechaactualRemision() {
+    var fecha = new Date();
+    $('#_fecha_Nre').val(fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear());
+}//----------
+
+function abrirproveedoresRemision() {
+    if ($('#NotaRemiProvee').val() === "") {
+        $('#ModalProveedorRemision').modal('show');
+        $('#miTablaProveedoresRemision').find('tbody').find('tr').empty();
+        MostrarModalProveedoresRemision();
+    } else {
+    }
+}//----------
+
+
+function seleccionarProveedoresRemision() {
+    $('#miTablaProveedoresRemision tr').click(function () {
+        $('#_Idproveedor_Nre').val($(this).find("td").eq(0).html());
+        $('#_proveedor_Nre').val($(this).find("td").eq(1).html());
+        $('#_Idfactcompra_Nre').focus();
+        $('#ModalProveedorRemision').modal('hide');
+    });
+}//----------
+function buscadorTablaProveedoresRemision() {
+    var tableReg = document.getElementById('miTablaProveedoresRemision');
+    var searchText = document.getElementById('filtrarProveedorRemision').value.toLowerCase();
+    var cellsOfRow = "";
+    var found = false;
+    var compareWith = "";
+// Recorremos todas las filas con contenido de la tabla
+    for (var i = 1; i < tableReg.rows.length; i++) {
+        cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+        found = false;
+// Recorremos todas las celdas
+        for (var j = 0; j < cellsOfRow.length && !found; j++) {
+            compareWith = cellsOfRow[j].innerHTML.toLowerCase();
+// Buscamos el texto en el contenido de la celda
+            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
+                found = true;
+            }
+        }
+        if (found) {
+            tableReg.rows[i].style.display = '';
+        } else {
+// si no ha encontrado ninguna coincidencia, esconde la fila de la tabla
+            tableReg.rows[i].style.display = 'none';
+        }
+    }
+}//--------------
+
+function AbrirFacturasComprasRemision() {
+    if ($('#_Idfactcompra_Nre').val() === "") {
+        $('#ModalFacturasComprasRemision').modal('show');
+        $('#miTablaFacturasComprasRemision').find('tbody').find('tr').empty();
+        MostrarFacturasComprasRemision();
+    } else {
+    }
+}//---------------
+function seleccionarFaccturasComprasRemision() {
+    $('#miTablaFacturasComprasRemision tr').click(function () {
+        $('#_Idfactcompra_Nre').val($(this).find("td").eq(0).html());
+        $('#_Idfactcompra_Nre').focus();
+        $('#ModalFacturasComprasRemision').modal('hide');
+    });
+}//---------------
+
+function buscadorTablaFacturasComprasRemision() {
+    var tableReg = document.getElementById('miTablaFacturasComprasRemision');
+    var searchText = document.getElementById('filtrarFacturasComprasRemision').value.toLowerCase();
+    var cellsOfRow = "";
+    var found = false;
+    var compareWith = "";
+// Recorremos todas las filas con contenido de la tabla
+    for (var i = 1; i < tableReg.rows.length; i++) {
+        cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+        found = false;
+// Recorremos todas las celdas
+        for (var j = 0; j < cellsOfRow.length && !found; j++) {
+            compareWith = cellsOfRow[j].innerHTML.toLowerCase();
+// Buscamos el texto en el contenido de la celda
+            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
+                found = true;
+            }
+        }
+        if (found) {
+            tableReg.rows[i].style.display = '';
+        } else {
+// si no ha encontrado ninguna coincidencia, esconde la fila de la tabla
+            tableReg.rows[i].style.display = 'none';
+        }
+    }
+}//---------------
+
+//--------------------------------------------------------
+
+
+
+function  ModificarDetFacturasComprasRemision() {
+    var dato = "";
+    $('#miTablaDetNotaRemision').find('tbody').find('tr').each(function () {
+        dato = $(this).find("td").eq(0).html();
+    });
+    if (dato === "") {
+        alert('No hay detalle que guardar..!');
+        $("#codgenericiArti").focus();
+    } else {
+        if ($('#_proveedor_Nre').val() === "") {
+            alert('Debe ingresar todos los datos requeridos para la consulta..');
+            $("#codgenericiArti").focus();
+        } else {
+            var opcion = confirm('Desea Guardar Nota Remision..?');
+            if (opcion === true) {
+                datosCabeceraJSON = {
+                    "opcion": 14,
+                    "Nre_fecha": $('#_fecha_Nre').val(),
+                    "Nre_nro": $('#_nro_Nre').val(),
+                    "Nre_obse": $('#_obse_Nre').val(),
+                    "Nre_estado": 3,
+                    "Nre_usuario": $('#_Idusuario_Nre').val(),
+                    "Nre_proveedor": $('#_Idproveedor_Nre').val(),
+                    "Nre_sucursal": $('#_Idsucursal_Nre').val(),
+                    "Nre_factcompra": $('#_Idfactcompra_Nre').val(),
+                    "Nre_idnotaremi": $('#codigo').val()
                 };
 
                 $.ajax({
                     url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
                     type: 'POST',
-                    data: datos,
+                    data: datosCabeceraJSON,
                     cache: false,
                     dataType: 'text',
                     success: function () {
-
-
-                        alert("Registro guardado correctamente.!!");
+                        InsertarDetNotaRemision();
+                        alert("Nota Remision guardado correctamente.!!");
+                        window.location.reload();
                     },
                     error: function () {
                     }
-
                 });
-
             } else {
-
             }
-            insetarDetalleNR();
         }
     }
 }
 
-function  insetarDetalleNR() {
+//----------------------------------------------------------------------------------------------------------
+
+
+var subtotal = 0;
+var tindex = 0;
+var monto = 0;
+var acumu = 0;
+
+function calcularmonto() {
     setTimeout(function () {
-        $('#miTablaDetalleNR').find('tbody').find('tr').each(function () {
-            datosDetalleNR = {
-                "opcion": 4,
-                "NR_codigoR": $('#codigoNR').val(),
-                "NR_articulo": $(this).find("td").eq(1).html(),
-                "NR_cantidad": $(this).find("td").eq(2).html()
-            };
-            $.ajax({
-                url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
-                type: 'POST',
-                data: datosDetalleNR,
-                cache: false,
-                dataType: 'text',
-                success: function () {
-
-                },
-                error: function () {
-                }
-            });
+        monto = 0;
+        acumu = 0;
+        $('#miTablaDetNotaRemision').find('tbody').find('tr').each(function () {
+            monto = parseInt($(this).find("td").eq(5).html());
+            acumu = acumu + monto;
         });
-    }, 4000);
+        $('#total').val(acumu);
+        tindex++;
+    }, 1000);
+}
+function updatemonto(valormonto, ind) {
+    var monto = $('#total').val();
+    var calculo = monto - valormonto;
+    $('#total').val(calculo);
+    calculo = 0;
+    monto = 0;
+}//------------
+function SeleccionarDetNotaRemision() {
+    $('#miTablaDetNotaRemision tr').click(function () {
+        $('#codArti').val($(this).find("td").eq(0).html());
+        $('#codgenericiArti').val($(this).find("td").eq(1).html());
+        $('#nombreArti').val($(this).find("td").eq(2).html());
+        $('#precioArti').val($(this).find("td").eq(3).html());
+        $('#cantidadArti').val(3);
+        $('#cantidadArti').focus();
+    });
+}//------------------
+function abrirModalArticulosRemision() {
+    if ($('#codgenericiArti').val() === "") {
+        $('#ModalArticulosRemision').modal('show');
+        $('#miTablaArticulosRemion').find('tbody').find('tr').empty();
+        MostrarArticulosRemision();
+    } else {
+    }
 }
 
-function getcodNR() {
-    crearJSON(3);
-    $.ajax({
-        url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
-        data: datosJSON,
-        type: 'POST',
-        dataType: 'text',
-        success: function (resp) {
-            $("#codigoNR").val(resp);
-            $("#nrofacturaNR").focus();
-        },
-        error: function () {
-            alert('No se pudo obtener ultimo valor...!!!');
-        }
+function seleccionarArticulosRemision() {
+    $('#miTablaArticulosRemision tr').click(function () {
+        $('#codArti').val($(this).find("td").eq(0).html());
+        $('#codgenericiArti').val($(this).find("td").eq(1).html());
+        $('#cantidadArti').val(1);
+        $('#nombreArti').val($(this).find("td").eq(2).html());
+        $('#precioArti').val($(this).find("td").eq(3).html());
+        $('#cantidadArti').focus();
+        $('#ModalArticulosRemision').modal('hide');
     });
 }
-
-function selectDetalleNr() {
-    $('#miTablaNotaRemision tr').click(function () {
-        $('#v_nroNR').val($(this).find("td").eq(0).html());
-        $('#v_estado').val($(this).find("td").eq(2).html());
-
-    });
-}
-
-function recuperarDetalleNR() {
-    $('#btnGuardar').hide();
-    $('#btnM').show();
-    if ($('#v_nroNR').val() === "") {
-        alert('Seleecione una Nota Remision para visualizar..');
-    } else {
-        if ($('#v_estado').val() === 'Aprobado') {
-            alert('La nota de Remision ya fue APROBADA..');
-        } else {
-            json = {
-                "opcion": 5,
-                "_nroNR": $('#v_nroNR').val()
-            };
-            $.ajax({
-                url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
-                type: 'POST',
-                data: json,
-                cache: false,
-                success: function (resp) {
-//                  alert(resp);
-                    if (JSON.stringify(resp) != '[]') {
-                        $('#ventanaNotaRemision').modal('show');
-                        $('#miTablaDetalleNR').find('tbody').find('tr').empty(); //codigo para vaciar una tabla     
-                        $.each(resp, function (indice, value) {
-                            
-                            ///RECUPERA LA CABECERA/////////
-                            
-                            $("#codigoNR").val($("#v_nroNR").val());
-                            $("#fechanotaremision").val(value.fecha_notaremi);
-                            $("#estadoNR").val(value.estado);
-                            $("#nronotaremi").val(value.nro_notaremi);
-                            $("#observ").val(value.obser_notaremi);
-                            $("#nrofacturaNR").val(value.factura);
-                            $("#idcompraNR").val(value.id_compra);
-
-                            tindex++;
-                            $('#miTablaDetalleNR').append("<tr id=\'prod" + tindex + "\'>\
-                             <td style=display:none>" + '0' + "</td>\n\
-                             <td>" + value.id_notaremi + "</td>\n\
-                             <td>" + value.id_articulo + "</td>\n\
-                                <td>" + value.cantiarti + "</td>\n\
-                               <td><img onclick=\"$(\'#prod" + tindex + "\').remove()\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
-                                </tr>");
-
-                        });
-                    } else {
-                        alert('Datos no encontrados..');
-                    }
-                }
-            });
-        }
-    }
-}
-
-function consultaFacturas() {
-    jsonfacturas = {
-        "opcion": 6,
-        "_nroFactura": $('#nrofacturaNR').val()
-    };
-    $.ajax({
-        url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
-        type: 'POST',
-        data: jsonfacturas,
-        cache: false,
-        success: function (resp) {
-            if (JSON.stringify(resp) != '[]') {
-                $.each(resp, function (indice, value) {
-                    $('#observNR').focus();
-                    $('#idcompraNR').val(value.id_compra);
-                    alert('Factura emitida');
-                });
-            } else {
-                alert('Factura NO emitida..');
-                $('#nrofacturaNR').val(null);
-//                    $("#nrosolicitud").focus();
+function buscadorTablaArticulosRemision() {
+    var tableReg = document.getElementById('miTablaArticulosRemision');
+    var searchText = document.getElementById('filtrarArticulosRemision').value.toLowerCase();
+    var cellsOfRow = "";
+    var found = false;
+    var compareWith = "";
+// Recorremos todas las filas con contenido de la tabla
+    for (var i = 1; i < tableReg.rows.length; i++) {
+        cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+        found = false;
+// Recorremos todas las celdas
+        for (var j = 0; j < cellsOfRow.length && !found; j++) {
+            compareWith = cellsOfRow[j].innerHTML.toLowerCase();
+// Buscamos el texto en el contenido de la celda
+            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
+                found = true;
             }
         }
-    });
-
-}
-
-function actualizarNR(_valor) {
-//    var sms = "";
-//    if (parseInt(_valor) === 1) {
-//        var sms = 'Desea Aprobar Registro..?';
-//    } else {
-//        if (parseInt(_valor) === 3) {
-//            var sms = 'Desea Revertir el estado del  Registro..?';
-//        }
-//    }
-
-    valorEstado = $('#v_estado').val();
-
-    if (valorEstado === "") {
-        alert('No se ha seleccionado ningún registro');
-    } else {
-        if (valorEstado === 'Aprobado') {
-            alert('El registro ya fue aprobado.!!');
+        if (found) {
+            tableReg.rows[i].style.display = '';
         } else {
-            if (valorEstado === 'Pendiente') {
-                var opcion = confirm('Desea Aprobar Registro..? : ' + $('#v_nroNR').val());
-
-                if (opcion === true) {
-                    jsonEstado = {
-                        "opcion": 7,
-                        "_estado": _valor,
-                        "_idNR": $('#v_nroNR').val()
-                    };
-                    $.ajax({
-                        url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
-                        type: 'POST',
-                        data: jsonEstado,
-                        cache: false,
-                        success: function () {
-
-                        }
-                    });
-                    $('#miTablaNotaRemision').find('tbody').find('tr').empty();
-                    allNotaRemision();
-                } else {
-                }
-            }
+// si no ha encontrado ninguna coincidencia, esconde la fila de la tabla
+            tableReg.rows[i].style.display = 'none';
         }
     }
-}
-
-function revertirNR(_valor) {
-//    var sms = "";
-//    if (parseInt(_valor) === 1) {
-//        var sms = 'Desea Aprobar Registro..?';
-//    } else {
-//        if (parseInt(_valor) === 3) {
-//            var sms = 'Desea Revertir el estado del  Registro..?';
-//        }
-//    }
-
-    valorEstado = $('#v_estado').val();
-
-    if (valorEstado === "") {
-        alert('No se ha seleccionado ningún registro');
+}//---------------
+function CargarArtiRemisionGrilla() {
+    if ($('#codgenericiArti').val() === "") {
+        alert('Falta ingresar el articulo..');
     } else {
-        if (valorEstado === 'Pendiente') {
-            alert('El registro ya fue revertido.!!');
-        } else {
-            if (valorEstado === 'Aprobado') {
-                var opcion = confirm('Desea Revertir Registro..? : ' + $('#v_nroNR').val());
-
-                if (opcion === true) {
-                    jsonEstado = {
-                        "opcion": 7,
-                        "_estado": _valor,
-                        "_idNR": $('#v_nroNR').val()
-                    };
-                    $.ajax({
-                        url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
-                        type: 'POST',
-                        data: jsonEstado,
-                        cache: false,
-                        success: function () {
-
-                        }
-                    });
-                    $('#miTablaNotaRemision').find('tbody').find('tr').empty();
-                    allNotaRemision();
-                } else {
-                }
-            }
-        }
-    }
-}
-
-function anularNR(_valor) {
-//    var sms = "";
-//    if (parseInt(_valor) === 1) {
-//        var sms = 'Desea Aprobar Registro..?';
-//    } else {
-//        if (parseInt(_valor) === 3) {
-//            var sms = 'Desea Revertir el estado del  Registro..?';
-//        }
-//    }
-
-    valorEstado = $('#v_estado').val();
-
-    if (valorEstado === "") {
-        alert('No se ha seleccionado ningún registro');
-    } else {
-        if (valorEstado === 'Aprobado') {
-            alert('No se puede anular por que esta aprobado.!!');
-        } else {
-            if (valorEstado === 'Pendiente') {
-                var opcion = confirm('Desea Anular Registro..? : ' + $('#v_nroNR').val());
-
-                if (opcion === true) {
-                    jsonEstado = {
-                        "opcion": 7,
-                        "_estado": _valor,
-                        "_idNR": $('#v_nroNR').val()
-                    };
-                    $.ajax({
-                        url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
-                        type: 'POST',
-                        data: jsonEstado,
-                        cache: false,
-                        success: function () {
-                        }
-                    });
-                    $('#miTablaNotaRemision').find('tbody').find('tr').empty();
-                    allNotaRemision();
-                } else {
-                }
-            }
-        }
-    }
-}
-
-function revertirND(_valor) {
-//    var sms = "";
-//    if (parseInt(_valor) === 1) {
-//        var sms = 'Desea Aprobar Registro..?';
-//    } else {
-//        if (parseInt(_valor) === 3) {
-//            var sms = 'Desea Revertir el estado del  Registro..?';
-//        }
-//    }
-    valorEstado = $('#v_estado').val();
-    if (valorEstado === "") {
-        alert('No se ha seleccionado ningún registro');
-    } else {
-        if (valorEstado === 'Pendiente') {
-            alert('El registro ya fue revertido.!!');
-        } else {
-            if (valorEstado === 'Aprobado') {
-                var opcion = confirm('Desea Revertir Registro..? : ' + $('#v_nroNR').val());
-                if (opcion === true) {
-                    jsonEstado = {
-                        "opcion": 7,
-                        "_estado": _valor,
-                        "_idNR": $('#v_nroNR').val()
-                    };
-                    $.ajax({
-                        url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
-                        type: 'POST',
-                        data: jsonEstado,
-                        cache: false,
-                        success: function () {
-                        }
-                    });
-                    $('#miTablaNotaRemision').find('tbody').find('tr').empty();
-                    allNotaRemision();
-                } else {
-                }
-            }
-        }
-    }
-}
-
-
-//-----------------------------------------------------------------------
-
-
-function updateCabecerassNotaRemisionnnn() {
-    var opcion = confirm('Desea Modificar el registro..?');
-    if (opcion === true) {
-        datosCabeceraRemi = {
-            "opcion": 8,
-            "_nronotaremi": $('#nronotaremi').val(),
-            "_observ": $('#observ').val(),
-            
-            "_codcompra": $('#idcompraNR').val(),
-            "_codusuario": 1,
-            "_codNR": $('#codigoNR').val()
-        };
-
-        $.ajax({
-            url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
-            type: 'POST',
-            data: datosCabeceraRemi,
-            cache: false,
-            dataType: 'text',
-            success: function () {
-                alert("Registro modificado correctamente.!!");
-                updateDetalleNRemision();
-            },
-            error: function () {
+        var cod = $('#codgenericiArti').val();
+        var codigo;
+        $('#miTablaDetNotaRemision').find('tbody').find('tr').each(function () {
+            codigo = $(this).find("td").eq(1).html();
+            if (cod === codigo) {
+                alert('El articulo ya fue cargada, desea sustituirlo?');
+                $(this).find("td").remove();
             }
         });
-
-    } else {
+        agregarFilaArtiRemision();
     }
 
-    insetarDetalleNR();
 }
+var d = 0;
+function agregarFilaArtiRemision() {
+    //idmaterial
+    var v_codMaterialG = $('#codgenericiArti').val();
+    var v_codmaterial = $('#codArti').val();
+    var v_descripcion = $('#nombreArti').val();
+    var v_precio = $('#precioArti').val();
+    var v_cant = $('#cantidadArti').val();
+    subtotal = v_precio * v_cant;
+    $('#miTablaDetNotaRemision').append("\
+            <tr id=\'prod" + tindex + "\'>\
+            <td style=display:none>" + v_codmaterial + "</td>\n\
+            <td>" + v_codMaterialG + "</td>\n\
+            <td>" + v_descripcion + "</td>\n\
+            <td>" + v_precio + "</td>\n\
+            <td>" + v_cant + "</td>\n\
+            <td>" + subtotal + "</td>\n\
+            <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
+            \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
+//    
+//     <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
+//                                    \" src='../Recursos/img/delete.png' width=14 height=14/></td>//</tr>");
+    calcularmonto();
+    $('#codgenericiArti').val(null);
+    $('#codgenericiArti').focus;
+    $('#nombreArti').val(null);
+    $('#precioArti').val(null);
+    $('#cantidadArti').val(null);
+}//-----------------------
 
 
-function updateDetalleNRemision() {
-    jsonDetalle = {
-        "opcion": 9,
-        "nroNR": $('#codigoNR').val()
-    };
-    $.ajax({
-        url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
-        type: 'POST',
-        data: jsonDetalle,
-        cache: false,
-        success: function () {
-
+function seleccionarNotaRemision() {
+    $('#miTablaPlanillaRemisionN tr').click(function () {
+        $('#_nro_NreC').val($(this).find("td").eq(0).html());
+        $('#estadoRemisionC').val($(this).find("td").eq(7).html()); /*Extrae el valor de la fila seleccionada y lo muestra en el campo
+         //         * v_nroPlanilla*/
+        var estado = $('#estadoRemisionC').val();
+        if (estado === 'PENDIENTE') {
+            document.getElementById('estadoRemisionC').style.color = "#000000";
+            document.getElementById('estadoRemisionC').style.background = "PaleGoldenrod";
+        }
+        if (estado === 'CONFIRMADO') {
+            document.getElementById('estadoRemisionC').style.background = "firebrick";
+            document.getElementById('estadoRemisionC').style.color = "#ffffff";
         }
     });
-
-}
+}//---------------------------
+function buscadorPlanillaRemision() {
+    var tableReg = document.getElementById('miTablaPlanillaRemisionN');
+    var searchText = document.getElementById('filtrarPlanillaRemisionN').value.toLowerCase();
+    var cellsOfRow = "";
+    var found = false;
+    var compareWith = "";
+// Recorremos todas las filas con contenido de la tabla
+    for (var i = 1; i < tableReg.rows.length; i++) {
+        cellsOfRow = tableReg.rows[i].getElementsByTagName('td');
+        found = false;
+// Recorremos todas las celdas
+        for (var j = 0; j < cellsOfRow.length && !found; j++) {
+            compareWith = cellsOfRow[j].innerHTML.toLowerCase();
+// Buscamos el texto en el contenido de la celda
+            if (searchText.length == 0 || (compareWith.indexOf(searchText) > -1)) {
+                found = true;
+            }
+        }
+        if (found) {
+            tableReg.rows[i].style.display = '';
+        } else {
+// si no ha encontrado ninguna coincidencia, esconde la fila de la tabla
+            tableReg.rows[i].style.display = 'none';
+        }
+    }
+}//---------------

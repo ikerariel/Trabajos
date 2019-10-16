@@ -36,15 +36,15 @@ public class accesoDAOIMPL implements accesoDAO {
         try {
             sintaxiSql = null;
             conexion = new Conexion();
-            sintaxiSql = "SELECT u.id_usuario, u.usu_nombre, u.usu_clave, u.id_empleado, u.id_sucursal, \n" +
-"                           u.id_deposito, s.suc_descripcion,u.id_perfil, d.dep_descripcion, p.idsupervisor,v.idvendedor\n" +
-"                     FROM public.usuarios u		   \n" +
-"                       left join supervisor p on u.id_usuario=p.id_usuario\n" +
-"                   left join depositos d on u.id_deposito = d.id_deposito\n" +
-"                   left join sucursales s on d.id_sucursal = s.id_sucursal \n" +
-"		   left join empleados em on u.id_empleado=em.id_empleado\n" +
-"		   left join vendedor v on em.id_empleado=v.id_empleado 	\n" +
-"                         where usu_nombre= ?  and u.id_estado=7";
+            sintaxiSql = "SELECT u.id_usuario, u.usu_nombre, u.usu_clave, u.id_empleado, u.id_sucursal, \n"
+                    + " u.id_deposito, s.suc_descripcion,u.id_perfil, d.dep_descripcion, p.idsupervisor,v.idvendedor\n"
+                    + " FROM public.usuarios u		   \n"
+                    + " left join supervisor p on u.id_usuario=p.id_usuario\n"
+                    + " left join depositos d on u.id_deposito = d.id_deposito\n"
+                    + " left join sucursales s on d.id_sucursal = s.id_sucursal \n"
+                    + "	left join empleados em on u.id_empleado=em.id_empleado\n"
+                    + "	left join vendedor v on em.id_empleado=v.id_empleado 	\n"
+                    + " where usu_nombre= ?  and u.id_estado=7";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setString(1, user);
 
@@ -75,12 +75,12 @@ public class accesoDAOIMPL implements accesoDAO {
         try {
             sintaxiSql = null;
             conexion = new Conexion();
-            sintaxiSql = "SELECT u.id_usuario, u.usu_nombre, u.usu_clave, u.id_empleado, u.id_sucursal, \n" +
-"                             u.id_deposito, s.suc_descripcion, d.dep_descripcion\n" +
-"                      FROM public.usuarios u\n" +
-"                    inner join depositos d on u.id_deposito = d.id_deposito\n" +
-"                    inner join sucursales s on d.id_sucursal = s.id_sucursal\n" +
-"                    where usu_nombre= ? and usu_clave=md5(?) and u.id_estado=7";
+            sintaxiSql = "SELECT u.id_usuario, u.usu_nombre, u.usu_clave, u.id_empleado, u.id_sucursal, \n"
+                    + "                             u.id_deposito, s.suc_descripcion, d.dep_descripcion\n"
+                    + "                      FROM public.usuarios u\n"
+                    + "                    inner join depositos d on u.id_deposito = d.id_deposito\n"
+                    + "                    inner join sucursales s on d.id_sucursal = s.id_sucursal\n"
+                    + "                    where usu_nombre= ? and usu_clave=md5(?) and u.id_estado=7";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setObject(1, accesoDTO.getUsu_nombre());
             preparedStatement.setObject(2, accesoDTO.getUsu_clave());
@@ -95,7 +95,7 @@ public class accesoDAOIMPL implements accesoDAO {
             Logger.getLogger(accesoDAOIMPL.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
-  
+
     }
 
 }

@@ -152,6 +152,31 @@ function nuevoListarBarrios() {
     });
 }
 
+function campovacioSucursales() { //Para verificar campos vacio
+    var a = $('#descrisucursal').val(); //nombre del campos
+    if (a === "") {
+        alert('campo vacio');
+        $('#descrisucursal');
+    } else {
+        ambSucursales(1);
+    }
+}
+
+function ControlarCampoSucursales(){  // Para que no se repita nombre
+    var dato;
+    var Sucursales = $('#descrisucursal').val();
+    // alert(Sucursales);
+    $('#miTablaSucursales tr').each(function () {
+        dato = $(this).find('td').eq(1).html();
+        if (dato === Sucursales) {
+            alert('ESTE SUCURSAL YA EXISTE');
+            $('#descrisucursal').val(null); //Vaciar Campos
+            $('#descrisucursal').focus(); 
+        } else {
+        }
+    });
+}
+
 function reportesSucursales() {
     window.open("reportesSucursales.jsp");
 }

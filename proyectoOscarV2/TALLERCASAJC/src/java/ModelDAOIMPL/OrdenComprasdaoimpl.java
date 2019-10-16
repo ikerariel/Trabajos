@@ -579,8 +579,8 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
             sintaxiSql =  "SELECT a.id_articulo, a.art_descripcion,s.cantidad, a.preccompras, a.precventas, a.id_impuesto, \n" +
 "                    a.id_marca, a.codigenerico, (i.imp_descripcion) as impuesto,a.id_tipoarticulo\n" +
 "                    FROM articulos a\n" +
-"                    INNER JOIN impuestos i on a.id_impuesto=i.id_impuesto\n" +
-"                    inner join stock s on a.id_articulo = s.id_articulo\n" +
+"                    left JOIN impuestos i on a.id_impuesto=i.id_impuesto\n" +
+"                    left join stock s on a.id_articulo = s.id_articulo\n" +
 "                    where s.id_articulo = ? and s.id_deposito=?";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, cod);
@@ -641,8 +641,8 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
             sintaxiSql = "SELECT a.id_articulo, a.art_descripcion,s.cantidad, a.preccompras, a.precventas, a.id_impuesto, \n"
                     + "a.id_marca, a.codigenerico, (i.imp_descripcion) as impuesto,a.id_tipoarticulo\n"
                     + "FROM articulos a\n"
-                    + "INNER JOIN impuestos i on a.id_impuesto=i.id_impuesto\n"
-                    + "inner join stock s on a.id_articulo = s.id_articulo\n"
+                    + "left JOIN impuestos i on a.id_impuesto=i.id_impuesto\n"
+                    + "left join stock s on a.id_articulo = s.id_articulo\n"
                     + "where s.id_deposito = ?";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, id);

@@ -171,7 +171,7 @@ function cargarGrillapVenta() {
             <td>" + v_precio + "</td>\n\
             <td>" + subtotal + "</td>\n\
             <td><button type=button title='Quitar el registro de la lista' \n\
-            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + ix + "\');removepv;totalpventa()\">\n\
+            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + ix + "\').remove();totalpventa()\">\n\
             <span class='glyphicon glyphicon-remove'></span></button></a></td>\n\
             </tr>");
 
@@ -182,13 +182,6 @@ function cargarGrillapVenta() {
 
     totalpventa();
 
-}
-
-function removepv() {
-    $('#miTablaDetallepedidoventa tr').click(function () {
-       $(this).closest('tr').remove();
-
-    });
 }
 
 function totalpventa() {

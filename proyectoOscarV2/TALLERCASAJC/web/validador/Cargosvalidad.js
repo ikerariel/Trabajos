@@ -129,6 +129,39 @@ function allCargos() {
     });
 }
 
+function campovacioCargos() { //Para verificar campos vacio
+    var a = $('#descr').val(); //nombre del campos
+    if (a === "") {
+        alert('campo vacio');
+        $('#descr');
+    } else {
+        ambCargos(1);
+    }
+}
+
+function ControlarCampoCargos(){  // Para que no se repita nombre
+    var dato;
+    var Cargos = $('#descr').val();
+    // alert(Cargos);
+    $('#miTablaCargos tr').each(function () {
+        dato = $(this).find('td').eq(1).html();
+        if (dato === Cargos) {
+            alert('ESTE CARGO YA EXISTE');
+            $('#descr').val(null); //Vaciar Campos
+            $('#descr').focus(); 
+        } else {
+        }
+    });
+}
+
 function reportesCargos() {
     window.open("reportesCargos.jsp");
+}
+
+function validarsololetras(e) {
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==8) return true;
+        patron =/[A-Za-z\s]/;
+        te = String.fromCharCode(tecla);
+    return patron.test(te);
 }

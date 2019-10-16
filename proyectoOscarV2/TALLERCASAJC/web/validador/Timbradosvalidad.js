@@ -166,6 +166,39 @@ function nuevoListarEstados() {
     });
 }
 
+function campovacioTimbrados() { //Para verificar campos vacio
+    var a = $('#nombreemple').val(); //nombre del campos
+    var a = $('#apellidoemple').val(); //nombre del campos
+    var a = $('#ciemple').val(); //nombre del campos
+    var a = $('#telemple').val(); //nombre del campos
+    var a = $('#direccionemple').val(); //nombre del campos
+    if (a === "") {
+        alert('campo vacio');
+        $('#nombreemple');
+        $('#apellidoemple');
+        $('#ciemple');
+        $('#telemple');
+        $('#direccionemple');
+    } else {
+        ambTimbrados(1);
+    }
+}
+   
+function ControlarCampoTimbrados(){  // Para que no se repita CI
+    var dato;
+    var Empleados = $('#ciemple').val();
+    // alert(Empleados);
+    $('#miTablaEmpleados tr').each(function () {
+        dato = $(this).find('td').eq(3).html();
+        if (dato === Empleados) {
+            alert('ESTE TIMBRADOS YA EXISTE');
+            $('#ciemple').val(null); //Vaciar Campos
+            $('#ciemple').focus(); 
+        } else {
+        }
+    });
+}
+
 function reportesTimbrados() {
     window.open("reportesTimbrados.jsp");
 
@@ -213,4 +246,17 @@ function reportesTimbrados() {
 //    });
 //}
 
+function ValidacionesSoloNumerosTimbrados(input) {
+    var num = input.value.replace(/\./g, '');
+//    alert("estees" +num);
+    if (!isNaN(num)) {
+        num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g, '$1.');
+        num = num.split('').reverse().join('').replace(/^[\.]/, '');
+        input.value = num;
+    } else {
+        alert('Solo se permiten numeros');
+        input.value = input.value.replace(/[^\d\.]*/g, '');
+    }
+}//--------------
+//onkeyup="ValidacionesSoloNumeros(this)" onchange="ValidacionesSoloNumeros(this)"
 

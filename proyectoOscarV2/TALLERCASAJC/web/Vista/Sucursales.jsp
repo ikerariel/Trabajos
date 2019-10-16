@@ -7,6 +7,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+     <%
+        HttpSession sessionActivaUser = request.getSession();
+        if (sessionActivaUser.getAttribute("user") == null) {
+            response.sendRedirect("/TALLERCASAJC/acceso.jsp");
+        }
+    %>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -25,6 +31,7 @@
         <title>SUCURSALES</title>
     </head>
     <body>
+         <%@include file="../viwmenu.jsp" %>
     <center>
         <section>
             <form class="form-horizontal"  id="defaultForm">
@@ -61,7 +68,7 @@
 
                                 <label class="col-md-1 control-label" style=" font-weight: bold">ID</label>  
                                 <div class="col-md-3">
-                                    <input  id="idsucursal" style="text-transform: uppercase; font-weight: bold; font-size: 10pt;
+                                    <input disabled="" type="" id="idsucursal" style="text-transform: uppercase; font-weight: bold; font-size: 10pt;
                                             background-color: #d9edf7 " type="text" placeholder="Registro" class="form-control input-sm" required=""
                                             onkeydown=" if (event.keyCode === 13) {
                                                         getmostrarSucursalesFiltro();
@@ -92,7 +99,7 @@
                 </div>
 
                 <a id="btnNuevo" class="btn btn-lg btn-success" style=" font-weight: bold" onclick="getUltimoCodigoSucursales()">Nuevo </a>
-                <a id="btnInsertar" class="btn btn-lg btn-primary" style=" font-weight: bold" onclick="ambSucursales(1)">Insertar </a>
+                <a id="btnInsertar" class="btn btn-lg btn-primary" style=" font-weight: bold" onclick="ControlarCampoSucursales(), campovacioSucursales()">Guardar </a>
                 <a id="btnModificar" class="btn btn-lg btn-info" style=" font-weight: bold" title="Modificar" onclick="ambSucursales(2)">Modificar </a>
                 <a id="btnAnular" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Borrar" onclick="ambSucursales(3)">Borrar*</a>
                 <a id="btnreporteP" class="btn btn-lg btn-success" style=" font-weight: bold" title="Reporte" onclick="reportesSucursales()">Reporte*</a>

@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
     (function ($) {
         $('#filtrarUsuarios').keyup(function () {
@@ -180,6 +181,45 @@ function nuevoListarEmpleados() {
     });
 }
 
+function campovacioUsuarios() { //Para verificar campos vacio
+    var a = $('#nombreusu').val(); //nombre del campos
+    if (a === "") {
+        alert('campo vacio');
+        $('#nombreusu');
+    } else {
+        ambUsuarios(1);
+    }
+}
+
+function ControlarCampoUsuarios(){  // Para que no se repita nombre
+    var dato;
+    var Usuarios = $('#nombreusu').val();
+    // alert(Usuarios);
+    $('#miTablaUsuarios tr').each(function () {
+        dato = $(this).find('td').eq(1).html();
+        if (dato === Usuarios) {
+            alert('ESTE USUARIO YA EXISTE');
+            $('#nombreusu').val(null); //Vaciar Campos
+            $('#nombreusu').focus(); 
+        } else {
+        }
+    });
+}
+
 function reportesUsuarios() {
     window.open("reportesUsuarios.jsp");
 }
+
+function ValidacionesSoloNumerosempl(input) {
+    var num = input.value.replace(/\./g, '');
+//    alert("estees" +num);
+    if (!isNaN(num)) {
+        num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g, '$1.');
+        num = num.split('').reverse().join('').replace(/^[\.]/, '');
+        input.value = num;
+    } else {
+        alert('Solo se permiten numeros');
+        input.value = input.value.replace(/[^\d\.]*/g, '');
+    }
+}//--------------
+//onkeyup="ValidacionesSoloNumeros(this)" onchange="ValidacionesSoloNumeros(this)"

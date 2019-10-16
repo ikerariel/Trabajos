@@ -23,7 +23,6 @@ function getSession() {
             } else {
 
             }
-
         },
         error: function () {
         }
@@ -39,20 +38,37 @@ function permisos(valor) {
             $('#m_pedidocompras').show();
             $('#btnNuevo').show();
             break;
-
+//        case 2:
+//            $('#mc_compras').show();
+//            $('#m_pedidoscompras').show();
+//            $('#m_ordencompra').show();
+//            $('#m_presupuestocompras').show();
+//            $('#btnNuevo').show();
+//            break;
 
         case 2:
             $('#mc_ventas').show();
             $('#m_aperturacaja').show();
             $('#btnNuevo').show();
             break;
+
+        case 3:
+            $('#mc_ventas').show();
+            $('#m_pedidoventas').show();
+            $('#m_aperturacaja').show();
+            $('#btnNuevo').show();
+            break;
+
+
         case 6:  //Administrador de sistema los tres movimientos y referenciales
             $('#mc_ventas').show();
             $('#m_aperturacaja').show();
             $('#m_pedidoventas').show();
             $('#m_facturacion').show();
             $('#m_parametros').show();
+
             $('#mc_compras').show();
+            $('#m_facturas_compras').show();
             $('#m_pedidocompras').show();
             $('#m_registrarpresupuesto').show();
             $('#m_ordencompra').show();
@@ -61,12 +77,15 @@ function permisos(valor) {
             $('#m_notacredito').show();
             $('#m_notadebito').show();
             $('#m_ajustes').show();
+
             $('#mc_Servicios_Tecnicos').show();
             $('#m_recepcion').show();
             $('#m_diagnostico').show();
             $('#m_presupuestos_servicios').show();
             $('#m_orden_trabajos').show();
-            $('#m_facturas_compras').show();
+            $('#m_entrega_equipos').show();
+
+
             $('#r_ReferencialesCompras').show();
             $('#r_articulos').show();
             $('#r_barrios').show();
@@ -74,45 +93,61 @@ function permisos(valor) {
             $('#r_depositos').show();
             $('#r_Empleados').show();
             $('#r_entidademisoras').show();
+            $('#r_estados').show();
             $('#r_impuestos').show();
             $('#r_marcas').show();
+            $('#r_perfiles').show();
             $('#r_proveedores').show();
             $('#r_sucursales').show();
+            $('#r_usuarios').show();
+
             $('#rv_ReferencialesVentas').show();
             $('#rv_clientes').show();
+            $('#rv_bancocheques').show();
             $('#rv_cajas').show();
-            $('#rv_timbrados').show();
+            $('#rv_cargos').show();
+//            $('#rv_timbrados').show();
             $('#rv_tipocheques').show();
-            $('#rv_tipomoneda').show();
+//            $('#rv_tipomoneda').show();
             $('#rv_tipostarjetas').show();
+            $('#rv_tipospagos').show();
             $('#rv_vendedor').show();
-            $('#rv_bancocheque').show();
+
             $('#rst_ReferencialesServiciosTecnicos').show();
             $('#rst_modelos').show();
             $('#rst_colores').show();
             $('#rst_tiposervicios').show();
             break;
 
+//        case 7:
+//            $('#mc_Servicios_Tecnicos').show();
+//            $('#m_recepcion').show();
+//            $('#m_diagnostico').show();
+//            $('#mc_compras').show();
+//            $('#m_pedidoscompras').show();
+//            $('#m_presupuestocompras').show();
+//            $('#m_ordencompra').show();
+//            $('#mc_ventas').show();
+//            $('#m_pedidoventas').show();
+//            $('#m_presupuestos_servicios').show();
+//            $('#m_orden_trabajos').show();
+//            $('#m_entrega_equipos').show();
+//
+//            break;
+
         case 7:
             $('#mc_Servicios_Tecnicos').show();
             $('#m_recepcion').show();
             $('#m_diagnostico').show();
-            $('#mc_compras').show();
-            $('#m_pedidoscompras').show();
-            $('#m_presupuestocompras').show();
-            $('#m_ordencompra').show();
-            $('#mc_ventas').show();
-            $('#m_pedidoventas').show();
             $('#m_presupuestos_servicios').show();
             $('#m_orden_trabajos').show();
             $('#m_entrega_equipos').show();
 
             break;
+
         case 5:
             $('#mc_ventas').show();
             $('#m_facturacion').show();
-      
-
             break;
     }
 }

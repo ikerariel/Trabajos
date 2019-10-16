@@ -130,6 +130,47 @@ function allTipoServicios() {
     });
 }
 
+function campovacioTipoServicios() { //Para verificar campos vacio
+    var a = $('#descr').val(); //nombre del campos
+    if (a === "") {
+        alert('campo vacio');
+        $('#descr');
+    } else {
+        ambTipoServicios(1);
+    }
+}
+
+function ControlarTipoServicios() {  // Para que no se repita nombre
+    var dato;
+    var Ciudades = $('#descr').val();
+    // alert(ciudades);
+    $('#miTablaTipoServicios tr').each(function () {
+        dato = $(this).find('td').eq(1).html();
+        if (dato === Ciudades) {
+            alert('ESTE TIPO DE SERVICIO YA EXISTE');
+            $('#descr').val(null); //Vaciar Campos
+            $('#descr').focus();
+        } else {
+        }
+    });
+}
+
+function verificarcampoentero(campo) {
+    var variable = $('#' + campo).val();
+    var resultado = isNaN(variable);
+    switch (resultado) {
+        case true:
+
+            break;
+        case false:
+            $('#' + campo).focus();
+            $('#' + campo).val(null);
+            break;
+        default :
+            break;
+    }
+}
+
 function reportesTipoServicios() {
     window.open("reportesTipoServicios.jsp");
 }

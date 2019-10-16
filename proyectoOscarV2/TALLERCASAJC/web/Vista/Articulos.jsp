@@ -8,12 +8,10 @@
 <!DOCTYPE html>
 <html>
    <%
-
         HttpSession sessionActivaUser = request.getSession();
         if (sessionActivaUser.getAttribute("user") == null) {
             response.sendRedirect("/TALLERCASAJC/acceso.jsp");
         }
-
     %>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

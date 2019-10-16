@@ -130,6 +130,65 @@ function allModelos() {
     });
 }
 
+function campovacioModelos() { //Para verificar campos vacio
+    var a = $('#descrmodelo').val(); //nombre del campos
+    if (a === "") {
+        alert('campo vacio');
+        $('#descrmodelo');
+    } else {
+        ambModelos(1);
+    }
+}
+
+function ControlarCampoModelos(){  // Para que no se repita nombre
+    var dato;
+    var Marcas = $('#descrmodelo').val();
+    // alert(Marcas);
+    $('#miTablaModelos tr').each(function () {
+        dato = $(this).find('td').eq(1).html();
+        if (dato === Marcas) {
+            alert('ESTE MODELO YA EXISTE');
+            $('#descrmodelo').val(null); //Vaciar Campos
+            $('#descrmodelo').focus(); 
+        } else {
+        }
+    });
+}
+
 function reportesModelos() {
     window.open("reportesModelos.jsp");
 }
+
+function validarsololetras(e) {
+    tecla = (document.all) ? e.keyCode : e.which;
+    if (tecla==8) return true;
+        patron =/[A-Za-z\s]/;
+        te = String.fromCharCode(tecla);
+    return patron.test(te);
+}
+//onkeypress="return validarsololetras(event)"
+
+//function SolotextoMarcas(){
+//    var num = $('#descrmarca').val();
+//    var re = isNaN(num);
+//  if(re===true){ //si el valor es texto    
+//  }else{
+//      alert('SOLO TEXT');
+//      $('#descrmarca').val(null);
+//  }
+//}
+//onchange=" SolotextoCaja()”
+
+function ValidacionesSoloNumeros(input) {
+    var num = input.value.replace(/\./g, '');
+//    alert("estees" +num);
+    if (!isNaN(num)) {
+        num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g, '$1.');
+        num = num.split('').reverse().join('').replace(/^[\.]/, '');
+        input.value = num;
+    } else {
+        alert('Solo se permiten numeros');
+        input.value = input.value.replace(/[^\d\.]*/g, '');
+    }
+}//--------------
+//onkeyup="ValidacionesSoloNumeros(this)" onchange="ValidacionesSoloNumeros(this)"

@@ -7,7 +7,7 @@ package ModelDAOIMPL;
 
 import Genericos.Conexion;
 import ModelDAO.aperturacierrecajaDAO;
-import ModelDTO.NotaCreComprasdto;
+import ModelDTO.NotaCreComprasDTO;
 import ModelDTO.OrdenComprasdto;
 import ModelDTO.aperturacierrecajaDTO;
 import com.google.gson.Gson;

@@ -85,15 +85,18 @@
                                      <li><a href="">SubMenu2</a></li>
                                 </ul>
                                 <li><a style="display: none" id="r_articulos" href="Vista/Articulos.jsp">Articulos</a></li>
-                                <li><a style="display: none" id= "r_barrios" href="Barrios.jsp">Barrios</a></li>
-                                <li><a style="display: none" id= "r_ciudades"href="Ciudades.jsp">Ciudades</a></li>
-                                <li><a style="display: none" id= "r_depositos"href="Depositos.jsp">Depositos</a></li>
-                                <li><a style="display: none" id= "r_Empleados"href="Empleados.jsp">Empleados</a></li>
-                                <li><a style="display: none" id= "r_entidademisoras"href="EntidadEmisoras.jsp">EntidadEmisoras</a></li>
-                                <li><a style="display: none" id= "r_impuestos"href="Impuestos.jsp">Impuestos</a></li>
-                                <li><a style="display: none" id= "r_marcas"href="Marcas.jsp">Marcas</a></li>
-                                <li><a style="display: none" id= "r_proveedores"href="Proveedores.jsp">Proveedores</a></li>
-                                <li><a style="display: none" id= "r_sucursales"href="Sucursales.jsp">Sucursales</a></li>
+                                <li><a style="display: none" id= "r_barrios" href="Vista/Barrios.jsp">Barrios</a></li>
+                                <li><a style="display: none" id= "r_ciudades"href="Vista/Ciudades.jsp">Ciudades</a></li>
+                                <li><a style="display: none" id= "r_depositos"href="Vista/Depositos.jsp">Depositos</a></li>
+                                <li><a style="display: none" id= "r_Empleados"href="Vista/Empleados.jsp">Empleados</a></li>
+                                <li><a style="display: none" id= "r_entidademisoras"href="Vista/EntidadEmisoras.jsp">EntidadEmisoras</a></li>
+                                <li><a style="display: none" id= "r_estados"href="Vista/Estados.jsp">Estados</a></li>
+                                <li><a style="display: none" id= "r_impuestos"href="Vista/Impuestos.jsp">Impuestos</a></li>
+                                <li><a style="display: none" id= "r_marcas"href="Vista/Marcas.jsp">Marcas</a></li>
+                                 <li><a style="display: none" id= "r_perfiles"href="Vista/Perfiles.jsp">Perfiles</a></li>
+                                <li><a style="display: none" id= "r_proveedores"href="Vista/Proveedores.jsp">Proveedores</a></li>
+                                <li><a style="display: none" id= "r_sucursales"href="Vista/Sucursales.jsp">Sucursales</a></li>
+                                <li><a style="display: none" id= "r_usuarios"href="Vista/Usuarios.jsp">Usuarios</a></li>
                              
                             </ul>
                         </li>
@@ -106,14 +109,17 @@
                                 <ul class="dropdown-menu">
                                      <li><a href="">SubMenu2</a></li>
                                 </ul>
-                                <li><a style="display: none" id="rv_clientes" href="Clientes.jsp">Clientes</a></li>
-                                <li><a style="display: none" id= "rv_cajas" href="Cajas.jsp">Cajas</a></li>
-                                <li><a style="display: none" id= "rv_timbrados"href="Timbrados.jsp">Timbrados</a></li>
-                                <li><a style="display: none" id= "rv_tipocheques"href="TipoCheques.jsp">TipoCheques</a></li>
-                                <li><a style="display: none" id= "rv_tipomoneda"href="TipoMoneda.jsp">TipoMoneda</a></li>
-                                <li><a style="display: none" id= "rv_tipostarjetas"href="TiposTarjetas.jsp">TiposTarjetas</a></li>
+                                <li><a style="display: none" id="rv_clientes" href="Vista/Clientes.jsp">Clientes</a></li>
+                                <li><a style="display: none" id="rv_bancocheques" href="Vista/BancoCheques.jsp">BancoCheques</a></li>
+                                <li><a style="display: none" id= "rv_cajas" href="Vista/Cajas.jsp">Cajas</a></li>
+                                <li><a style="display: none" id= "rv_cargos" href="Vista/Cargos.jsp">Cargos</a></li>
+                          <%--  <li><a style="display: none" id= "rv_timbrados"href="Vista/Timbrados.jsp">Timbrados</a></li>  --%>
+                                <li><a style="display: none" id= "rv_tipocheques"href="Vista/Tipocheques.jsp">Tipocheques</a></li>
+                                <li><a style="display: none" id= "rv_tipomoneda"href="Vista/TipoMoneda.jsp">TipoMoneda</a></li>
+                                <li><a style="display: none" id= "rv_tipospagos"href="Vista/TiposPagos.jsp">TiposPagos</a></li>
+                                <li><a style="display: none" id= "rv_tipostarjetas"href="Vista/TiposTarjetas.jsp">TiposTarjetas</a></li>
                                 <li><a style="display: none" id= "rv_vendedor"href="Vendedor.jsp">Vendedor</a></li>
-                                <li><a style="display: none" id= "rv_bancocheque"href="BancoCheque.jsp">BancoCheque</a></li>
+                                <li><a style="display: none" id= "rv_bancocheque"href="Vista/BancoCheque.jsp">BancoCheque</a></li>
                              
                             </ul>
                         </li>
@@ -126,9 +132,9 @@
                                 <ul class="dropdown-menu">
                                      <li><a href="">SubMenu2</a></li>
                                 </ul>
-                                <li><a style="display: none" id="rst_modelos" href="Modelos.jsp">Modelos</a></li>
-                                <li><a style="display: none" id= "rst_colores" href="Colores.jsp">Colores</a></li>
-                                <li><a style="display: none" id= "rst_tiposervicios"href="TipoServicios.jsp">Tipo Servicios</a></li>
+                                <li><a style="display: none" id="rst_modelos" href="Vista/Modelos.jsp">Modelos</a></li>
+                                <li><a style="display: none" id= "rst_colores" href="Vista/Colores.jsp">Colores</a></li>
+                                <li><a style="display: none" id= "rst_tiposervicios"href="Vista/TipoServicios.jsp">Tipo Servicios</a></li>
                              
                             </ul>
                         </li>

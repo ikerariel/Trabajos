@@ -229,7 +229,7 @@
 
                                 <label class="col-md-1 control-label">Precio</label>
                                 <div class="col-md-2">
-                                    <input id="precioarticulo" disabled="" class="form-control input-sm" type="text" placeholder="Ingrese precio"
+                                    <input id="precioarticulo" class="form-control input-sm" type="text" placeholder="Ingrese precio"
                                            style="text-transform: uppercase; font-weight: bold; background-color: #e6ffe6; font-size: 12pt"
                                            onkeyup="ValidacionesSoloNumeros(this)" onchange="ValidacionesSoloNumeros(this)">
                                 </div>

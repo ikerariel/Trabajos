@@ -168,5 +168,25 @@ function reportesCiudades() {
     window.open("reportesCiudades.jsp");
 }
 
+function Opciones() {
+    $('#descrciudad').keyup(function () {
+        verificarcampoentero('descrciudad');
+    });
+}
 
+function verificarcampoentero(campo) {
+    var variable = $('#' + campo).val();
+    var resultado = isNaN(variable);
+    switch (resultado) {
+        case true:
+
+            break;
+        case false:
+            $('#' + campo).focus();
+            $('#' + campo).val(null);
+            break;
+        default :
+            break;
+    }
+}
 

@@ -7,6 +7,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    <%
+
+        HttpSession sessionActivaUser = request.getSession();
+        if (sessionActivaUser.getAttribute("user") == null) {
+            response.sendRedirect("/TALLERCASAJC/acceso.jsp");
+        }
+
+    %>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -26,6 +34,7 @@
         <title>ENTIDAD EMISORAS</title>
     </head>
     <body>
+        <%@include file="../viwmenu.jsp" %> 
         <center>
         <section>
             <form class="form-horizontal"  id="defaultForm">
@@ -69,7 +78,7 @@
                                 </div>
                                 <label class="col-md-1 control-label" style=" font-weight: bold">DECRIPCION</label>  
                                 <div class="col-md-4">
-                                    <input id="descrentiemi"  type="text" style="text-transform: uppercase; font-weight: bold;font-size: 12pt;
+                                    <input id="descrentiemi" onkeypress="return validarsololetras(event)" type="text" style="text-transform: uppercase; font-weight: bold;font-size: 12pt;
                                            background-color: #d9edf7" placeholder="Ingrese descripcion" class="form-control input-sm" required autofocus="">
                                 </div>
                             </div>
@@ -87,7 +96,7 @@
                 </div>
 
                 <a id="btnNuevo" class="btn btn-lg btn-success" style=" font-weight: bold" onclick="getUltimoCodigoEntidadEmisoras()">Nuevo </a>
-                <a id="btnInsertar" class="btn btn-lg btn-primary" style=" font-weight: bold" onclick="ControlarCampoEntidadEmisoras(), campovacioEntidadEmisoras()">Insertar </a>
+                <a id="btnInsertar" class="btn btn-lg btn-primary" style=" font-weight: bold" onclick="ControlarCampoEntidadEmisoras(), campovacioEntidadEmisoras()">Guardar </a>
                 <a id="btnModificar" class="btn btn-lg btn-info" style=" font-weight: bold" title="Modificar" onclick="ambEntidadEmisoras(2)">Modificar </a>
                 <a id="btnAnular" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Borrar" onclick="ambEntidadEmisoras(3)">Borrar*</a>
                 <a id="btnreporteP" class="btn btn-lg btn-success" style=" font-weight: bold" title="Reporte" onclick="reportesEntidadEmisoras()">Reporte*</a>

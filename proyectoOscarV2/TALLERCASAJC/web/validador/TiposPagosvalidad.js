@@ -129,6 +129,31 @@ function allTiposPagos() {
     });
 }
 
+function campovacioTiposPagos() { //Para verificar campos vacio
+    var a = $('#descri').val(); //nombre del campos
+    if (a === "") {
+        alert('campo vacio');
+        $('#descri');
+    } else {
+        ambTiposPagos(1);
+    }
+}
+
+function ControlarTiposPagos(){  // Para que no se repita nombre
+    var dato;
+    var Depositos = $('#descri').val();
+    // alert(ciudades);
+    $('#miTablaTiposPagos tr').each(function () {
+        dato = $(this).find('td').eq(1).html();
+        if (dato === Depositos) {
+            alert('ESTE TIPO DE PAGOS YA EXISTE');
+            $('#descri').val(null); //Vaciar Campos
+            $('#descri').focus(); 
+        } else {
+        }
+    });
+}
+
 function reportesTiposPagos() {
     window.open("reportesTiposPagos.jsp");
 }

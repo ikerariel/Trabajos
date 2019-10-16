@@ -2,7 +2,7 @@
 <%-- 
     Document   : FacturasCompras
     Created on : 05/09/2018, 10:29:16 AM
-    Author     : user
+    Author     : Oscar
 --%>    
 
 <!DOCTYPE html>

@@ -7,6 +7,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    <%
+
+        HttpSession sessionActivaUser = request.getSession();
+        if (sessionActivaUser.getAttribute("user") == null) {
+            response.sendRedirect("/TALLERCASAJC/acceso.jsp");
+        }
+
+    %>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -27,6 +35,7 @@
         <title>CARGOS</title>
     </head>
     <body>
+         <%@include file="../viwmenu.jsp" %> 
         <center>
         <section>
             <form class="form-horizontal"  id="defaultForm">
@@ -63,7 +72,7 @@
 
                                 <label class="col-md-2 control-label" style=" font-weight: bold">ID</label>  
                                 <div class="col-md-4">
-                                    <input  id="codcargo" style="text-transform: uppercase; font-weight: bold; font-size: 12pt;
+                                    <input disabled="" type=""  id="codcargo" style="text-transform: uppercase; font-weight: bold; font-size: 12pt;
                                             background-color: #d9edf7 " type="text" placeholder="Registro" class="form-control input-sm" required=""
                                             onkeydown=" if (event.keyCode === 13) {
                                                         recuperarCargosporID();
@@ -72,7 +81,7 @@
                                 </div>
                                 <label class="col-md-1 control-label" style=" font-weight: bold">DECRIPCION</label>  
                                 <div class="col-md-4">
-                                    <input id="descr"  type="text" style="text-transform: uppercase; font-weight: bold;font-size: 12pt;
+                                    <input id="descr" onkeypress="return validarsololetras(event)" type="text" style="text-transform: uppercase; font-weight: bold;font-size: 12pt;
                                            background-color: #d9edf7" placeholder="Ingrese descripcion" class="form-control input-sm" required autofocus="">
                                 </div>
                             </div>
@@ -81,7 +90,7 @@
                 </div>
 
                 <a id="btnNuevo" class="btn btn-lg btn-success" style=" font-weight: bold" onclick="getUltimoCodigo()">Nuevo </a>
-                <a id="btnInsertar" class="btn btn-lg btn-primary" style=" font-weight: bold" onclick="ambCargos(1)">Guardar </a>
+                <a id="btnInsertar" class="btn btn-lg btn-primary" style=" font-weight: bold" onclick="ControlarCampoCargos(), campovacioCargos()">Guardar </a>
                 <a id="btnModificar" class="btn btn-lg btn-info" style=" font-weight: bold" title="Modificar" onclick="ambCargos(2)">Modificar </a>
                 <a id="btnAnular" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Borrar" onclick="ambCargos(3)">Borrar*</a>
                 <a id="btnreporteP" class="btn btn-lg btn-success" style=" font-weight: bold" title="Reporte" onclick="reportesCargos()">Reporte*</a>

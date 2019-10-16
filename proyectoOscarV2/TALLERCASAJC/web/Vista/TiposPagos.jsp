@@ -7,6 +7,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+     <%
+        HttpSession sessionActivaUser = request.getSession();
+        if (sessionActivaUser.getAttribute("user") == null) {
+            response.sendRedirect("/TALLERCASAJC/acceso.jsp");
+        }
+    %>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -27,6 +33,7 @@
         <title>TIPOS PAGOS</title>
     </head>
     <body>
+         <%@include file="../viwmenu.jsp" %>   
         <center>
         <section>
             <form class="form-horizontal"  id="defaultForm">
@@ -63,7 +70,7 @@
 
                                 <label class="col-md-2 control-label" style=" font-weight: bold">ID</label>  
                                 <div class="col-md-4">
-                                    <input  id="codtippag" style="text-transform: uppercase; font-weight: bold; font-size: 12pt;
+                                    <input disabled="" type="" id="codtippag" style="text-transform: uppercase; font-weight: bold; font-size: 12pt;
                                             background-color: #d9edf7 " type="text" placeholder="Registro" class="form-control input-sm" required=""
                                             onkeydown=" if (event.keyCode === 13) {
                                                         recuperarTiposPagosporID();
@@ -81,7 +88,7 @@
                 </div>
 
                 <a id="btnNuevo" class="btn btn-lg btn-success" style=" font-weight: bold" onclick="getUltimoCodigoTiposPagos()">Nuevo </a>
-                <a id="btnInsertar" class="btn btn-lg btn-primary" style=" font-weight: bold" onclick="ambTiposPagos(1)">Guardar </a>
+                <a id="btnInsertar" class="btn btn-lg btn-primary" style=" font-weight: bold" onclick="ControlarCampoTiposPagos(), campovacioTiposPagos()">Guardar </a>
                 <a id="btnModificar" class="btn btn-lg btn-info" style=" font-weight: bold" title="Modificar" onclick="ambTiposPagos(2)">Modificar </a>
                 <a id="btnAnular" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Borrar" onclick="ambTiposPagos(3)">Borrar*</a>
                 <a id="btnreporteP" class="btn btn-lg btn-success" style=" font-weight: bold" title="Reporte" onclick="reportesTiposPagos()">Reporte*</a>

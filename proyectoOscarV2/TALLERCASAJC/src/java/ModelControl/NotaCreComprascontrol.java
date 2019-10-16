@@ -5,9 +5,9 @@
  */
 package ModelControl;
 
-import ModelDAO.NotaCreComprasdao;
-import ModelDAOIMPL.NotaCreComprasdaoimpl;
-import ModelDTO.NotaCreComprasdto;
+import ModelDAO.NotaCreComprasDAO;
+import ModelDAOIMPL.NotaCreComprasDAOIMPL;
+import ModelDTO.NotaCreComprasDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -18,10 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author user
+ * @author Oscar
  */
-@WebServlet(name = "NotaCreComprascontrol", urlPatterns = {"/NotaCreComprascontrol"})
-public class NotaCreComprascontrol extends HttpServlet {
+@WebServlet(name = "NotaCreComprasControl", urlPatterns = {"/NotaCreComprasControl"})
+public class NotaCreComprasControl extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,75 +34,78 @@ public class NotaCreComprascontrol extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+        response.setContentType("application/json, charset=UTF-8");
+
         PrintWriter out = response.getWriter();
         Integer opcion = Integer.parseInt(request.getParameter("opcion"));
 
-        NotaCreComprasdao ncDAO = new NotaCreComprasdaoimpl();
-        NotaCreComprasdto ncDTO = new NotaCreComprasdto();
+        NotaCreComprasDAO nocreDAO = new NotaCreComprasDAOIMPL();
+        NotaCreComprasDTO nocreDTO = new NotaCreComprasDTO();
 
         switch (opcion) {
             case 1:
-                out.println(ncDAO.getNotaCreCompras());
+                Integer vvcaso = Integer.parseInt(request.getParameter("vvcaso"));
+                if (vvcaso == 1) {
+                    nocreDTO.setNro_nocred(Integer.parseInt(request.getParameter("_nronocred")));
+                    nocreDTO.setNro_timbrado(Integer.parseInt(request.getParameter("_nrotimbrado")));
+                    nocreDTO.setObs_nocred(request.getParameter("_obsnocred"));
+                    nocreDTO.setId_usuario(Integer.parseInt(request.getParameter("_codusuario")));
+                    nocreDTO.setId_compra(Integer.parseInt(request.getParameter("_nrofacturaC")));
+                } else if (vvcaso == 2) {
+                    nocreDTO.setNro_nocred(Integer.parseInt(request.getParameter("_nronocred")));
+                    nocreDTO.setNro_timbrado(Integer.parseInt(request.getParameter("_nrotimbrado")));
+                    nocreDTO.setObs_nocred(request.getParameter("_obsnocred"));
+                    nocreDTO.setId_usuario(Integer.parseInt(request.getParameter("_codusuario")));
+                    nocreDTO.setId_notacrecompra(Integer.parseInt(request.getParameter("_codnotacrecompra")));
+                    nocreDTO.setId_compra(Integer.parseInt(request.getParameter("_nrofacturaC")));
+                }
+
+                if (nocreDAO.insertarNotaCreCompras(nocreDTO, vvcaso)) {
+                    System.out.println("Mensaje del Servler...Insert Exitoso");
+                } else {
+                    System.out.println("Mensaje del Servler...Insert Error");
+                }
+
                 break;
+                
             case 2:
-                ncDTO.setNro_nocred(Integer.parseInt(request.getParameter("_nronocred")));
-                ncDTO.setNro_timbrado(Integer.parseInt(request.getParameter("_nrotimbrado")));
-                ncDTO.setObs_nocred(request.getParameter("_obsnocred"));
-                ncDTO.setId_compra(Integer.parseInt(request.getParameter("_codcompra")));
-                ncDTO.setId_usuario(Integer.parseInt(request.getParameter("_codusuario")));
-                ncDTO.setId_estado(Integer.parseInt(request.getParameter("_codestado")));
+                nocreDTO.setId_articulo(Integer.parseInt(request.getParameter("_codarticulo")));
+                nocreDTO.setCantidad_detnocre(Integer.parseInt(request.getParameter("_cantidad")));
+                nocreDTO.setPreciouni_detnocre(Integer.parseInt(request.getParameter("_preciounitario")));
+                nocreDTO.setId_notacrecompra(Integer.parseInt(request.getParameter("_codnotacrecompra")));
 
-                if (ncDAO.insertarNC(ncDTO)) {
-                    out.println("Exitoso");
+                if (nocreDAO.insertardetalleNotaCreCompras(nocreDTO)) {
+                    System.out.println("Mensaje del Servler...Insert Exitoso");
+                } else {
+                    System.out.println("Mensaje del Servler...Insert Error");
                 }
+
                 break;
+                
             case 3:
-                System.out.println("codigo" + ncDAO.getUltimoCodigo());
-                if (ncDAO.getUltimoCodigo() > 0) {
-                    out.println(ncDAO.getUltimoCodigo());
-                }
+                out.println(nocreDAO.getNotaCreCompras());
                 break;
+                
             case 4:
-                ncDTO.setId_notacrecompra(Integer.parseInt(request.getParameter("DtNC_codigoNC")));
-                ncDTO.setId_articulo(Integer.parseInt(request.getParameter("DtNC_codarticulo")));
-                ncDTO.setCantidad_detnocre(Integer.parseInt(request.getParameter("DtNC_cantidaddetnocre")));
-                ncDTO.setMontouni_detnocre(Integer.parseInt(request.getParameter("DtMC_montounidetnocre")));
-                if (ncDAO.insertarDetalleNC(ncDTO)) {
-                    out.println("Exitoso");
-                }
+                out.println(nocreDAO.getdetalleNotaCreCompras(Integer.parseInt(request.getParameter("nronotacrecompra"))));
                 break;
-
+                
             case 5:
-                if (ncDAO.getDetNotaCreCompras(Integer.parseInt(request.getParameter("_nroNC"))) != null) {
-                    out.println(ncDAO.getDetNotaCreCompras(Integer.parseInt(request.getParameter("_nroNC"))));
-                    System.out.println(ncDAO.getDetNotaCreCompras(Integer.parseInt(request.getParameter("_nroNC"))));
+                nocreDTO.setId_notacrecompra(Integer.parseInt(request.getParameter("_codnotacrecompra")));
+                if (nocreDAO.deletedealleNotaCreCompras(nocreDTO)) {
+                    System.out.println("Mensaje del Servler...Insert Exitoso");
+                } else {
+                    System.out.println("Mensaje del Servler...Insert Error");
                 }
                 break;
-
+                
             case 6:
-                if (ncDAO.getfactura(Integer.parseInt(request.getParameter("_nroFactura"))) != null) {
-                    out.println(ncDAO.getfactura(Integer.parseInt(request.getParameter("_nroFactura"))));
-                    System.out.println(ncDAO.getfactura(Integer.parseInt(request.getParameter("_nroFactura"))));
-                }
-                break;
-
-            case 7:
-                ncDAO.updateNC(Integer.parseInt(request.getParameter("_estado")),
-                        Integer.parseInt(request.getParameter("_idNC")));
-                break;
-
-            case 8:
-                ncDTO.setNro_nocred(Integer.parseInt(request.getParameter("_nronocred")));
-                ncDTO.setNro_timbrado(Integer.parseInt(request.getParameter("_nrotimbrado")));
-                ncDTO.setObs_nocred(request.getParameter("_obsnocred"));
-                ncDTO.setId_compra(Integer.parseInt(request.getParameter("_codcompra")));
-                ncDTO.setId_usuario(Integer.parseInt(request.getParameter("_codusuario")));
-                ncDTO.setId_estado(Integer.parseInt(request.getParameter("_codestado")));
-                ncDTO.setId_notacrecompra(Integer.parseInt(request.getParameter("_codNC")));
-
-                if (ncDAO.updateCabeceraNC(ncDTO)) {
-                    out.println("Exitoso");
+                nocreDTO.setId_estado(Integer.parseInt(request.getParameter("_estado")));
+                nocreDTO.setId_notacrecompra(Integer.parseInt(request.getParameter("_notacrecompra")));
+                if (nocreDAO.actualizarestado(nocreDTO)) {
+                    System.out.println("Mensaje del Servler...Insert Exitoso");
+                } else {
+                    System.out.println("Mensaje del Servler...Insert Error");
                 }
                 break;
         }

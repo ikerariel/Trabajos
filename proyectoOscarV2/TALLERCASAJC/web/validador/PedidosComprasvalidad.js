@@ -147,7 +147,6 @@ function CargarArticulos() {
 
 
 }
-var ixd=0;
 function agregarFilaArticulos() {
     var subtotal = 0;
     var tindex = 0;
@@ -160,12 +159,12 @@ function agregarFilaArticulos() {
 
     subtotal = v_precio * v_cant;
 
-    $('#miTablaDetalleMercaderia').append("<tr id=\'prod" + ixd + "\'>\
+    $('#miTablaDetalleMercaderia').append("<tr id=\'prod" + tindex + "\'>\
             <td>" + v_codmaterial + "</td>\n\
             <td>" + v_descripcion + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td><button type=button title='Quitar el registro de la lista' \n\
-            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + ixd + "\');removepc()\">\n\
+            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + tindex + "\').remove()\">\n\
             <span class='glyphicon glyphicon-remove'></span></button></a></td>\n\
             </tr>");
 
@@ -175,12 +174,6 @@ function agregarFilaArticulos() {
     $('#idcantidad').val(null);
     $('#idpreci').val(null);
 
-}
-function removepc() {
-    $('#miTablaDetalleMercaderia tr').click(function () {
-       $(this).closest('tr').remove();
-
-    });
 }
 function seleccion() {
     $('#miTablaPedidos tr').click(function () {
