@@ -40,6 +40,10 @@
                 overflow: scroll;
                 height:300px;
             }
+            #scrollcobro{
+                overflow: scroll;
+                height:250px;
+            }
         </style>
 
     </head>
@@ -129,208 +133,195 @@
 
                 <!-- fin contenido -->
             </div>
-                
-                <div style="padding-top: 50px" class="modal fade" id="v_clientefacturacion" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h6 class="modal-title" id="exampleModalLabel" style="text-align: center">Registrar Cobros</h6>
-                        </div>
-                   
 
+            <div style="padding-top: 10px" class="modal fade" id="cobroview" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog  modal-xl" style="align-content: center" role="document">
+                    <div class="modal-content" style="">
+                        <div class="alert-primary" style="text-align: center">
+                            <strong > Registrar Cobros</strong>
+                        </div>
+                       
                         <div class="modal-body">
                             <div class="form-row">
-                                <div class="col-md-3 mb-4">
+                                <div class="col-md-2">
                                     <label for="validationDefault01">Factura Nro. : </label>
-                                    <input type="text" class="form-control" id="v_modalfcedula" disabled="" splaceholder="" required="" >
+                                    <input type="text" class="form-control" id="v_modalnrofac" disabled="" splaceholder="" required="" >
+                                    <input type="text" class="form-control" id="v_idcobro" style="display: none" >
                                 </div>
-                                <div class="col-md-6 mb-4">
+                                <div class="col-md-2">
                                     <label for="validationDefault01">Tipo Cobro : </label>
-                                    <input type="text" class="form-control" id="v_modalfnombre" placeholder="" required="" >
+                                    <select class="form-control" id="v_tipocobro" onchange="condicionCobro()">
+                                        <option value="1">Efectivo</option>
+                                        <option value="2">Tarjeta</option>
+                                        <option value="3">Cheque</option>
+                                    </select>
                                 </div>
+                                <div class="col-md-2">
+                                    <label class="control-label">Total.</label>
+
+                                    <input class="form-control" type="text" id="v_totalcobro" disabled="">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="control-label " style="">Cliente</label>
+                                    <input class="form-control" type="text" id="v_clientenombre" disabled="">
+                                </div>
+
 
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button"  class="btn btn-outline-success" id="btnguardarclientefacturaicon">Guardar</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        </div>
+                            <br>
+                            <div class="form-row">
+                                <div class="col-md-4">
+                                    <div id="v_chque" style="display: none">
+                                        <strong class="alert-warning" id="texcobro_v">Cobro por Cheque</strong>
+                                        <div class="form-row" >
+                                            <div class="">
+                                                <label class="control-label">Nro.Cheque.</label>
+                                                <input class="form-control" type="text" id="nrochque_ch" >
+                                            </div>
+                                            <div class="">
+                                                <label class="control-label">Banco.</label>
 
-                    </div>
+                                                <select class="form-control"  id="banco_che">
+                                                    <option value="1">ITAU</option>
+                                                    <option value="2">VISION</option>
+                                                    <option value="3">FAMILIAR</option>
+                                                    <option value="4">REGIONAL</option>
+                                                    <option value="5">CONTINENTAL</option>
+                                                </select>
+                                            </div>
 
-                </div>
-            </div>
-
-            <div class="modal fade" style="padding-top: 100px"  id="cobroview" data-backdrop="static" data-keyboard="false">
-                <div class="modal-dialog" style="">
-                    <div class="modal-content">
-                        <!--HEADER DE LA VENTANA--->
-                        <div class="modal-header">
-                            <h4 class="modal-title" style="text-align: center;" id="textM">Cobros</h4>
-                        </div>
-                        <!--CONTENIDO DE LA VENTANA--->
-                        <div class="panel">
-                            <a class="close btn btn-md btn-danger" data-dismiss="modal" aria-hidden="true" title="Salir">X</a>
-                            <a class="btn btn-md btn-primary" onclick=" guardarventa()"><span class="glyphicon glyphicon-floppy-save"></span> Guardar</a>
-                        </div>
-                        <DIV class="modal-body">
-                            <form class="form-horizontal" id="miForm" >
-                                <div class="form-row">
-                                    <label class="control-label col-md-2">Fact Nro.</label>
-                                    <div class="col-md-2">
-                                        <input class="form-control" type="text" id="factura_cobro" disabled="">
-                                    </div>
-                                    <label class="control-label col-md-2">Tipo de Cobro</label>
-                                    <div class="col-md-3">
-                                        <select class="form-control" id="v_tipocobro" onchange="condicionCobro()">
-                                            <option value="1">Efectivo</option>
-                                            <option value="2">Tarjeta</option>
-                                            <option value="3">Cheque</option>
-                                        </select>
-                                    </div>
-                                    <label class="control-label col-md-1">Total.</label>
-                                    <div class="col-md-2">
-                                        <input class="form-control" type="text" id="v_totalcobro" disabled="">
-                                    </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-md-2">Cliente.</label>
-                                    <div class="col-md-2">
-                                        <input class="form-control" type="text" id="v_clienteci" disabled="">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input class="form-control" type="text" id="v_clientenombre" disabled="">
-                                    </div>
-
-                                </div>
-                                <div class="">
-                                    <strong class="alert-warning" id="texcobro_v">Cobro por Cheque</strong>
-
-                                    <div class="form-group panel panel-footer" id="v_chque" style="display:none">
-                                        <label class="control-label col-md-2 ">Nro.Cheque.</label>
-                                        <div class="col-md-2">
-                                            <input class="form-control" type="text" id="nrochque_ch" >
                                         </div>
-                                        <label class="control-label col-md-1">Banco.</label>
-                                        <div class="col-md-3">
-                                            <select class="form-control"  id="banco_che">
-                                                <option value="1">ITAU</option>
-                                                <option value="2">VISION</option>
-                                                <option value="3">FAMILIAR</option>
-                                                <option value="4">REGIONAL</option>
-                                                <option value="5">CONTINENTAL</option>
-                                            </select>
-                                        </div>
-                                        <label class="control-label col-md-2">Tipo Cheque.</label>
-                                        <div class="col-md-2">
-                                            <select class="form-control" id="tipocheque_ch" >
-                                                <option value="1">AL DIA</option>
-                                                <option value="2">DIFERIDO</option>
+                                        <div class="form-row" id="v_chque" style="">
 
-                                            </select>
+                                            <div class="">
+                                                <label class="control-label">Tipo Cheque.</label>
+
+                                                <select class="form-control" id="tipocheque_ch" >
+                                                    <option value="1">AL DIA</option>
+                                                    <option value="2">DIFERIDO</option>
+
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="form-group panel panel-footer" id="v_tarjeta" style="display:none">
-                                        <label class="control-label col-md-2">Ent. Emisora</label>
-                                        <div class="col-md-2">
+                                    
+                                    <div id="v_tarjeta" style="display: none">
+                                         <strong class="alert-warning" id="texcobro_v">Cobro por Tarjeta</strong>
+                                        <div class="form-row" >
+                                             
+                                        <div class="">
+                                            <label class="control-label">Ent. Emisora</label>
+
                                             <select class="form-control" id="entemisora_t"  >
                                                 <option value="4">VISA</option>
                                                 <option value="5">MASTERCARD</option>
                                                 <option value="6">AMERICA ESPRESS</option>
                                             </select>
                                         </div>
-                                        <label class="control-label col-md-1">Tipo Tarjeta.</label>
-                                        <div class="col-md-3">
+                                        <div class="">
+                                            <label class="control-label">Tipo Tarjeta.</label>
+
                                             <select class="form-control" id="tarjettipo_t"  >
                                                 <option value="1">CRÉDITO</option>
                                                 <option value="2">DÉDBITO</option>
 
                                             </select>
                                         </div>
-                                        <label class="control-label col-md-2">Nro.Boleta.</label>
-                                        <div class="col-md-2">
+                                   
+                                    </div>
+                                    <div class="form-row" id="v_tarjeta" style="">
+                                        <div class="">
+                                            <label class="control-label">Nro.Boleta.</label>
+
                                             <input class="form-control" type="text" id="nroboleta_t">
                                         </div>
                                     </div>
+                                    </div>
 
-                                    <div class="form-group panel panel-primary panel-footer">
-                                        <label class="control-label col-md-3">Monto a Cobrar.</label>
-                                        <div class="col-md-3">
-                                            <input class="form-control" type="text" id="v_montocobrar" onkeyup=" valores('v_montocobrar')"
+                                    
+
+                                    <div class="form-row">
+                                        <div class="">
+                                            <label class="control-label">Monto a Cobrar.</label>
+
+                                            <input class="form-control" type="text" id="v_montocobrar" 
                                                    onkeydown="
                                                            if (event.keyCode === 13) {
                                                                agregarfilacobro();
                                                            }">
                                         </div>
-                                        <div class="col-md-2">
-                                            <a class="btn btn-block btn-primary"><span class="glyphicon glyphicon-download"></span></a>
-                                        </div>
 
                                     </div>
-                                    <div class="form-group" id="scrollcobro">
-                                        <div >
-                                            <table class="table table-hover table-bordered table-striped" id="tabladetallecobros">
-                                                <thead>
-                                                    <tr>
-                                                        <td style="display: none">idtipocobro</td>
-                                                        <td >Tipo Cobro</td>
-                                                        <td>Nro. Cheque</td>
-                                                        <td style="display: none">idbancocheque</td>
-                                                        <td>Banco Chque</td>
-                                                        <td style="display: none">idtipotarjeta</td>
-                                                        <td style="display: none">identidademisora</td>
-                                                        <td>entidademisora</td>
-                                                        <td>Tipo Tarjeta</td>
-                                                        <td>Nro. Boleta</td>
-                                                        <td>Monto</td>
-                                                        <td>Estado</td>
-                                                        <td style="display: none">idtipochque</td>
-                                                        <td style="display: none">tipocheque</td>
-                                                    </tr>
-                                                </thead>
 
-                                                <tbody></tbody>
-                                            </table>
-                                        </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="table-responsive" id="scrollcobro" style="">
+
+                                        <table class="table table-striped table-sm table-hover" id="tabladetallecobros">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th style="display: none">idtipocobro</th>
+                                                    <th >Tipo Cobro</th>
+                                                    <th>Nro. Cheque</th>
+                                                    <th style="display: none">idbancocheque</th>
+                                                    <th>Banco</th>
+                                                    <th style="display: none">idtipotarjeta</th>
+                                                    <th style="display: none">identidademisora</th>
+                                                    <th>Ent.</th>
+                                                    <th>Tarjeta</th>
+                                                    <th>Nro. Boleta</th>
+                                                    <th>Monto</th>
+                                                    <th>Estado</th>
+                                                    <th style="display: none">idtipochque</th>
+                                                    <th style="display: none">tipocheque</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody></tbody>
+                                        </table>
+
 
                                     </div>
                                 </div>
 
-                                <div class="form-group" >
-                                    <label class="control-label col-md-6 col-lg-pull-0">Total Cobro :</label>
-                                    <div class="col-md-2">
+                                <div class="form-row">
+
+                                    <div class="">
+
+                                        <label class="control-label ">Total Cobro :</label>
                                         <input class="form-control " id="totalcobro_v" type="text" disabled="">
                                     </div>
-                                    <label class="control-label col-md-2 col-lg-offset-0">Diferencia :</label>
-                                    <div class="col-md-2">
+                                    <div class="">
+                                        <label class="control-label">Diferencia :</label>
                                         <input class="form-control " id="diferencia_v" type="text" disabled="">
                                     </div>
 
-
-
                                 </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button"  class="btn btn-outline-success" id="btnguardarCobro">Guardar</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            </div>
 
-                            </form>   
                         </div>
+
                     </div>
                 </div> 
-            </div> 
 
 
 
-        </div>
+            </div>
 
 
-        <!-- Bootstrap core JavaScript -->
-        <script src="Recursos/vendor/jquery/jquery.min.js"></script>
-        <script src="Recursos/vendor/jquery/bootstrap.bundle.min.js"></script>
-        <!-- Menu Toggle Script -->
-        <script src="Recursos/js/menu.js"></script>
-        <script src="Recursos/js/jquery-confirm.min.js"></script>
-        <!-- Vlidaciones Script -->
-        <script src="validaciones/validacionesgenericos.js"></script>
-        <script src="validaciones/validacionesCobros.js"></script>
+            <!-- Bootstrap core JavaScript -->
+            <script src="Recursos/vendor/jquery/jquery.min.js"></script>
+            <script src="Recursos/vendor/jquery/bootstrap.bundle.min.js"></script>
+            <!-- Menu Toggle Script -->
+            <script src="Recursos/js/menu.js"></script>
+            <script src="Recursos/js/jquery-confirm.min.js"></script>
+            <!-- Vlidaciones Script -->
+            <script src="validaciones/validacionesgenericos.js"></script>
+            <script src="validaciones/validacionesCobros.js"></script>
 
     </body>
 </html>

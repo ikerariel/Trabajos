@@ -23,5 +23,6 @@ public interface ventasDAO {
     String getFacturasPorTimbrados(Integer TipDoc);
     String getAperCierreCajaVentas();
     String getCobros(String fac, String ci);
+    boolean insertarCobro(ventasDTO dto);
     
 }

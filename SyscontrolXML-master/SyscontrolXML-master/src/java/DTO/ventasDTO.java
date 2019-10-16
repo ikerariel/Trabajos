@@ -50,6 +50,31 @@ public class ventasDTO {
     private String nombrecliente;
     private String cliente;
     private Integer idcaja;
+    private Integer idtipocobro;
+
+    public Integer getIdtipocobro() {
+        return idtipocobro;
+    }
+
+    public void setIdtipocobro(Integer idtipocobro) {
+        this.idtipocobro = idtipocobro;
+    }
+
+    public Integer getIdcobro() {
+        return idcobro;
+    }
+
+    public void setIdcobro(Integer idcobro) {
+        this.idcobro = idcobro;
+    }
+
+    public Integer getImporte() {
+        return importe;
+    }
+
+    public void setImporte(Integer importe) {
+        this.importe = importe;
+    }
 
     public ventasDTO(Integer idcobro, String fechasaldo, Integer saldo, Integer importe, String estado,String cliente, String nombrecliente, String numerodocumento,Integer idestado) {
         this.idcobro = idcobro;

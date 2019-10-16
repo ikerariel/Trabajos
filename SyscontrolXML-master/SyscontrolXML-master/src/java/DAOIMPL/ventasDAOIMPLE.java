@@ -323,7 +323,7 @@ public class ventasDAOIMPLE implements ventasDAO {
             conexion = new Conexion();
             sintaxiSql = "SELECT c.idcobro,df.numerodocumento, coalesce(c.importe,0) as importe, c.fecha_cobro::date, c.idtipocobro, c.idventa, c.saldo, c.fechasaldo::date, \n"
                     + "       c.idestado, (cl.cedula||' - '||cl.nombrecliente) as cliente, nombrecliente,(e.descripcion) as estado\n"
-                    + "  FROM ventas.cobro c\n"
+                    + "  FROM ventas.ctas_cobrar c\n"
                     + "  left join ventas.venta v on c.idventa=v.idventa\n"
                     + "  left join cliente cl on v.idcliente = cl.idcliente\n"
                     + "  left join estado e on c.idestado=e.idestado\n"
@@ -350,6 +350,33 @@ public class ventasDAOIMPLE implements ventasDAO {
             Logger.getLogger(ventasDAOIMPLE.class.getName()).log(Level.SEVERE, null, ex);
         }
         return new Gson().toJson(allcobros);
+    }
+
+    @Override
+    public boolean insertarCobro(ventasDTO dto) {
+
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "INSERT INTO ventas.cobros_detalle(\n"
+                    + "            idcobro, importe,  idtipocobro)\n"
+                    + "    VALUES (?, ?, ?);";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            preparedStatement.setObject(1, dto.getIdcobro());
+            preparedStatement.setObject(2, dto.getImporte());
+            preparedStatement.setObject(3, dto.getIdtipocobro());
+            filasAfectadas = preparedStatement.executeUpdate();
+            if (filasAfectadas > 0) {
+                conexion.comit();
+            } else {
+                conexion.rollback();
+                System.out.println("Rollback() Realizado");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ventasDAOIMPLE.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+
     }
 
 }

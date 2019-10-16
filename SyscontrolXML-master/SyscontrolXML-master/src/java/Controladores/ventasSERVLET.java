@@ -111,6 +111,14 @@ public class ventasSERVLET extends HttpServlet {
             case 11:
                 out.println(vDAO.getCobros(request.getParameter("cfac"),request.getParameter("cCi")));
                 break;
+            case 12:
+                vDTO.setIdcobro(Integer.parseInt(request.getParameter("codCobro")));
+                vDTO.setImporte(Integer.parseInt(request.getParameter("importeCobro")));
+                vDTO.setIdtipocobro(Integer.parseInt(request.getParameter("codTipoCobro")));
+                if (vDAO.insertarCobro(vDTO)) {
+                    out.println("Exitoso");
+                }
+                break;
         }
 
 //        try (PrintWriter out = response.getWriter()) {
