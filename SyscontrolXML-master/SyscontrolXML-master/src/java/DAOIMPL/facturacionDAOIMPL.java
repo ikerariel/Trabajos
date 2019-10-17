@@ -167,4 +167,58 @@ public class facturacionDAOIMPL implements facturacionDAO {
         return false;
     }
 
+    @Override
+    public String getAnular(String nrofac) {
+        ResultSet rs;
+        ArrayList<facturacionDTO> getanlado = new ArrayList<>();
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "SELECT f.iddocfactura, f.idestado, f.numerodocumento, c.cedula, c.nombrecliente\n"
+                    + "  FROM ventas.documentos_facturas f\n"
+                    + "left join ventas.venta v on f.iddocfactura =v.iddocfactura\n"
+                    + "left join cliente c on v.idcliente=c.idcliente \n"
+                    + "where  f.numerodocumento =?";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            preparedStatement.setObject(1, nrofac);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                getanlado.add(new facturacionDTO(rs.getInt("iddocfactura"),
+                        rs.getInt("idestado"),
+                        rs.getString("numerodocumento"),
+                        rs.getString("cedula"),
+                        rs.getString("nombrecliente")));
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(facturacionDAOIMPL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new Gson().toJson(getanlado);
+    }
+
+    @Override
+    public boolean anularfactura(facturacionDTO dto) {
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "UPDATE ventas.venta\n"
+                    + "   SET  idestado=3\n"
+                    + " WHERE iddocfactura=?";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            preparedStatement.setObject(1, dto.getIddocfactura());
+            filasAfectadas = preparedStatement.executeUpdate();
+            if (filasAfectadas > 0) {
+                conexion.comit();
+            } else {
+                conexion.rollback();
+                System.out.println("Rollback() Realizado");
+                return false;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(facturacionDAOIMPL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
 }
