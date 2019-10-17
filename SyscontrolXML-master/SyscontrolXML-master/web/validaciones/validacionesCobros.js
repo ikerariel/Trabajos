@@ -201,7 +201,7 @@ function agregarfilacobro() {
     var montocobrar = $('#v_montocobrar').val().replace(/\./g, '');
     var diferencia = $('#diferencia_v').val().replace(/\./g, '');
     var totalcargado = parseInt(montocobrar) + parseInt(cobrado);
-      if (parseInt(diferencia) > 0) {
+      if (parseInt(totalcargado) > parseInt(totalfact)) {
                   $.confirm({
             title: 'AVISO!',
             content: 'El cobro no debe superar el monto de la factura.. ',
