@@ -147,6 +147,7 @@ function CargarArticulos() {
 
 
 }
+var indexpedido = 0;
 function agregarFilaArticulos() {
     var subtotal = 0;
     var tindex = 0;
@@ -158,13 +159,13 @@ function agregarFilaArticulos() {
     var v_precio = $('#idpreci').val();
 
     subtotal = v_precio * v_cant;
-
-    $('#miTablaDetalleMercaderia').append("<tr id=\'prod" + tindex + "\'>\
+    indexpedido++;
+    $('#miTablaDetalleMercaderia').append("<tr id=\'prod" + indexpedido + "\'>\
             <td>" + v_codmaterial + "</td>\n\
             <td>" + v_descripcion + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td><button type=button title='Quitar el registro de la lista' \n\
-            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + tindex + "\').remove()\">\n\
+            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + indexpedido + "\').remove()\">\n\
             <span class='glyphicon glyphicon-remove'></span></button></a></td>\n\
             </tr>");
 
@@ -425,7 +426,7 @@ function  DetalleArticulos() {
 
 
 }
-var idx = 0;
+var idx_v = 0;
 function recuperarDetalle() {
     $('#btnGuardar').hide();
     $('#btnmodificarpedido').show();
@@ -462,12 +463,13 @@ function recuperarDetalle() {
                         $("#idcantidad").prop('disabled', false);
                         subtotal = value.precio * value.cantidad;
 ///////////////////////////////////////////////////////////////////////
-                        $("#miTablaDetalleMercaderia").append($("<tr id=\'prod" + idx + "\'>").append($(
+                        idx_v++;
+                        $("#miTablaDetalleMercaderia").append($("<tr id=\'prod" + idx_v + "\'>").append($(
                                 "<td>" + value.id_articulo + "</td>" +
                                 "<td>" + value.art_descripcion + "</td>" +
                                 "<td>" + value.cantidad + "</td>" +
                                 "<td><button type=button title='Quitar el registro de la lista' \n\
-                                 style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + idx + "\').remove()\">\n\
+                                 style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + idx_v + "\').remove()\">\n\
                                  <span class='glyphicon glyphicon-remove'></span></button></td>")));
 
                     });
@@ -531,7 +533,7 @@ function cambioEstadoPedido() {
                     alert('Seleccione un pedido.!');
                 } else if ($('#v_estado').val() === 'CONFIRMADO') {
                     alert('El pedido ya esta Confirmado, no se puede Anular.');
-                } else  {
+                } else {
                     var opcion = confirm('Desea Anular el pedido.??');
                     if (opcion === true) {
                         datoJson = {

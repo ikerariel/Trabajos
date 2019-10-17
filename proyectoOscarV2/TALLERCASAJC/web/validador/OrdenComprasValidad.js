@@ -11,13 +11,12 @@ function opcionsOrden() {
     $('#btnNuevoOrden').click(function () {
         getcodigoOrdenCompras();
         $('#ventanaOrdenCompra').modal('show');
+        $('#btnGuardarOrdencompra').show();
+        $('#btnModificarOrdencompra').hide();
         $('#usuarioOrden').val($('#usertext_v').val());
         $('#estadoOrden').val('PENDIENTE');
     });
 }
-
-
-
 
 //FUNCIONES SECUNDARIOS VALIDADACIONES CREADOS-----------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
@@ -128,37 +127,54 @@ function seleccionDetArticulosOrden() {
     });
 }
 
-function CargarArticulosGrilla() {
-    var cod = $('#idartiGenerico').val();
-    var codigo;
-    $('#miTablaDetOrdenCompras').find('tbody').find('tr').each(function () {
-        codigo = $(this).find("td").eq(1).html();
+function cargarDeatalleOrden() {
+    var ban = false;
+    if ($('#idartiGenerico').val() === "") {
+        alert('DEBES INGRESAR UN ARTICULO');
+    } else {
+        var cod = $('#idartiGenerico').val();
+        var codigo;
+        $('#mitablaOrdendetalle').find('tbody').find('tr').each(function () {
+            codigo = $(this).find("td").eq(0).html();
+            if (cod === codigo) {
+                var sms = confirm('Articulo cargado, desea sustituirlo ??');
+                if (sms === true) {
+                    $(this).closest("tr").remove();
+                    ban = true;
+                    agregarfilaorden();
+                } else {
+                    ban = true;
+                }
 
-        if (cod === codigo) {
-            alert('El articulo ya fue cargada, desea sustituirlo?');
-            $(this).find("td").remove();
+            } else {
+
+            }
+
+        });
+        if (ban === false) {
+            agregarfilaorden();
         }
-    });
-    agregarFilaArticilos();
-}
-function agregarFilaArticilos() {
+    }
 
-    //idmaterial
-//    var v_codMaterialG = $('#idartiGenerico').val();
+}
+var indorden = 0;
+function agregarfilaorden() {
     var v_codmaterial = $('#idartiGenerico').val();
     var v_descripcion = $('#iddescrip').val();
     var v_precio = $('#PrecioArti').val();
     var v_cant = $('#idcanti').val();
 
     subtotal = v_precio * v_cant;
-
-    $('#miTablaDetOrdenCompras').append("<tr id=\'prod" + tindex + "\'>\
+    indorden++;
+    $('#mitablaOrdendetalle').append("<tr id=\'prod" + indorden + "\'>\
             <td>" + v_codmaterial + "</td>\n\
             <td>" + v_descripcion + "</td>\n\
             <td>" + v_precio + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
-            <td><img onclick=\"$(\'#prod" + tindex + "\').remove();calmonto()\" src='../Recursos/img/delete.png' width=14 height=14/></td>\n\
+            <td><button type=button title='Quitar el registro de la lista' \n\
+            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + indorden + "\').remove()\">\n\
+            <span class='glyphicon glyphicon-remove'></span></button></td>\n\
             </tr>");
 
     calmonto(4);
@@ -167,7 +183,6 @@ function agregarFilaArticilos() {
     $('#idcanti').val(null);
     $('#iddescrip').val(null);
     $('#PrecioArti').val(null);
-//    $('#total').val(subtotal);
 
 }
 //            CALCULO DE MONTOS TOTALES
@@ -184,7 +199,7 @@ function calmonto(valor) {
         $('#totalorden').val(acumu);
         numeroDecimal('totalorden');
 
-    }, 1000);
+    }, 1200);
 
 }
 
@@ -434,11 +449,10 @@ function  InsertarOrdenComprasS() {
             if (opcion === true) {
                 datosCabeceraJSON = {
                     "opcion": 2,
-                    "sucurC": 1,
-                    "proveeC": 1,
+                    "sucurC": $('#codsucursal_v').val(),
+                    "proveeC": $("#idproveed").val(),
                     "PcompC": $('#nroPresupuesto').val(),
-                    "usuaC": 1,
-                    "estadoC": 3
+                    "usuaC": $('#idusersession_v').val()
                 };
                 $.ajax({
                     url: "http://localhost:8084/TALLERCASAJC/OrdenComprascontrol",
@@ -447,7 +461,7 @@ function  InsertarOrdenComprasS() {
                     cache: false,
                     dataType: 'text',
                     success: function () {
-                        DetalleArticulos();
+                   insertarDetalleArticuloOrd();
                         alert("Orden de Compras guardado correctamente.!!");
                         window.location.reload();
                     },
@@ -462,20 +476,70 @@ function  InsertarOrdenComprasS() {
     }
 
 }
+function  ModificarOrdenCompra() {
+    var dato = "";
+    $('#mitablaOrdendetalle').find('tbody').find('tr').each(function () {
+        dato = $(this).find("td").eq(0).html();
+    });
+    if (dato === "") {
+        alert('No hay detalle que guardar..!');
+        $("#idartiGenerico").focus();
+    } else {
+        if ($('#usuarioOrden').val() === "") {
+            alert('Debe ingresar todos los datos requeridos para la consulta..');
+            $("#idartiGenerico").focus();
+        } else {
+            var opcion = confirm('Desea Guardar orden de Compras..?');
+            if (opcion === true) {
+                datosCabeceraJSON = {
+                    "opcion": 21,
+                    "nroOrdenC": $('#codigo').val(),
+                    "sucurC": $('#codsucursal_v').val(),
+                    "proveeC": $("#idproveed").val(),
+                    "PcompC": $('#nroPresupuesto').val(),
+                    "usuaC": $('#idusersession_v').val()
+                };
+                $.ajax({
+                    url: "http://localhost:8084/TALLERCASAJC/OrdenComprascontrol",
+                    type: 'POST',
+                    data: datosCabeceraJSON,
+                    cache: false,
+                    dataType: 'text',
+                    success: function () {
+                        deleteArticuloOrden();
+                        setTimeout(function () {
+                          insertarDetalleArticuloOrd();
+                            alert("Orden de Compras guardado correctamente.!!");
+                            window.location.reload();
+                        }, 1100);
 
-function  DetalleArticulos() {
-    $('#miTablaDetOrdenCompras').find('tbody').find('tr').each(function () {
-        datosDetalleJSON = {
+                    },
+                    error: function () {
+                    }
+                });
+
+            } else {
+
+            }
+        }
+    }
+
+}
+
+function  insertarDetalleArticuloOrd() {
+    $('#mitablaOrdendetalle').find('tbody').find('tr').each(function () {
+        ds = {
             "opcion": 3,
             "codigoD": $('#codigo').val(),
             "idartiD": $(this).find("td").eq(0).html(),
-            "precioD": $(this).find("td").eq(3).html(),
-            "cantiD": $(this).find("td").eq(4).html()
+            "precioD": $(this).find("td").eq(2).html(),
+            "cantiD": $(this).find("td").eq(3).html()
         };
+       
         $.ajax({
             url: "http://localhost:8084/TALLERCASAJC/OrdenComprascontrol",
             type: 'POST',
-            data: datosDetalleJSON,
+            data: ds,
             cache: false,
             dataType: 'text',
             success: function () {
@@ -485,6 +549,23 @@ function  DetalleArticulos() {
         });
     });
 
+}
+function  deleteArticuloOrden() {
+    js = {
+        "opcion": 22,
+        "nroOrdecompra": $('#codigo').val()
+    };
+    $.ajax({
+        url: "http://localhost:8084/TALLERCASAJC/OrdenComprascontrol",
+        type: 'POST',
+        data: js,
+        cache: false,
+        dataType: 'text',
+        success: function () {
+        },
+        error: function () {
+        }
+    });
 }
 //function  ModificarDetalleOrdenCo() {
 //    var dato = "";
@@ -522,31 +603,31 @@ function  DetalleArticulos() {
 //        }
 //    }
 //}
-function  ModificarDetOrdenComprasS() {
-    $('#miTablaDetOrdenCompras').find('tbody').find('tr').each(function () {
-        datosDetalleJSON = {
-            "opcion": 4,
-            "codigoD": $('#codigo').val(),
-            "idartiD": $(this).find("td").eq(0).html(),
-            "precioD": $(this).find("td").eq(3).html(),
-            "cantiD": $(this).find("td").eq(4).html()
-        };
-        $.ajax({
-            url: "http://localhost:8084/TALLERCASAJC/OrdenComprascontrol",
-            type: 'POST',
-            data: datosDetalleJSON,
-            cache: false,
-            dataType: 'text',
-            success: function () {
-                alert("Detalle Modificado Correctamente...!!");
-                window.location.reload();
-            },
-            error: function () {
-            }
-        });
-    });
-
-}
+//function  ModificarDetOrdenComprasS() {
+//    $('#miTablaDetOrdenCompras').find('tbody').find('tr').each(function () {
+//        datosDetalleJSON = {
+//            "opcion": 4,
+//            "codigoD": $('#codigo').val(),
+//            "idartiD": $(this).find("td").eq(0).html(),
+//            "precioD": $(this).find("td").eq(3).html(),
+//            "cantiD": $(this).find("td").eq(4).html()
+//        };
+//        $.ajax({
+//            url: "http://localhost:8084/TALLERCASAJC/OrdenComprascontrol",
+//            type: 'POST',
+//            data: datosDetalleJSON,
+//            cache: false,
+//            dataType: 'text',
+//            success: function () {
+//                alert("Detalle Modificado Correctamente...!!");
+//                window.location.reload();
+//            },
+//            error: function () {
+//            }
+//        });
+//    });
+//
+//}
 
 function getEstados() {
 //    alert("llega al usuario")
@@ -699,7 +780,7 @@ function allOrdenCompras() {
     });
 }
 
-var v = 1;
+var vindex = 0;
 function recuperarPresupuestoDetalle() {
 
     datosDetalleJSON = {
@@ -720,21 +801,22 @@ function recuperarPresupuestoDetalle() {
                 if (parseInt(estado) === 1) {
                     $.each(resp, function (indice, value) {
                         $('#proveeOrden').val((value.proveedor));
-                        $('#idproveedor').val((value.id_proveedor));
+                        $('#idproveed').val((value.id_proveedor));
                         subtotal = value.preciounitario * value.cantidad;
-                        $('#miTablaDetOrdenCompras').append("<tr id=\'prod" + v + "\'>\
+                        vindex++;
+                        $('#mitablaOrdendetalle').append("<tr id=\'prod" + vindex + "\'>\
                                     <td >" + value.id_articulo + "</td>\n\
                                     <td>" + value.articulo + "</td>\n\
                                     <td>" + value.preciounitario + "</td>\n\
                                     <td>" + value.cantidad + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
                                     <td><button type=button title='Quitar el registro de la lista' \n\
-            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + v + "\').remove(); calmonto();\">\n\
+            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + vindex + "\').remove(); calmonto(4);\">\n\
             <span class='glyphicon glyphicon-remove'></span></button></td>\n\
             </tr>");
 
                     });
-                    calmonto();
+                    calmonto(4);
                 } else {
                     alert('Presupuesto Pendiente.!!');
                 }
@@ -790,13 +872,13 @@ function estadoOrdenCompra() {
     $(document).ready(function () {
         $('body').on('click', '#botonesOrdenCompra a', function () {
             btn = ($(this).attr('id'));
-            if (btn === 'btnAnular') {
+            if (btn === 'btnAnularOrden') {
                 if ($('#estadOrdenP').val() === "") {
-                    alert('Seleccione un pedido.!');
-                } else if ($('#estadOrdenP').val() === 'Pendiente' || $('#estadOrdenP').val() === 'Anulado') {
-                    alert('El pedido aún esta Pendiente de Confirmación o ya esta Anulada..');
-                } else if ($('#estadOrdenP').val() === 'Aprobado') {
-                    var opcion = confirm('Desea Anular el pedido.??');
+                    alert('Seleccione una Orden de Compra.!');
+                } else if ($('#estadOrdenP').val() === 'CONFIRMADO') {
+                    alert('La Orden de Comprao ya no se puede Anular..');
+                } else  {
+                    var opcion = confirm('Desea Anular el la Orden de Compra.??');
                     if (opcion === true) {
                         datoJson = {
                             "opcion": 13,
@@ -807,13 +889,13 @@ function estadoOrdenCompra() {
                         alert('Pedido Anulado con éxito.!!');
                     }
                 }
-            } else if (btn === 'btnConfirmarr') {
+            } else if (btn === 'btnConfirmarOrden') {
                 if ($('#estadOrdenP').val() === "") {
-                    alert('Seleccione un pedido.!');
-                } else if ($('#estadOrdenP').val() === 'Aprobado' || $('#estadOrdenP').val() === 'Anulado') {
-                    alert('El pedido ya fué Confirmado o esta Anulada..');
-                } else if ($('#estadOrdenP').val() === 'Pendiente') {
-                    var opcion = confirm('Desea Confirmar el pedido.??');
+                    alert('Seleccione una Orden de Compra.!');
+                } else if ($('#estadOrdenP').val() === 'CONFIRMADO') {
+                    alert('la Orden ya fué Confirmado o esta Anulada..');
+                } else  {
+                    var opcion = confirm('Desea Confirmar la Orden de Compra.??');
                     if (opcion === true) {
                         datoJson = {
                             "opcion": 13,
@@ -824,13 +906,13 @@ function estadoOrdenCompra() {
                         alert('Pedido Confirmado con éxito.!!');
                     }
                 }
-            } else if (btn === 'btnRevertir') {
+            } else if (btn === 'btnRevertirOrden') {
                 if ($('#estadOrdenP').val() === "") {
-                    alert('Seleccione un pedido.!');
-                } else if ($('#estadOrdenP').val() === 'Pendiente' || $('#estadOrdenP').val() === 'Anulado') {
-                    alert('El pedido no se puede Revertir..');
-                } else if ($('#estadOrdenP').val() === 'Aprobado') {
-                    var opcion = confirm('Desea Revertir el pedido.??');
+                    alert('Seleccione una Orden de Compra.!');
+                } else if ($('#estadOrdenP').val() === 'PENDIENTE') {
+                    alert('La Orden de Compra no se puede Revertir..');
+                } else  {
+                    var opcion = confirm('Desea Revertir la Orden de Compra.??');
                     if (opcion === true) {
                         datoJson = {
                             "opcion": 13,
@@ -864,21 +946,23 @@ function confirmarOrdenCompras() {
     });
 }
 
-
+var indexordenV = 0;
 function traerDetalleOrdenCompra() {
+    $('#btnModificarOrdencompra').show();
+    $('#btnGuardarOrdencompra').hide();
     if ($('#ordenNro').val() === "") {
         alert('Seleecione un pedido para visualizar..');
     } else {
         $('#ventanaOrdenCompra').modal('show');
-        $('#miTablaDetOrdenCompras').find('tbody').find('tr').empty();
-        datosDetalleJSON = {
+        $('#mitablaOrdendetalle').find('tbody').find('tr').empty();
+        datosOrden = {
             "opcion": 16,
             "nroOrden": $('#ordenNro').val()
         };
         $.ajax({
             url: "http://localhost:8084/TALLERCASAJC/OrdenComprascontrol",
             type: 'POST',
-            data: datosDetalleJSON,
+            data: datosOrden,
             cache: false,
             success: function (resp) {
                 if (JSON.stringify(resp) != '[]') {
@@ -888,20 +972,22 @@ function traerDetalleOrdenCompra() {
                         $("#proveeOrden").val(value.ras_social);
                         $("#nroPresupuesto").val(value.id_presucompra);
                         $("#usuarioOrden").val(value.usu_nombre);
+                        $("#idproveed").val(value.id_proveedor);
 
                         $("#usuarioOrden").prop('disabled', true);
                         $("#proveeOrden").prop('disabled', true);
                         $("#pedoidoOrden").prop('disabled', true);
                         subtotal = value.cantidad_detorden * value.precio_detorden;
-                        $('#miTablaDetOrdenCompras').append("<tr id=\'prod" + tindex + "\'>\
-                                    <td style=display:none>" + value.id_articulo + "</td>\n\
-                                    <td>" + value.codigenerico + "</td>\n\
+                        indexordenV++;
+                        $('#mitablaOrdendetalle').append("<tr id=\'prod" + indexordenV + "\'>\
+                                    <td>" + value.id_articulo + "</td>\n\
                                     <td>" + value.art_descripcion + "</td>\n\
-                                    <td>" + value.cantidad_detorden + "</td>\n\
                                     <td>" + value.precio_detorden + "</td>\n\
+                                    <td>" + value.cantidad_detorden + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
-                                    <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
-                                    \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
+                                    <td><button type=button title='Quitar el registro de la lista' \n\
+            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + indexordenV + "\').remove();calmonto(5);\">\n\
+            <span class='glyphicon glyphicon-remove'></span></button></td></tr>");
 
                     });
                     $('#codigo').val($('#ordenNro').val());
@@ -909,7 +995,7 @@ function traerDetalleOrdenCompra() {
                     alert('Datos no encontrados..');
                     $("#ordenNro").focus();
                 }
-             calmonto(5);
+                calmonto(5);
             }
         });
 

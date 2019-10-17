@@ -30,6 +30,7 @@ public interface OrdenComprasdao {
     boolean confirmarOrdenCompras(OrdenComprasdto dto);
 
     boolean modificarDetOrdenCompras(OrdenComprasdto dto);
+    boolean deleteordencompra(OrdenComprasdto dto);
 
     String listarOrdenCompras();
 

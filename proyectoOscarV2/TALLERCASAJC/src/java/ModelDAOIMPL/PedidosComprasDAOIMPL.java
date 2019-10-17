@@ -415,7 +415,7 @@ public class PedidosComprasDAOIMPL implements PedidosComprasDAO {
             sintaxiSql = null;
             conexion = new Conexion();
 
-            sintaxiSql = "INSERT INTO articulos( art_descripcion) VALUES (upper(?))";
+            sintaxiSql = "INSERT INTO articulos( art_descripcion, id_tipoarticulo) VALUES (upper(?),1)";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setObject(1,pArticulo);
             filasAfectadas = preparedStatement.executeUpdate();

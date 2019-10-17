@@ -94,7 +94,7 @@ public class OrdenComprasdto {
 
     public OrdenComprasdto(String ordenc_fecha, String suc_descripcion, String ras_social,
             Integer id_presucompra, String usu_nombre, String est_descripcion, Integer id_articulo,
-            Integer cantidad_detorden, Integer precio_detorden, String codigenerico, String art_descripcion) {
+            Integer cantidad_detorden, Integer precio_detorden, String codigenerico, Integer id_proveedor,String art_descripcion) {
         this.ordenc_fecha = ordenc_fecha;
         this.suc_descripcion = suc_descripcion;
         this.ras_social = ras_social;
@@ -105,6 +105,7 @@ public class OrdenComprasdto {
         this.cantidad_detorden = cantidad_detorden;
         this.precio_detorden = precio_detorden;
         this.codigenerico = codigenerico;
+        this.id_proveedor = id_proveedor;
         this.art_descripcion = art_descripcion;
     }
 

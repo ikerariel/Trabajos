@@ -59,7 +59,6 @@ public class OrdenComprascontrol extends HttpServlet {
                 ORCOMdto.setId_proveedor(Integer.parseInt(request.getParameter("proveeC")));
                 ORCOMdto.setId_presucompra(Integer.parseInt(request.getParameter("PcompC")));
                 ORCOMdto.setId_usuario(Integer.parseInt(request.getParameter("usuaC")));
-                ORCOMdto.setId_estado(Integer.parseInt(request.getParameter("estadoC")));
                 if (ORCOMDdao.insertarOrdenCompras(ORCOMdto)) {
                     out.println("Exitoso");
                 }
@@ -170,6 +169,12 @@ public class OrdenComprascontrol extends HttpServlet {
                 ORCOMdto.setId_usuario(Integer.parseInt(request.getParameter("usuaC")));
                 ORCOMdto.setId_ordcompra(Integer.parseInt(request.getParameter("nroOrdenC")));
                 if (ORCOMDdao.modificarOrdenCompras(ORCOMdto)) {
+                    out.println("Exitoso");
+                }
+                break;
+            case 22:
+                ORCOMdto.setId_ordcompra(Integer.parseInt(request.getParameter("nroOrdecompra")));
+                if (ORCOMDdao.deleteordencompra(ORCOMdto)) {
                     out.println("Exitoso");
                 }
                 break;

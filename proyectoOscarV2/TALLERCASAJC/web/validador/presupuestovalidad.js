@@ -260,7 +260,10 @@ function cargarfila(v) {
                                  <span class='glyphicon glyphicon-remove'></span></button></td></tr>");
 
 
-    totales();
+    setTimeout(function (){
+         totales();
+    },1000);
+   
     $('#v_articulos').val(null);
     $('#v_articulos').focus;
     $('#descriparticulo').val(null);
@@ -535,7 +538,7 @@ function actualizarestados(codpresupuesto, estado) {
 }
 
 var idx = 0;
-function recuperarDetallePedido() {
+function getDetallepresuPedido() {
     $('#mitabladetallepresupuesto').find('tbody').find('tr').empty();
     datosDetalleJSON = {
         "opcion": 11,

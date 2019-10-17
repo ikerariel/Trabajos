@@ -62,6 +62,7 @@ function permisos(valor) {
 
         case 6:  //Administrador de sistema los tres movimientos y referenciales
             $('#mc_ventas').show();
+            $('#m_pedidoscompras').show();
             $('#m_aperturacaja').show();
             $('#m_pedidoventas').show();
             $('#m_facturacion').show();
@@ -117,6 +118,7 @@ function permisos(valor) {
             $('#rst_modelos').show();
             $('#rst_colores').show();
             $('#rst_tiposervicios').show();
+            $('#m_presupuestocompras').show();
             break;
 
 //        case 7:

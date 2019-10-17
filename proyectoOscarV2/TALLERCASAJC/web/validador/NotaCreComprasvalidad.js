@@ -514,7 +514,7 @@ function actualizarestados(codpresupuesto, estado) {
 
 }
 
-var idx = 0;
+var idxpreu = 0;
 function recuperarDetallePedido() {
     $('#mitabladetallepresupuesto').find('tbody').find('tr').empty();
     datosDetalleJSON = {
@@ -535,14 +535,15 @@ function recuperarDetallePedido() {
 //                }
                 if (parseInt(estado) === 1) {
                     $.each(resp, function (indice, value) {
-                        $("#mitabladetallepresupuesto").append($("<tr id=\'prod" + idx + "\'>").append($(
+                        idxpreu++;
+                        $("#mitabladetallepresupuesto").append($("<tr id=\'prod" + idxpreu + "\'>").append($(
                                 "<td>" + value.id_articulo + "</td>" +
                                 "<td>" + value.art_descripcion + "</td>" +
                                 "<td style='color:red'>" + "0" + "</td>" +
                                 "<td>" + value.cantidad + "</td>" +
                                 "<td style='color:red'>" + "0" + "</td>" +
                                 "<td><button type=button title='Quitar el registro de la lista' \n\
-                                 style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + idx + "\').remove()\">\n\
+                                 style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + idxpreu + "\').remove()\">\n\
                                  <span class='glyphicon glyphicon-remove'></span></button></td>")));
 
 

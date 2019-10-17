@@ -55,9 +55,9 @@
                     <a id="btnNuevoOrden"  class="btn btn-lg btn-success" style=" font-weight: bold"  title="Nuevo Orden de Compras" data-toggle="modal"
                        >Nuevo </a>
                     <a id="btnRecuperarOrden" class="btn btn-lg btn-info" style=" font-weight: bold" title="Recuperar Orden de Compras" data-toggle="modal" onclick="traerDetalleOrdenCompra()">Recuperar </a>
-                    <a id="btnAnular" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Anular Pedido">Anular*</a>
-                    <a id="btnConfirmarr" class="btn btn-lg btn-warning glyphicon glyphicon-ok" style=" font-weight: bold" title="Confirmar Orden de Compras" onclick="actualizarestados()"</a>
-                    <a id="btnRevertir" class="btn btn-lg btn-danger glyphicon glyphicon-minus-sign" style=" font-weight: bold" title="Revertir Confirmacion Orden de Compras" onclick=""></a>
+                    <a id="btnAnularOrden" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Anular Pedido">Anular*</a>
+                    <a id="btnConfirmarOrden" class="btn btn-lg btn-warning glyphicon glyphicon-ok" style=" font-weight: bold" title="Confirmar Orden de Compras" </a>
+                    <a id="btnRevertirOrden" class="btn btn-lg btn-danger glyphicon glyphicon-minus-sign" style=" font-weight: bold" title="Revertir Confirmacion Orden de Compras" onclick=""></a>
                     <a id="btnReporte" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="reportesOrdenCompras()"></a>
 
                 </div>
@@ -89,14 +89,14 @@
                         <div id="scrollPlanilla" class="table-responsive">
                             <table class="table table-striped table-bordered table-hover table input-md" id="miTablaOrdenC" onclick="seleccionOrdenComprasS()">
                                 <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
-                                <thead>
+                                <thead class="">
                                     <tr class="alert-dismissable" >
-                                        <th class="alert-success">ID</th>
-                                        <th class="alert-info">FECHA</th>
-                                        <th class="alert-success">PROVEEDOR</th>
-                                        <th class="alert-info">C. PEDIDO</th>
-                                        <th class="alert-success">USUARIO</th>
-                                        <th class="alert-danger">ESTADO</th>
+                                        <th class="">ID</th>
+                                        <th class="">FECHA</th>
+                                        <th class="">PROVEEDOR</th>
+                                        <th class="">C. PEDIDO</th>
+                                        <th class="">USUARIO</th>
+                                        <th class="">ESTADO</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -114,7 +114,8 @@
                     <!--HEADER Encabezamiento DE LA VENTANA--->
 
                     <div class="modal-header">
-                        <a class="btn btn-lg btn-success col-md-1"  id="btnGuardar" title="" onclick="InsertarOrdenComprasS()" >Guardar</a>
+                        <a class="btn btn-lg btn-success col-md-1" style="display: none"  id="btnGuardarOrdencompra" title="" onclick="InsertarOrdenComprasS()" >Guardar</a>
+                        <a class="btn btn-lg btn-primary col-md-1" style="display: none"  id="btnModificarOrdencompra" title="" onclick=" ModificarOrdenCompra()" >Guardar</a>
                         <a class="close  btn btn-lg btn-danger glyphicon glyphicon-off" data-dismiss="modal" aria-hidden="true" title="Salir"></a>
                     </div>
 
@@ -160,6 +161,7 @@
                                     <div class="col-md-3">
                                         <input disabled="" id="proveeOrden" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" 
                                                type="text" placeholder="Ingrese Proveedor" class="form-control input-sm alert-danger" >
+                                        <input disabled="" id="idproveed" style="display: none" >
                                     </div>
 
                                     <label class="col-md-2 control-label">Nro. Presupuesto</label>  
@@ -223,7 +225,7 @@
                                            onkeyup="ValidacionesSoloNumerosS(this)" onchange="ValidacionesSoloNumerosS(this)"
                                            onkeydown="
                                                    if (event.keyCode === 13) {
-                                                       CargarArticulosGrilla();
+                                                       cargarDeatalleOrden();
                                                    }">
                                 </div>
                                 <!-- <div class="col-md-1">
@@ -235,7 +237,7 @@
                         <div class="panel-body">
                             <!-- Tabla detalle -->
                             <div class="table-responsive" style="height: 180px">
-                                <table class="table table-striped table-bordered table-hover table input-md" id="miTablaDetOrdenCompras" onclick="">
+                                <table class="table table-striped table-bordered table-hover table input-md" id="mitablaOrdendetalle" onclick="">
                                     <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
                                     <thead>
                                         <tr class="alert-dismissable" >
