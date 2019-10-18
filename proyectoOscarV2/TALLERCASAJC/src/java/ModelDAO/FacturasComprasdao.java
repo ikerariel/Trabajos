@@ -32,6 +32,7 @@ public interface FacturasComprasdao {
     boolean insertarCabeceraCompras9(FacturasComprasdto dto);
 
     boolean modificarCabeceraCompras9(FacturasComprasdto dto);
+    boolean deleteCompra(FacturasComprasdto dto);
 
     boolean insertarDetCompras10(FacturasComprasdto dto);
 

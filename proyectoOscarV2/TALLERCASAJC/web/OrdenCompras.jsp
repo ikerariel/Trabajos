@@ -114,20 +114,14 @@
                     <!--HEADER Encabezamiento DE LA VENTANA--->
 
                     <div class="modal-header">
-                        <a class="btn btn-lg btn-success col-md-1" style="display: none"  id="btnGuardarOrdencompra" title="" onclick="InsertarOrdenComprasS()" >Guardar</a>
-                        <a class="btn btn-lg btn-primary col-md-1" style="display: none"  id="btnModificarOrdencompra" title="" onclick=" ModificarOrdenCompra()" >Guardar</a>
-                        <a class="close  btn btn-lg btn-danger glyphicon glyphicon-off" data-dismiss="modal" aria-hidden="true" title="Salir"></a>
+                        <a class="btn btn-sm btn-success col-md-1" style="display: none"  id="btnGuardarOrdencompra" title="" onclick="InsertarOrdenComprasS()" >Guardar</a>
+                        <a class="btn btn-sm btn-primary col-md-1" style="display: none"  id="btnModificarOrdencompra" title="" onclick=" ModificarOrdenCompra()" >Guardar</a>
+                    
+                        <a class="close  btn btn-sm btn-danger glyphicon glyphicon-off" data-dismiss="modal" aria-hidden="true" title="Salir"></a>
                     </div>
-
-
-
-
+                        <label>Nueva Orden de Compra</label>
                     <!--CONTENIDO DE LA VENTANA--->
-
-                    <div class="panel">
-                        <div class="panel panel-default">
-                            <div class="panel-footer" style="font-weight: bold">Nueva Orden de Compra</div>
-                            <br> 
+                    <br>
                             <div class="form-horizontal">
                                 <div class="form-group">
                                     <label class="col-md-1 control-label">Nro.</label>  
@@ -152,11 +146,8 @@
                             </div>
                             <div class="form-horizontal">
                                 <div class="form-group">
-                                    <label class="col-md-1 control-label">Usuario</label>  
-                                    <div class="col-md-2">
-                                        <input disabled id="usuarioOrden" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"
-                                               type="text" placeholder="Ingrese Usuario" class="form-control input-sm alert-danger">
-                                    </div>
+                                        <input disabled id="usuarioOrden" style="display: none"
+                                               type="text" >
                                     <label class="col-md-1 control-label">Proveedor</label>  
                                     <div class="col-md-3">
                                         <input disabled="" id="proveeOrden" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" 
@@ -173,6 +164,10 @@
                                                            recuperarPresupuestoDetalle();
                                                        }">
                                     </div>
+                                    <label class="col-md-2 control-label">Cond. Pago</label>  
+                                    <div class="col-md-2">
+                                        <select class="form-control" id="condpago"></select>
+                                    </div>
 
                                     <div class="col-md-2">
                                         <input id="idproveedor" style="visibility: hidden;" type="text">
@@ -182,12 +177,41 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
+                             <div class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-md-1 control-label">Monto Orden.</label>  
+                                    <div class="col-md-2">
+                                        <input disabled="" id="montoOrdentotal" style="text-transform: uppercase; font-weight: bold; font-size: 12pt" 
+                                               name="codigo" type="text" placeholder="Registro" class="form-control input-sm alert-danger">
+                                    </div>
+                                    <label class="col-md-1 control-label">Intervalo</label>  
+                                    <div class="col-md-1">
+                                        <input disabled id="interorden" type="datetime" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"
+                                               placeholder="Ingrese fecha" class="form-control input-sm alert-danger">
+                                    </div>
+                                    <label class="col-md-1 control-label">Cant. Cuota</label>  
+                                    <div class="col-md-2">
+                                        <input disabled id="cantcuotaorden"  type="text" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"
+                                               placeholder="Ingrese estado" class="form-control input-sm alert-danger"
+                                                 onkeydown="
+                                                   if (event.keyCode === 13) {
+                                                     calcularCuota();
+                                                   }">
+                                    </div>
+                                    <label class="col-md-1 control-label">Monto Cuota</label>  
+                                    <div class="col-md-2">
+                                        <input disabled id="montocuota"  type="text" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"
+                                               placeholder="Ingrese estado" class="form-control input-sm alert-danger">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input id="idestadOrden" style="visibility: hidden;" type="text">
+                                    </div>
+                                </div>
+                            </div>
 
                         <!--PARA CARGAR DETALLE DE ARTICULOS DE CABECERA--->
                         <!--DESDE PARA CARGAR DETALLE DE ARTICULOS DE CABECERA DE TIPO LISTA DE ARTICULO--->
-
+                        <hr>
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <label class="col-md-1 control-label">Cod*</label>
@@ -236,7 +260,7 @@
                         </div>
                         <div class="panel-body">
                             <!-- Tabla detalle -->
-                            <div class="table-responsive" style="height: 180px">
+                            <div class="table-responsive" style="height: 140px">
                                 <table class="table table-striped table-bordered table-hover table input-md" id="mitablaOrdendetalle" onclick="">
                                     <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
                                     <thead>
@@ -259,7 +283,6 @@
                             <input class="form-control" id="totalorden" style="font-size: 15px" type="text">
                         </div>
 
-                    </div>
                 </div>
             </div> 
         </div>

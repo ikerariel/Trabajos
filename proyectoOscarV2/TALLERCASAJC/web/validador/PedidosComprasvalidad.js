@@ -166,7 +166,7 @@ function agregarFilaArticulos() {
             <td>" + v_cant + "</td>\n\
             <td><button type=button title='Quitar el registro de la lista' \n\
             style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + indexpedido + "\').remove()\">\n\
-            <span class='glyphicon glyphicon-remove'></span></button></a></td>\n\
+            <span class='glyphicon glyphicon-remove'></span></button></td>\n\
             </tr>");
 
     $('#idmaterialGenerico').val(null);

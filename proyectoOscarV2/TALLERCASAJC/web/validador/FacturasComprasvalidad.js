@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    $(":text").val("");
     cambioEstadosFCompras();
     MostrarFacturasCompras();
     MostrarArticulos();
@@ -30,6 +29,8 @@ function crearJSON(id) {
 }
 
 function getcodigoCompras() {
+    $('#btnguardarCompra').show();
+    $('#btnmModificarCompra').hide();
     vaciarCamposNuevo();
 //    controlBotonesNuevo();
     $("#factuCompProvee").val(null);
@@ -142,6 +143,7 @@ function MostrarOrdenComprass() {
         }
     });
 }
+var indDetorden = 0;
 function RecuperarDetOrdenComprass() {
     datosDetalleJSON = {
         "opcion": 6,
@@ -154,26 +156,54 @@ function RecuperarDetOrdenComprass() {
         cache: false,
         success: function (resp) {
             if (JSON.stringify(resp) != '[]') {
-                //alert(resp);
-                $.each(resp, function (indice, value) {
-                    subtotal = value.precio_detorden * value.cantidad_detorden;
-                    $('#miTablaDetFacturasCompras').append("<tr id=\'prod" + tindex + "\'>\
-                 <td style=display:none>" + value.id_articulo + "</td>\n\
-                                    <td>" + value.codigenerico + "</td>\n\
+                var ord = JSON.stringify(resp);
+                var orden = JSON.parse(ord);
+                var nro = orden[0].nroorden;
+                if (parseInt(nro) > 0) {
+                    alert('La Orden de Compra ya fue procesada..');
+                } else {
+                    var v = JSON.stringify(resp);
+                    var vv = JSON.parse(v);
+                    var estado = vv[0].id_estado;
+                    if (parseInt(estado) === 1) {
+                        $.each(resp, function (indice, value) {
+                            $('#factuCompProvee').val(value.proveedor);
+                            $('#factuCompIdProvee').val(value.id_proveedor);
+                            alert(value.id_proveedor);
+                            $('#fidtipocompra').val(value.id_condicionpago);
+                            $('#factuCompTipo').val(value.condcompra);
+                            $('#factuCompIntervalo').val(value.intervalo);
+                            $('#factuCompNroCuota').val(value.cant_cuota);
+                            $('#factuCompMonto').val(value.montocuota);
+                            numeroDecimal('factuCompMonto');
+                            indDetorden++;
+                            subtotal = value.precio_detorden * value.cantidad_detorden;
+                            $('#miTablaDetFacturasCompras').append("<tr id=\'prod" + indDetorden + "\'>\
+                                     <td >" + value.id_articulo + "</td>\n\
                                     <td>" + value.art_descripcion + "</td>\n\
                                     <td>" + value.cantidad_detorden + "</td>\n\
                                     <td>" + value.precio_detorden + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
-                                    <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
-                                    \" src='../Recursos/img/delete.png' width=14 height=14/></td></tr>");
+                                    <td><button type=button title='Quitar el registro de la lista' \n\
+            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + indDetorden + "\').remove();calcularmonto();\">\n\
+            <span class='glyphicon glyphicon-remove'></span></button></td></tr>");
+
+                        });
+                        calcularmonto();
+                    } else {
+                        alert('Orden De Compra Pendiente.!!');
+                    }
+
+                }
 
 
-                });
+
             } else {
                 alert('Datos no encontrados..');
-                $("#factuCompSucursal").focus();
+                $("#pedidoOrden").focus();
             }
-            calcularmonto();
+
+
         }
     });
 }
@@ -209,7 +239,8 @@ function MostrarArticulos() {
                         "<td style=display:none>" + value.id_articulo + "</td>" +
                         "<td>" + value.codigenerico + "</td>" +
                         "<td>" + value.art_descripcion + "</td>" +
-                        "<td>" + value.preccompras + "</td>")));
+                        "<td>" + value.preccompras + "</td>" +
+                        "<td style=display:none>" + value.id_impuesto + "</td>")));
             });
         }
     });
@@ -235,16 +266,14 @@ function  InsertarFacturasCompras() {
                 datosCabeceraJSON = {
                     "opcion": 9,
                     "Fco_cantcuota": $('#factuCompNroCuota').val(),
-                    "Fco_monto": $('#factuCompMonto').val(),
+                    "Fco_monto": $('#factuCompMonto').val().replace(/\./g, ''),
                     "Fco_nrofact": $('#factuCompNroFactura').val(),
                     "Fco_intervalo": $('#factuCompIntervalo').val(),
-                    "Fco_fecha": $('#factuCompFecha').val(),
-                    "Fco_tipo": $('#factuCompTipo').val(),
                     "Fco_proveedor": $('#factuCompIdProvee').val(),
-                    "Fco_sucursal": $('#factuCompIdSucursal').val(),
-                    "Fco_usuario": $('#factuCompIdUsuario').val(),
-                    "Fco_estado": 3,
-                    "Fco_ordencompra": $('#factuCompOrdenC').val()
+                    "Fco_deposito": $('#coddeposito_v').val(),
+                    "Fco_usuario": $('#idusersession_v').val(),
+                    "Fco_ordencompra": $('#factuCompOrdenC').val(),
+                    "Fco_condCompra": $('#fidtipocompra').val()
                 };
                 $.ajax({
                     url: "http://localhost:8084/TALLERCASAJC/FacturasComprascontrol",
@@ -275,8 +304,9 @@ function  InsertarDetFacturasCompras() {
             "opcion": 10,
             "codigoD": $('#codigo').val(),
             "idartiD": $(this).find("td").eq(0).html(),
-            "precioD": $(this).find("td").eq(3).html(),
-            "cantiD": $(this).find("td").eq(4).html()
+            "precioD": $(this).find("td").eq(2).html(),
+            "cantiD": $(this).find("td").eq(3).html(),
+            "codimpuesto": $(this).find("td").eq(6).html()
         };
         $.ajax({
             url: "http://localhost:8084/TALLERCASAJC/FacturasComprascontrol",
@@ -289,6 +319,24 @@ function  InsertarDetFacturasCompras() {
             error: function () {
             }
         });
+    });
+}
+function  deleteCompra() {
+    js = {
+        "opcion": 15,
+        "nroCompra": $('#codigo').val()
+
+    };
+    $.ajax({
+        url: "http://localhost:8084/TALLERCASAJC/FacturasComprascontrol",
+        type: 'POST',
+        data: js,
+        cache: false,
+        dataType: 'text',
+        success: function () {
+        },
+        error: function () {
+        }
     });
 }
 function MostrarFacturasCompras() {
@@ -304,9 +352,7 @@ function MostrarFacturasCompras() {
                         "<td>" + value.id_compra + "</td>" +
                         "<td>" + value.co_nrofact + "</td>" +
                         "<td>" + value.co_fecha + "</td>" +
-                        "<td>" + value.co_tipo + "</td>" +
                         "<td>" + value.ras_social + "</td>" +
-                        "<td>" + value.suc_descripcion + "</td>" +
                         "<td>" + value.usu_nombre + "</td>" +
                         "<td>" + value.est_descripcion + "</td>")));
             });
@@ -452,42 +498,29 @@ function vaciarCamposNuevo() {
     document.getElementById('btnGuardar').style.display = "";
 }
 function recuperarCompra() {
-    if ($('#estadofacturaP').val() === "Aprobado" || $('#estadofacturaP').val() === "Anulado") {
-        $('#ventanaFacturasCompras').modal('show');
-        document.getElementById('btnGuardarModificado').style.display = "none";
-        document.getElementById('btnGuardar').style.display = "none";
-        recuperarDetFacturaCompras();
-        ///////DESBLOBLOQUEA LOS CAMPOS//////
-        $("#factuCompNroCuota").prop('disabled', true);
-        $("#factuCompMonto").prop('disabled', true);
-        $("#factuCompNroFactura").prop('disabled', true);
-        $("#factuCompIntervalo").prop('disabled', true);
-        $("#factuCompFecha").prop('disabled', true);
-        $("#factuCompTipo").prop('disabled', true);
-        $("#factuCompProvee").prop('disabled', true);
-        $("#factuCompSucursal").prop('disabled', true);
-        $("#factuCompUsuario").prop('disabled', true);
-        $("#factuCompEstado").prop('disabled', true);
-        $("#factuCompOrdenC").prop('disabled', true);
-
-
+    if ($('#estadofacturaP').val() === "") {
+        alert('Debes seleccionar un registro');
     } else {
-        $('#ventanaFacturasCompras').modal('show');
-        document.getElementById('btnGuardarModificado').style.display = "";
-        document.getElementById('btnGuardar').style.display = "none";
-        recuperarDetFacturaCompras();
-        ///////DESBLOBLOQUEA LOS CAMPOS//////
-        $("#factuCompNroCuota").prop('disabled', false);
-        $("#factuCompMonto").prop('disabled', false);
-        $("#factuCompNroFactura").prop('disabled', false);
-        $("#factuCompIntervalo").prop('disabled', false);
-        $("#factuCompFecha").prop('disabled', false);
-        $("#factuCompTipo").prop('disabled', false);
-        $("#factuCompProvee").prop('disabled', false);
-        $("#factuCompSucursal").prop('disabled', false);
-        $("#factuCompUsuario").prop('disabled', false);
-        $("#factuCompEstado").prop('disabled', false);
-        $("#factuCompOrdenC").prop('disabled', false);
+        if ($('#estadofacturaP').val() === "PENDIENTE") {
+            $('#ventanaFacturasCompras').modal('show');
+            document.getElementById('btnguardarCompra').style.display = "none";
+            document.getElementById('btnmModificarCompra').style.display = "";
+            recuperarDetFacturaCompras();
+            ///////DESBLOBLOQUEA LOS CAMPOS//////
+//        $("#factuCompNroCuota").prop('disabled', true);
+//        $("#factuCompMonto").prop('disabled', true);
+//        $("#factuCompNroFactura").prop('disabled', true);
+//        $("#factuCompIntervalo").prop('disabled', true);
+//        $("#factuCompFecha").prop('disabled', true);
+//        $("#factuCompTipo").prop('disabled', true);
+//        $("#factuCompProvee").prop('disabled', true);
+//        $("#factuCompSucursal").prop('disabled', true);
+//        $("#factuCompUsuario").prop('disabled', true);
+//        $("#factuCompEstado").prop('disabled', true);
+//        $("#factuCompOrdenC").prop('disabled', true);
+        } else {
+            alert('La compra fue proesada, ya no se puede modificar');
+        }
     }
 }
 function recuperarDetFacturaCompras() {
@@ -507,35 +540,33 @@ function recuperarDetFacturaCompras() {
                 $.each(resp, function (indice, value) {
                     ///RECUPERA LA CABECERA/////////
                     $("#factuCompNroCuota").val(value.co_cantcuota);
+                    $("#codigo").val(value.id_compra);
                     $("#factuCompMonto").val(value.co_monto);
                     $("#factuCompNroFactura").val(value.co_nrofact);
                     $("#factuCompIntervalo").val(value.co_intervalo);
                     $("#factuCompFecha").val(value.co_fecha);
-                    $("#factuCompTipo").val(value.co_tipo);
                     $("#factuCompIdProvee").val(value.id_proveedor);
-                    $("#factuCompProvee").val(value.ras_social);
-                    $("#factuCompIdSucursal").val(value.id_sucursal);
-                    $("#factuCompSucursal").val(value.suc_descripcion);
-                    $("#factuCompIdUsuario").val(value.id_usuario);
-                    $("#factuCompUsuario").val(value.usu_nombre);
-                    $("#factuCompEstado").val(value.est_descripcion);
+                    $("#factuCompProvee").val(value.proveedor);
                     $("#factuCompOrdenC").val(value.id_ordencompra);
+                    $("#factuCompTipo").val(value.condpago);
+                    $("#fidtipocompra").val(value.id_condicionpago);
+                    numeroDecimal('factuCompMonto');
 
                     subtotal = value.precio_detcomp * value.cantidad_detcomp;
+                    tindex++;
                     $('#miTablaDetFacturasCompras').append("<tr id=\'prod" + tindex + "\'>\
-                                    <td style=display:none>" + value.id_articulo + "</td>\n\
-                                    <td>" + value.codigenerico + "</td>\n\
+                                    <td >" + value.id_articulo + "</td>\n\
                                     <td>" + value.art_descripcion + "</td>\n\
                                     <td>" + value.precio_detcomp + "</td>\n\
                                     <td>" + value.cantidad_detcomp + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
-                                    <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
-                                    \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
+                                    <td><button type=button title='Quitar el registro de la lista' \n\
+            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + tindex + "\').remove();calcularmonto();\">\n\
+            <span class='glyphicon glyphicon-remove'></span></button></td>\n\
+                                    <td style=display:none>" + value.id_impuesto + "</td></tr>");
                 });
-                $('#codigo').val($('#nrofacturaP').val());
             } else {
                 alert('Datos no encontrados..');
-                $("#nrofacturaP").focus();
             }
             calcularmonto();
         }
@@ -608,7 +639,7 @@ function buscadorTablaProveedores() {
 
 
 
-function AbrirOrdenComprass() {
+function abrirDetalleOrden() {
     if ($('#factuCompOrdenC').val() === "") {
         $('#ModalOrdenCompra').modal('show');
         $('#miTablaOrdenCom').find('tbody').find('tr').empty();
@@ -673,16 +704,14 @@ function  ModificarDetOrdenComprass() {
                 datosCabeceraJSON = {
                     "opcion": 14,
                     "Fco_cantcuota": $('#factuCompNroCuota').val(),
-                    "Fco_monto": $('#factuCompMonto').val(),
+                    "Fco_monto": $('#factuCompMonto').val().replace(/\./g, ''),
                     "Fco_nrofact": $('#factuCompNroFactura').val(),
                     "Fco_intervalo": $('#factuCompIntervalo').val(),
-                    "Fco_fecha": $('#factuCompFecha').val(),
-                    "Fco_tipo": $('#factuCompTipo').val(),
                     "Fco_proveedor": $('#factuCompIdProvee').val(),
-                    "Fco_sucursal": $('#factuCompIdSucursal').val(),
-                    "Fco_usuario": $('#factuCompIdUsuario').val(),
-                    "Fco_estado": 3,
+                    "Fco_deposito": $('#coddeposito_v').val(),
+                    "Fco_usuario": $('#idusersession_v').val(),
                     "Fco_ordencompra": $('#factuCompOrdenC').val(),
+                    "Fco_condCompra": $('#fidtipocompra').val(),
                     "Fco_idcompra": $('#codigo').val()
                 };
                 $.ajax({
@@ -692,9 +721,13 @@ function  ModificarDetOrdenComprass() {
                     cache: false,
                     dataType: 'text',
                     success: function () {
-                        InsertarDetFacturasCompras();
-                        alert("Factura Compras guardado correctamente.!!");
-                        window.location.reload();
+                        deleteCompra();
+                        setTimeout(function () {
+                            InsertarDetFacturasCompras();
+                            alert("Factura Compras guardado correctamente.!!");
+                            window.location.reload();
+                        }, 1200);
+
 
                     },
                     error: function () {
@@ -725,11 +758,12 @@ function calcularmonto() {
         monto = 0;
         acumu = 0;
         $('#miTablaDetFacturasCompras').find('tbody').find('tr').each(function () {
-            monto = parseInt($(this).find("td").eq(5).html());
+            monto = parseInt($(this).find("td").eq(4).html());
             acumu = acumu + monto;
         });
-        $('#total').val(acumu);
+        $('#vtotalCompra').val(acumu);
         tindex++;
+        numeroDecimal('vtotalCompra');
 
 
     }, 1000);
@@ -767,6 +801,7 @@ function seleccionarArticulosCompras() {
         $('#cantidadArti').val(1);
         $('#nombreArti').val($(this).find("td").eq(2).html());
         $('#precioArti').val($(this).find("td").eq(3).html());
+        $('#codImpuesto').val($(this).find("td").eq(4).html());
         $('#cantidadArti').focus();
         $('#ModalArticulos').modal('hide');
     });
@@ -809,27 +844,25 @@ function CargarArtiComprasGrilla() {
     });
     agregarFilaArtiCompras();
 }
-var d = 0;
+var dix = 0;
 function agregarFilaArtiCompras() {
     //idmaterial
-    var v_codMaterialG = $('#codgenericiArti').val();
     var v_codmaterial = $('#codArti').val();
     var v_descripcion = $('#nombreArti').val();
     var v_precio = $('#precioArti').val();
     var v_cant = $('#cantidadArti').val();
+    var v_imp = $('#codImpuesto').val();
     subtotal = v_precio * v_cant;
-    $('#miTablaDetFacturasCompras').append("<tr id=\'prod" + tindex + "\'>\
-            <td style=display:none>" + v_codmaterial + "</td>\n\
-            <td>" + v_codMaterialG + "</td>\n\
+    $('#miTablaDetFacturasCompras').append("<tr id=\'prod" + dix + "\'>\
+            <td>" + v_codmaterial + "</td>\n\
             <td>" + v_descripcion + "</td>\n\
             <td>" + v_precio + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
-            <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
-            \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
-//    
-//     <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
-//                                    \" src='../Recursos/img/delete.png' width=14 height=14/></td>//</tr>");
+            <td><button type=button title='Quitar el registro de la lista' \n\
+            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + dix + "\').remove();calcularmonto();\">\n\
+            <span class='glyphicon glyphicon-remove'></span></button></td>\n\
+            <td style=display:none>" + v_imp + "</td></tr>");
     calcularmonto();
     $('#codgenericiArti').val(null);
     $('#codgenericiArti').focus;
@@ -840,7 +873,7 @@ function agregarFilaArtiCompras() {
 function seleccionarFacturasCompras() {
     $('#miTablaPlanillaCompra tr').click(function () {
         $('#nrofacturaP').val($(this).find("td").eq(0).html());
-        $('#estadofacturaP').val($(this).find("td").eq(7).html()); /*Extrae el valor de la fila seleccionada y lo muestra en el campo
+        $('#estadofacturaP').val($(this).find("td").eq(5).html()); /*Extrae el valor de la fila seleccionada y lo muestra en el campo
          //         * v_nroPlanilla*/
         var estado = $('#estadofacturaP').val();
         if (estado === 'PENDIENTE') {
