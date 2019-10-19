@@ -11,7 +11,13 @@ package ModelDTO;
  */
 public class OrdenComprasdto {
 
+    
+    
     private Integer id_presucompra;
+    private Integer id_condicionpago;
+    private Integer intervalo;
+    private Integer montocuota;
+    private Integer cant_cuota;
     private Integer id_estado;
     private Integer id_proveedor;
     private String proveedor;
@@ -37,6 +43,7 @@ public class OrdenComprasdto {
 
     private Integer cantidad_detorden;
     private Integer precio_detorden;
+    private Integer nropresupuesto;
 
     private Integer preccompras;
     private Integer precventas;
@@ -47,6 +54,38 @@ public class OrdenComprasdto {
     private String impuesto;
     private Integer id_presupuesto;
     private Integer id_tipoarticulo;
+
+    public Integer getId_condicionpago() {
+        return id_condicionpago;
+    }
+
+    public void setId_condicionpago(Integer id_condicionpago) {
+        this.id_condicionpago = id_condicionpago;
+    }
+
+    public Integer getIntervalo() {
+        return intervalo;
+    }
+
+    public void setIntervalo(Integer intervalo) {
+        this.intervalo = intervalo;
+    }
+
+    public Integer getMontocuota() {
+        return montocuota;
+    }
+
+    public void setMontocuota(Integer montocuota) {
+        this.montocuota = montocuota;
+    }
+
+    public Integer getCant_cuota() {
+        return cant_cuota;
+    }
+
+    public void setCant_cuota(Integer cant_cuota) {
+        this.cant_cuota = cant_cuota;
+    }
 
     public Integer getId_presucompra() {
         return id_presucompra;
@@ -94,7 +133,8 @@ public class OrdenComprasdto {
 
     public OrdenComprasdto(String ordenc_fecha, String suc_descripcion, String ras_social,
             Integer id_presucompra, String usu_nombre, String est_descripcion, Integer id_articulo,
-            Integer cantidad_detorden, Integer precio_detorden, String codigenerico, String art_descripcion) {
+            Integer cantidad_detorden, Integer precio_detorden, String codigenerico, Integer id_proveedor,
+            Integer id_condicionpago, Integer intervalo,Integer montocuota, Integer cant_cuota, String art_descripcion) {
         this.ordenc_fecha = ordenc_fecha;
         this.suc_descripcion = suc_descripcion;
         this.ras_social = ras_social;
@@ -105,6 +145,11 @@ public class OrdenComprasdto {
         this.cantidad_detorden = cantidad_detorden;
         this.precio_detorden = precio_detorden;
         this.codigenerico = codigenerico;
+        this.id_proveedor = id_proveedor;
+        this.id_condicionpago = id_condicionpago;
+        this.intervalo = intervalo;
+        this.montocuota = montocuota;
+        this.cant_cuota = cant_cuota;
         this.art_descripcion = art_descripcion;
     }
 
@@ -116,7 +161,8 @@ public class OrdenComprasdto {
         this.est_descripcion = est_descripcion;
     }
 
-    public OrdenComprasdto(Integer id_presucompra, Integer id_estado, Integer id_proveedor, String proveedor, Integer id_articulo, String articulo, Integer preciounitario, Integer cantidad) {
+    public OrdenComprasdto(Integer id_presucompra, Integer id_estado, Integer id_proveedor, String proveedor, 
+            Integer id_articulo, String articulo, Integer preciounitario,Integer nropresupuesto, Integer cantidad) {
         this.id_presucompra = id_presucompra;
         this.id_estado = id_estado;
         this.id_proveedor = id_proveedor;
@@ -124,6 +170,7 @@ public class OrdenComprasdto {
         this.id_articulo = id_articulo;
         this.articulo = articulo;
         this.preciounitario = preciounitario;
+        this.nropresupuesto = nropresupuesto;
         this.cantidad = cantidad;
     }
 

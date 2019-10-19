@@ -59,7 +59,10 @@ public class OrdenComprascontrol extends HttpServlet {
                 ORCOMdto.setId_proveedor(Integer.parseInt(request.getParameter("proveeC")));
                 ORCOMdto.setId_presucompra(Integer.parseInt(request.getParameter("PcompC")));
                 ORCOMdto.setId_usuario(Integer.parseInt(request.getParameter("usuaC")));
-                ORCOMdto.setId_estado(Integer.parseInt(request.getParameter("estadoC")));
+                ORCOMdto.setId_condicionpago(Integer.parseInt(request.getParameter("condicionPago")));
+                ORCOMdto.setIntervalo(Integer.parseInt(request.getParameter("intervalo")));
+                ORCOMdto.setMontocuota(Integer.parseInt(request.getParameter("montoC")));
+                ORCOMdto.setCant_cuota(Integer.parseInt(request.getParameter("cantiC")));
                 if (ORCOMDdao.insertarOrdenCompras(ORCOMdto)) {
                     out.println("Exitoso");
                 }
@@ -168,8 +171,18 @@ public class OrdenComprascontrol extends HttpServlet {
                 ORCOMdto.setId_proveedor(Integer.parseInt(request.getParameter("proveeC")));
                 ORCOMdto.setId_presucompra(Integer.parseInt(request.getParameter("PcompC")));
                 ORCOMdto.setId_usuario(Integer.parseInt(request.getParameter("usuaC")));
+                ORCOMdto.setId_condicionpago(Integer.parseInt(request.getParameter("condPago")));
+                ORCOMdto.setIntervalo(Integer.parseInt(request.getParameter("nroIntervalo")));
+                ORCOMdto.setMontocuota(Integer.parseInt(request.getParameter("montocuota")));
+                ORCOMdto.setCant_cuota(Integer.parseInt(request.getParameter("cantcuota")));
                 ORCOMdto.setId_ordcompra(Integer.parseInt(request.getParameter("nroOrdenC")));
                 if (ORCOMDdao.modificarOrdenCompras(ORCOMdto)) {
+                    out.println("Exitoso");
+                }
+                break;
+            case 22:
+                ORCOMdto.setId_ordcompra(Integer.parseInt(request.getParameter("nroOrdecompra")));
+                if (ORCOMDdao.deleteordencompra(ORCOMdto)) {
                     out.println("Exitoso");
                 }
                 break;

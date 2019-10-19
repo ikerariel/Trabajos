@@ -76,25 +76,24 @@ public class FacturasComprascontrol extends HttpServlet {
 
                 FACTDTO.setCo_cantcuota(Integer.parseInt(request.getParameter("Fco_cantcuota")));
                 FACTDTO.setCo_monto(Integer.parseInt(request.getParameter("Fco_monto")));
-                FACTDTO.setCo_nrofact(request.getParameter("Fco_nrofact"));
+                FACTDTO.setCo_nrofact(Integer.parseInt(request.getParameter("Fco_nrofact")));
                 FACTDTO.setCo_intervalo(request.getParameter("Fco_intervalo"));
-                FACTDTO.setCo_fecha(request.getParameter("Fco_fecha"));
-                FACTDTO.setCo_tipo(request.getParameter("Fco_tipo"));
                 FACTDTO.setId_proveedor(Integer.parseInt(request.getParameter("Fco_proveedor")));
-                FACTDTO.setId_sucursal(Integer.parseInt(request.getParameter("Fco_sucursal")));
+                FACTDTO.setId_deposito(Integer.parseInt(request.getParameter("Fco_deposito")));
                 FACTDTO.setId_usuario(Integer.parseInt(request.getParameter("Fco_usuario")));
-                FACTDTO.setId_estado(Integer.parseInt(request.getParameter("Fco_estado")));
                 FACTDTO.setId_ordencompra(Integer.parseInt(request.getParameter("Fco_ordencompra")));
+                FACTDTO.setId_condicionpago(Integer.parseInt(request.getParameter("Fco_condCompra")));
                 if (FACTDAO.insertarCabeceraCompras9(FACTDTO)) {
                     out.println("Exitoso");
                 }
 
                 break;
             case 10:
-                FACTDTO.setId__compraD(Integer.parseInt(request.getParameter("codigoD")));
+                FACTDTO.setId_compra(Integer.parseInt(request.getParameter("codigoD")));
                 FACTDTO.setId_articulo(Integer.parseInt(request.getParameter("idartiD")));
                 FACTDTO.setCantidad_detcomp(Integer.parseInt(request.getParameter("cantiD")));
                 FACTDTO.setPrecio_detcomp(Integer.parseInt(request.getParameter("precioD")));
+                FACTDTO.setId_impuesto(Integer.parseInt(request.getParameter("codimpuesto")));
                 if (FACTDAO.insertarDetCompras10(FACTDTO)) {
                     out.println("Exitoso");
                 }
@@ -117,22 +116,27 @@ public class FacturasComprascontrol extends HttpServlet {
                 break;
             case 14:
 
-                FACTDTO.setCo_cantcuota(Integer.parseInt(request.getParameter("Fco_cantcuota")));
+          FACTDTO.setCo_cantcuota(Integer.parseInt(request.getParameter("Fco_cantcuota")));
                 FACTDTO.setCo_monto(Integer.parseInt(request.getParameter("Fco_monto")));
-                FACTDTO.setCo_nrofact(request.getParameter("Fco_nrofact"));
+                FACTDTO.setCo_nrofact(Integer.parseInt(request.getParameter("Fco_nrofact")));
                 FACTDTO.setCo_intervalo(request.getParameter("Fco_intervalo"));
-                FACTDTO.setCo_fecha(request.getParameter("Fco_fecha"));
-                FACTDTO.setCo_tipo(request.getParameter("Fco_tipo"));
                 FACTDTO.setId_proveedor(Integer.parseInt(request.getParameter("Fco_proveedor")));
-                FACTDTO.setId_sucursal(Integer.parseInt(request.getParameter("Fco_sucursal")));
+                FACTDTO.setId_deposito(Integer.parseInt(request.getParameter("Fco_deposito")));
                 FACTDTO.setId_usuario(Integer.parseInt(request.getParameter("Fco_usuario")));
-                FACTDTO.setId_estado(Integer.parseInt(request.getParameter("Fco_estado")));
                 FACTDTO.setId_ordencompra(Integer.parseInt(request.getParameter("Fco_ordencompra")));
+                FACTDTO.setId_condicionpago(Integer.parseInt(request.getParameter("Fco_condCompra")));
                 FACTDTO.setId_compra(Integer.parseInt(request.getParameter("Fco_idcompra")));
                 if (FACTDAO.modificarCabeceraCompras9(FACTDTO)) {
                     out.println("Exitoso");
                 }
 
+                break;
+                
+            case 15:
+                  FACTDTO.setId_compra(Integer.parseInt(request.getParameter("nroCompra")));
+                if (FACTDAO.deleteCompra(FACTDTO)) {
+                    out.println("Exitoso");
+                }
                 break;
 
         }

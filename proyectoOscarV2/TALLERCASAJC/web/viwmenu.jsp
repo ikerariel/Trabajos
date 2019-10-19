@@ -46,7 +46,7 @@
                                 <li><a style="display: none" id="m_pedidoscompras" href="PedidosCompras.jsp">PedidosCompras</a></li>
                                 <li><a style="display: none" id="m_presupuestocompras" href="Presupuesto.jsp">Registrar Presupuesto</a></li>
                                 <li><a style="display: none" id="m_ordencompra" href="OrdenCompras.jsp">Orden Compras</a></li>
-                                <li><a style="display: none" id="m_facturacompra" href="FacturasComprasvalidad.jsp">FacturasCompras</a></li>
+                                <li><a style="display: none" id="m_facturacompra" href="FacturasCompras.jsp">FacturasCompras</a></li>
                                 <li><a style="display: none" id="m_notaremision" href="FacturasComprasvalidad.jsp">Nota Remision</a></li>
                                 <li><a style="display: none" id="m_notacredito" href="FacturasComprasvalidad.jsp">Nota Creditos</a></li>
                                 <li><a style="display: none" id="m_notadebito" href="FacturasComprasvalidad.jsp">Nota Debitos</a></li>

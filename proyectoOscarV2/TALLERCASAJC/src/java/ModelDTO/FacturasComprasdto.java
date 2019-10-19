@@ -10,11 +10,24 @@ package ModelDTO;
  * @author user
  */
 public class FacturasComprasdto {
-
+    private Integer id_ordcompra;
+    private Integer id_impuesto;
+    private Integer id_deposito;
+    private String ordenc_fecha;
+    private String proveedor;
+    private String condcompra;
+    private Integer intervalo;
+    private Integer montocuota;
+    private Integer cant_cuota;
+    private Integer id_articulo;
+    private Integer cantidad_detorden;
+    private Integer precio_detorden;
+    
+    
     private Integer id_compra;
     private Integer co_cantcuota;
     private Integer co_monto;
-    private String co_nrofact;
+    private Integer co_nrofact;
     private String co_intervalo;
     private String co_fecha;
     private String co_tipo;
@@ -28,10 +41,8 @@ public class FacturasComprasdto {
     private Integer id_estado;
     private String est_descripcion;
     private Integer id_ordencompra;
-    private String ordenc_fecha;
 
     private Integer id__compraD;
-    private Integer id_articulo;
     private Integer cantidad_detcomp;
     private Integer precio_detcomp;
 
@@ -39,12 +50,51 @@ public class FacturasComprasdto {
     private Integer precventas;
     private String art_descripcion;
     private Integer id_marca;
-    private Integer id_impuesto;
     private String codigenerico;
+    private String condpago;
 
     private Integer idcompra;
+    private Integer nroorden;
+    private Integer id_condicionpago;
     private String nrofactura;
     private String fecha;
+
+    public Integer getId_condicionpago() {
+        return id_condicionpago;
+    }
+
+    public void setId_condicionpago(Integer id_condicionpago) {
+        this.id_condicionpago = id_condicionpago;
+    }
+
+    public Integer getId_deposito() {
+        return id_deposito;
+    }
+
+    public void setId_deposito(Integer id_deposito) {
+        this.id_deposito = id_deposito;
+    }
+
+    public FacturasComprasdto(Integer id_ordcompra, Integer id_estado, Integer id_proveedor,
+            Integer id_condicionpago, String ordenc_fecha, String proveedor,
+            String condcompra, Integer intervalo, Integer montocuota, Integer cant_cuota,
+            Integer id_articulo, Integer cantidad_detorden, Integer precio_detorden,Integer nroorden, String art_descripcion) {
+        this.id_ordcompra = id_ordcompra;
+        this.id_estado = id_estado;
+        this.id_proveedor = id_proveedor;
+        this.id_condicionpago = id_condicionpago;
+        this.ordenc_fecha = ordenc_fecha;
+        this.proveedor = proveedor;
+        this.condcompra = condcompra;
+        this.intervalo = intervalo;
+        this.montocuota = montocuota;
+        this.cant_cuota = cant_cuota;
+        this.id_articulo = id_articulo;
+        this.cantidad_detorden = cantidad_detorden;
+        this.precio_detorden = precio_detorden;
+        this.nroorden = nroorden;
+        this.art_descripcion = art_descripcion;
+    }
 
     public FacturasComprasdto() {
 
@@ -73,12 +123,11 @@ public class FacturasComprasdto {
         this.codigenerico = codigenerico;
     }
 
-    public FacturasComprasdto(Integer id_compra, String co_nrofact, String co_fecha, String co_tipo,
+    public FacturasComprasdto(Integer id_compra, Integer co_nrofact, String co_fecha,
             String ras_social, String suc_descripcion, String usu_nombre, String est_descripcion) {
         this.id_compra = id_compra;
         this.co_nrofact = co_nrofact;
         this.co_fecha = co_fecha;
-        this.co_tipo = co_tipo;
         this.ras_social = ras_social;
         this.suc_descripcion = suc_descripcion;
         this.usu_nombre = usu_nombre;
@@ -86,29 +135,25 @@ public class FacturasComprasdto {
 
     }
 
-    public FacturasComprasdto(Integer id_compra, Integer co_cantcuota, Integer co_monto, String co_nrofact,
-            String co_intervalo, String co_fecha, String co_tipo, Integer id_proveedor, String ras_social, Integer id_sucursal,String suc_descripcion, Integer id_usuario,
-            String usu_nombre, String est_descripcion, Integer id_ordencompra, Integer id_articulo, Integer cantidad_detcomp,
-            Integer precio_detcomp, String codigenerico, String art_descripcion) {
+    public FacturasComprasdto(Integer id_compra,Integer id_condicionpago,String condpago, Integer co_cantcuota, Integer co_monto, Integer co_nrofact,
+            String co_intervalo, String co_fecha, Integer id_proveedor, String proveedor,
+           Integer id_ordencompra, Integer id_articulo, Integer cantidad_detcomp,
+            Integer precio_detcomp, Integer id_impuesto, String art_descripcion) {
         this.id_compra = id_compra;
+        this.id_condicionpago = id_condicionpago;
+        this.condpago = condpago;
         this.co_cantcuota = co_cantcuota;
         this.co_monto = co_monto;
         this.co_nrofact = co_nrofact;
         this.co_intervalo = co_intervalo;
         this.co_fecha = co_fecha;
-        this.co_tipo = co_tipo;
         this.id_proveedor = id_proveedor;
-        this.ras_social = ras_social;
-        this.id_sucursal = id_sucursal;
-        this.suc_descripcion = suc_descripcion;
-        this.id_usuario = id_usuario;
-        this.usu_nombre = usu_nombre;
-        this.est_descripcion = est_descripcion;
+        this.proveedor = proveedor;
         this.id_ordencompra = id_ordencompra;
         this.id_articulo = id_articulo;
         this.cantidad_detcomp = cantidad_detcomp;
         this.precio_detcomp = precio_detcomp;
-        this.codigenerico = codigenerico;
+        this.id_impuesto = id_impuesto;
         this.art_descripcion = art_descripcion;
     }
 
@@ -138,11 +183,11 @@ public class FacturasComprasdto {
         this.co_monto = co_monto;
     }
 
-    public String getCo_nrofact() {
+    public Integer getCo_nrofact() {
         return co_nrofact;
     }
 
-    public void setCo_nrofact(String co_nrofact) {
+    public void setCo_nrofact(Integer co_nrofact) {
         this.co_nrofact = co_nrofact;
     }
 

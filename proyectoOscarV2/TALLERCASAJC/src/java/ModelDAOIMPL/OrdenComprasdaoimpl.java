@@ -57,13 +57,17 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "INSERT INTO ordencompras(id_sucursal, id_proveedor,"
-                    + "id_presucompra, id_usuario, id_estado) VALUES (?, ?, ?, ?, ?);";
+                    + "id_presucompra, id_usuario, id_estado, id_condicionpago,intervalo,"
+                    + "montocuota,cant_cuota) VALUES (?, ?, ?, ?, 3,?,?,?,?);";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setObject(1, dto.getId_sucursal());
             preparedStatement.setObject(2, dto.getId_proveedor());
             preparedStatement.setObject(3, dto.getId_presucompra());
             preparedStatement.setObject(4, dto.getId_usuario());
-            preparedStatement.setObject(5, dto.getId_estado());
+            preparedStatement.setObject(5, dto.getId_condicionpago());
+            preparedStatement.setObject(6, dto.getIntervalo());
+            preparedStatement.setObject(7, dto.getMontocuota());
+            preparedStatement.setObject(8, dto.getCant_cuota());
             filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {
                 conexion.comit();
@@ -172,13 +176,18 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "UPDATE ordencompras SET  ordenc_fecha=now(), id_sucursal=?, id_proveedor=?, \n"
-                    + "id_presucompra=?, id_usuario=?, id_estado=3 WHERE id_ordcompra=?;";
+                    + "id_presucompra=?, id_usuario=?, id_estado=3, id_condicionpago=?,"
+                    + "intervalo=?, montocuota=?, cant_cuota=? WHERE id_ordcompra=?;";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setObject(1, dto.getId_sucursal());
             preparedStatement.setObject(2, dto.getId_proveedor());
             preparedStatement.setObject(3, dto.getId_presucompra());
             preparedStatement.setObject(4, dto.getId_usuario());
-            preparedStatement.setObject(5, dto.getId_ordcompra());
+            preparedStatement.setObject(5, dto.getId_condicionpago());
+            preparedStatement.setObject(6, dto.getIntervalo());
+            preparedStatement.setObject(7, dto.getMontocuota());
+            preparedStatement.setObject(8, dto.getCant_cuota());
+              preparedStatement.setObject(9, dto.getId_ordcompra());
             filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {
                 conexion.comit();
@@ -263,7 +272,7 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
                     + "  inner join proveedores p on o.id_proveedor=p.id_proveedor\n"
                     + "  inner join presupuestocompra pc on o.id_presucompra=pc.id_presucompra\n"
                     + "  inner join usuarios u on o.id_usuario=u.id_usuario\n"
-                    + "  inner join estados e on o.id_estado=e.id_estado \n"
+                    + "  inner join estados e on o.id_estado=e.id_estado and o.id_estado in(1,3) \n"
                     + "  ORDER BY o.id_ordcompra desc;";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             rs = preparedStatement.executeQuery();
@@ -393,10 +402,10 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "SELECT a.id_articulo, a.art_descripcion,s.cantidad, a.preccompras, a.precventas, a.id_impuesto, \n"
-                    + "                          a.id_marca, a.codigenerico, (i.imp_descripcion) as impuesto, a.tipo_articulo\n"
+                    + "                          a.id_marca, a.codigenerico, (i.imp_descripcion) as impuesto, a.id_tipoarticulo\n"
                     + "                    FROM articulos a\n"
                     + "		INNER JOIN impuestos i on a.id_impuesto=i.id_impuesto\n"
-                    + "		inner join stock s on a.id_articulo = s.id_articulo";
+                    + "		inner join stock s on a.id_articulo = s.id_articulo where a.id_tipoarticulo=1";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
@@ -408,7 +417,7 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
                         rs.getInt("precventas"),
                         rs.getInt("id_impuesto"),
                         rs.getInt("id_marca"),
-                        rs.getInt("tipo_articulo"),
+                        rs.getInt("id_tipoarticulo"),
                         rs.getString("impuesto")));
             }
         } catch (SQLException ex) {
@@ -448,20 +457,22 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
             conexion = new Conexion();
 
             sintaxiSql = "SELECT p.id_presucompra,pc.id_pedidocompra, p.fecha::date, p.id_estado, p.id_usuario,\n" +
-"                     p.id_proveedor, (v.ras_social) as proveedor, p.id_deposito,\n" +
-"                     (d.dep_descripcion)as deposito,\n" +
-"                          p.idtipomoneda, (m.descripcion) as moneda,dp.id_articulo,\n" +
-"                    (a.art_descripcion) as articulo, dp.cantidad, dp.preciounitario,dp.iddetpresuompras  \n" +
-"                     FROM presupuestocompra p\n" +
-"                     inner join pedidoscompras pc on p.id_pedidocompra=pc.id_pedidocompra              \n" +
-"     inner join proveedores v on p.id_proveedor=v.id_proveedor\n" +
-"                    inner join depositos d on p.id_deposito=d.id_deposito             \n" +
-"      inner join tipomoneda m on p.idtipomoneda=m.idtipomoneda\n" +
-"                  inner join detpresuompras dp on p.id_presucompra= dp.id_presucompra\n" +
-"                  inner join articulos a on dp.id_articulo= a.id_articulo\n" +
-"                  where p.id_presucompra=?";
+"                                         p.id_proveedor, (v.ras_social) as proveedor, p.id_deposito,\n" +
+"                                         (d.dep_descripcion)as deposito,\n" +
+"                                              p.idtipomoneda, (m.descripcion) as moneda,dp.id_articulo,\n" +
+"                                      (a.art_descripcion) as articulo, dp.cantidad, dp.preciounitario,dp.iddetpresuompras,\n" +
+"                                      (select id_presucompra from ordencompras where id_presucompra = ? and id_estado in(1,3)) as nropresupuesto  \n" +
+"                                         FROM presupuestocompra p\n" +
+"                                        left join pedidoscompras pc on p.id_pedidocompra=pc.id_pedidocompra              \n" +
+"                         left join proveedores v on p.id_proveedor=v.id_proveedor\n" +
+"                                        left join depositos d on p.id_deposito=d.id_deposito             \n" +
+"                          left join tipomoneda m on p.idtipomoneda=m.idtipomoneda\n" +
+"                                      left join detpresuompras dp on p.id_presucompra= dp.id_presucompra\n" +
+"                                      left join articulos a on dp.id_articulo= a.id_articulo\n" +
+"                                      where p.id_presucompra=?";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, id);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 alldeallepresupuesto.add(new OrdenComprasdto(
@@ -472,6 +483,7 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
                         rs.getInt("id_articulo"),
                         rs.getString("articulo"),
                         rs.getInt("preciounitario"),
+                        rs.getInt("nropresupuesto"),
                         rs.getInt("cantidad")));
             }
         } catch (SQLException ex) {
@@ -533,17 +545,18 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
             sintaxiSql = null;
             conexion = new Conexion();
 
-            sintaxiSql = "SELECT o.ordenc_fecha, s.suc_descripcion, p.ras_social, pc.id_presucompra, u.usu_nombre, e.est_descripcion,\n" +
-"                     d.id_articulo, d.cantidad_detorden, d.precio_detorden, a.codigenerico, a.art_descripcion\n" +
-"                    FROM ordencompras o\n" +
-"                     inner join detordencompras d on o.id_ordcompra = d.id_ordcompra\n" +
-"                     inner join sucursales s on o.id_sucursal = s.id_sucursal\n" +
-"                     inner join proveedores p on o.id_proveedor = p.id_proveedor\n" +
-"                     inner join usuarios u on o.id_usuario = u.id_usuario\n" +
-"                     inner join presupuestocompra pc on o.id_presucompra = pc.id_presucompra\n" +
-"                     inner join estados e on o.id_estado = e.id_estado\n" +
-"                     inner join articulos a on a.id_articulo=d.id_articulo\n" +
-"                    where o.id_ordcompra=?";
+            sintaxiSql = "SELECT o.ordenc_fecha, s.suc_descripcion, p.ras_social, pc.id_proveedor, pc.id_presucompra, u.usu_nombre, e.est_descripcion,\n" +
+"                                         d.id_articulo, d.cantidad_detorden, d.precio_detorden, a.codigenerico, a.art_descripcion,\n" +
+"                                         o.id_condicionpago, o.intervalo, o.montocuota, o.cant_cuota\n" +
+"                                       FROM ordencompras o\n" +
+"                                        inner join detordencompras d on o.id_ordcompra = d.id_ordcompra\n" +
+"                                        inner join sucursales s on o.id_sucursal = s.id_sucursal\n" +
+"                                        inner join proveedores p on o.id_proveedor = p.id_proveedor\n" +
+"                                        inner join usuarios u on o.id_usuario = u.id_usuario\n" +
+"                                        inner join presupuestocompra pc on o.id_presucompra = pc.id_presucompra\n" +
+"                                        inner join estados e on o.id_estado = e.id_estado\n" +
+"                                         inner join articulos a on a.id_articulo=d.id_articulo\n" +
+"                                        where o.id_ordcompra=?";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, id);
             rs = preparedStatement.executeQuery();
@@ -559,6 +572,11 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
                         rs.getInt("cantidad_detorden"),
                         rs.getInt("precio_detorden"),
                         rs.getString("codigenerico"),
+                        rs.getInt("id_proveedor"),
+                        rs.getInt("id_condicionpago"),
+                        rs.getInt("intervalo"),
+                        rs.getInt("montocuota"),
+                        rs.getInt("cant_cuota"),
                         rs.getString("art_descripcion")));
             }
         } catch (SQLException ex) {
@@ -576,12 +594,12 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
             sintaxiSql = null;
             conexion = new Conexion();
 
-            sintaxiSql =  "SELECT a.id_articulo, a.art_descripcion,s.cantidad, a.preccompras, a.precventas, a.id_impuesto, \n" +
-"                    a.id_marca, a.codigenerico, (i.imp_descripcion) as impuesto,a.id_tipoarticulo\n" +
-"                    FROM articulos a\n" +
-"                    left JOIN impuestos i on a.id_impuesto=i.id_impuesto\n" +
-"                    left join stock s on a.id_articulo = s.id_articulo\n" +
-"                    where s.id_articulo = ? and s.id_deposito=?";
+            sintaxiSql = "SELECT a.id_articulo, a.art_descripcion,s.cantidad, a.preccompras, a.precventas, a.id_impuesto, \n"
+                    + "                    a.id_marca, a.codigenerico, (i.imp_descripcion) as impuesto,a.id_tipoarticulo\n"
+                    + "                    FROM articulos a\n"
+                    + "                    left JOIN impuestos i on a.id_impuesto=i.id_impuesto\n"
+                    + "                    left join stock s on a.id_articulo = s.id_articulo\n"
+                    + "                    where s.id_articulo = ? and s.id_deposito=?";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, cod);
             preparedStatement.setInt(2, coddepo);
@@ -649,7 +667,7 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 allproductos.add(new OrdenComprasdto(
-                      rs.getInt("id_articulo"),
+                        rs.getInt("id_articulo"),
                         rs.getString("art_descripcion"),
                         rs.getInt("cantidad"),
                         rs.getInt("preccompras"),
@@ -663,6 +681,31 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
             Logger.getLogger(OrdenComprasdaoimpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return new Gson().toJson(allproductos);
+    }
+
+    @Override
+    public boolean deleteordencompra(OrdenComprasdto dto) {
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "DELETE FROM public.detordencompras\n"
+                    + " WHERE id_ordcompra=?";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            preparedStatement.setObject(1, dto.getId_ordcompra());
+            filasAfectadas = preparedStatement.executeUpdate();
+            if (filasAfectadas > 0) {
+                conexion.comit();
+                System.out.println("Comit() Realizado");
+                return true;
+            } else {
+                conexion.rollback();
+                System.out.println("Rollback() Realizado");
+            }
+            conexion.desConectarBD();
+        } catch (SQLException ex) {
+            Logger.getLogger(OrdenComprasdaoimpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
 }

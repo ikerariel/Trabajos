@@ -173,7 +173,7 @@
                                                name="codigo" type="text" placeholder="Codigo" class="form-control input-sm "
                                                 onkeydown="
                                                    if (event.keyCode === 13) {
-                                                       recuperarDetallePedido();
+                                                       getDetallepresuPedido();
                                                    }">
                                     </div>
                                 
