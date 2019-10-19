@@ -55,6 +55,12 @@ left join ventas.tipo_documento tp on t.idtipodocumento = tp.idtipodocumento
 	<variable name="estadodocumento_1" class="java.lang.Integer" resetType="Page" calculation="Count">
 		<variableExpression><![CDATA[$F{estadodocumento}]]></variableExpression>
 	</variable>
+	<variable name="numerodocumento_1" class="java.lang.Integer" resetType="Page" calculation="Count">
+		<variableExpression><![CDATA[$F{numerodocumento}]]></variableExpression>
+	</variable>
+	<variable name="idestado_2" class="java.lang.Integer" resetType="Page" calculation="Count">
+		<variableExpression><![CDATA[$F{idestado}]]></variableExpression>
+	</variable>
 	<background>
 		<band/>
 	</background>
@@ -254,7 +260,7 @@ left join ventas.tipo_documento tp on t.idtipodocumento = tp.idtipodocumento
 				<textFieldExpression><![CDATA[$F{estadodocumento}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="186" y="0" width="100" height="20" uuid="957f6b50-d4ba-4ea0-b9b9-c48bc48685a4"/>
+				<reportElement x="186" y="0" width="119" height="20" uuid="957f6b50-d4ba-4ea0-b9b9-c48bc48685a4"/>
 				<textFieldExpression><![CDATA[$F{numerodocumento}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -263,10 +269,10 @@ left join ventas.tipo_documento tp on t.idtipodocumento = tp.idtipodocumento
 		<band/>
 	</columnFooter>
 	<pageFooter>
-		<band height="133"/>
+		<band height="89"/>
 	</pageFooter>
 	<lastPageFooter>
-		<band height="54">
+		<band height="47">
 			<staticText>
 				<reportElement mode="Opaque" x="4" y="10" width="111" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="47cf8cb4-db3c-4705-b7a5-0199bda08a91"/>
 				<textElement textAlignment="Right">
@@ -287,11 +293,8 @@ left join ventas.tipo_documento tp on t.idtipodocumento = tp.idtipodocumento
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement x="125" y="8" width="100" height="20" uuid="ec181d7d-c57c-41ef-940d-478f208f94d5"/>
-				<textElement>
-					<font size="12"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{estadodocumento_1}]]></textFieldExpression>
+				<reportElement x="118" y="10" width="100" height="20" uuid="1ffe8290-b7d9-4b29-8f94-114702a8f88a"/>
+				<textFieldExpression><![CDATA[$V{idestado_2}]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>
