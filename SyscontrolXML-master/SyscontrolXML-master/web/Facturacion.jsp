@@ -55,7 +55,7 @@
                 <div class="paneles">
                     <button type="button" id="btnguardarVenta"  class="btn btn-success">Guardar Venta</button>
                     <button type="button" class="btn btn-secondary"  id="btnnuevacarga" onclick="insertarVentaDetalle()">Nuevo</button>
-                    <button type="button" class="btn btn-danger" style="display: none">Modificar</button>
+                    <button type="button" class="btn btn-danger" id="btnanularfactura" style="">Anular Factura</button>
                 </div>
                 <!-- Tab panes -->
                 <div class="tab-content">
@@ -170,17 +170,17 @@
                                     </table>
                                 </div>
                                 <br>
-                              
+
                                 <div>
-                                      <span style="font-size: 8pt; font-weight: bold" >Total a pagar :</span> <span id="numTexto" ></span>
+                                    <span style="font-size: 8pt; font-weight: bold" >Total a pagar :</span> <span id="numTexto" ></span>
                                 </div>
                                 <div>
-                                      <span style="font-size: 8pt; font-weight: bold" >Liquidación de Iva :
-                                      </span> <span style="font-size: 8pt; font-weight: bold" >IVA 5% </span> <input style="border: transparent; background-color: transparent" disabled="" type="text" id="valor5">
-                                      <span style="font-size: 8pt; font-weight: bold" >IVA 10% </span> <input style="border: transparent; background-color: transparent" disabled=""  type="text" id="valor10">
-                                      <span style="font-size: 8pt; font-weight: bold" >Total Iva : </span> <input style="border: transparent; background-color: transparent" disabled=""  type="text" id="totalIVA">
+                                    <span style="font-size: 8pt; font-weight: bold" >Liquidación de Iva :
+                                    </span> <span style="font-size: 8pt; font-weight: bold" >IVA 5% </span> <input style="border: transparent; background-color: transparent" disabled="" type="text" id="valor5">
+                                    <span style="font-size: 8pt; font-weight: bold" >IVA 10% </span> <input style="border: transparent; background-color: transparent" disabled=""  type="text" id="valor10">
+                                    <span style="font-size: 8pt; font-weight: bold" >Total Iva : </span> <input style="border: transparent; background-color: transparent" disabled=""  type="text" id="totalIVA">
                                 </div>
-                              
+
                             </div>
                         </div>
 
@@ -215,6 +215,43 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button"  class="btn btn-outline-success" id="btnguardarclientefacturaicon">Guardar</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div style="padding-top: 100px" class="modal fade" id="v_anulacionfactura" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h6 class="modal-title" id="exampleModalLabel" style="text-align: center">Anulación</h6>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <div class="col-md-3 mb-4">
+                                    <label for="validationDefault01">Nro. Factura : </label>
+                                    <input type="text" class="form-control" id="v_facanular"  splaceholder="" required="" 
+                                           onkeydown="
+                                                   if (event.keyCode === 13) {
+                                                       getanulado();
+                                                   }">
+                                </div>
+                                <div class="col-md-3 mb-2">
+                                    <label for="validationDefault01" style="visibility: hidden">..</label>
+                                    <input type="text" class="form-control" id="v_ciclienteanular" disabled="" splaceholder="" required="" >
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label for="validationDefault01" style="visibility: hidden">..</label>
+                                    <input type="text" class="form-control" id="v_clienteanular" disabled="" splaceholder="" required="" >
+                                    <input type="text" class="form-control" id="v_idfacAnular" style="display: none">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button"  class="btn btn-danger" id="btnanular">ANULAR</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                         </div>
 

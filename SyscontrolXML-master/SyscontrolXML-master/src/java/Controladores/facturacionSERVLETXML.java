@@ -67,6 +67,15 @@ public class facturacionSERVLETXML extends HttpServlet {
                     out.println("Exitoso");
                 }
                 break;
+                  case 5:
+                out.println(fDAO.getAnular(request.getParameter("nrofac")));
+                
+                break;
+                    case 6:
+                fDTO.setIddocfactura(Integer.parseInt(request.getParameter("codFactura")));
+                 if (fDAO.anularfactura(fDTO)) {
+                    out.println("Exitoso");
+                }
         }
         
         

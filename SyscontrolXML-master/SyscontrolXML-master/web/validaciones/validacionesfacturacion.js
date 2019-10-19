@@ -71,7 +71,31 @@ function opcionesFacturacion() {
     $('#fbuscadorArticulo').keyup(function () {
         buscadorgenericotable('miTablaarticulos', 'fbuscadorArticulo');
     });
-    $('#fbuscadorArticulo').keyup(function () {
+    $('#btnanularfactura').click(function () {
+        $('#v_anulacionfactura').modal('show');
+    });
+    $('#btnanular').click(function () {
+        if ($('#v_facanular').val() === "") {
+            $.confirm({
+                title: 'AVISO!',
+                content: 'Debes ingresar una Factura.. ',
+                type: 'red',
+                buttons: {
+                    Ok: {
+                        text: 'OK',
+                        btnClass: 'btn-dark',
+                        keys: ['enter', 'shift'],
+                        action: function () {
+
+                        }
+                    }
+
+                }
+
+            });
+        } else {
+           anularfactura();
+        }
 
     });
 }
@@ -397,23 +421,23 @@ function  getfacturas() {
             $.each(resp, function (indice, valor) {
                 var cantFac = valor.cant;
                 if (cantFac < 5) {
-                           $.confirm({
-                title: 'AVISO!',
-                content: 'Solo quedan "'+cantFac+'" facturas. ',
-                type: 'red',
-                buttons: {
-                    Ok: {
-                        text: 'OK',
-                        btnClass: 'btn-dark',
-                        keys: ['enter', 'shift'],
-                        action: function () {
+                    $.confirm({
+                        title: 'AVISO!',
+                        content: 'Solo quedan "' + cantFac + '" facturas. ',
+                        type: 'red',
+                        buttons: {
+                            Ok: {
+                                text: 'OK',
+                                btnClass: 'btn-dark',
+                                keys: ['enter', 'shift'],
+                                action: function () {
+
+                                }
+                            }
 
                         }
-                    }
 
-                }
-
-            });
+                    });
                 } else {
 
                 }
@@ -699,7 +723,7 @@ function  insertarVentaDetalle() {
             "fpreciou": $(this).find("td").eq(2).html(),
             "fidimpuesto": parseInt($(this).find("td").eq(8).html())
         };
-        
+
 //        alert(jsonventaDetalle.fidarticulo);
         $.ajax({
             url: "/syscontrol/facturacionSERVLETXML",
@@ -712,6 +736,47 @@ function  insertarVentaDetalle() {
             error: function () {
             }
         });
+    });
+}
+function  getanulado() {
+    josnfactura = {
+        "opcion": 5,
+        "nrofac": $('#v_facanular').val()
+    };
+    $.ajax({
+        url: "/syscontrol/facturacionSERVLETXML",
+        type: 'POST',
+        data: josnfactura,
+        cache: false,
+        success: function (resp) {
+            $.each(resp, function (indice, valor) {
+                $('#v_ciclienteanular').val(valor.cedula);
+                $('#v_clienteanular').val(valor.nombrecliente);
+                $('#v_idfacAnular').val(valor.iddocfactura);
+            });
+
+        },
+        error: function () {
+        }
+    });
+}
+function  anularfactura() {
+    anufac = {
+        "opcion": 6,
+        "codFactura": $('#v_idfacAnular').val()
+    };
+    $.ajax({
+        url: "/syscontrol/facturacionSERVLETXML",
+        type: 'POST',
+        data: anufac,
+        cache: false,
+        dataType:'text',
+        success: function (resp) {
+             $.alert('Factura Anulada!');
+             location.reload();
+        },
+        error: function () {
+        }
     });
 }
 

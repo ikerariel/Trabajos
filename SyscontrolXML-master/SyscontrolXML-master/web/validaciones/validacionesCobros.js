@@ -199,10 +199,12 @@ function agregarfilacobro() {
     var cobrado = $('#totalcobro_v').val().replace(/\./g, '');
     var totalfact = $('#v_totalcobro').val().replace(/\./g, '');
     var montocobrar = $('#v_montocobrar').val().replace(/\./g, '');
-    if (parseInt(montocobrar) > parseInt(totalfact)) {
-        $.confirm({
+    var diferencia = $('#diferencia_v').val().replace(/\./g, '');
+    var totalcargado = parseInt(montocobrar) + parseInt(cobrado);
+      if (parseInt(totalcargado) > parseInt(totalfact)) {
+                  $.confirm({
             title: 'AVISO!',
-            content: 'El cobrono debe superar el monto de la factura.. ',
+            content: 'El cobro no debe superar el monto de la factura.. ',
             type: 'red',
             buttons: {
                 Ok: {
@@ -217,25 +219,8 @@ function agregarfilacobro() {
             }
 
         });
-    } else if (parseInt(cobrado) >= parseInt(totalfact)) {
-        $.confirm({
-            title: 'AVISO!',
-            content: 'El cobrono debe superar el monto de la factura.. ',
-            type: 'red',
-            buttons: {
-                Ok: {
-                    text: 'OK',
-                    btnClass: 'btn-dark',
-                    keys: ['enter', 'shift'],
-                    action: function () {
-
-                    }
-                }
-
-            }
-
-        });
-    } else {
+      
+    }  else {
         var v_tcobro = $('#v_tipocobro').val();
         var v_tcobrodescrip = $('#v_tipocobro option:selected').text();
         var v_nrocheque = $('#nrochque_ch').val();

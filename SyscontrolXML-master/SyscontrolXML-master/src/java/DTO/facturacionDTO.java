@@ -10,7 +10,12 @@ package DTO;
  * @author Usuario
  */
 public class facturacionDTO {
-
+       private Integer iddocfactura;
+         private Integer idestado;
+        private String numerodocumento;
+        private String cedula;
+        private String nombrecliente;
+        
     private Integer idarticulo;
     private Integer montoventa;
     private String descripcion;
@@ -20,17 +25,25 @@ public class facturacionDTO {
     private Integer cantidad_stock;
     private Integer idimpuesto;
     private Integer idaperturacierre;
-    private Integer iddocfactura;
+ 
     private Integer cant;
     private String cajero;
     private String caja;
-    private String numerodocumento;
+
     
     
   private Integer idcliente;
   private Integer idvendedor;
   private Integer idcondicionventa;
-  private Integer idestado;
+
+    public facturacionDTO(Integer iddocfactura, Integer idestado, String numerodocumento, String cedula, String nombrecliente) {
+        this.iddocfactura = iddocfactura;
+        this.idestado = idestado;
+        this.numerodocumento = numerodocumento;
+        this.cedula = cedula;
+        this.nombrecliente = nombrecliente;
+    }
+
 
     public Integer getMontoventa() {
         return montoventa;
