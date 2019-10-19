@@ -119,7 +119,10 @@ function permisos(valor) {
             $('#rst_colores').show();
             $('#rst_tiposervicios').show();
 <<<<<<< HEAD
+<<<<<<< HEAD
              $('#m_pedidoscompras').show();
+=======
+>>>>>>> origin/master
 =======
 >>>>>>> origin/master
             $('#m_presupuestocompras').show();
