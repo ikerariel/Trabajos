@@ -117,6 +117,8 @@ function permisos(valor) {
             $('#rst_modelos').show();
             $('#rst_colores').show();
             $('#rst_tiposervicios').show();
+             $('#m_pedidoscompras').show();
+            $('#m_presupuestocompras').show();
             break;
 
 //        case 7:
