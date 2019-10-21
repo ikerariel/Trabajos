@@ -51,11 +51,6 @@
         <div class="d-flex" id="wrapper">
             <!-- Sidebar -->
             <%@ include file="menu.jsp"%>
-            <%@ include file="menu.jsp"%>
-            <%@ include file="menu.jsp"%>
-            <%@ include file="menu.jsp"%>
-            <!-- /#sidebar-wrapper -->
-
             <!-- Page Content -->
             <div id="page-content-wrapper">
                 <%@ include file="navbar.jsp"%>
