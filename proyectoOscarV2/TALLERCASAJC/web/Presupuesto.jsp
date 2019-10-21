@@ -247,7 +247,9 @@
 
                                 <div class="col-md-1">
                                     <input disabled="" id="codArti" type="text" placeholder="" maxlength="3" class="form-control input-sm" 
-                                           style="visibility: hidden;">
+                                           style="display: none;">
+                                    <input disabled="" id="codImpuesto" type="text" placeholder="" maxlength="3" class="form-control input-sm" 
+                                           style="display: none">
                                 </div>
                             </div>
                         </div>
@@ -265,6 +267,7 @@
                                             <th class="alert-info">PRECIO</th>
                                             <th class="alert-info">CANTIDAD</th>
                                             <th class="alert-info">SUB TOTAL</th>
+                                            <th class="alert-info" style="display: none">Simp</th>
                                             <th class="alert-info">OPCION</th>
                                              
                                         </tr>

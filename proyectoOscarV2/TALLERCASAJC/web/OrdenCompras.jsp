@@ -270,6 +270,7 @@
                                             <th>PRECIO</th>
                                             <th>CANTIDAD</th>
                                             <th>SUB TOTAL</th>
+                                            <th style="display: none">S</th>
                                             <th>OPCION</th>
                                         </tr>
                                     </thead>

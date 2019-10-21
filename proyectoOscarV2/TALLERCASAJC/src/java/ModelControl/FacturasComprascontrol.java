@@ -43,10 +43,9 @@ public class FacturasComprascontrol extends HttpServlet {
 
         switch (opcion) {
             case 1:
-                System.out.println("codigo" + FACTDAO.getUltimoCodigoCompras());
-                if (FACTDAO.getUltimoCodigoCompras() > 0) {
-                    out.println(FACTDAO.getUltimoCodigoCompras());
-                }
+                out.println(FACTDAO.getUltimoCodigoCompras());
+                System.out.println((FACTDAO.getUltimoCodigoCompras()));
+           
                 break;
             case 2:
                 out.println(FACTDAO.ListarEstadosCompras2());

@@ -34,21 +34,23 @@ public class FacturasComprasdaoimpl implements FacturasComprasdao {
     private int filasAfectadas;
 
     @Override
-    public Integer getUltimoCodigoCompras() {
+    public String getUltimoCodigoCompras() {
         ResultSet rs;
+        ArrayList<FacturasComprasdto> allcodigo = new ArrayList<>();
         try {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "SELECT coalesce(max(id_compra),0 )+ 1 as codigo  FROM facturascompras;";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             rs = preparedStatement.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("codigo");
+            while (rs.next()) {
+                  allcodigo.add(new FacturasComprasdto(
+                        rs.getInt("codigo")));
             }
         } catch (SQLException ex) {
             Logger.getLogger(FacturasComprasdaoimpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0;
+           return new Gson().toJson(allcodigo);
     }
 
     @Override
@@ -160,7 +162,7 @@ public class FacturasComprasdaoimpl implements FacturasComprasdao {
             conexion = new Conexion();
 
             sintaxiSql = "SELECT o.id_ordcompra,d.id_impuesto, o.ordenc_fecha::date,o.id_proveedor,o.id_condicionpago, o.id_estado, dp.dep_descripcion, (p.ras_social) as proveedor, u.usu_nombre, \n"
-                    + "e.est_descripcion, d.id_articulo, d.cantidad_detorden, d.precio_detorden, a.codigenerico, a.art_descripcion,\n"
+                    + "e.est_descripcion, d.id_articulo,d.id_impuesto, d.cantidad_detorden, d.precio_detorden, a.codigenerico, a.art_descripcion,\n"
                     + "(select id_ordcompra from facturascompras where id_ordcompra=? and id_estado in(1,3)) as nroorden, o.id_condicionpago,\n"
                     + "(cp.descripcion) as condcompra, o.intervalo,o.montocuota,o.cant_cuota\n"
                     + "                     FROM ordencompras o\n"
@@ -192,6 +194,7 @@ public class FacturasComprasdaoimpl implements FacturasComprasdao {
                         rs.getInt("cantidad_detorden"),
                         rs.getInt("precio_detorden"),
                         rs.getInt("nroorden"),
+                        rs.getInt("id_impuesto"),
                         rs.getString("art_descripcion")));
             }
         } catch (SQLException ex) {

@@ -133,10 +133,10 @@ public class NotaRemisionDAOIMPL implements NotaRemisionDAO {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "SELECT f.id_compra, f.co_nrofact, \n"
-                    + " p.ras_social, s.suc_descripcion, u.usu_nombre, e.est_descripcion\n"
+                    + " p.ras_social, u.usu_nombre, e.est_descripcion\n"
                     + " FROM facturascompras f \n"
                     + " inner join proveedores p on f.id_proveedor = p.id_proveedor\n"
-                    + " inner join sucursales s on f.id_sucursal = s.id_sucursal\n"
+                    + " inner join depositos s on f.id_deposito = s.id_deposito\n"
                     + " inner join usuarios u on f.id_usuario = u.id_usuario\n"
                     + " inner join estados e on f.id_estado = e.id_estado\n"
                     + " order by id_compra desc;";
@@ -147,7 +147,7 @@ public class NotaRemisionDAOIMPL implements NotaRemisionDAO {
                         rs.getInt("id_compra"),
                         rs.getInt("co_nrofact"),
                         rs.getString("ras_social"),
-                        rs.getString("suc_descripcion"),
+                        rs.getString("ras_social"),
                         rs.getString("usu_nombre"),
                         rs.getString("est_descripcion")));
             }
@@ -165,35 +165,31 @@ public class NotaRemisionDAOIMPL implements NotaRemisionDAO {
             sintaxiSql = null;
             conexion = new Conexion();
 
-            sintaxiSql = " SELECT f.id_compra,  f.co_nrofact, f.co_intervalo,  f.id_proveedor,\n"
-                    + "                     p.ras_social, f.id_sucursal, s.suc_descripcion, f.id_usuario, u.usu_nombre, e.est_descripcion,  \n"
-                    + "                     d.id_articulo, d.cantidad_detcomp, d.precio_detcomp, a.codigenerico, a.art_descripcion\n"
-                    + "                    FROM facturascompras f\n"
-                    + "                     inner join proveedores p on f.id_proveedor = p.id_proveedor\n"
-                    + "                     inner join sucursales s on f.id_sucursal = s.id_sucursal\n"
-                    + "                     inner join usuarios u on f.id_usuario = u.id_usuario\n"
-                    + "                    inner join estados e on f.id_estado = e.id_estado\n"
-                    + "                     inner join detfacturascompras d on f.id_compra = d.id__compra\n"
-                    + "                    inner join articulos a on d.id_articulo = a.id_articulo\n"
-                    + "                     where f.id_compra=?";
+            sintaxiSql = " SELECT f.id_compra, f.id_estado, f.co_nrofact, f.co_intervalo, \n"
+                    + "                                         d.id_articulo, "
+                    + "(select id_compra from notaremision where co_nrofact=? and id_estado in(1,3)) as nrofact, d.cantidad_detcomp, d.precio_detcomp, a.codigenerico, a.art_descripcion\n"
+                    + "                                        FROM facturascompras f\n"
+                    + "                                         inner join proveedores p on f.id_proveedor = p.id_proveedor\n"
+                    + "                                  \n"
+                    + "                                         inner join usuarios u on f.id_usuario = u.id_usuario\n"
+                    + "                                        inner join estados e on f.id_estado = e.id_estado\n"
+                    + "                                         inner join detfacturascompras d on f.id_compra = d.id_compra\n"
+                    + "                                       inner join articulos a on d.id_articulo = a.id_articulo\n"
+                    + "                                         where f.co_nrofact=? and f.id_estado in(1,3)";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, id);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 allDetNotaRemision.add(new NotaRemisionDTO(
                         rs.getInt("id_compra"),
                         rs.getInt("co_nrofact"),
-                        rs.getInt("id_proveedor"),
-                        rs.getString("ras_social"),
-                        rs.getInt("id_sucursal"),
-                        rs.getString("suc_descripcion"),
-                        rs.getInt("id_usuario"),
-                        rs.getString("usu_nombre"),
-                        rs.getString("est_descripcion"),
                         rs.getInt("id_articulo"),
                         rs.getInt("cantidad_detcomp"),
                         rs.getInt("precio_detcomp"),
                         rs.getString("codigenerico"),
+                        rs.getInt("nrofact"),
+                        rs.getInt("id_estado"),
                         rs.getString("art_descripcion")));
             }
         } catch (SQLException ex) {
@@ -256,18 +252,14 @@ public class NotaRemisionDAOIMPL implements NotaRemisionDAO {
         try {
             sintaxiSql = null;
             conexion = new Conexion();
-            sintaxiSql = "INSERT INTO notaremision( fecha_notaremi, nro_notaremi, obser_notaremi, \n"
-                    + " id_estado, id_usuario, id_proveedor, id_sucursal, id_compra)\n"
-                    + " VALUES ( ?::date, ?, ?, ?,  ?, ?, ?, ?);";
+            sintaxiSql = "INSERT INTO notaremision( nro_notaremi, obser_notaremi, \n"
+                    + " id_estado, id_usuario, id_compra)\n"
+                    + " VALUES (?, ?, 3,  ?, ?);";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
-            preparedStatement.setObject(1, dto.getFecha_notaremi());
-            preparedStatement.setObject(2, dto.getNro_notaremi());
-            preparedStatement.setObject(3, dto.getObser_notaremi());
-            preparedStatement.setObject(4, dto.getId_estado());
-            preparedStatement.setObject(5, dto.getId_usuario());
-            preparedStatement.setObject(6, dto.getId_proveedor());
-            preparedStatement.setObject(7, dto.getId_sucursal());
-            preparedStatement.setObject(8, dto.getId_compra());
+            preparedStatement.setObject(1, dto.getNro_notaremi());
+            preparedStatement.setObject(2, dto.getObser_notaremi());
+            preparedStatement.setObject(3, dto.getId_usuario());
+            preparedStatement.setObject(4, dto.getId_compra());
             filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {
                 conexion.comit();
@@ -290,19 +282,16 @@ public class NotaRemisionDAOIMPL implements NotaRemisionDAO {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "UPDATE notaremision\n"
-                    + "SET fecha_notaremi=?, nro_notaremi=?, obser_notaremi=?, \n"
-                    + "id_estado=?, id_usuario=?, id_proveedor=?, id_sucursal=?, id_compra=?\n"
+                    + "SET  nro_notaremi=?, obser_notaremi=?, \n"
+                    + "id_estado=3, id_usuario=?,id_compra=?,fecha_notaremi=now()\n"
                     + " WHERE id_notaremi=?;";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
-            preparedStatement.setObject(1, dto.getFecha_notaremi());
-            preparedStatement.setObject(2, dto.getNro_notaremi());
-            preparedStatement.setObject(3, dto.getObser_notaremi());
-            preparedStatement.setObject(4, dto.getId_estado());
-            preparedStatement.setObject(5, dto.getId_usuario());
-            preparedStatement.setObject(6, dto.getId_proveedor());
-            preparedStatement.setObject(7, dto.getId_sucursal());
-            preparedStatement.setObject(8, dto.getId_compra());
-            preparedStatement.setObject(9, dto.getId_notaremi());
+            preparedStatement.setObject(1, dto.getNro_notaremi());
+            preparedStatement.setObject(2, dto.getObser_notaremi());
+            preparedStatement.setObject(3, dto.getId_usuario());
+            preparedStatement.setObject(4, dto.getId_compra());
+            preparedStatement.setObject(5, dto.getFecha_notaremi());
+            preparedStatement.setObject(6, dto.getId_notaremi());
             filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {
                 conexion.comit();
@@ -354,15 +343,14 @@ public class NotaRemisionDAOIMPL implements NotaRemisionDAO {
         try {
             sintaxiSql = null;
             conexion = new Conexion();
-            sintaxiSql = "SELECT r.id_notaremi, r.fecha_notaremi, r.nro_notaremi, r.obser_notaremi, \n"
-                    + "  e.est_descripcion, u.usu_nombre, p.ras_social, s.suc_descripcion, f.co_nrofact\n"
-                    + "  FROM notaremision r\n"
-                    + "  inner join estados e on r.id_estado = e.id_estado\n"
-                    + "  inner join usuarios u on r.id_usuario = u.id_usuario\n"
-                    + "  inner join proveedores p on r.id_proveedor = p.id_proveedor\n"
-                    + "  inner join sucursales s on r.id_sucursal = s.id_sucursal\n"
-                    + "  inner join facturascompras f on r.id_compra = f.id_compra\n"
-                    + "  order by id_notaremi desc;";
+            sintaxiSql = "SELECT r.id_notaremi, r.fecha_notaremi::date, r.nro_notaremi, r.obser_notaremi, \n"
+                    + "                                         e.est_descripcion, u.usu_nombre, f.co_nrofact\n"
+                    + "                                        FROM notaremision r\n"
+                    + "                                         inner join estados e on r.id_estado = e.id_estado\n"
+                    + "                                         inner join usuarios u on r.id_usuario = u.id_usuario\n"
+                    + "                                         inner join facturascompras f on r.id_compra = f.id_compra\n"
+                    + "                    where r.id_estado in(1,3)\n"
+                    + "                                       order by id_notaremi desc";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
@@ -373,8 +361,6 @@ public class NotaRemisionDAOIMPL implements NotaRemisionDAO {
                         rs.getString("obser_notaremi"),
                         rs.getString("est_descripcion"),
                         rs.getString("usu_nombre"),
-                        rs.getString("ras_social"),
-                        rs.getString("suc_descripcion"),
                         rs.getInt("co_nrofact")));
             }
         } catch (SQLException ex) {
@@ -415,18 +401,13 @@ public class NotaRemisionDAOIMPL implements NotaRemisionDAO {
         try {
             sintaxiSql = null;
             conexion = new Conexion();
-            sintaxiSql = "SELECT r.id_notaremi, r.fecha_notaremi, r.nro_notaremi, r.obser_notaremi,\n"
-                    + " r.id_estado, e.est_descripcion, r.id_usuario, u.usu_nombre, r.id_proveedor, p.ras_social, r.id_sucursal, s.suc_descripcion,\n"
-                    + " r.id_compra, d.id_articulo, d.cantinotaremi, d.precionotaremi, a.codigenerico, a.art_descripcion \n"
-                    + " FROM notaremision r\n"
-                    + " inner join estados e on r.id_estado = e.id_estado\n"
-                    + " inner join usuarios u on r.id_usuario = u.id_usuario\n"
-                    + " inner join proveedores p on r.id_proveedor = p.id_proveedor\n"
-                    + " inner join sucursales s on r.id_sucursal = s.id_sucursal\n"
-                    + " inner join facturascompras f on r.id_compra = f.id_compra\n"
-                    + " inner join detnoremision d on r.id_notaremi = d.id_notaremi\n"
-                    + " inner join articulos a on d.id_articulo = a.id_articulo\n"
-                    + " where r.id_notaremi=?";
+            sintaxiSql = "SELECT r.id_notaremi, r.fecha_notaremi::date, r.nro_notaremi, r.obser_notaremi,\n"
+                    + "r.id_compra, d.id_articulo, d.cantinotaremi, d.precionotaremi,  a.art_descripcion, f.co_nrofact\n"
+                    + "                     FROM notaremision r\n"
+                    + "                      left join detnoremision d on r.id_notaremi = d.id_notaremi\n"
+                    + "			left join facturascompras f on r.id_compra=f.id_compra\n"
+                    + "                   left join articulos a on d.id_articulo = a.id_articulo\n"
+                    + "                     where r.id_notaremi=?";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, id);
             rs = preparedStatement.executeQuery();
@@ -434,22 +415,13 @@ public class NotaRemisionDAOIMPL implements NotaRemisionDAO {
                 allDetNotaRemision.add(new NotaRemisionDTO(
                         rs.getInt("id_notaremi"),
                         rs.getString("fecha_notaremi"),
+                        rs.getInt("co_nrofact"),
+                        rs.getInt("id_compra"),
                         rs.getInt("nro_notaremi"),
                         rs.getString("obser_notaremi"),
-                        rs.getString("est_descripcion"),
-                         rs.getInt("id_usuario"),
-                        rs.getString("usu_nombre"),
-                        rs.getInt("id_proveedor"),
-                        rs.getString("ras_social"),
-                        rs.getInt("id_sucursal"),
-                        rs.getString("suc_descripcion"),
-                        
-                        rs.getInt("id_compra"),
-                        
                         rs.getInt("id_articulo"),
                         rs.getInt("cantinotaremi"),
                         rs.getInt("precionotaremi"),
-                        rs.getString("codigenerico"),
                         rs.getString("art_descripcion")));
             }
         } catch (SQLException ex) {
@@ -457,6 +429,31 @@ public class NotaRemisionDAOIMPL implements NotaRemisionDAO {
         }
 
         return new Gson().toJson(allDetNotaRemision);
+    }
+
+    @Override
+    public boolean deleteNR(NotaRemisionDTO dto) {
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "ELETE FROM public.detnoremision\n"
+                    + " WHERE id_notaremi=?";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            preparedStatement.setObject(1, dto.getId_notaremi());
+            filasAfectadas = preparedStatement.executeUpdate();
+            if (filasAfectadas > 0) {
+                conexion.comit();
+                System.out.println("Comit() Realizado");
+                return true;
+            } else {
+                conexion.rollback();
+                System.out.println("Rollback() Realizado");
+            }
+            conexion.desConectarBD();
+        } catch (SQLException ex) {
+            Logger.getLogger(NotaRemisionDAOIMPL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
 }

@@ -54,6 +54,7 @@ function insertarpresupuesto(op, caso) {
                             'v_codarticulo': $(this).find("td").eq(0).html(),
                             'v_cantidad': $(this).find("td").eq(3).html(),
                             'v_preciounitario': $(this).find("td").eq(2).html().replace(/\./g, ''),
+                            'v_codimpuesto': $(this).find("td").eq(5).html(),
                             'v_codpresupuesto': $('#codigopresupuesto').val()
 
                         };
@@ -177,6 +178,7 @@ function obarticulos() {
 
                 $('#descriparticulo').val(value.art_descripcion);
                 $('#precioarticulo').val(value.preccompras);
+                $('#codImpuesto').val(value.id_impuesto);
                 $('#cantarticulo').val(1);
                 $('#cantarticulo').focus();
                 valores('precioarticulo');
@@ -210,16 +212,14 @@ function verificarfila() {
     } else {
         var cod = $('#v_articulos').val();
         var codigo;
-        var vdetalle = 0;
         $('#mitabladetallepresupuesto').find('tbody').find('tr').each(function () {
             codigo = $(this).find("td").eq(0).html();
             if (cod === codigo) {
-                vdetalle = $(this).find("td").eq(5).html();
                 var sms = confirm('Articulo cargado, desea sustituirlo ??');
                 if (sms === true) {
                     $(this).closest("tr").remove();
                     ban = true;
-                    cargarfila(vdetalle);
+                    cargarfila();
                 } else {
                     ban = true;
                 }
@@ -230,7 +230,7 @@ function verificarfila() {
 
         });
         if (ban === false) {
-            cargarfila(vdetalle);
+            cargarfila();
         }
     }
 
@@ -238,14 +238,13 @@ function verificarfila() {
 
 }
 var tindex = 0;
-function cargarfila(v) {
+function cargarfila() {
     //idmaterial
     var v_codmaterial = $('#v_articulos').val();
     var v_descripcion = $('#descriparticulo').val();
     var v_precio = $('#precioarticulo').val();
     var v_cant = $('#cantarticulo').val();
-    var codD = v;
-
+    var v_imp = $('#codImpuesto').val();
     subtotal = (v_precio.replace(/\./g, '')) * v_cant;
     tindex++;
     $('#mitabladetallepresupuesto').append("<tr id=\'prod" + tindex + "\'>\
@@ -254,7 +253,7 @@ function cargarfila(v) {
             <td>" + v_precio + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
-            <td style=display:none>" + codD + "</td>\n\
+            <td style=display:none>" + v_imp + "</td>\n\
             <td><button type=button title='Quitar el registro de la lista' \n\
                                  style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\">\n\
                                  <span class='glyphicon glyphicon-remove'></span></button></td></tr>");
@@ -419,7 +418,7 @@ function getdetallepresupuesto() {
             <td>" + valor.preciounitario + "</td>\n\
             <td>" + valor.cantidad + "</td>\n\
             <td>" + sum + "</td>\n\
-            <td style=display:none>" + valor.iddetpresuompras + "</td>\n\
+            <td style=display:none>" + valor.id_impuesto + "</td>\n\
             <td><button type=button title='Quitar el registro de la lista' \n\
                                  style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + idx + "\').remove();updatemonto( " + sum + ", " + tindex + ")\">\n\
                                  <span class='glyphicon glyphicon-remove'></span></button></tr>");

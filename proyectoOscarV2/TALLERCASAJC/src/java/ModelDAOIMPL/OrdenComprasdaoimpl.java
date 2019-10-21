@@ -90,13 +90,14 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "INSERT INTO detordencompras(\n"
-                    + " id_ordcompra, id_articulo, cantidad_detorden, precio_detorden)\n"
-                    + " VALUES (?, ?, ?, ?);";
+                    + " id_ordcompra, id_articulo, cantidad_detorden, precio_detorden, id_impuesto)\n"
+                    + " VALUES (?, ?, ?, ?,?);";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setObject(1, dto.getId_ordcompraD());
             preparedStatement.setObject(2, dto.getId_articulo());
             preparedStatement.setObject(3, dto.getCantidad_detorden());
             preparedStatement.setObject(4, dto.getPrecio_detorden());
+            preparedStatement.setObject(5, dto.getId_impuesto());
             filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {
                 conexion.comit();
@@ -460,13 +461,13 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
 "                                         p.id_proveedor, (v.ras_social) as proveedor, p.id_deposito,\n" +
 "                                         (d.dep_descripcion)as deposito,\n" +
 "                                              p.idtipomoneda, (m.descripcion) as moneda,dp.id_articulo,\n" +
-"                                      (a.art_descripcion) as articulo, dp.cantidad, dp.preciounitario,dp.iddetpresuompras,\n" +
+"                                      (a.art_descripcion) as articulo,dp.id_impuesto, dp.cantidad, dp.preciounitario,dp.iddetpresuompras,\n" +
 "                                      (select id_presucompra from ordencompras where id_presucompra = ? and id_estado in(1,3)) as nropresupuesto  \n" +
 "                                         FROM presupuestocompra p\n" +
 "                                        left join pedidoscompras pc on p.id_pedidocompra=pc.id_pedidocompra              \n" +
-"                         left join proveedores v on p.id_proveedor=v.id_proveedor\n" +
+"                                       left join proveedores v on p.id_proveedor=v.id_proveedor\n" +
 "                                        left join depositos d on p.id_deposito=d.id_deposito             \n" +
-"                          left join tipomoneda m on p.idtipomoneda=m.idtipomoneda\n" +
+"                                        left join tipomoneda m on p.idtipomoneda=m.idtipomoneda\n" +
 "                                      left join detpresuompras dp on p.id_presucompra= dp.id_presucompra\n" +
 "                                      left join articulos a on dp.id_articulo= a.id_articulo\n" +
 "                                      where p.id_presucompra=?";
@@ -484,6 +485,7 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
                         rs.getString("articulo"),
                         rs.getInt("preciounitario"),
                         rs.getInt("nropresupuesto"),
+                        rs.getInt("id_impuesto"),
                         rs.getInt("cantidad")));
             }
         } catch (SQLException ex) {
@@ -546,7 +548,7 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
             conexion = new Conexion();
 
             sintaxiSql = "SELECT o.ordenc_fecha, s.suc_descripcion, p.ras_social, pc.id_proveedor, pc.id_presucompra, u.usu_nombre, e.est_descripcion,\n" +
-"                                         d.id_articulo, d.cantidad_detorden, d.precio_detorden, a.codigenerico, a.art_descripcion,\n" +
+"                                         d.id_articulo,d.id_impuesto, d.cantidad_detorden, d.precio_detorden, a.codigenerico, a.art_descripcion,\n" +
 "                                         o.id_condicionpago, o.intervalo, o.montocuota, o.cant_cuota\n" +
 "                                       FROM ordencompras o\n" +
 "                                        inner join detordencompras d on o.id_ordcompra = d.id_ordcompra\n" +
@@ -577,6 +579,7 @@ public class OrdenComprasdaoimpl implements OrdenComprasdao {
                         rs.getInt("intervalo"),
                         rs.getInt("montocuota"),
                         rs.getInt("cant_cuota"),
+                        rs.getInt("id_impuesto"),
                         rs.getString("art_descripcion")));
             }
         } catch (SQLException ex) {

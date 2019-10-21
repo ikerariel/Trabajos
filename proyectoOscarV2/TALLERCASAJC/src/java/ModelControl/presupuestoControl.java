@@ -72,6 +72,7 @@ public class presupuestoControl extends HttpServlet {
                 pDTO.setCantidad(Integer.parseInt(request.getParameter("v_cantidad")));
                 pDTO.setPreciounitario(Integer.parseInt(request.getParameter("v_preciounitario")));
                 pDTO.setId_presucompra(Integer.parseInt(request.getParameter("v_codpresupuesto")));
+                pDTO.setId_impuesto(Integer.parseInt(request.getParameter("v_codimpuesto")));
 
                 if (pDAO.insertardetallepresupuesto(pDTO)) {
                     System.out.println("Mensaje del Servler...Insert Exitoso");

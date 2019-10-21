@@ -34,59 +34,55 @@ public class NotaRemisionServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       response.setContentType("application/json, charset=UTF-8");
+        response.setContentType("application/json, charset=UTF-8");
         PrintWriter out = response.getWriter();
         Integer opcion = Integer.parseInt(request.getParameter("opcion"));
 
         NotaRemisionDAO REMIDAO = new NotaRemisionDAOIMPL();
         NotaRemisionDTO REMIDTO = new NotaRemisionDTO();
-        
+
         switch (opcion) {
             case 1:
                 System.out.println("codigo" + REMIDAO.getUltimoCodigoNotaRemision1());
-                if (REMIDAO.getUltimoCodigoNotaRemision1()> 0) {
+                if (REMIDAO.getUltimoCodigoNotaRemision1() > 0) {
                     out.println(REMIDAO.getUltimoCodigoNotaRemision1());
                 }
                 break;
             case 2:
                 out.println(REMIDAO.ListarEstadosNotaRemision2());
                 break;
-                
+
             case 3:
                 out.println(REMIDAO.ListarUsuariosNotaRemision3());
                 break;
-                
+
             case 4:
                 out.println(REMIDAO.ListarProveedoresNotaRemision4());
                 break;
-                
+
             case 5:
                 out.println(REMIDAO.ListarFacturasComprasNotaRemision5());
                 break;
-                
+
             case 6:
-                if (REMIDAO.ListarDetFacturasComprasRemision6(Integer.parseInt(request.getParameter("id_facturacompraC"))) != null) {
-                    out.println(REMIDAO.ListarDetFacturasComprasRemision6(Integer.parseInt(request.getParameter("id_facturacompraC"))));
-                    System.out.println(REMIDAO.ListarDetFacturasComprasRemision6(Integer.parseInt(request.getParameter("id_facturacompraC"))));
+                if (REMIDAO.ListarDetFacturasComprasRemision6(Integer.parseInt(request.getParameter("id_FacturacompraC"))) != null) {
+                    out.println(REMIDAO.ListarDetFacturasComprasRemision6(Integer.parseInt(request.getParameter("id_FacturacompraC"))));
+                    System.out.println(REMIDAO.ListarDetFacturasComprasRemision6(Integer.parseInt(request.getParameter("id_FacturacompraC"))));
                 }
                 break;
-                
+
             case 7:
                 out.println(REMIDAO.ListarSucursalesNotaRemision7());
                 break;
-                
+
             case 8:
                 out.println(REMIDAO.ListarArticulosNotaRemision8());
                 break;
-                
+
             case 9:
-                REMIDTO.setFecha_notaremi(request.getParameter("Nre_fecha"));
                 REMIDTO.setNro_notaremi(Integer.parseInt(request.getParameter("Nre_nro")));
                 REMIDTO.setObser_notaremi(request.getParameter("Nre_obse"));
-                REMIDTO.setId_estado(Integer.parseInt(request.getParameter("Nre_estado")));
                 REMIDTO.setId_usuario(Integer.parseInt(request.getParameter("Nre_usuario")));
-                REMIDTO.setId_proveedor(Integer.parseInt(request.getParameter("Nre_proveedor")));
-                REMIDTO.setId_sucursal(Integer.parseInt(request.getParameter("Nre_sucursal")));
                 REMIDTO.setId_compra(Integer.parseInt(request.getParameter("Nre_factcompra")));
                 if (REMIDAO.insertarCabeceraNotaRemision9(REMIDTO)) {
                     out.println("Exitoso");
@@ -114,22 +110,24 @@ public class NotaRemisionServlet extends HttpServlet {
                 break;
             case 13:
                 if (REMIDAO.listarDetNotaRemision14(Integer.parseInt(request.getParameter("nroNotaRe"))) != null) {
-                    out.println(REMIDAO.listarDetNotaRemision14(Integer.parseInt(request.getParameter("nroNotaReC"))));
-                    System.out.println(REMIDAO.listarDetNotaRemision14(Integer.parseInt(request.getParameter("nroNotaReC"))));
+                    out.println(REMIDAO.listarDetNotaRemision14(Integer.parseInt(request.getParameter("nroNotaRe"))));
+                    System.out.println(REMIDAO.listarDetNotaRemision14(Integer.parseInt(request.getParameter("nroNotaRe"))));
                 }
                 break;
             case 14:
-
-                REMIDTO.setFecha_notaremi(request.getParameter("Nre_fecha"));
                 REMIDTO.setNro_notaremi(Integer.parseInt(request.getParameter("Nre_nro")));
                 REMIDTO.setObser_notaremi(request.getParameter("Nre_obse"));
-                REMIDTO.setId_estado(Integer.parseInt(request.getParameter("Nre_estado")));
                 REMIDTO.setId_usuario(Integer.parseInt(request.getParameter("Nre_usuario")));
-                REMIDTO.setId_proveedor(Integer.parseInt(request.getParameter("Nre_proveedor")));
-                REMIDTO.setId_sucursal(Integer.parseInt(request.getParameter("Nre_sucursal")));
                 REMIDTO.setId_compra(Integer.parseInt(request.getParameter("Nre_factcompra")));
                 REMIDTO.setId_notaremi(Integer.parseInt(request.getParameter("Nre_notaremi")));
                 if (REMIDAO.modificarCabeceraNotaRemision10(REMIDTO)) {
+                    out.println("Exitoso");
+                }
+
+                break;
+            case 15:
+                REMIDTO.setId_notaremi(Integer.parseInt(request.getParameter("codNR")));
+                if (REMIDAO.deleteNR(REMIDTO)) {
                     out.println("Exitoso");
                 }
 

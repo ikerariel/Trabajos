@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    opcionesCompras();
     cambioEstadosFCompras();
     MostrarFacturasCompras();
     MostrarArticulos();
@@ -8,6 +9,27 @@ $(document).ready(function () {
 
 //FUNCIONES DE TRANSACCIONES----------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
+
+
+function opcionesCompras() {
+    $('#btnNuevoCompras').click(function () {
+        var nCell = $('#miTablaPlanillaCompra tr').length - 1;
+        if (parseInt(nCell) < 1) {
+            $('#codigo').val("1");
+        } else {
+            var num;
+            $('#miTablaPlanillaCompra').each(function () {
+                num = parseInt($(this).find("td").eq(0).html());
+            });
+            $('#codigo').val(parseInt(num) + 1);
+        }
+
+        $('#btnguardarCompra').show();
+        $('#btnmModificarCompra').hide();
+        vaciarCamposNuevo();
+//         getCodigo();
+    });
+}
 
 
 function crearJSON(id) {
@@ -28,21 +50,22 @@ function crearJSON(id) {
     };
 }
 
-function getcodigoCompras() {
+function getCodigo() {
     $('#btnguardarCompra').show();
     $('#btnmModificarCompra').hide();
     vaciarCamposNuevo();
-//    controlBotonesNuevo();
     $("#factuCompProvee").val(null);
-    crearJSON(1);
 
-// document.getElementById('usuario').value = document.getElementById('usenameD').value;
+    js = {
+        'opcion': 1
+    };
     $.ajax({
         url: "http://localhost:8084/TALLERCASAJC/FacturasComprascontrol",
-        data: datosJSON,
+        data: js,
         type: 'POST',
         dataType: 'text',
         success: function (resp) {
+            alert(resp);
             $("#codigo").val(resp);
             $("#factuCompProvee").focus();
         },
@@ -169,7 +192,6 @@ function RecuperarDetOrdenComprass() {
                         $.each(resp, function (indice, value) {
                             $('#factuCompProvee').val(value.proveedor);
                             $('#factuCompIdProvee').val(value.id_proveedor);
-                            alert(value.id_proveedor);
                             $('#fidtipocompra').val(value.id_condicionpago);
                             $('#factuCompTipo').val(value.condcompra);
                             $('#factuCompIntervalo').val(value.intervalo);
@@ -184,6 +206,7 @@ function RecuperarDetOrdenComprass() {
                                     <td>" + value.cantidad_detorden + "</td>\n\
                                     <td>" + value.precio_detorden + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
+                                    <td style=display:none>" + value.id_impuesto + "</td>\n\
                                     <td><button type=button title='Quitar el registro de la lista' \n\
             style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + indDetorden + "\').remove();calcularmonto();\">\n\
             <span class='glyphicon glyphicon-remove'></span></button></td></tr>");
@@ -306,7 +329,7 @@ function  InsertarDetFacturasCompras() {
             "idartiD": $(this).find("td").eq(0).html(),
             "precioD": $(this).find("td").eq(2).html(),
             "cantiD": $(this).find("td").eq(3).html(),
-            "codimpuesto": $(this).find("td").eq(6).html()
+            "codimpuesto": $(this).find("td").eq(5).html()
         };
         $.ajax({
             url: "http://localhost:8084/TALLERCASAJC/FacturasComprascontrol",
@@ -368,9 +391,9 @@ function cambioEstadosFCompras() {
             if (btn === 'btnAnular') {
                 if ($('#estadofacturaP').val() === "") {
                     alert('Seleccione una factura compras.!');
-                } else if ($('#estadofacturaP').val() === 'Aprobado' || $('#estadofacturaP').val() === 'Anulado') {
-                    alert('La factura ya fue aprobada o ya esta Anulada..');
-                } else if ($('#estadofacturaP').val() === 'Pendiente') {
+                } else if ($('#estadofacturaP').val() === 'CONFIRMADO') {
+                    alert('La factura ya fue CONFIRMADA..');
+                } else if ($('#estadofacturaP').val() === 'PENDIENTE') {
                     var opcion = confirm('Desea Anular la factura.??');
                     if (opcion === true) {
                         datoJson = {
@@ -385,9 +408,9 @@ function cambioEstadosFCompras() {
             } else if (btn === 'btnConfirmar') {
                 if ($('#estadofacturaP').val() === "") {
                     alert('Seleccione una factura compras.!');
-                } else if ($('#estadofacturaP').val() === 'Aprobado' || $('#estadofacturaP').val() === 'ANULADO') {
+                } else if ($('#estadofacturaP').val() === 'CONFIRMADO') {
                     alert('La factura ya fué Confirmado o esta Anulada..');
-                } else if ($('#estadofacturaP').val() === 'Pendiente') {
+                } else if ($('#estadofacturaP').val() === 'PENDIENTE') {
                     var opcion = confirm('Desea Confirmar la factura copras.??');
                     if (opcion === true) {
                         datoJson = {
@@ -402,9 +425,9 @@ function cambioEstadosFCompras() {
             } else if (btn === 'btnRevertir') {
                 if ($('#estadofacturaP').val() === "") {
                     alert('Seleccione una factura de Compras.!');
-                } else if ($('#estadofacturaP').val() === 'Pendiente' || $('#estadofacturaP').val() === 'Anulado') {
+                } else if ($('#estadofacturaP').val() === 'PENDIENTE') {
                     alert('La factura no se puede Revertir..');
-                } else if ($('#estadofacturaP').val() === 'Aprobado') {
+                } else if ($('#estadofacturaP').val() === 'CONFIRMADO') {
                     var opcion = confirm('Desea Revertir la factura.??');
                     if (opcion === true) {
                         datoJson = {
@@ -560,6 +583,7 @@ function recuperarDetFacturaCompras() {
                                     <td>" + value.precio_detcomp + "</td>\n\
                                     <td>" + value.cantidad_detcomp + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
+                                    <td style=display:none>" + value.id_impuesto + "</td>\n\
                                     <td><button type=button title='Quitar el registro de la lista' \n\
             style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + tindex + "\').remove();calcularmonto();\">\n\
             <span class='glyphicon glyphicon-remove'></span></button></td>\n\
@@ -833,16 +857,35 @@ function buscadorTablaArticulosCompras() {
     }
 }//---------------
 function CargarArtiComprasGrilla() {
-    var cod = $('#codgenericiArti').val();
-    var codigo;
-    $('#miTablaDetFacturasCompras').find('tbody').find('tr').each(function () {
-        codigo = $(this).find("td").eq(1).html();
-        if (cod === codigo) {
-            alert('El articulo ya fue cargada, desea sustituirlo?');
-            $(this).find("td").remove();
+    
+       var ban = false;
+    if ($('#codArti').val() === "") {
+        alert('DEBES INGRESAR UN ARTICULO');
+    } else {
+        var cod = $('#codArti').val();
+        var codigo;
+        $('#miTablaDetFacturasCompras').find('tbody').find('tr').each(function () {
+            codigo = $(this).find("td").eq(0).html();
+            if (cod === codigo) {
+                var sms = confirm('Articulo cargado, desea sustituirlo ??');
+                if (sms === true) {
+                    $(this).closest("tr").remove();
+                    ban = true;
+                agregarFilaArtiCompras();
+                } else {
+                    ban = true;
+                }
+
+            } else {
+
+            }
+
+        });
+        if (ban === false) {
+          agregarFilaArtiCompras();
         }
-    });
-    agregarFilaArtiCompras();
+    }
+
 }
 var dix = 0;
 function agregarFilaArtiCompras() {
@@ -859,10 +902,10 @@ function agregarFilaArtiCompras() {
             <td>" + v_precio + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
+            <td style=display:none>" + v_imp + "</td>\n\
             <td><button type=button title='Quitar el registro de la lista' \n\
             style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + dix + "\').remove();calcularmonto();\">\n\
-            <span class='glyphicon glyphicon-remove'></span></button></td>\n\
-            <td style=display:none>" + v_imp + "</td></tr>");
+            <span class='glyphicon glyphicon-remove'></span></button></td></tr>");
     calcularmonto();
     $('#codgenericiArti').val(null);
     $('#codgenericiArti').focus;

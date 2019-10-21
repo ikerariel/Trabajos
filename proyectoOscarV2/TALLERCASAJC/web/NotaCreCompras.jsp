@@ -7,6 +7,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    <%
+
+        HttpSession sessionActivaUser = request.getSession();
+        if (sessionActivaUser.getAttribute("user") == null) {
+            response.sendRedirect("/TALLERCASAJC/acceso.jsp");
+        }
+
+    %>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -54,15 +62,16 @@
         </style>
     </head>
     <body>
+          <%@ include file="viwmenu.jsp"%>
         <%--  <%@include file="viwmenu.jsp" %>
             <%@include file="resportesmodales.jsp" %>  --%>
-     
+
         <section>
             <form class="form-horizontal"  id="defaultForm">
 
                 <div class="col-md-9" id="botonesNotaCreCompras">
-                    <a id="btnNuevo"  class="btn btn-lg btn-success" style=" font-weight: bold"   data-toggle="modal"
-                       onclick="abrirnuevoNotaCreCompras()">Nuevo </a>
+                    <a id="btnNuevo"  href="#ventanaNC"  class="btn btn-lg btn-success" style=" font-weight: bold"   data-toggle="modal"
+                       >Nuevo </a>
                     <a id="btnModificar" class="btn btn-lg btn-info" style=" font-weight: bold" title="Modificar Factuta Compras" data-toggle="modal" onclick="recuperarmodificar()">Recuperar </a>
                     <a id="btnAnular" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Anular Factura" onclick="actualizarpresupuesto(2)">Anular*</a>
                     <a id="btnConfirmar" class="btn btn-lg btn-warning glyphicon glyphicon-ok"  style=" font-weight: bold" title="Confirmar Factura Compras" onclick="actualizarpresupuesto(1)"></a>
@@ -75,14 +84,14 @@
                 <br>
 
                 <div class="panel panel-default">
-                    <div class="panel-footer" style="font-weight: bold">PLANILLA DE PRESUPUESTO</div>
+                    <div class="panel-footer" style="font-weight: bold">PLANILLA DE NOTAS DE CREDITOS</div>
 
                     <div class="">
                         <div class="input-group  input-sm">
                             <span class="input-group-addon" style=" font-weight: bold">Nro. Registro*</span>
-                            <input id="nroprespuesto" type="text" style="background-color: #d9edf7" class="form-control" disabled="" placeholder="">
+                            <input id="nronc" type="text" style="background-color: #d9edf7" class="form-control" disabled="" placeholder="">
                             <span class="input-group-addon" style=" font-weight: bold" >Estado*</span>
-                            <input id="estadopresupuesto" type="text" style="" class="form-control" disabled="" placeholder="Estado">
+                            <input id="estadonc" type="text" style="" class="form-control" disabled="" placeholder="Estado">
                         </div>
                     </div>
 
@@ -104,7 +113,6 @@
                                     <tr class="" >
                                         <th class="">CODIGO</th>
                                         <th class="">FECHA</th>
-                                        <th class="">PROVEEDOR</th>
                                         <th class="">USUARIO</th>
                                         <th class="">ESTADO</th>
                                     </tr>
@@ -119,15 +127,15 @@
 
         <!--/////////////  CABECERAS VENTANA DE FACTURAS COMPRAS //////////////////////////////////////////--->
 
-        <div class="modal fade" id="ventanapresupuesto">
+        <div class="modal fade" id="ventanaNC">
             <div class="modal-dialog" style="width: 80%;">
                 <div class="modal-content">
 
                     <!--HEADER DE LA VENTANA//////////////////////////////////////////////////////////////////////--->
 
                     <div class="modal-header" >
-                        <a class="btn btn-lg btn-primary col-md-1" style="display: none"  id="btnguardarpresupuesto" title="" onclick="insertarpresupuesto(1,1)" >Guardar</a>
-                        <a class="btn btn-lg btn-success col-md-1" style="display: none" id="btntmodificarpresupuesto" title="" onclick="insertarpresupuesto(1,2)" >Guardar</a>
+                        <a class="btn btn-lg btn-primary col-md-1" style="display: none"  id="btnguardarpresupuesto" title="" onclick="insertarpresupuesto(1, 1)" >Guardar</a>
+                        <a class="btn btn-lg btn-success col-md-1" style="display: none" id="btntmodificarpresupuesto" title="" onclick="insertarpresupuesto(1, 2)" >Guardar</a>
                         <a class="close  btn btn-lg btn-danger glyphicon glyphicon-off" data-dismiss="modal" aria-hidden="true" title="Salir"></a>
                     </div>
 
@@ -135,39 +143,39 @@
 
                     <div class="panel">
                         <div class="panel panel-default">
-                            <div class="panel-footer" style="font-weight: bold">NUEVO PRESUPUESTO</div>
+                            <div class="panel-footer" style="font-weight: bold">NUEVA NOTA CREDITO</div>
                             <br> 
                             <div class="form-horizontal">
                                 <div class="form-group">
 
                                     <label class="col-md-1 control-label">Nro.</label>  
                                     <div class="col-md-1">
-                                        <input disabled="" id="codigopresupuesto" style="text-transform: uppercase; font-weight: bold; font-size: 12pt" 
+                                        <input disabled="" id="codigoNC" style="text-transform: uppercase; font-weight: bold; font-size: 12pt" 
                                                name="codigo" type="text" placeholder="Codigo" class="form-control input-sm ">
                                     </div>
-                              
+
 
                                     <label class="col-md-1 control-label">Fecha</label>  
                                     <div class="col-md-2">
                                         <input disabled id="fechapresupuesto" type="datetime" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"
                                                placeholder="Ingrese fecha" class="form-control input-sm ">
                                     </div>
-                                    
+
 
                                     <label class="col-md-2 control-label">Proveedor</label>  
                                     <div class="col-md-2">
                                         <select id="comboproveedor" class="form-control"></select>
                                     </div>
-                                             <label class="col-md-2 col-xs-pull-1 control-label">Nro Pedido.</label>  
+                                    <label class="col-md-2 col-xs-pull-1 control-label">Nro Pedido.</label>  
                                     <div class="col-md-1 col-xs-pull-1">
                                         <input  id="codigoNropedido" style="text-transform: uppercase; font-weight: bold; font-size: 12pt" 
-                                               name="codigo" type="text" placeholder="Codigo" class="form-control input-sm "
+                                                name="codigo" type="text" placeholder="Codigo" class="form-control input-sm "
                                                 onkeydown="
-                                                   if (event.keyCode === 13) {
-                                                       recuperarDetallePedido();
-                                                   }">
+                                                        if (event.keyCode === 13) {
+                                                            recuperarDetallePedido();
+                                                        }">
                                     </div>
-                                
+
 
                                 </div>
                             </div>
@@ -204,9 +212,9 @@
                                     <input list="lisart"  name="lisart "id="v_articulos" type="text" 
                                            placeholder="Cod" class="form-control"
                                            onkeydown="
-                                       if (event.keyCode === 13) {
-                                           obarticulos();
-                                       }">
+                                                   if (event.keyCode === 13) {
+                                                       obarticulos();
+                                                   }">
                                     <datalist id="lisart">
                                     </datalist>
                                 </div>
@@ -247,7 +255,7 @@
                             <!-- Tabla detalle para cargar aeticulo -->
 
                             <div class="table-responsive" style="height: 180px">
-                                <table class="table table-striped table-bordered table-hover table input-md" id="mitabladetallepresupuesto">
+                                <table class="table table-striped table-bordered table-hover table input-md" id="mitabladetalleNC">
                                     <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
                                     <thead>
                                         <tr class="alert-dismissable" >
@@ -257,7 +265,7 @@
                                             <th class="alert-info">CANTIDAD</th>
                                             <th class="alert-info">SUB TOTAL</th>
                                             <th class="alert-info">OPCION</th>
-                                             
+
                                         </tr>
                                     </thead>
                                     <tbody id="table_deta" style="font-weight: bold;font-size: 10pt">

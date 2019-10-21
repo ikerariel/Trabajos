@@ -13,8 +13,14 @@ public class NotaRemisionDTO {
 
     private Integer id_notaremi;
     private String fecha_notaremi;
+    private Integer co_nrofact;
+    private Integer id_compra;
     private Integer nro_notaremi;
     private String obser_notaremi;
+    private Integer id_articulo;
+    private Integer cantinotaremi;
+    private Integer precionotaremi;
+    private String art_descripcion;
 
     private Integer id_proveedor;
     private String ras_social;
@@ -27,25 +33,15 @@ public class NotaRemisionDTO {
     private Integer id_estado;
     private String est_descripcion;
 
-    private Integer id_compra;
-    private Integer co_nrofact;
-
     private Integer id_notaremiD;
-    private Integer id_articulo;
-
-    private Integer cantinotaremi;
-    private Integer precionotaremi;
 
     private Integer preccompras;
     private Integer precventas;
-    private String art_descripcion;
+    private Integer nrofact;
+
     private Integer id_marca;
     private Integer id_impuesto;
     private String codigenerico;
-
-    public NotaRemisionDTO() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     public Integer getCantidad_detcomp() {
         return cantidad_detcomp;
@@ -62,74 +58,81 @@ public class NotaRemisionDTO {
     public void setPrecio_detcomp(Integer precio_detcomp) {
         this.precio_detcomp = precio_detcomp;
     }
+
+    private Integer cantidad_detcomp;
+    private Integer precio_detcomp;
+
+    public NotaRemisionDTO(Integer id_notaremi, String fecha_notaremi, Integer co_nrofact, Integer id_compra, Integer nro_notaremi, String obser_notaremi, Integer id_articulo, Integer cantinotaremi, Integer precionotaremi, String art_descripcion) {
+        this.id_notaremi = id_notaremi;
+        this.fecha_notaremi = fecha_notaremi;
+        this.co_nrofact = co_nrofact;
+        this.id_compra = id_compra;
+        this.nro_notaremi = nro_notaremi;
+        this.obser_notaremi = obser_notaremi;
+        this.id_articulo = id_articulo;
+        this.cantinotaremi = cantinotaremi;
+        this.precionotaremi = precionotaremi;
+        this.art_descripcion = art_descripcion;
+    }
     
-     private Integer cantidad_detcomp;
-     private Integer precio_detcomp;
+    
 
+//    public NotaRemisionDTO(Integer id_notaremi, String fecha_notaremi, Integer nro_notaremi, String obser_notaremi,
+//            String est_descripcion,  Integer id_usuario, String usu_nombre, Integer id_proveedor, String ras_social,
+//            Integer id_sucursal, String suc_descripcion, Integer id_compra, Integer id_articulo,  Integer cantinotaremi,
+//            Integer precionotaremi, String codigenerico, String art_descripcion) {
+//        this.id_notaremi=id_notaremi;
+//        this.fecha_notaremi=fecha_notaremi;
+//        this.nro_notaremi=nro_notaremi;
+//        this.obser_notaremi=obser_notaremi;
+//        this.est_descripcion=est_descripcion;
+//        this.usu_nombre=usu_nombre;
+//        this.id_proveedor=id_proveedor;
+//        this.ras_social=ras_social;
+//        this.id_sucursal=id_sucursal;
+//        this.suc_descripcion=suc_descripcion;
+//        this.id_compra=id_compra;
+//        this.id_articulo=id_articulo;
+//        this.cantinotaremi=cantinotaremi;
+//        this.precionotaremi=precionotaremi;
+//        this.codigenerico=codigenerico;
+//        this.art_descripcion=art_descripcion;
+//        }
     public NotaRemisionDTO(Integer id_notaremi, String fecha_notaremi, Integer nro_notaremi, String obser_notaremi,
-            String est_descripcion,  Integer id_usuario, String usu_nombre, Integer id_proveedor, String ras_social,
-            Integer id_sucursal, String suc_descripcion, Integer id_compra, Integer id_articulo,  Integer cantinotaremi,
-            Integer precionotaremi, String codigenerico, String art_descripcion) {
-        this.id_notaremi=id_notaremi;
-        this.fecha_notaremi=fecha_notaremi;
-        this.nro_notaremi=nro_notaremi;
-        this.obser_notaremi=obser_notaremi;
-        this.est_descripcion=est_descripcion;
-        this.usu_nombre=usu_nombre;
-        this.id_proveedor=id_proveedor;
-        this.ras_social=ras_social;
-        this.id_sucursal=id_sucursal;
-        this.suc_descripcion=suc_descripcion;
-        this.id_compra=id_compra;
-        this.id_articulo=id_articulo;
-        this.cantinotaremi=cantinotaremi;
-        this.precionotaremi=precionotaremi;
-        this.codigenerico=codigenerico;
-        this.art_descripcion=art_descripcion;
-        }
+            String est_descripcion, String usu_nombre, Integer co_nrofact) {
+        this.id_notaremi = id_notaremi;
+        this.fecha_notaremi = fecha_notaremi;
+        this.nro_notaremi = nro_notaremi;
+        this.obser_notaremi = obser_notaremi;
+        this.est_descripcion = est_descripcion;
+        this.usu_nombre = usu_nombre;
+        this.co_nrofact = co_nrofact;
 
-    public NotaRemisionDTO(Integer id_notaremi, String fecha_notaremi, Integer nro_notaremi, String obser_notaremi, 
-            String est_descripcion, String usu_nombre, String ras_social, String suc_descripcion, Integer co_nrofact) {
-        this.id_notaremi=id_notaremi;
-        this.fecha_notaremi=fecha_notaremi;
-        this.nro_notaremi=nro_notaremi;
-        this.obser_notaremi=obser_notaremi;
-        this.est_descripcion=est_descripcion;
-        this.ras_social=ras_social;
-        this.est_descripcion=est_descripcion;
-        this.suc_descripcion=suc_descripcion;
-        this.co_nrofact=co_nrofact;
-               
     }
 
     public NotaRemisionDTO(Integer id_compra, Integer co_nrofact,
             String ras_social, String suc_descripcion, String usu_nombre, String est_descripcion) {
-       this.id_compra=id_compra;
-       this.co_nrofact=co_nrofact;
-       this.ras_social=ras_social;
-       this.suc_descripcion=suc_descripcion;
-       this.usu_nombre=usu_nombre;
-       this.est_descripcion=est_descripcion;
+        this.id_compra = id_compra;
+        this.co_nrofact = co_nrofact;
+        this.ras_social = ras_social;
+        this.suc_descripcion = suc_descripcion;
+        this.usu_nombre = usu_nombre;
+        this.est_descripcion = est_descripcion;
     }
 
-    public NotaRemisionDTO(Integer id_compra, Integer co_nrofact, Integer id_proveedor,
-            String ras_social, Integer id_sucursal, String suc_descripcion, Integer id_usuario,
-            String usu_nombre, String est_descripcion,  Integer id_articulo,
-            Integer cantidad_detcomp, Integer precio_detcomp, String codigenerico, String art_descripcion) {
-        this.id_compra=id_compra;
-        this.co_nrofact=co_nrofact;
-        this.id_proveedor=id_proveedor;
-        this.ras_social=ras_social;
-        this.id_sucursal=id_sucursal;
-        this.suc_descripcion=suc_descripcion;
-        this.id_usuario=id_usuario;
-        this.usu_nombre=usu_nombre;
-        this.id_articulo=id_articulo;
-        this.cantidad_detcomp=cantidad_detcomp;
-        this.precio_detcomp=precio_detcomp;
-        this.codigenerico=codigenerico;
-        this.art_descripcion=art_descripcion;
-         }
+    public NotaRemisionDTO(Integer id_compra, Integer co_nrofact,
+            Integer id_articulo,
+            Integer cantidad_detcomp, Integer precio_detcomp, String codigenerico,Integer nrofact, Integer id_estado,String art_descripcion) {
+        this.id_compra = id_compra;
+        this.co_nrofact = co_nrofact;
+        this.id_articulo = id_articulo;
+        this.cantidad_detcomp = cantidad_detcomp;
+        this.precio_detcomp = precio_detcomp;
+        this.codigenerico = codigenerico;
+        this.nrofact = nrofact;
+        this.id_estado = id_estado;
+        this.art_descripcion = art_descripcion;
+    }
 
     public Integer getId_notaremi() {
         return id_notaremi;
@@ -322,6 +325,8 @@ public class NotaRemisionDTO {
     public void setCodigenerico(String codigenerico) {
         this.codigenerico = codigenerico;
     }
+
+    public NotaRemisionDTO() {
     }
 
-
+}

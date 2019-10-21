@@ -184,14 +184,15 @@ public class presupuestoDAOIMPL implements presupuestoDAO {
         try {
             sintaxiSql = null;
             conexion = new Conexion();
-            sintaxiSql = "INSERT INTO detpresuompras(id_articulo,cantidad,preciounitario,id_presucompra) \n"
+            sintaxiSql = "INSERT INTO detpresuompras(id_articulo,cantidad,preciounitario,id_presucompra,id_impuesto) \n"
                     + "             VALUES (?,?,?,\n"
-                    + "             ?);";
+                    + "             ?,?);";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setObject(1, Dto.getId_articulo());
             preparedStatement.setObject(2, Dto.getCantidad());
             preparedStatement.setObject(3, Dto.getPreciounitario());
             preparedStatement.setObject(4, Dto.getId_presucompra());
+            preparedStatement.setObject(5, Dto.getId_impuesto());
             filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {
 
@@ -224,7 +225,7 @@ public class presupuestoDAOIMPL implements presupuestoDAO {
             sintaxiSql = "SELECT p.id_presucompra,pc.id_pedidocompra, p.fecha::date, p.id_estado, p.id_usuario,\n"
                     + "                     p.id_proveedor, (v.ras_social) as proveedor, p.id_deposito,\n"
                     + "                     (d.dep_descripcion)as deposito,\n"
-                    + "                           p.idtipomoneda, (m.descripcion) as moneda,dp.id_articulo,\n"
+                    + "                           p.idtipomoneda, (m.descripcion) as moneda,dp.id_impuesto, dp.id_articulo,\n"
                     + "                    (a.art_descripcion) as articulo, dp.cantidad, dp.preciounitario,dp.iddetpresuompras  \n"
                     + "                     FROM presupuestocompra p\n"
                     + "                     inner join pedidoscompras pc on p.id_pedidocompra=pc.id_pedidocompra\n"
@@ -249,6 +250,7 @@ public class presupuestoDAOIMPL implements presupuestoDAO {
                         rs.getString("articulo"),
                         rs.getInt("preciounitario"),
                         rs.getInt("iddetpresuompras"),
+                        rs.getInt("id_impuesto"),
                         rs.getInt("cantidad")));
 
             }

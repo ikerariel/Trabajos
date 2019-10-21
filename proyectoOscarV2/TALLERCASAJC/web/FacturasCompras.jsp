@@ -52,8 +52,8 @@
             <form class="form-horizontal"  id="defaultForm">
 
                 <div class="col-md-9" id="botonesFacturasCompras">
-                    <a id="btnNuevo" href="#ventanaFacturasCompras" class="btn btn-lg btn-success" style=" font-weight: bold"   title="Nuevo Factura Compras" data-toggle="modal"
-                       onclick="getcodigoCompras(); fechaactualCompras()">Nuevo </a>
+                    <a id="btnNuevoCompras" href="#ventanaFacturasCompras" class="btn btn-lg btn-success" style=" font-weight: bold"   title="Nuevo Factura Compras" data-toggle="modal"
+                       onclick="">Nuevo </a>
                     <a id="btnModificar" class="btn btn-lg btn-info" style=" font-weight: bold" title="Modificar Factuta Compras" data-toggle="modal" onclick="recuperarCompra()">Recuperar </a>
                     <a id="btnAnular" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Anular Factura">Anular*</a>
                     <a id="btnConfirmar" class="btn btn-lg btn-warning glyphicon glyphicon-ok" style=" font-weight: bold" title="Confirmar Factura Compras" onclick=></a>
@@ -280,8 +280,8 @@
                                             <th class="">PRECIO</th>
                                             <th class="">CANTIDAD</th>
                                             <th class="">SUB TOTAL</th>
-                                            <th class=""></th>
-                                             <th style="display: none"></th>
+                                            <th class="" style="display: none"></th>
+                                             <th>Opcion</th>
                                         </tr>
                                     </thead>
                                     <tbody id="table_deta" style="font-weight: bold;font-size: 10pt">

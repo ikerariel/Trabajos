@@ -72,6 +72,7 @@ public class OrdenComprascontrol extends HttpServlet {
                 ORCOMdto.setId_articulo(Integer.parseInt(request.getParameter("idartiD")));
                 ORCOMdto.setCantidad_detorden(Integer.parseInt(request.getParameter("cantiD")));
                 ORCOMdto.setPrecio_detorden(Integer.parseInt(request.getParameter("precioD")));
+                ORCOMdto.setId_impuesto(Integer.parseInt(request.getParameter("impuD")));
                 if (ORCOMDdao.insertarDetOrdenCompras(ORCOMdto)) {
                     out.println("Exitoso");
                 }

@@ -24,6 +24,7 @@ public class presupuestoDTO {
     Integer cod;
     Integer id_pedidocompra;
     Integer iddetpresuompras;
+    Integer id_impuesto;
     String descrip;
     String estado;
     String usuario;
@@ -31,6 +32,14 @@ public class presupuestoDTO {
     String articulo;
     String moneda;
     String deposito;
+
+    public Integer getId_impuesto() {
+        return id_impuesto;
+    }
+
+    public void setId_impuesto(Integer id_impuesto) {
+        this.id_impuesto = id_impuesto;
+    }
 
     public Integer getId_pedidocompra() {
         return id_pedidocompra;
@@ -48,7 +57,7 @@ public class presupuestoDTO {
         this.iddetpresuompras = iddetpresuompras;
     }
 
-    public presupuestoDTO(Integer id_presucompra, Integer id_pedidocompra, String fecha,String proveedor, Integer id_deposito,String deposito,String moneda, Integer id_articulo, String articulo,  Integer preciounitario,Integer iddetpresuompras, Integer cantidad) {
+    public presupuestoDTO(Integer id_presucompra, Integer id_pedidocompra, String fecha,String proveedor, Integer id_deposito,String deposito,String moneda, Integer id_articulo, String articulo,  Integer preciounitario,Integer iddetpresuompras,Integer id_impuesto, Integer cantidad) {
         this.id_presucompra = id_presucompra;
         this.id_pedidocompra = id_pedidocompra;
         this.fecha = fecha;
@@ -60,6 +69,7 @@ public class presupuestoDTO {
         this.articulo = articulo;
         this.moneda = moneda;
         this.deposito = deposito;
+        this.id_impuesto = id_impuesto;
         this.iddetpresuompras = iddetpresuompras;
     }
 

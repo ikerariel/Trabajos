@@ -13,7 +13,7 @@ import ModelDTO.FacturasComprasdto;
  */
 public interface FacturasComprasdao {
 
-    Integer getUltimoCodigoCompras();
+    String getUltimoCodigoCompras();
 
     String ListarEstadosCompras2();
 

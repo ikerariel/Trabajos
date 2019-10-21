@@ -585,7 +585,8 @@ function  insertarDetalleArticuloOrd() {
             "codigoD": $('#codigo').val(),
             "idartiD": $(this).find("td").eq(0).html(),
             "precioD": $(this).find("td").eq(2).html(),
-            "cantiD": $(this).find("td").eq(3).html()
+            "cantiD": $(this).find("td").eq(3).html(),
+            "impuD": $(this).find("td").eq(5).html()
         };
 
         $.ajax({
@@ -868,6 +869,7 @@ function recuperarPresupuestoDetalle() {
                                     <td>" + value.preciounitario + "</td>\n\
                                     <td>" + value.cantidad + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
+                                    <td style=display:none>" + value.id_impuesto + "</td>\n\
                                     <td><button type=button title='Quitar el registro de la lista' \n\
             style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + vindex + "\').remove(); calmonto(4);\">\n\
             <span class='glyphicon glyphicon-remove'></span></button></td>\n\
@@ -1053,6 +1055,7 @@ function traerDetalleOrdenCompra() {
                                     <td>" + value.precio_detorden + "</td>\n\
                                     <td>" + value.cantidad_detorden + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
+                                    <td style=display:none>" + value.id_impuesto + "</td>\n\
                                     <td><button type=button title='Quitar el registro de la lista' \n\
             style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + indexordenV + "\').remove();calmonto(4);\">\n\
             <span class='glyphicon glyphicon-remove'></span></button></td></tr>");

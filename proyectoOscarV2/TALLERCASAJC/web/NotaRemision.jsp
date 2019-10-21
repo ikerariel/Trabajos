@@ -7,6 +7,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+           <%
+
+        HttpSession sessionActivaUser = request.getSession();
+        if (sessionActivaUser.getAttribute("user") == null) {
+            response.sendRedirect("/TALLERCASAJC/acceso.jsp");
+        }
+
+    %>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
        <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -27,6 +35,7 @@
         <script src="Recursos/js/jquery.backstretch.min.js"></script>
         <script src="Recursos/js/ImagenFondo.js"></script> 
         <script src="validador/NotaRemisionvalidad.js"></script>  
+        <script src="validador/genericoJS.js"></script>  
         <title>NOTA DE REMISION</title>
 
         <style>
@@ -37,13 +46,14 @@
         </style> 
     </head>
     <body>
+         <%@ include file="viwmenu.jsp"%> 
         <section>
             <form class="form-horizontal"  id="defaultForm">
 
                 <div class="col-md-9" id="botonesNotaRemision">
                     <a id="btnNuevoNR" href="#ventanaNotaRemision" class="btn btn-lg btn-success" style=" font-weight: bold"   title="Nuevo Nota Remision" data-toggle="modal"
-                       onclick="getcodigoRemision(); fechaactualRemision(); MostrarUsuariosRemision(); MostrarSucursalesRemision()">Nuevo </a>
-                    <a id="btnModificarNR" class="btn btn-lg btn-info" style=" font-weight: bold" title="Modificar Nota Remision" data-toggle="modal" onclick="recuperarNotaRemision()">Recuperar </a>
+                       onclick="getcodigoRemision(); fechaactualRemision()">Nuevo </a>
+                    <a id="btnModificarNR" class="btn btn-lg btn-info" style=" font-weight: bold" title="Modificar Nota Remision" data-toggle="modal" onclick="recuperarDetNotaRemision()">Recuperar </a>
                     <a id="btnAnularNR" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Anular Nota Remision">Anular*</a>
                     <a id="btnConfirmarNR" class="btn btn-lg btn-warning glyphicon glyphicon-ok" style=" font-weight: bold" title="Confirmar Nota Remision" onclick=></a>
                     <a id="btnRevertirNR" class="btn btn-lg btn-danger glyphicon glyphicon-minus-sign" style=" font-weight: bold" title="Revertir Confirmacion Nota Remision" onclick=""></a>
@@ -82,14 +92,12 @@
                                 <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
                                 <thead>
                                     <tr class="alert-dismissable" >
-                                        <th class="alert-success">CODIGO</th>
-                                        <th class="alert-info">FECHA</th>
-                                        <th class="alert-success">REMISION NRO</th>
-                                        <th class="alert-danger">OBSERVACION</th>
-                                        <th class="alert-success">PROVEEDOR</th>
-                                        <th class="alert-success">SUCURSAL</th>
-                                        <th class="alert-info">USUARIO</th>
-                                        <th class="alert-info">ESTADO</th>
+                                        <th class="">CODIGO</th>
+                                        <th class="">FECHA</th>
+                                        <th class="">REMISION NRO</th>
+                                        <th class="">OBSERVACION</th>
+                                        <th class="">USUARIO</th>
+                                        <th class="">ESTADO</th>
 
                                     </tr>
                                 </thead>
@@ -110,8 +118,8 @@
                     <!--HEADER DE LA VENTANA//////////////////////////////////////////////////////////////////////--->
 
                     <div class="modal-header" >
-                        <a class="btn btn-lg btn-primary col-md-1"  id="btnGuardarNR" title="" onclick="InsertarNotaRemision()" >Guardar</a>
-                        <a class="btn btn-lg btn-success col-md-1"  id="btnGuardarModificado" title="" onclick="ModificarDetFacturasComprasRemision()" >Guardar</a>
+                        <a class="btn btn-lg btn-primary col-md-1" style="display: none"  id="btnguardarRemisión" title="" onclick="InsertarNotaRemision()" >Guardar</a>
+                        <a class="btn btn-lg btn-success col-md-1" style="display: none" id="btnmodificarRemision" title="" onclick="ModificarDetFacturasComprasRemision()" >Guardar</a>
                         <a class="close  btn btn-lg btn-danger glyphicon glyphicon-off" data-dismiss="modal" aria-hidden="true" title="Salir"></a>
                     </div>
 
@@ -124,7 +132,7 @@
                             <div class="form-horizontal">
                                 <div class="form-group">
 
-                                    <label class="col-md-1 control-label">Id</label>  
+                                    <label class="col-md-1 control-label">Codigo</label>  
                                     <div class="col-md-2">
                                         <input disabled="" id="codigoNRemision" style="text-transform: uppercase; font-weight: bold; font-size: 12pt" 
                                                name="codigo" type="text" placeholder="Codigo" class="form-control input-sm alert-danger">
@@ -149,31 +157,20 @@
                             </div>
                             <div class="form-horizontal">
                                 <div class="form-group">
-                                    <label class="col-md-1 control-label">Usuario</label>  
-                                    <div class="col-md-2">
-                                        <input disabled id="_usuario_Nre" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"
-                                               type="text" placeholder="Ingrese Usuario" class="form-control input-sm alert-danger">
-                                    </div>
-
-                                    <label class="col-md-1 control-label">Proveedores</label>  
-                                    <div class="col-md-3">
-                                        <input id="_proveedor_Nre" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" autofocus=""
-                                               type="text" placeholder="Ingrese Proveedor" class="form-control input-sm alert-danger" onclick="abrirproveedoresRemision()">
-                                    </div>
-
-
-                                    <label class="col-md-1 control-label">Facturas Compras</label>  
+                                    <label class="col-md-2 control-label">Nro. Factura</label>  
                                     <div class="col-md-3">
                                         <input id="_Idfactcompra_Nre" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" 
-                                               type="text" placeholder="Ingrese Factuta Compra" class="form-control input-sm alert-danger" 
-                                               onkeyup="ValidacionesSoloNumeros()" onchange="ValidacionesSoloNumeros()" onclick="AbrirFacturasComprasRemision()"
+                                               type="text" placeholder="Ingrese Factuta Compra" class="form-control" 
+                                             onclick="AbrirFacturasComprasRemision()"
                                                onkeydown="
                                                        if (event.keyCode === 13) {
                                                            RecuperarDetFacturasComprasRemision();
                                                        }">
+                                      <input style="display: none" class="form-control" id="idfactura" type="text">
                                     </div>
+                                     <label class="col-md-2 control-label">Nro. Remisión</label>  
                                     <div class="col-md-2">
-                                        <input id="_Idproveedor_Nre" style="visibility: hidden;" type="text">
+                                        <input class="form-control" id="nroremision" type="text">
                                     </div>
 
                                     <div class="col-md-1">
@@ -183,22 +180,10 @@
                             </div>
                             <div class="form-horizontal">
                                 <div class="form-group">
-
-                                    <label class="col-md-1 control-label">Sucursales</label>  
-                                    <div class="col-md-2">
-                                        <input disabled id="_sucursal_Nre" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"
-                                               type="text" placeholder="Ingrese Sucursal" class="form-control input-sm alert-danger">
-                                    </div>
-
-                                    <label class="col-md-1 control-label">N.Remision</label>  
-                                    <div class="col-md-3">
-                                        <input id="_nro_Nre" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" 
-                                               type="text" placeholder="Ingrese Nro de Remision" class="form-control input-sm alert-danger" onclick="abrirproveedoresRemision()">
-                                    </div>
                                     
-                                    <label class="col-md-1 control-label">Obs.*</label>  
-                                    <div class="col-md-2">
-                                        <textarea maxlength="98" id="_obse_Nre" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"  class="form-control input-sm" required=""  autofocus onkeydown=""></textarea>
+                                    <label class="col-md-2 control-label">Obervación.*</label>  
+                                    <div class="col-md-10">
+                                        <input maxlength="98" id="_obse_Nre" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"  class="form-control input-sm" required=""  autofocus onkeydown="">
                                     </div>
 
 
@@ -259,7 +244,6 @@
                                     <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
                                     <thead>
                                         <tr class="alert-dismissable" >
-                                            <th style="display: none"></th>
                                             <th class="alert-info">ID</th>
                                             <th class="alert-info">DESCRIPCION</th>
                                             <th class="alert-info">PRECIO</th>

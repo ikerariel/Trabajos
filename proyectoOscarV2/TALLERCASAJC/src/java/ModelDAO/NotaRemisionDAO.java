@@ -30,6 +30,7 @@ public interface NotaRemisionDAO {
     String ListarArticulosNotaRemision8();
 
     boolean insertarCabeceraNotaRemision9(NotaRemisionDTO dto);
+    boolean deleteNR(NotaRemisionDTO dto);
 
     boolean modificarCabeceraNotaRemision10(NotaRemisionDTO dto);
 

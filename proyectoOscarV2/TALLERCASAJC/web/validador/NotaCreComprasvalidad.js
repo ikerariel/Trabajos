@@ -338,25 +338,25 @@ function seleccionNotaCreCompras() {
 }//----------------------------
 
 function abrirnuevoNotaCreCompras() {
-    $('#_articulos').val(null);
-    $('#descriparticulo').val(null);
-    $('#precioarticulo').val(null);
-    $('#cantarticulo').val(null);
-    $('#totalarticulos').val(null);
-    
-    $('#codigoNrofacturasCompras').val(null);
-     $("#codigoNrofacturasCompras").prop('disabled', false);
-     
-    $('#mitabladetallenotacrecompras').find('tbody').find('tr').empty();
-    $('#notacrecompras').show();
-    $('#btntmodificarnotacrecompras').hide();
-    $('#ventananotacrecompras').modal('show');
-    var num;
-    $('#mitablanotacrecompras').each(function () {
-        num = parseInt($(this).find("td").eq(0).html());
-
-    });
-    $('#codigonotacrecompras').val(parseInt(num) + 1);
+//    $('#_articulos').val(null);
+//    $('#descriparticulo').val(null);
+//    $('#precioarticulo').val(null);
+//    $('#cantarticulo').val(null);
+//    $('#totalarticulos').val(null);
+//    
+//    $('#codigoNrofacturasCompras').val(null);
+//     $("#codigoNrofacturasCompras").prop('disabled', false);
+//     
+//    $('#mitabladetallenotacrecompras').find('tbody').find('tr').empty();
+//    $('#notacrecompras').show();
+//    $('#btntmodificarnotacrecompras').hide();
+    $('#ventanaNC').modal('show');
+//    var num;
+//    $('#mitabladetalleNC').each(function () {
+//        num = parseInt($(this).find("td").eq(0).html());
+//
+//    });
+//    $('#codigoNC').val(parseInt(num) + 1);
 
 }
 

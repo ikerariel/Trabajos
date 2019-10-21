@@ -1,17 +1,9 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
 $(document).ready(function () {
-    $(":text").val("");
-    cambioEstadosNotaRemision();
+    cambioEstadosNRemision();
     MostrarNotaRemision();
-    MostrarArticulosRemision();
-    MostrarModalProveedoresRemision();
-    MostrarFacrurasComprasRemision();
+//    MostrarArticulosRemision();
+//    MostrarModalProveedoresRemision();
+//    MostrarFacrurasComprasRemision();
 });
 
 //FUNCIONES DE TRANSACCIONES ----------------------------------------------------------------------------
@@ -34,7 +26,8 @@ function crearJSON(id) {
 }
 
 function getcodigoRemision() {
-//    vaciarCamposNuevo();
+    $('#btnguardarRemisión').show();
+    $('#btnmodificarRemision').hide();
 //    controlBotonesNuevo();
     $("#_proveedor_Nre").val(null);
     crearJSON(1);
@@ -147,6 +140,7 @@ function MostrarFacturasComprasRemision() {
     });
 }
 function RecuperarDetFacturasComprasRemision() {
+    $('#miTablaDetNotaRemision').find('tbody').find('tr').empty();
     datosDetalleJSON = {
         "opcion": 6,
         "id_FacturacompraC": $('#_Idfactcompra_Nre').val()
@@ -157,26 +151,46 @@ function RecuperarDetFacturasComprasRemision() {
         data: datosDetalleJSON,
         cache: false,
         success: function (resp) {
-            if (JSON.stringify(resp) != '[]') {
-                //alert(resp);
-                $.each(resp, function (indice, value) {
+            
+              if (JSON.stringify(resp) != '[]') {
+                var nro = JSON.stringify(resp);
+                var nrof = JSON.parse(nro);
+                var nrofac = nrof[0].nrofact;
+                if (parseInt(nrofac) > 0 ) {
+                    alert('La factura  ya fue procesada..');
+                } else {
+                    var v = JSON.stringify(resp);
+                    var vv = JSON.parse(v);
+                    var estado = vv[0].id_estado;
+                    if (parseInt(estado) === 1) {
+                        $.each(resp, function (indice, value) {
+                            $('#idfactura').val(value.id_compra);
                     subtotal = value.precio_detcomp * value.cantidad_detcomp;
+                    tindex++;
                     $('#miTablaDetNotaRemision').append("<tr id=\'prod" + tindex + "\'>\
-                 <td style=display:none>" + value.id_articulo + "</td>\n\
-                                    <td>" + value.codigenerico + "</td>\n\
+                                  <td>" + value.id_articulo + "</td>\n\
                                     <td>" + value.art_descripcion + "</td>\n\
+                                     <td>" + value.precio_detcomp + "</td>\n\
                                     <td>" + value.cantidad_detcomp + "</td>\n\
-                                    <td>" + value.precio_detcomp + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
-                                    <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
-                                    \" src='../Recursos/img/delete.png' width=14 height=14/></td></tr>");
+                                    <td><button type=button title='Quitar el registro de la lista' \n\
+            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + tindex + "\').remove();calcularmonto();\">\n\
+            <span class='glyphicon glyphicon-remove'></span></button></td></tr>");
 
-                });
+                        });
+                     calcularmonto();
+                    } else {
+                        alert('Presupuesto Pendiente.!!');
+                    }
+
+                }
+
+
+
             } else {
                 alert('Datos no encontrados..');
-                $("#_sucursal_Nre").focus();
             }
-            calcularmonto();
+        
         }
     });
 }
@@ -229,23 +243,19 @@ function  InsertarNotaRemision() {
         alert('No hay detalle que guardar..!');
         $("#codgenericiArti").focus();
     } else {
-        if ($('#_proveedor_Nre').val() === "") {
+        if ($('#_Idfactcompra_Nre').val() === "" || $('#nroremision').val() === "" 
+                || $('#_obse_Nre').val() === "") {
             alert('Debe ingresar todos los datos requeridos para la consulta..');
-            $("#codgenericiArti").focus();
         } else {
             var opcion = confirm('Desea Guardar Nota Remision..?');
             if (opcion === true) {
                 datosCabeceraJSON = {
                     "opcion": 9,
-                    "Nre_fecha": $('#_fecha_Nre').val(),
-                    "Nre_nro": $('#_nro_Nre').val(),
+                    "Nre_nro": $('#nroremision').val(),
                     "Nre_obse": $('#_obse_Nre').val(),
+                    "Nre_factcompra": $('#idfactura').val(),
+                    "Nre_usuario": $('#idusersession_v').val()
 
-                    "Nre_estado": 3,
-                    "Nre_usuario": $('#_Idusuario_Nre').val(),
-                    "Nre_proveedor": $('#_Idproveedor_Nre').val(),
-                    "Nre_sucursal": $('#_Idsucursal_Nre').val(),
-                    "Nre_factcompra": $('#_Idfactcompra_Nre').val()
                 };
                 $.ajax({
                     url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
@@ -271,10 +281,10 @@ function  InsertarDetNotaRemision() {
     $('#miTablaDetNotaRemision').find('tbody').find('tr').each(function () {
         datosDetalleJSON = {
             "opcion": 10,
-            "codigoRD": $('#codigo').val(),
+            "codigoRD": $('#codigoNRemision').val(),
             "idartiRD": $(this).find("td").eq(0).html(),
-            "precioRD": $(this).find("td").eq(3).html(),
-            "cantiRD": $(this).find("td").eq(4).html()
+            "precioRD": $(this).find("td").eq(2).html(),
+            "cantiRD": $(this).find("td").eq(3).html()
         };
         $.ajax({
             url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
@@ -287,6 +297,23 @@ function  InsertarDetNotaRemision() {
             error: function () {
             }
         });
+    });
+}
+function  deleteNRemision() {
+    datosDetalleJSON = {
+        "opcion": 15,
+        "codNR": $('#codigoNRemision').val()
+    };
+    $.ajax({
+        url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
+        type: 'POST',
+        data: datosDetalleJSON,
+        cache: false,
+        dataType: 'text',
+        success: function () {
+        },
+        error: function () {
+        }
     });
 }
 function MostrarNotaRemision() {
@@ -303,10 +330,8 @@ function MostrarNotaRemision() {
                         "<td>" + value.fecha_notaremi + "</td>" +
                         "<td>" + value.nro_notaremi + "</td>" +
                         "<td>" + value.obser_notaremi + "</td>" +
-                        "<td>" + value.est_descripcion + "</td>" +
                         "<td>" + value.usu_nombre + "</td>" +
-                        "<td>" + value.ras_social + "</td>" +
-                        "<td>" + value.suc_descripcion + "</td>")));
+                        "<td>" + value.est_descripcion + "</td>")));
             });
         }
     });
@@ -320,7 +345,7 @@ function cambioEstadosNRemision() {
             if (btn === 'btnAnularNR') {
                 if ($('#estadoRemisionC').val() === "") {
                     alert('Seleccione una Remision compras.!');
-                } else if ($('#estadoRemisionC').val() === 'CONFIRMADO' || $('#estadoRemisionC').val() === 'ANULADO') {
+                } else if ($('#estadoRemisionC').val() === 'CONFIRMADO') {
                     alert('La NotaRemision ya fue confirmado o ya esta Anulada..');
                 } else if ($('#estadoRemisionC').val() === 'PENDIENTE') {
                     var opcion = confirm('Desea Anular la nota remision.??');
@@ -328,7 +353,7 @@ function cambioEstadosNRemision() {
                         datoJson = {
                             "opcion": 12,
                             "CambioEstadoNR": 2,
-                            "NotaReCNro": $('#nroNotaReC').val()
+                            "NotaReCNro": $('#_nro_NreC').val()
                         };
                         confirmarNotaRemision();
                         alert('Nota Remision Anulado con éxito.!!');
@@ -337,7 +362,7 @@ function cambioEstadosNRemision() {
             } else if (btn === 'btnConfirmarNR') {
                 if ($('#estadoRemisionC').val() === "") {
                     alert('Seleccione una nota remison.!');
-                } else if ($('#estadoRemisionC').val() === 'CONFIRMADO' || $('#estadoRemisionC').val() === 'ANULADO') {
+                } else if ($('#estadoRemisionC').val() === 'CONFIRMADO') {
                     alert('La nota remision ya fué Confirmado o esta Anulada..');
                 } else if ($('#estadoRemisionC').val() === 'PENDIENTE') {
                     var opcion = confirm('Desea Confirmar la nota remision.??');
@@ -345,7 +370,7 @@ function cambioEstadosNRemision() {
                         datoJson = {
                             "opcion": 12,
                             "CambioEstadoNR": 1,
-                            "NotaReCNro": $('#nroNotaReC').val()
+                            "NotaReCNro": $('#_nro_NreC').val()
                         };
                         confirmarNotaRemision();
                         alert('Nota Remision Confirmado con éxito.!!');
@@ -354,7 +379,7 @@ function cambioEstadosNRemision() {
             } else if (btn === 'btnRevertirNR') {
                 if ($('#estadoRemisionC').val() === "") {
                     alert('Seleccione una nota remision de Compras.!');
-                } else if ($('#estadoRemisionC').val() === 'PENDIENTE' || $('#estadoRemisionC').val() === 'ANULADO') {
+                } else if ($('#estadoRemisionC').val() === 'PENDIENTE') {
                     alert('La nota remision no se puede Revertir..');
                 } else if ($('#estadoRemisionC').val() === 'CONFIRMADO') {
                     var opcion = confirm('Desea Revertir la nota remision.??');
@@ -362,7 +387,7 @@ function cambioEstadosNRemision() {
                         datoJson = {
                             "opcion": 12,
                             "CambioEstadoNR": 3,
-                            "NotaReCNro": $('#nroNotaReC').val()
+                            "NotaReCNro": $('#_nro_NreC').val()
                         };
                         confirmarNotaRemision();
                         alert('La nota remision ha vuelto a su estado de Origen.!!');
@@ -397,21 +422,6 @@ function confirmarNotaRemision() {
     });
 }
 
-function confirmarNotaRemision() {
-    if ($('#estadoRemisionC').val() === "") {
-        alert('Seleccione una nota remision.!');
-    } else {
-        if ($('#estadoRemisionC').val() === 'PENDIENTE') {
-            var opcion = confirm('Desea confirmar la nota remision.??');
-            if (opcion === true) {
-            }
-        } else {
-            if ($('#estadoRemisionC').val() === 'CONFIRMADO') {
-                alert('La Nota Remision ya fue confirmado..');
-            }
-        }
-    }
-}
 
 function controlBotonesNotaRemision() {
     v = "";
@@ -479,55 +489,53 @@ function recuperarNotaRemision() {
         $("#_Idfactcompra_Nre").prop('disabled', false);
     }
 }
-
+var ind=0;
 function recuperarDetNotaRemision() {
+    if($('#estadoRemisionC').val() === 'PENDIENTE'){
+        $('#btnmodificarRemision').show();
+        $('#btnguardarRemisión').hide();
+        $('#ventanaNotaRemision').modal('show');
+  
     $('#miTablaDetNotaRemision').find('tbody').find('tr').empty();
-    datosDetalleJSON = {
+    dsatos = {
         "opcion": 13,
-        "NroRemisionC": $('#nroNotaRemiC').val()
+        "nroNotaRe": $('#_nro_NreC').val()
     };
     $.ajax({
         url: "http://localhost:8084/TALLERCASAJC/NotaRemisionServlet",
         type: 'POST',
-        data: datosDetalleJSON,
+        data: dsatos,
         cache: false,
         success: function (resp) {
             if (JSON.stringify(resp) != '[]') {
-//                    alert(resp);
                 $.each(resp, function (indice, value) {
-                    ///RECUPERA LA CABECERA/////////
+                    $("#codigoNRemision").val(value.id_notaremi);
                     $("#_fecha_Nre").val(value.fecha_notaremi);
-                    $("#_nro_Nre").val(value.nro_notaremi);
+                    $("#_Idfactcompra_Nre").val(value.co_nrofact);
+                    $("#idfactura").val(value.id_compra);
+                    $("#nroremision").val(value.nro_notaremi);
                     $("#_obse_Nre").val(value.obser_notaremi);
 
-                    $("#_estado_Nre").val(value.est_descripcion);
-                    $("#_Idusuario_Nre").val(value.id_usuario);
-                    $("#_usuario_Nre").val(value.usu_nombre);
-                    $("#_Idproveedor_Nre").val(value.id_proveedor);
-                    $("#_proveedor_Nre").val(value.ras_social);
-                    $("#_Idsucursal_Nre").val(value.id_sucursal);
-                    $("#_sucursal_Nre").val(value.suc_descripcion);
-                    $("#_Idfactcompra_Nre").val(value.id_compra);
-
                     subtotal = value.precionotaremi * value.cantinotaremi;
-                    $('#miTablaDetNotaRemision').append("<tr id=\'prod" + tindex + "\'>\
-                                    <td style=display:none>" + value.id_articulo + "</td>\n\
-                                    <td>" + value.codigenerico + "</td>\n\
+                    $('#miTablaDetNotaRemision').append("<tr id=\'prod" + ind + "\'>\
+                                    <td>" + value.id_articulo + "</td>\n\
                                     <td>" + value.art_descripcion + "</td>\n\
                                     <td>" + value.precionotaremi + "</td>\n\
                                     <td>" + value.cantinotaremi + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
-                                    <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
-                                    \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
+                                    <td><button type=button title='Quitar el registro de la lista' \n\
+            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + ind + "\').remove();calcularmonto();\">\n\
+            <span class='glyphicon glyphicon-remove'></span></button></td></tr>");
                 });
-                $('#codigo').val($('#nroNotaRemiC').val());
             } else {
                 alert('Datos no encontrados..');
-                $("#nroNotaRemiC").focus();
             }
             calcularmonto();
         }
     });
+     }else{
+        alert('DEBES SELECCIONAR UN REGISTRO O ESTA CONFIRMADO');
+    }
 
 }
 
@@ -655,7 +663,8 @@ function  ModificarDetFacturasComprasRemision() {
         alert('No hay detalle que guardar..!');
         $("#codgenericiArti").focus();
     } else {
-        if ($('#_proveedor_Nre').val() === "") {
+        if ($('#_Idfactcompra_Nre').val() === "" || $('#nroremision').val() === "" 
+                || $('#_obse_Nre').val() === "") {
             alert('Debe ingresar todos los datos requeridos para la consulta..');
             $("#codgenericiArti").focus();
         } else {
@@ -663,15 +672,12 @@ function  ModificarDetFacturasComprasRemision() {
             if (opcion === true) {
                 datosCabeceraJSON = {
                     "opcion": 14,
-                    "Nre_fecha": $('#_fecha_Nre').val(),
-                    "Nre_nro": $('#_nro_Nre').val(),
+                    "Nre_nro": $('#nroremision').val(),
                     "Nre_obse": $('#_obse_Nre').val(),
-                    "Nre_estado": 3,
-                    "Nre_usuario": $('#_Idusuario_Nre').val(),
-                    "Nre_proveedor": $('#_Idproveedor_Nre').val(),
-                    "Nre_sucursal": $('#_Idsucursal_Nre').val(),
-                    "Nre_factcompra": $('#_Idfactcompra_Nre').val(),
-                    "Nre_idnotaremi": $('#codigo').val()
+                    "Nre_usuario": $('#idusersession_v').val(),
+                    "Nre_factcompra": $('#idfactura').val(),
+                    "Nre_notaremi": $('#codigoNRemision').val()
+
                 };
 
                 $.ajax({
@@ -681,9 +687,13 @@ function  ModificarDetFacturasComprasRemision() {
                     cache: false,
                     dataType: 'text',
                     success: function () {
-                        InsertarDetNotaRemision();
-                        alert("Nota Remision guardado correctamente.!!");
-                        window.location.reload();
+                        deleteNRemision();
+                        setTimeout(function () {
+                            InsertarDetNotaRemision();
+                            alert("Nota Remision guardado correctamente.!!");
+                            window.location.reload();
+                        }, 1200);
+
                     },
                     error: function () {
                     }
@@ -707,12 +717,13 @@ function calcularmonto() {
         monto = 0;
         acumu = 0;
         $('#miTablaDetNotaRemision').find('tbody').find('tr').each(function () {
-            monto = parseInt($(this).find("td").eq(5).html());
+            monto = parseInt($(this).find("td").eq(4).html());
             acumu = acumu + monto;
         });
         $('#total').val(acumu);
+        numeroDecimal('total');
         tindex++;
-    }, 1000);
+    }, 1200);
 }
 function updatemonto(valormonto, ind) {
     var monto = $('#total').val();
@@ -778,20 +789,34 @@ function buscadorTablaArticulosRemision() {
     }
 }//---------------
 function CargarArtiRemisionGrilla() {
-    if ($('#codgenericiArti').val() === "") {
-        alert('Falta ingresar el articulo..');
+        var ban = false;
+    if ($('#codArti').val() === "") {
+        alert('DEBES INGRESAR UN ARTICULO');
     } else {
-        var cod = $('#codgenericiArti').val();
+        var cod = $('#codArti').val();
         var codigo;
         $('#miTablaDetNotaRemision').find('tbody').find('tr').each(function () {
-            codigo = $(this).find("td").eq(1).html();
+            codigo = $(this).find("td").eq(0).html();
             if (cod === codigo) {
-                alert('El articulo ya fue cargada, desea sustituirlo?');
-                $(this).find("td").remove();
+                var sms = confirm('Articulo cargado, desea sustituirlo ??');
+                if (sms === true) {
+                    $(this).closest("tr").remove();
+                    ban = true;
+                  agregarFilaArtiRemision();
+                } else {
+                    ban = true;
+                }
+
+            } else {
+
             }
+
         });
-        agregarFilaArtiRemision();
+        if (ban === false) {
+              agregarFilaArtiRemision();
+        }
     }
+
 
 }
 var d = 0;
@@ -803,19 +828,16 @@ function agregarFilaArtiRemision() {
     var v_precio = $('#precioArti').val();
     var v_cant = $('#cantidadArti').val();
     subtotal = v_precio * v_cant;
-    $('#miTablaDetNotaRemision').append("\
-            <tr id=\'prod" + tindex + "\'>\
-            <td style=display:none>" + v_codmaterial + "</td>\n\
-            <td>" + v_codMaterialG + "</td>\n\
+        $('#miTablaDetNotaRemision').append("<tr id=\'prod" + d + "\'>\
+            <td>" + v_codmaterial + "</td>\n\
             <td>" + v_descripcion + "</td>\n\
             <td>" + v_precio + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
-            <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
-            \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
-//    
-//     <td><img onclick=\"$(\'#prod" + tindex + "\').remove();updatemonto( " + subtotal + ", " + tindex + ")\n\
-//                                    \" src='../Recursos/img/delete.png' width=14 height=14/></td>//</tr>");
+            <td><button type=button title='Quitar el registro de la lista' \n\
+            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + d + "\').remove();calcularmonto();\">\n\
+            <span class='glyphicon glyphicon-remove'></span></button></td></tr>");
+   
     calcularmonto();
     $('#codgenericiArti').val(null);
     $('#codgenericiArti').focus;
@@ -828,7 +850,7 @@ function agregarFilaArtiRemision() {
 function seleccionarNotaRemision() {
     $('#miTablaPlanillaRemisionN tr').click(function () {
         $('#_nro_NreC').val($(this).find("td").eq(0).html());
-        $('#estadoRemisionC').val($(this).find("td").eq(7).html()); /*Extrae el valor de la fila seleccionada y lo muestra en el campo
+        $('#estadoRemisionC').val($(this).find("td").eq(5).html()); /*Extrae el valor de la fila seleccionada y lo muestra en el campo
          //         * v_nroPlanilla*/
         var estado = $('#estadoRemisionC').val();
         if (estado === 'PENDIENTE') {
