@@ -103,9 +103,14 @@ public class notaDebitocontrol extends HttpServlet {
                 }
                 break;
             case 9:
-              if (ndDAO.eliminarDetalle(Integer.parseInt(request.getParameter("nroND")))) {
+                if (ndDAO.eliminarDetalle(Integer.parseInt(request.getParameter("nroND")))) {
                     out.println("Exitoso");
                 }
+                break;
+
+            case 10:
+
+               out.println(ndDAO.updateND(Integer.parseInt(request.getParameter("codEstado")), Integer.parseInt(request.getParameter("codND"))));
                 break;
         }
 

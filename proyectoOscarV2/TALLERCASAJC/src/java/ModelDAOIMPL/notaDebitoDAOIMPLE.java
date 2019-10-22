@@ -34,7 +34,7 @@ public class notaDebitoDAOIMPLE implements notaDebitoDAO {
             sintaxiSql = " SELECT n.id_notadecompra, n.fecha::date,\n"
                     + " n.id_estado, e.est_descripcion\n"
                     + " FROM public.notadecompras n\n"
-                    + " inner join estados e on n.id_estado = e.id_estado\n"
+                    + " inner join estados e on n.id_estado = e.id_estado where n.id_estado in(1,3)\n"
                     + " order by id_notadecompra desc ";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             rs = preparedStatement.executeQuery();
