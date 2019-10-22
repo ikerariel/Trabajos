@@ -28,6 +28,7 @@ public class notaDebitoDTO {
     Integer nro_timbradonotadebito;
     String conceptos;
     Integer id_compra;
+    Integer nrofact;
     Integer co_nrofact;
 
     public notaDebitoDTO(Integer id_notadecompra, String fecha, Integer id_estado, String est_descripcion) {
@@ -55,8 +56,10 @@ public class notaDebitoDTO {
 
     }
 
-    public notaDebitoDTO(Integer id_compra, Integer co_nrofact) {
+    public notaDebitoDTO(Integer id_compra, Integer nrofact, Integer id_estado, Integer co_nrofact) {
         this.id_compra = id_compra;
+        this.nrofact = nrofact;
+        this.id_estado = id_estado;
         this.co_nrofact=co_nrofact;
     }
 

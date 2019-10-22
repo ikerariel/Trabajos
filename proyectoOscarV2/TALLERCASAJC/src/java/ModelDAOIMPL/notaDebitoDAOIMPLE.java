@@ -58,13 +58,12 @@ public class notaDebitoDAOIMPLE implements notaDebitoDAO {
             conexion = new Conexion();
             sintaxiSql = "INSERT INTO notadecompras( nro_notadebito, nro_timbradonotadebito, \n"
                     + "id_compra, id_estado, id_usuario)\n"
-                    + "VALUES (?, ?, ?, ?, ?);";
+                    + "VALUES (?, ?, ?, 3, ?);";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setObject(1, Dto.getNro_notadebito());
             preparedStatement.setObject(2, Dto.getNro_timbradonotadebito());
             preparedStatement.setObject(3, Dto.getId_compra());
-            preparedStatement.setObject(4, Dto.getId_estado());
-            preparedStatement.setObject(5, Dto.getIdusuario());
+            preparedStatement.setObject(4, Dto.getIdusuario());
 
             filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {
@@ -204,16 +203,20 @@ public class notaDebitoDAOIMPLE implements notaDebitoDAO {
         try {
             sintaxiSql = null;
             conexion = new Conexion();
-            sintaxiSql = "SELECT id_compra, \n"
-                    + "       co_nrofact\n"
-                    + "  FROM facturascompras\n"
-                    + "  where co_nrofact=?  and id_estado=1";
+            sintaxiSql = "SELECT id_compra,id_estado, co_nrofact,(select n.id_compra from notadecompras n \n"
+                    + "left join facturascompras f on n.id_compra=f.id_compra\n"
+                    + "where f.co_nrofact= ? and n.id_estado in(1,3) ) as nrofact\n"
+                    + " FROM facturascompras\n"
+                    + " where co_nrofact=?  and id_estado in(1,3)";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, facturaNRO);
+            preparedStatement.setInt(2, facturaNRO);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 consultarfactura.add(new notaDebitoDTO(
                         rs.getInt("id_compra"),
+                        rs.getInt("nrofact"),
+                        rs.getInt("id_estado"),
                         rs.getInt("co_nrofact")));
             }
         } catch (SQLException ex) {

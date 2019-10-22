@@ -50,7 +50,6 @@ public class notaDebitocontrol extends HttpServlet {
                 ndDTO.setNro_notadebito(Integer.parseInt(request.getParameter("_nrodebito")));
                 ndDTO.setNro_timbradonotadebito(Integer.parseInt(request.getParameter("_nrotimbradoDebito")));
                 ndDTO.setId_compra(Integer.parseInt(request.getParameter("_codcompra")));
-                ndDTO.setId_estado(Integer.parseInt(request.getParameter("_codestado")));
                 ndDTO.setIdusuario(Integer.parseInt(request.getParameter("_codusuario")));
 
                 if (ndDAO.insertarND(ndDTO)) {

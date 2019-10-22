@@ -49,7 +49,7 @@
                                 <li><a style="display: none" id="m_facturacompra" href="FacturasCompras.jsp">FacturasCompras</a></li>
                                 <li><a style="display: none" id="m_notaremision" href="NotaRemision.jsp">Nota Remision</a></li>
                                 <li><a style="display: none" id="m_notacredito" href="NotaCreCompras.jsp">Nota Creditos</a></li>
-                                <li><a style="display: none" id="m_notadebito" href="FacturasComprasvalidad.jsp">Nota Debitos</a></li>
+                                <li><a style="display: none" id="m_notadebito" href="NotaDebitoCompra.jsp">Nota Debitos</a></li>
                                 <li><a style="display: none" id="m_ajustes"href="Ajustes.jsp">Ajustes</a></li>
                                 
                                

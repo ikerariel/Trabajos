@@ -7,6 +7,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+        <%
+
+        HttpSession sessionActivaUser = request.getSession();
+        if (sessionActivaUser.getAttribute("user") == null) {
+            response.sendRedirect("/TALLERCASAJC/acceso.jsp");
+        }
+
+    %>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="Recursos/css/estilos_1.css">
@@ -35,11 +43,12 @@
         </style> 
     </head>
     <body>
+            <%@ include file="viwmenu.jsp"%>
         <section>
             <form class="form-horizontal"  id="defaultForm">
 
                 <div class="col-md-9" id="botonPedido">
-                    <a id="btnNuevo" href="#ventanaNotaDebito" class="btn btn-lg btn-success" style=" font-weight: bold"  title="Nuevo Pedido" data-toggle="modal" onclick="abrirVen    tana()">Nuevo </a>
+                    <a id="btnNuevo" href="#ventanaNotaDebito" class="btn btn-lg btn-success" style=" font-weight: bold"  title="Nuevo Pedido" data-toggle="modal" onclick="abrirVentana()">Nuevo </a>
                     <a id="btnModificar" class="btn btn-lg btn-info" style=" font-weight: bold" title="Modificar Pedido" data-toggle="modal" onclick="recuperarDetalleND()">Modificar </a>
                     <a id="btnAnular" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Anular Pedido" onclick="anularND(2)">Anular*</a>
                     <a id="btnConfirmar" class="btn btn-lg btn-warning glyphicon glyphicon-ok" style=" font-weight: bold" title="Confirmar Nota de Débito" onclick="actualizarND(1)"></a>
@@ -80,7 +89,7 @@
 
 
                         <div id="scrollPlanilla" class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover table input-lg" id="miTablaNotaDebito" onclick="selectDetalleNd()">
+                            <table class="table table-striped table-bordered table-hover table input-md" id="miTablaNotaDebito" onclick="selectDetalleNr()">
                                 <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
                                 <thead>
                                     <tr class="alert-dismissable" >
@@ -116,16 +125,10 @@
                 <div class="modal-content">
                     <!--HEADER DE LA VENTANA--->
                     <div class="modal-header">
-                        <a class="close  btn btn-lg btn-danger glyphicon glyphicon-off" data-dismiss="modal" aria-hidden="true" title="Salir"></a>
+                              <a class="btn btn-md btn-primary col-lg-1"  id="btnGuardar" title="" onclick="insertarND()" >Guardar*</a>
+                        <a class="btn btn-md btn-success col-lg-1"  id="btnM" title="" onclick="updateCabecera()" >Modificar*</a>
+                        <a class="close  btn btn-md btn-danger glyphicon glyphicon-off" data-dismiss="modal" aria-hidden="true" title="Salir"></a>
                     </div>
-                    <!--CONTENIDO DE LA VENTANA--->
-                    <div class="modal-body">
-                        <a class="btn btn-lg btn-primary col-lg-1"  id="btnGuardar" title="" onclick="insertarNdebito()" >Guardar*</a>
-                        <a class="btn btn-lg btn-success col-lg-1"  id="btnM" title="" onclick="updateCabecera()" >Modificar*</a>
-                    </div>
-                    <br>
-                    <br>
-                    <div class="panel">
                         <div class="panel panel-default">
                             <br>
                             <div class="panel-footer" style="font-weight: bold">Nueva Nota Debito</div>
@@ -180,7 +183,7 @@
                                         <input  id="NDIdUsuario" type="text" style="visibility: hidden;">
                                     </div>
                                     <div class="col-md-1">
-                                        <input  id="idcompraND" type="text" style="visibility:">
+                                        <input  id="idcompraND" type="text" style="visibility: hidden">
                                     </div>
                                 </div>
                             </div>
@@ -189,7 +192,7 @@
 
                                     <label class="col-md-1 control-label">Obs.*</label>  
                                     <div class="col-md-7">
-                                        <textarea maxlength="98" id="observND" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"  class="form-control input-sm" required=""  autofocus onkeydown=""></textarea>
+                                        <input maxlength="98" id="observND" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"  class="form-control input-sm" required=""  autofocus onkeydown="">
                                     </div>
                                     <label class="col-md-1 control-label">Importe.*</label>  
                                     <div class="col-md-2">
@@ -221,7 +224,6 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
                 </div>
             </div> 
         </div>

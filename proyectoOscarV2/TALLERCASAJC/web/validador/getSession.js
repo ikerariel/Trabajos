@@ -119,6 +119,7 @@ function permisos(valor) {
             $('#rst_colores').show();
             $('#rst_tiposervicios').show();
             $('#m_presupuestocompras').show();
+            $('#m_notadebito').show();
             break;
 
 //        case 7:

@@ -2,7 +2,6 @@
 
 $(document).ready(function () {
 
-    $(":text").val("");
     fechaactual();
     allnotasDebitos();
 });
@@ -70,14 +69,11 @@ function allnotasDebitos() {
     });
 }
 
-function  insertarNremision() {
+function  insertarND() {
     var _nfilas = $('#miTablaDetalleND tr').length - 1; // funcion para contar filas de una tabla
     if (parseInt(_nfilas) <= 0) {
         alert('No hay registros para guardar..!!');
     } else {
-//        var notad = $('#NroNotaDebitos').val();
-//        var nrot = $('#NroTimbrados').val();
-
         if ($('#NroNotaDebitos').val() === "" || $('#NroTimbrados').val() === "" || $('#nrofacturaND').val() === "") {
             alert('Algunos datos no fueron cargados correctamente..');
         } else {
@@ -88,8 +84,7 @@ function  insertarNremision() {
                     "_nrodebito": $('#NroNotaDebitos').val(),
                     "_nrotimbradoDebito": $('#NroTimbrados').val(),
                     "_codcompra": $('#idcompraND').val(),
-                    "_codestado": 3,
-                    "_codusuario": 1
+                    "_codusuario":$('#idusersession_v').val()
                 };
 
                 $.ajax({
@@ -99,8 +94,9 @@ function  insertarNremision() {
                     cache: false,
                     dataType: 'text',
                     success: function () {
-
-
+                        setTimeout(function (){
+                              insetarDetalleND(); 
+                        },1200);
                         alert("Registro guardado correctamente.!!");
                     },
                     error: function () {
@@ -111,7 +107,7 @@ function  insertarNremision() {
             } else {
 
             }
-            insetarDetalleND();
+         
         }
     }
 }
@@ -159,8 +155,8 @@ function getcodND() {
 }
 
 function selectDetalleNr() {
-    $('#miTablaNotaRemision tr').click(function () {
-        $('#v_nroNR').val($(this).find("td").eq(0).html());
+    $('#miTablaNotaDebito tr').click(function () {
+        $('#v_nroND').val($(this).find("td").eq(0).html());
         $('#v_estado').val($(this).find("td").eq(2).html());
 
     });
@@ -229,15 +225,29 @@ function consultaFactura() {
         cache: false,
         success: function (resp) {
             if (JSON.stringify(resp) != '[]') {
-                $.each(resp, function (indice, value) {
-                    $('#observND').focus();
-                    $('#idcompraND').val(value.id_compra);
-                    alert('Factura emitida');
-                });
+                var nro = JSON.stringify(resp);
+                var n = JSON.parse(nro);
+                var fac = n[0].nrofact;
+                if (parseInt(fac) > 0) {
+                    alert('La factura  ya fue procesada..');
+                } else {
+                    var v = JSON.stringify(resp);
+                    var vv = JSON.parse(v);
+                    var estado = vv[0].id_estado;
+                    if (parseInt(estado) === 1) {
+                        $.each(resp, function (indice, value) {
+                            $('#observND').focus();
+                            $('#idcompraND').val(value.id_compra);
+
+                        });
+                    } else {
+                        alert('Factura Pendiente.!!');
+                    }
+
+                }
+
             } else {
-                alert('Factura NO emitida..');
-                $('#nrofacturaND').val(null);
-//                    $("#nrosolicitud").focus();
+                alert('Datos no encontrados..');
             }
         }
     });
