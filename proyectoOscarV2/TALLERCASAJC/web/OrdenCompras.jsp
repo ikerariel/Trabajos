@@ -157,12 +157,16 @@
 
                                     <label class="col-md-2 control-label">Nro. Presupuesto</label>  
                                     <div class="col-md-2">
-                                        <input id="nroPresupuesto" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" 
+                                        <input list="listapresupuesto" id="nroPresupuesto" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" 
                                                type="text" placeholder="Ingrese Pedidos" class="form-control input-sm " 
                                                onkeydown="
                                                        if (event.keyCode === 13) {
                                                            recuperarPresupuestoDetalle();
                                                        }">
+                                                                                             <datalist id="listapresupuesto">
+                                                                                                                              
+                                        </datalist>
+                                        <input id="vidimpuesto" style="display: none">
                                     </div>
                                     <label class="col-md-2 control-label">Cond. Pago</label>  
                                     <div class="col-md-2">

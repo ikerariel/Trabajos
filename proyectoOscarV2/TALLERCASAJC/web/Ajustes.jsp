@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-     <%
+    <%
 
         HttpSession sessionActivaUser = request.getSession();
         if (sessionActivaUser.getAttribute("user") == null) {
@@ -36,7 +36,7 @@
 
         <title>AJUSTES</title>
         <style>
-               #scrollPlanilla{
+            #scrollPlanilla{
                 overflow: scroll;
                 height:200px;
             }  
@@ -53,14 +53,6 @@
                     <a id="btnAnular" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Anular Pedido" onclick="anularND(2)">Anular*</a>
                     <a id="btnConfirmar" class="btn btn-lg btn-warning glyphicon glyphicon-ok" style=" font-weight: bold" title="Confirmar Nota de Débito" onclick="AprobarAjustes(1)"></a>
                     <a id="btnRevertir" class="btn btn-lg btn-danger glyphicon glyphicon-minus-sign" style=" font-weight: bold" title="Revertir Confirmacion" onclick="AprobarAjustes(3)"></a>
-                    <a id="btnReporte" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="reportesNotasDebitos()"></a>
-                    <a id="btnReporte" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="reportesNotasDebitos()"></a>
-                    <a id="btnReporte" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="reportesNotasDebitos()"></a>
-                    <a id="btnReporte" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="reportesNotasDebitos()"></a>
-                    <a id="btnReporte" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="reportesNotasDebitos()"></a>
-                    <a id="btnReporte" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="reportesNotasDebitos()"></a>
-                    <a id="btnReporte" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="reportesNotasDebitos()"></a>
-                    <a id="btnReporte" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="reportesNotasDebitos()"></a>
                     <a id="btnReporte" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="reportesNotasDebitos()"></a>
 
                 </div>
@@ -97,7 +89,7 @@
 
 
                         <div id="scrollPlanilla" class="table-responsive">
-                            <table class="table table-striped table-bordered table-hover table input-lg" id="miTablaAjustes" onclick="selectDetalleAjustes()">
+                            <table class="table table-striped table-bordered table-hover table input-md" id="miTablaAjustes" onclick="selectDetalleAjustes()">
                                 <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
                                 <thead>
                                     <tr class="alert-dismissable" >
@@ -113,19 +105,7 @@
                         </div>
                     </div>
                 </div>
-                <!--<div class="form-group">
-                    <div class="col-md-12" >
-                        <div class=" col-md-4" id="datos">
-                             <input id="usernameD" value="" style="text-transform: uppercase;background: #919292; border: 1px solid #919292; font-weight: bold"  type="text"  class="form-control">
-                        </div>
-                        <div class=" col-md-4">
-                             <input id="" readonly=""style="text-transform: uppercase; font-weight: bold"  type="text"  class="form-control">
-                        </div>
-                        <div class=" col-md-4">
-                             <input id="" readonly=""style="text-transform: uppercase; font-weight: bold"  type="text"  class="form-control">
-                        </div>              
-                    </div>
-                </div>-->
+
             </form>
         </section>
         <div class="modal fade" id="ventanaajuste">
@@ -133,15 +113,11 @@
                 <div class="modal-content">
                     <!--HEADER DE LA VENTANA--->
                     <div class="modal-header">
+                        <a class="btn btn-lg btn-primary col-lg-1"  id="btnGuardar" title="" onclick="InsertarAjustes()" >Guardar*</a>
+                        <a class="btn btn-lg btn-success col-lg-1"  id="btnM" title="" onclick="modificarAjuste()" >Modificar*</a>
                         <a class="close  btn btn-lg btn-danger glyphicon glyphicon-off" data-dismiss="modal" aria-hidden="true" title="Salir"></a>
                     </div>
-                    <!--CONTENIDO DE LA VENTANA--->
-                    <div class="modal-body">
-                        <a class="btn btn-lg btn-primary col-lg-1"  id="btnGuardar" title="" onclick="InsertarAjustes()" >Guardar*</a>
-                        <a class="btn btn-lg btn-success col-lg-1"  id="btnM" title="" onclick="updateCabecera()" >Modificar*</a>
-                    </div>
-                    <br>
-                    <br>
+
                     <div class="panel">
                         <div class="panel panel-default">
                             <br>
@@ -185,7 +161,7 @@
 
                                     <label class="col-md-1 control-label">Obs.*</label>  
                                     <div class="col-md-7">
-                                        <textarea maxlength="98" id="observAjustes" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"  class="form-control input-sm" required=""  autofocus onkeydown=""></textarea>
+                                        <input maxlength="98" id="observAjustes" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"  class="form-control input-sm" required=""  autofocus onkeydown="">
                                     </div>
 
                                 </div>
@@ -197,19 +173,28 @@
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <label class="col-md-1 control-label">Codigo</label>  
-                                <div class="col-md-2">
-                                    <input list="productoAjustes"  id="codproductoAjustes" type="text" 
+                                <div class="col-md-1">
+                                    <input list="artajustes"  id="codproductoAjustes" type="text" 
                                            onkeydown="
                                                    if (event.keyCode === 13) {
                                                        getProdAjustesDescripcion();
                                                    }"
                                            style="text-transform: uppercase; font-weight: bold;font-size: 12pt" placeholder="" value="" class="form-control input-sm ">
 
-                                    <datalist id="productoAjustes">
+                                    <datalist id="artajustes">
                                     </datalist>
                                 </div>
-                                <label class="col-md-2 control-label">Cantidad.*</label>  
-                                <div class="col-md-3">
+                            
+
+                                    <label class="col-md-1 control-label">Descripcion.*</label>  
+                                    <div class="col-md-5">
+                                        <input maxlength="98" id="descriproductov" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"  class="form-control input-sm" required="" 
+                                               readonly="">
+                                    </div>
+
+                                
+                                <label class="col-md-1 control-label">Cantidad.*</label>  
+                                <div class="col-md-2">
                                     <input maxlength="60" id="CantidadAjustes" type="number" 
                                            onkeydown="
                                                    if (event.keyCode === 13) {
@@ -217,88 +202,76 @@
                                                    }"
                                            style="text-transform: uppercase; font-weight: bold;font-size: 12pt"  class="form-control input-sm" required=""  autofocus onkeydown="">
                                 </div>
-                                <div class="col-md-1">
-                                    <input  id="NCIdUsuario" type="text" style="visibility: hidden;">
+
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+
+                                        <div class="col-md-1">
+                                            <input  id="NCIdUsuario" type="text" style="display:none">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <input  id="idcompraNC" type="text" style="display:none">
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-1">
-                                    <input  id="idcompraNC" type="text" style="visibility:hidden">
+
+                                <div class="panel-body">
+                                    <!-- Tabla detalle -->
+                                    <div class="table-responsive" style="height: 180px">
+                                        <table class="table table-striped table-bordered table-hover table input-md" id="miTablaDetallesAjustes">
+                                            <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
+                                            <thead>
+                                                <tr class="alert-dismissable" >
+                                                    <th>CODIGO</th>
+                                                    <th>PRODUCTOS</th>
+                                                    <th>CANTIDAD</th>    
+                                                    <th>OPCION</th>    
+                                                </tr>
+                                            </thead>
+                                            <tbody id="table_deta" style="font-weight: bold;font-size: 10pt">
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-
-                        <div class="form-horizontal">
-                            <div class="form-group">
-
-                                <label class="col-md-2 control-label">Descripcion.*</label>  
-                                <div class="col-md-5">
-                                    <input maxlength="98" id="descriproductov" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"  class="form-control input-sm" required="" 
-                                           readonly="">
-                                </div>
-
-
-                                <!--  -->
-
-                            </div>
-                        </div>
-
-                        <div class="panel-body">
-                            <!-- Tabla detalle -->
-                            <div class="table-responsive" style="height: 180px">
-                                <table class="table table-striped table-bordered table-hover table input-md" id="miTablaDetallesAjustes">
-                                    <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
-                                    <thead>
-                                        <tr class="alert-dismissable" >
-                                            <th>CODIGO</th>
-                                            <th>PRODUCTOS</th>
-                                            <th>CANTIDAD</th>    
-                                            <th style="display: none"></th>    
-                                        </tr>
-                                    </thead>
-                                    <tbody id="table_deta" style="font-weight: bold;font-size: 10pt">
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+                    </div> 
                 </div>
-            </div> 
-        </div>
-        <div class="modal fade" id="grillaArtic">
-            <div class="modal-dialog" style="width: 800px;">
-                <div class="modal-content">
-                    <!--HEADER DE LA VENTANA--->
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >&times;</button>
-                    </div>
-                    <DIV class="modal-body">
-                        <div class="container-fluid">
-                            <div class="form-group">
-                                <input id="filtrarArtic" type="text" style="text-transform: uppercase; font-weight: bold" maxlength="20"
-                                       class="form-control input-md" placeholder="Buscar Articulos..." onkeyup="buscarTablaArtic()">
+                <div class="modal fade" id="grillaArtic">
+                    <div class="modal-dialog" style="width: 800px;">
+                        <div class="modal-content">
+                            <!--HEADER DE LA VENTANA--->
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" >&times;</button>
+                            </div>
+                            <DIV class="modal-body">
+                                <div class="container-fluid">
+                                    <div class="form-group">
+                                        <input id="filtrarArtic" type="text" style="text-transform: uppercase; font-weight: bold" maxlength="20"
+                                               class="form-control input-md" placeholder="Buscar Articulos..." onkeyup="buscarTablaArtic()">
+                                    </div>
+                                </div>
+
+                                <div class="panel-body">
+                                    <!-- Tabla detalle -->
+                                    <div id="scroll" class="table-responsive" style="height: 200px" >
+                                        <table class="table table-striped table-bordered table-hover table input-md" id="TablaArtic" onclick="seleccionArticulosS()">
+                                            <thead>
+                                                <tr class="alert-dismissable" >
+                                                    <th style="display: none">Cod.</th>
+                                                    <th>Cod.Material</th>
+                                                    <th>Matarial</th>
+                                                    <th>Precio</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="table_deta"></tbody>
+                                        </table>
+                                    </div>
+                                </div>                       
                             </div>
                         </div>
-
-                        <div class="panel-body">
-                            <!-- Tabla detalle -->
-                            <div id="scroll" class="table-responsive" style="height: 200px" >
-                                <table class="table table-striped table-bordered table-hover table input-md" id="TablaArtic" onclick="seleccionArticulosS()">
-                                    <thead>
-                                        <tr class="alert-dismissable" >
-                                            <th style="display: none">Cod.</th>
-                                            <th>Cod.Material</th>
-                                            <th>Matarial</th>
-                                            <th>Precio</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="table_deta"></tbody>
-                                </table>
-                            </div>
-                        </div>                       
-                    </div>
+                    </div> 
                 </div>
-            </div> 
-        </div>
-        <script src="validador/Ajustesvalidad.js"></script> 
-    </body>
-</html>
+                <script src="validador/Ajustesvalidad.js"></script> 
+                </body>
+                </html>

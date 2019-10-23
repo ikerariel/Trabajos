@@ -20,8 +20,8 @@ import java.util.logging.Logger;
  *
  * @author Oscar
  */
-public class AjustesDAOIMPL implements AjustesDAO{
-    
+public class AjustesDAOIMPL implements AjustesDAO {
+
     private String sintaxiSql;
     private PreparedStatement preparedStatement;
     private ResultSet resultado;
@@ -76,7 +76,7 @@ public class AjustesDAOIMPL implements AjustesDAO{
 
     @Override
     public String getTipoAjustes() {
-         ResultSet rs;
+        ResultSet rs;
         ArrayList<AjustesDTO> allTipoAjustes = new ArrayList<>();
         try {
 
@@ -99,7 +99,7 @@ public class AjustesDAOIMPL implements AjustesDAO{
 
     @Override
     public String getAjustes(Integer codAjustes) {
-       ResultSet rs;
+        ResultSet rs;
         ArrayList<AjustesDTO> allAjustes = new ArrayList<>();
         try {
 
@@ -108,9 +108,9 @@ public class AjustesDAOIMPL implements AjustesDAO{
             sintaxiSql = "SELECT a.id_ajuste, a.fecha_ajustes::date, a.id_sucursal, a.id_deposito, a.id_usuario, \n"
                     + "       a.id_estado, a.observacion, a.id_tipajuste, t.descripcion, d.id_articulo, ar.art_descripcion, d.cantexistencia\n"
                     + "FROM ajustes a\n"
-                    + "INNER JOIN detajustes d on a.id_ajuste = d.id_ajuste\n"
-                    + "Inner join articulos ar on d.id_articulo = ar.id_articulo\n"
-                    + "Inner Join tipoajustes t on a.id_tipajuste = t.id_tipajuste\n"
+                    + "LEFT JOIN detajustes d on a.id_ajuste = d.id_ajuste\n"
+                    + "LEFT join articulos ar on d.id_articulo = ar.id_articulo\n"
+                    + "LEFT Join tipoajustes t on a.id_tipajuste = t.id_tipajuste\n"
                     + "where a.id_ajuste =?";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, codAjustes);
@@ -129,22 +129,21 @@ public class AjustesDAOIMPL implements AjustesDAO{
             Logger.getLogger(AjustesDAOIMPL.class.getName()).log(Level.SEVERE, null, ex);
         }
         return new Gson().toJson(allAjustes);
-    } 
+    }
 
     @Override
     public boolean insertarAjustes(AjustesDTO Dto) {
-         try {
+        try {
             sintaxiSql = null;
             conexion = new Conexion();
 
-            sintaxiSql = "INSERT INTO ajustes(id_sucursal, id_deposito, id_usuario, id_estado, observacion, id_tipajuste)\n"
-                    + "VALUES (?, ?, ?, 3, ?, ?);";
+            sintaxiSql = "INSERT INTO ajustes(id_deposito, id_usuario, id_estado, observacion, id_tipajuste)\n"
+                    + "VALUES (?, ?,  3, ?, ?);";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
-            preparedStatement.setObject(1, Dto.getId_sucursal());
-            preparedStatement.setObject(2, Dto.getId_deposito());
-            preparedStatement.setObject(3, Dto.getId_usuario());
-            preparedStatement.setObject(4, Dto.getObservacion());
-            preparedStatement.setObject(5, Dto.getId_tipajuste());
+            preparedStatement.setObject(1, Dto.getId_deposito());
+            preparedStatement.setObject(2, Dto.getId_usuario());
+            preparedStatement.setObject(3, Dto.getObservacion());
+            preparedStatement.setObject(4, Dto.getId_tipajuste());
             filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {
                 conexion.comit();
@@ -163,7 +162,7 @@ public class AjustesDAOIMPL implements AjustesDAO{
 
     @Override
     public boolean insertarDetallesAjustes(AjustesDTO Dto) {
-       try {
+        try {
             sintaxiSql = null;
             conexion = new Conexion();
 
@@ -216,5 +215,63 @@ public class AjustesDAOIMPL implements AjustesDAO{
         }
         return false;
     }
-    
+
+    @Override
+    public boolean modificarAjuste(AjustesDTO Dto) {
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+
+            sintaxiSql = "UPDATE public.ajustes\n"
+                    + "   SET  fecha_ajustes=now(),  id_deposito=?, id_usuario=?, \n"
+                    + "       id_estado=3, observacion=?, id_tipajuste=?\n"
+                    + " WHERE id_ajuste=?";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            preparedStatement.setObject(1, Dto.getId_deposito());
+            preparedStatement.setObject(2, Dto.getId_usuario());
+            preparedStatement.setObject(3, Dto.getObservacion());
+            preparedStatement.setObject(4, Dto.getId_tipajuste());
+            preparedStatement.setObject(5, Dto.getId_ajuste());
+            filasAfectadas = preparedStatement.executeUpdate();
+            if (filasAfectadas > 0) {
+                conexion.comit();
+                System.out.println("Comit() Realizado");
+                return true;
+            } else {
+                conexion.rollback();
+                System.out.println("Rollback() Realizado");
+            }
+            conexion.desConectarBD();
+        } catch (SQLException ex) {
+            Logger.getLogger(AjustesDAOIMPL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deletedetalleajuste(AjustesDTO Dto) {
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+
+            sintaxiSql = "DELETE FROM public.detajustes\n"
+                    + " WHERE id_ajuste=?";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            preparedStatement.setObject(1, Dto.getId_ajuste());
+            filasAfectadas = preparedStatement.executeUpdate();
+            if (filasAfectadas > 0) {
+                conexion.comit();
+                System.out.println("Comit() Realizado");
+                return true;
+            } else {
+                conexion.rollback();
+                System.out.println("Rollback() Realizado");
+            }
+            conexion.desConectarBD();
+        } catch (SQLException ex) {
+            Logger.getLogger(AjustesDAOIMPL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
 }

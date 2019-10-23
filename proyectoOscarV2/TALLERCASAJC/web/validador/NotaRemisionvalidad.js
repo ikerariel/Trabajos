@@ -1,6 +1,7 @@
 $(document).ready(function () {
     cambioEstadosNRemision();
     MostrarNotaRemision();
+    listafacturas();
 //    MostrarArticulosRemision();
 //    MostrarModalProveedoresRemision();
 //    MostrarFacrurasComprasRemision();
@@ -889,3 +890,19 @@ function buscadorPlanillaRemision() {
         }
     }
 }//---------------
+
+function listafacturas() {
+    crearJSON(11);
+    $.ajax({
+        url: "http://localhost:8084/TALLERCASAJC/FacturasComprascontrol",
+        type: 'POST',
+        data: datosJSON,
+        cache: false,
+        success: function (resp) {
+            $.each(resp, function (indice, value) {
+                  $("#listafacturas").append("<option value= \"" + value.co_nrofact + "\"> " + value.co_fecha + "</option>");
+    
+            });
+        }
+    });
+}

@@ -149,19 +149,16 @@ function MostrarModalProveedores() {
 
 
 function MostrarOrdenComprass() {
-    crearJSON(5);
+    crearJSON(15);
     $.ajax({
-        url: "http://localhost:8084/TALLERCASAJC/FacturasComprascontrol",
+        url: "http://localhost:8084/TALLERCASAJC/OrdenComprascontrol",
         type: 'POST',
         data: datosJSON,
         cache: false,
         success: function (resp) {
             $.each(resp, function (indice, value) {
-                $("#miTablaOrdenComp").append($("<tr>").append($(
-                        "<td>" + value.id_pedidocompra + "</td>" +
-                        "<td>" + value.pcompra_fecha + "</td>" +
-                        "<td>" + value.usu_nombre + "</td>" +
-                        "<td>" + value.est_descripcion + "</td>")));
+                  $("#listaordencompra").append("<option value= \"" + value.id_ordcompra + "\"> " + value.ordenc_fecha + "</option>");
+    
             });
         }
     });
@@ -663,14 +660,14 @@ function buscadorTablaProveedores() {
 
 
 
-function abrirDetalleOrden() {
-    if ($('#factuCompOrdenC').val() === "") {
-        $('#ModalOrdenCompra').modal('show');
-        $('#miTablaOrdenCom').find('tbody').find('tr').empty();
-        MostrarOrdenComprass();
-    } else {
-    }
-}//---------------
+//function abrirDetalleOrden() {
+//    if ($('#factuCompOrdenC').val() === "") {
+//        $('#ModalOrdenCompra').modal('show');
+//        $('#miTablaOrdenCom').find('tbody').find('tr').empty();
+//        MostrarOrdenComprass();
+//    } else {
+//    }
+//}//---------------
 function seleccionarOrdenComprass() {
     $('#miTablaOrdenComp tr').click(function () {
         $('#factuCompOrdenC').val($(this).find("td").eq(0).html());

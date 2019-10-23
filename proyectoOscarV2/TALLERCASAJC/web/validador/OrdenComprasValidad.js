@@ -1,5 +1,6 @@
 $(document).ready(function () {
     opcionsOrden();
+    listapresupuesto();
 
 });
 function comboConCompra() {
@@ -196,6 +197,7 @@ function agregarfilaorden() {
     var v_descripcion = $('#iddescrip').val();
     var v_precio = $('#PrecioArti').val();
     var v_cant = $('#idcanti').val();
+    var v_imp = $('#vidimpuesto').val();
 
     subtotal = v_precio * v_cant;
     indorden++;
@@ -205,6 +207,7 @@ function agregarfilaorden() {
             <td>" + v_precio + "</td>\n\
             <td>" + v_cant + "</td>\n\
             <td>" + subtotal + "</td>\n\
+            <td style=display:none>" + v_imp + "</td>\n\
             <td><button type=button title='Quitar el registro de la lista' \n\
             style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + indorden + "\').remove(); calmonto(4);\">\n\
             <span class='glyphicon glyphicon-remove'></span></button></td>\n\
@@ -768,6 +771,7 @@ function getArti() {
             $.each(resp, function (indice, value) {
                 $('#iddescrip').val(value.art_descripcion);
                 $('#PrecioArti').val(value.preccompras);
+                $('#vidimpuesto').val(value.id_impuesto);
                 $('#idcanti').focus();
                 $('#idcanti').val(1);
             });
@@ -1123,4 +1127,25 @@ function getcodigoArticulos() {
         }
     });
 
+}
+
+
+function listapresupuesto() {
+    presupuestoJSON = {
+        'opcion': 5
+    };
+    $.ajax({
+        url: "/TALLERCASAJC/presupuestoControl",
+        type: 'POST',
+        data: presupuestoJSON,
+        cache: false,
+        success: function (resp) {
+            $.each(resp, function (indice, valor) {
+                    $("#listapresupuesto").append("<option value= \"" + valor.id_presucompra + "\"> " + valor.fecha + "</option>");
+            });
+
+
+        }
+
+    });
 }

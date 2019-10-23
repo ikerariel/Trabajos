@@ -56,7 +56,6 @@ public class AjustesServlet extends HttpServlet {
                 out.println(ajDAO.getTipoAjustes());
                 break;
             case 4:
-                ajDTO.setId_sucursal(Integer.parseInt(request.getParameter("codsucursal")));
                 ajDTO.setId_deposito(Integer.parseInt(request.getParameter("coddeposito")));
                 ajDTO.setId_usuario(Integer.parseInt(request.getParameter("codusuario")));
                 ajDTO.setObservacion(request.getParameter("observa"));
@@ -81,6 +80,22 @@ public class AjustesServlet extends HttpServlet {
                 ajDTO.setId_estado(Integer.parseInt(request.getParameter("codestado")));
                 ajDTO.setId_ajuste(Integer.parseInt(request.getParameter("codajuste")));
                 if (ajDAO.aprobarAjustes(ajDTO)) {
+
+                }
+                break;
+            case 8:
+                ajDTO.setId_deposito(Integer.parseInt(request.getParameter("mcoddeposito")));
+                ajDTO.setId_usuario(Integer.parseInt(request.getParameter("mcodusuario")));
+                ajDTO.setObservacion(request.getParameter("mobserva"));
+                ajDTO.setId_tipajuste(Integer.parseInt(request.getParameter("mcodtipoajuste")));
+                ajDTO.setId_ajuste(Integer.parseInt(request.getParameter("mcodajuste")));
+                if (ajDAO.modificarAjuste(ajDTO)) {
+
+                }
+                break;
+            case 9:
+                ajDTO.setId_ajuste(Integer.parseInt(request.getParameter("deleteCodAjuste")));
+                if (ajDAO.deletedetalleajuste(ajDTO)) {
 
                 }
                 break;

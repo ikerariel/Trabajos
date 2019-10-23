@@ -6,6 +6,7 @@ $(document).ready(function () {
     $('#depositodescrip').val($('#depos_v').val());
     getarticulos();
     getpresupuesto();
+    traerPedidos();
 
 
 });
@@ -259,10 +260,10 @@ function cargarfila() {
                                  <span class='glyphicon glyphicon-remove'></span></button></td></tr>");
 
 
-    setTimeout(function (){
-         totales();
-    },1000);
-   
+    setTimeout(function () {
+        totales();
+    }, 1000);
+
     $('#v_articulos').val(null);
     $('#v_articulos').focus;
     $('#descriparticulo').val(null);
@@ -367,7 +368,7 @@ function abrirnuevopresupuesto() {
     $('#cantarticulo').val(null);
     $('#totalarticulos').val(null);
     $('#codigoNropedido').val(null);
-     $("#codigoNropedido").prop('disabled', false);
+    $("#codigoNropedido").prop('disabled', false);
     $('#mitabladetallepresupuesto').find('tbody').find('tr').empty();
     $('#btnguardarpresupuesto').show();
     $('#btntmodificarpresupuesto').hide();
@@ -406,7 +407,7 @@ function getdetallepresupuesto() {
                 $('#coddeposito').val(valor.id_deposito);
                 $('#depositodescrip').val(valor.deposito);
                 $('#codigoNropedido').val(valor.id_pedidocompra);
-                 $("#codigoNropedido").prop('disabled', true);
+                $("#codigoNropedido").prop('disabled', true);
                 $('#comboproveedor option:selected').text(valor.proveedor);
                 $('#combotipomneda option:selected').text(valor.moneda);
                 $('#codigoNropedido').val(valor.id_pedidocompra);
@@ -550,29 +551,35 @@ function getDetallepresuPedido() {
         cache: false,
         success: function (resp) {
             if (JSON.stringify(resp) != '[]') {
-                var v = JSON.stringify(resp);
-                var vv = JSON.parse(v);
-//                for(var i in vv){
-                var estado = vv[0].id_estado;
-//                }
-                if (parseInt(estado) === 1) {
-                    $.each(resp, function (indice, value) {
-                        $("#mitabladetallepresupuesto").append($("<tr id=\'prod" + idx + "\'>").append($(
-                                "<td>" + value.id_articulo + "</td>" +
-                                "<td>" + value.art_descripcion + "</td>" +
-                                "<td style='color:red'>" + "0" + "</td>" +
-                                "<td>" + value.cantidad + "</td>" +
-                                "<td style='color:red'>" + "0" + "</td>" +
-                                "<td><button type=button title='Quitar el registro de la lista' \n\
+                var ord = JSON.stringify(resp);
+                var orden = JSON.parse(ord);
+                var nro = orden[0].nropedido;
+                if (parseInt(nro) > 0) {
+                    alert('El pedido ya fue procesado..');
+                } else {
+                    var v = JSON.stringify(resp);
+                    var vv = JSON.parse(v);
+                    var estado = vv[0].id_estado;
+                    if (parseInt(estado) === 1) {
+                        $.each(resp, function (indice, value) {
+                            $("#mitabladetallepresupuesto").append($("<tr id=\'prod" + idx + "\'>").append($(
+                                    "<td>" + value.id_articulo + "</td>" +
+                                    "<td>" + value.art_descripcion + "</td>" +
+                                    "<td style='color:red'>" + "0" + "</td>" +
+                                    "<td>" + value.cantidad + "</td>" +
+                                    "<td style='color:red'>" + "0" + "</td>" +
+                                    "<td><button type=button title='Quitar el registro de la lista' \n\
                                  style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + idx + "\').remove()\">\n\
                                  <span class='glyphicon glyphicon-remove'></span></button></td>")));
 
 
 
-                    });
-                } else {
-                    alert('Pedido Pendiente.!!');
+                        });
+                    } else {
+                        alert('Pedido Pendiente.!!');
+                    }
                 }
+
 
 
             } else {
@@ -583,4 +590,23 @@ function getDetallepresuPedido() {
 
 
 
+}
+
+function traerPedidos() {
+    jspedido = {
+        "opcion": 9
+    };
+    $.ajax({
+        url: "http://localhost:8084/TALLERCASAJC/PedidosComprasServlet",
+        type: 'POST',
+        data: jspedido,
+        cache: false,
+        success: function (resp) {
+            $.each(resp, function (indice, value) {
+                $("#listapedidos").append("<option value= \"" + value.id_pedidocompra + "\"> " + value.pcompra_fecha + "</option>");
+
+            });
+
+        }
+    });
 }

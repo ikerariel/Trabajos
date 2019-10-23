@@ -169,12 +169,15 @@
                                     </div>
                                              <label class="col-md-2 col-xs-pull-1 control-label">Nro Pedido.</label>  
                                     <div class="col-md-1 col-xs-pull-1">
-                                        <input  id="codigoNropedido" style="text-transform: uppercase; font-weight: bold; font-size: 12pt" 
+                                        <input list="listapedidos" id="codigoNropedido" style="text-transform: uppercase; font-weight: bold; font-size: 12pt" 
                                                name="codigo" type="text" placeholder="Codigo" class="form-control input-sm "
                                                 onkeydown="
                                                    if (event.keyCode === 13) {
                                                        getDetallepresuPedido();
                                                    }">
+                                                                                         <datalist id="listapedidos">
+                                                   
+                                        </datalist>
                                     </div>
                                 
 

@@ -354,7 +354,8 @@ public class PedidosComprasDAOIMPL implements PedidosComprasDAO {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "SELECT p.pcompra_fecha, p.id_estado,u.usu_nombre, e.est_descripcion, p.observacion,\n"
-                    + " d.id_articulo,d.cantidad,d.precio, a.codigenerico, a.art_descripcion\n"
+                    + " d.id_articulo,d.cantidad,d.precio, a.codigenerico,"
+                    + "(select id_pedidocompra from presupuestocompra where id_pedidocompra=? and id_estado in(1,3)) as nropedido, a.art_descripcion\n"
                     + " from pedidoscompras p\n"
                     + " inner join detpedidoscompras d on p.id_pedidocompra=d.id_pedidocompra\n"
                     + " inner join estados e on e.id_estado=p.id_estado\n"
@@ -363,6 +364,7 @@ public class PedidosComprasDAOIMPL implements PedidosComprasDAO {
                     + " where p.id_pedidocompra=?";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, id);
+            preparedStatement.setInt(2, id);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 allDetallesPediCompras.add(new PedidosComprasDTO(
@@ -375,6 +377,7 @@ public class PedidosComprasDAOIMPL implements PedidosComprasDAO {
                         rs.getInt("precio"),
                         rs.getString("codigenerico"),
                         rs.getInt("id_estado"),
+                        rs.getInt("nropedido"),
                         rs.getString("art_descripcion")));
             }
         } catch (SQLException ex) {

@@ -139,6 +139,20 @@
                             </ul>
                         </li>
                     </ul>
+                    <ul class="nav navbar-nav">
+                        <li role="presentation" class="dropdown">
+                            <a role="button" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"id="">Reportes<span class="caret"></span></a>
+                            <ul class="dropdown-menu" style="cursor: pointer" >
+                                <ul class="dropdown-menu">
+                                     <li><a href="">SubMenu2</a></li>
+                                </ul>
+                                <li><a  id="rst_modelos" href="reportesCompras.jsp"> <span class="glyphicon glyphicon-print"></span> Reportes Compras</a></li>
+                                <li><a  id="rst_modelos" ><span class="glyphicon glyphicon-print"></span> Reportes Servicios</a></li>
+                                <li><a  id="rst_modelos" > <span class="glyphicon glyphicon-print"></span> Reportes Ventas</a></li>
+                             
+                            </ul>
+                        </li>
+                    </ul>
                     
 
         <ul class=" nav navbar-nav navbar-right">

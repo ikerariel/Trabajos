@@ -162,13 +162,14 @@
                                     </div>
                                     <label class="col-md-2 control-label">Nro. Orden Compra</label>  
                                     <div class="col-md-2">
-                                        <input id="factuCompOrdenC" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" 
+                                        <input list="listaordencompra" id="factuCompOrdenC" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" 
                                                type="text" placeholder="Ingrese Orden Compra" class="form-control input-sm alert-danger" 
-                                               onkeyup="ValidacionesSoloNumeros()" onchange="ValidacionesSoloNumeros()" onclick="abrirDetalleOrden()"
+                                               onkeyup="ValidacionesSoloNumeros()" onchange="ValidacionesSoloNumeros()" 
                                                onkeydown="
                                                        if (event.keyCode === 13) {
                                                            RecuperarDetOrdenComprass();
                                                        }">
+                                                                                             <datalist id="listaordencompra" ></datalist>                                                                                                    
                                     </div>
                                         <label class="col-md-1 control-label">N.Factura</label>  
                                     <div class="col-md-2">

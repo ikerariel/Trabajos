@@ -22,6 +22,8 @@ public interface AjustesDAO {
     String getAjustes(Integer codAjustes);
 
     boolean insertarAjustes(AjustesDTO Dto);
+    boolean modificarAjuste(AjustesDTO Dto);
+    boolean deletedetalleajuste(AjustesDTO Dto);
 
     boolean insertarDetallesAjustes(AjustesDTO Dto);
 

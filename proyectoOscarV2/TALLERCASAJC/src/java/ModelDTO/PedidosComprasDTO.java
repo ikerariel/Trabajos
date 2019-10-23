@@ -29,6 +29,7 @@ public class PedidosComprasDTO {
     private Integer precventas;
     private Integer id_impuesto;
     private Integer id_marca;
+    private Integer nropedido;
     private String codigenerico;
 
     public PedidosComprasDTO(Integer id_pedidocompraD, Integer id_articulo, Integer cantidad, Integer precio) {
@@ -56,7 +57,7 @@ public class PedidosComprasDTO {
         this.observacion = observacion;
     }
 
-    public PedidosComprasDTO(String pcompra_fecha, String usu_nombre, String est_descripcion, String observacion, Integer id_articulo, Integer cantidad, Integer precio, String codigenerico, Integer id_estado,String art_descripcion) {
+    public PedidosComprasDTO(String pcompra_fecha, String usu_nombre, String est_descripcion, String observacion, Integer id_articulo, Integer cantidad, Integer precio, String codigenerico, Integer id_estado,Integer nropedido, String art_descripcion) {
         this.pcompra_fecha = pcompra_fecha;
         this.usu_nombre = usu_nombre;
         this.est_descripcion = est_descripcion;
@@ -66,6 +67,7 @@ public class PedidosComprasDTO {
         this.precio = precio;
         this.codigenerico = codigenerico;
         this.id_estado = id_estado;
+        this.nropedido = nropedido;
         this.art_descripcion = art_descripcion;
     }
 

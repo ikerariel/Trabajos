@@ -159,13 +159,14 @@
                                 <div class="form-group">
                                     <label class="col-md-2 control-label">Nro. Factura</label>  
                                     <div class="col-md-3">
-                                        <input id="_Idfactcompra_Nre" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" 
+                                        <input list="listafacturas" id="_Idfactcompra_Nre" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" 
                                                type="text" placeholder="Ingrese Factuta Compra" class="form-control" 
                                              onclick="AbrirFacturasComprasRemision()"
                                                onkeydown="
                                                        if (event.keyCode === 13) {
                                                            RecuperarDetFacturasComprasRemision();
                                                        }">
+                                                                                           <datalist id="listafacturas"></datalist>
                                       <input style="display: none" class="form-control" id="idfactura" type="text">
                                     </div>
                                      <label class="col-md-2 control-label">Nro. Remisión</label>  

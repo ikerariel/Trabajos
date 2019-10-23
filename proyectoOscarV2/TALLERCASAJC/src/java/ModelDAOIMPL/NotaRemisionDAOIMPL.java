@@ -165,17 +165,16 @@ public class NotaRemisionDAOIMPL implements NotaRemisionDAO {
             sintaxiSql = null;
             conexion = new Conexion();
 
-            sintaxiSql = " SELECT f.id_compra, f.id_estado, f.co_nrofact, f.co_intervalo, \n"
-                    + "                                         d.id_articulo, "
-                    + "(select id_compra from notaremision where co_nrofact=? and id_estado in(1,3)) as nrofact, d.cantidad_detcomp, d.precio_detcomp, a.codigenerico, a.art_descripcion\n"
-                    + "                                        FROM facturascompras f\n"
-                    + "                                         inner join proveedores p on f.id_proveedor = p.id_proveedor\n"
-                    + "                                  \n"
-                    + "                                         inner join usuarios u on f.id_usuario = u.id_usuario\n"
-                    + "                                        inner join estados e on f.id_estado = e.id_estado\n"
-                    + "                                         inner join detfacturascompras d on f.id_compra = d.id_compra\n"
-                    + "                                       inner join articulos a on d.id_articulo = a.id_articulo\n"
-                    + "                                         where f.co_nrofact=? and f.id_estado in(1,3)";
+            sintaxiSql = " SELECT f.id_compra, f.id_estado, f.co_nrofact, f.co_intervalo, \n" +
+" d.id_articulo,  (select r.id_compra from notaremision r left join  facturascompras f on r.id_compra=f.id_compra where f.co_nrofact=? and f.id_estado in(1,3)) as nrofact, \n" +
+"d.cantidad_detcomp, d.precio_detcomp, a.codigenerico, a.art_descripcion\n" +
+"FROM facturascompras f\n" +
+" inner join proveedores p on f.id_proveedor = p.id_proveedor\n" +
+"inner join usuarios u on f.id_usuario = u.id_usuario\n" +
+" inner join estados e on f.id_estado = e.id_estado\n" +
+"inner join detfacturascompras d on f.id_compra = d.id_compra\n" +
+" inner join articulos a on d.id_articulo = a.id_articulo\n" +
+" where f.co_nrofact=? and f.id_estado in(1,3)";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, id);
             preparedStatement.setInt(2, id);

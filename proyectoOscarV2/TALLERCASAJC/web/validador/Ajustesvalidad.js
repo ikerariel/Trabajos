@@ -1,11 +1,4 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 $(document).ready(function () {
-
     getAjustes();
     AjustesProductos();
     getComboTipoAjustes();
@@ -26,12 +19,14 @@ function agregarFilasAjustes() {
     var v_codMaterialG = $('#codproductoAjustes').val();
     var v_cant = $('#CantidadAjustes').val();
     var v_descri = $('#descriproductov').val();
-
+    tindex++;
     $('#miTablaDetallesAjustes').append("<tr id=\'prod" + tindex + "\'>\
             <td>" + v_codMaterialG + "</td>\n\
             <td>" + v_descri + "</td>\n\
             <td>" + v_cant + "</td>\n\
-                     <td><img onclick=\"$(\'#prod" + tindex + "\').remove()\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
+                     <td><button type=button title='Quitar el registro de la lista' \n\
+            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + tindex + "\').remove();\">\n\
+            <span class='glyphicon glyphicon-remove'></span></button></td>\n\
             </tr>");
 
     //  para borrar campos y enviar focus o cursor en id
@@ -107,23 +102,27 @@ function InsertarAjustes() {
     if (res) {
         TipoAjustes = {
             'opcion': 4,
-            'codsucursal': 1,
-            'coddeposito': 1,
-            'codusuario': 1,
-            'observa': document.getElementById('observAjustes').value,
-            'codtipoajuste': document.getElementById('TipoAjustes').value
+            'coddeposito': $('#coddeposito_v').val(),
+            'codusuario': $('#idusersession_v').val(),
+            'observa': $('#observAjustes').val(),
+            'codtipoajuste': $('#TipoAjustes').val()
 
         };
         $.ajax({
             url: "http://localhost:8084/TALLERCASAJC/AjustesServlet",
             data: TipoAjustes,
             type: 'POST',
-            success: function () {
+              dataType: 'text',
+            success: function (resp) {
+                setTimeout(function () {
+                    InsertarDetallesAjustes();
+                    alert('ajustes guardado');
+                    location.reload();
+                }, 2000);
+
             }
         });
-        setTimeout(function () {
-            InsertarDetallesAjustes();
-        }, 2000);
+
 
     } else {
 
@@ -131,29 +130,80 @@ function InsertarAjustes() {
 
 
 }
+function modificarAjuste() {
+    var res = confirm('desea guardar el ajuste');
+    if (res) {
+        modAjuste = {
+            'opcion': 8,
+            'mcoddeposito': $('#coddeposito_v').val(),
+            'mcodusuario': $('#idusersession_v').val(),
+            'mobserva': $('#observAjustes').val(),
+            'mcodtipoajuste': $('#TipoAjustes').val(),
+            'mcodajuste': $('#codigoAjuste').val()
+
+        };
+        $.ajax({
+            url: "http://localhost:8084/TALLERCASAJC/AjustesServlet",
+            data: modAjuste,
+            type: 'POST',
+              dataType: 'text',
+            success: function (resp) {
+                deleteAjustesDetalle();
+                setTimeout(function () {
+                    InsertarDetallesAjustes();
+
+                }, 2000);
+            }
+        });
+
+
+    } else {
+
+    }
+
+
+}
+function deleteAjustesDetalle() {
+    deleAjusteD = {
+        'opcion': 9,
+        'deleteCodAjuste': $('#codigoAjuste').val()
+    };
+    $.ajax({
+        url: "http://localhost:8084/TALLERCASAJC/AjustesServlet",
+        data: deleAjusteD,
+        type: 'POST',
+        dataType: 'text',
+        success: function (resp) {
+
+
+        }
+    });
+
+}
 function InsertarDetallesAjustes() {
     $('#miTablaDetallesAjustes').find('tbody').find('tr').each(function () {
         DetallesAjustes = {
             'opcion': 5,
             'codarticulo': $(this).find("td").eq(0).html(),
-            'codajuste': document.getElementById('codigoAjuste').value,
+            'codajuste': $('#codigoAjuste').val(),
             'Cantexis': $(this).find("td").eq(2).html()
 
 
         };
-        $.ajax({  
+        $.ajax({
             url: "http://localhost:8084/TALLERCASAJC/AjustesServlet",
             data: DetallesAjustes,
             type: 'POST',
-            success: function () {
+            dataType: 'text',
+            success: function (resp) {
                 alert('ajustes guardado');
                 location.reload();
 
             }
         });
     });
-
 }
+var ix = 0;
 function getAjustesDetTraer() {
     DatosObtenetDet = {
         'opcion': 6,
@@ -167,10 +217,14 @@ function getAjustesDetTraer() {
         success: function (resp) {
 
             $.each(resp, function (indice, value) {
-                $("#miTablaDetallesAjustes").append($("<tr>").append($(
+                ix++;
+                $("#miTablaDetallesAjustes").append($("<tr  id=\'prod" + ix + "\'>").append($(
                         "<td>" + value.id_articulo + "</td>" +
                         "<td>" + value.art_descripcion + "</td>" +
-                        "<td>" + value.cantexistencia + "</td>")));
+                        "<td>" + value.cantexistencia + "</td>" +
+                        "<td><button type=button title='Quitar el registro de la lista' \n\
+            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + ix + "\').remove();\">\n\
+            <span class='glyphicon glyphicon-remove'></span></button></td>")));
                 $('#fechaajuste').val(value.fecha_ajustes);
                 $('#observAjustes').val(value.observacion);
                 $('#codigoAjuste').val($('#v_nroAjustes').val());
@@ -210,7 +264,8 @@ function recuperarDetAjustessss() {
 
 function AjustesProductos() {
     art = {
-        "opcion": 9
+        "opcion": 20,
+        "codDepo": $('#coddeposito_v').val()
     };
     $.ajax({
         url: "http://localhost:8084/TALLERCASAJC/OrdenComprascontrol",
@@ -219,9 +274,12 @@ function AjustesProductos() {
         cache: false,
         success: function (resp) {
             $.each(resp, function (indice, value) {
+                var valor = value.id_tipoarticulo;
+                if (valor === 1) {
+                    $("#artajustes").append("<option value= \"" + value.id_articulo + "\"> " + value.art_descripcion + "</option>");
 
-                $("#productoAjustes").append("<option value= \"" + value.id_articulo + "\"> " + value.art_descripcion + "</option>");
 
+                }
 
             });
 
@@ -232,7 +290,8 @@ function AjustesProductos() {
 function getProdAjustesDescripcion() {
     art = {
         "opcion": 19,
-        "codArticulo": $('#codproductoAjustes').val()
+        "codArticulo": $('#codproductoAjustes').val(),
+        "coddepos": $('#coddeposito_v').val()
     };
     $.ajax({
         url: "http://localhost:8084/TALLERCASAJC/OrdenComprascontrol",
