@@ -47,12 +47,12 @@
         <section>
             <form class="form-horizontal"  id="defaultForm">
 
-                <div class="col-md-9" id="botonPedido">
+                <div class="col-md-9" id="botonoesND">
                     <a id="btnNuevo" href="#ventanaNotaDebito" class="btn btn-lg btn-success" style=" font-weight: bold"  title="Nuevo Pedido" data-toggle="modal" onclick="abrirVentana()">Nuevo </a>
                     <a id="btnModificar" class="btn btn-lg btn-info" style=" font-weight: bold" title="Modificar Pedido" data-toggle="modal" onclick="recuperarDetalleND()">Modificar </a>
-                    <a id="btnAnular" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Anular Pedido" onclick="anularND(2)">Anular*</a>
-                    <a id="btnConfirmar" class="btn btn-lg btn-warning glyphicon glyphicon-ok" style=" font-weight: bold" title="Confirmar Nota de Débito" onclick="actualizarND(1)"></a>
-                    <a id="btnRevertir" class="btn btn-lg btn-danger glyphicon glyphicon-minus-sign" style=" font-weight: bold" title="Revertir Confirmacion" onclick="revertirND(3)"></a>
+                    <a id="btnAnularND" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Anular Pedido" >Anular*</a>
+                    <a id="btnConfirmarND" class="btn btn-lg btn-warning glyphicon glyphicon-ok" style=" font-weight: bold" title="Confirmar Nota de Débito" ></a>
+                    <a id="btnRevertirND" class="btn btn-lg btn-danger glyphicon glyphicon-minus-sign" style=" font-weight: bold" title="Revertir Confirmacion" ></a>
                     <a id="btnReporte" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="reportesPedido()"></a>
 
                 </div>

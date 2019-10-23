@@ -1,9 +1,8 @@
-
-
 $(document).ready(function () {
 
     fechaactual();
     allnotasDebitos();
+    actualizarestadoND(); 
 });
 function fechaactual() {
     var fecha = new Date();
@@ -254,180 +253,8 @@ function consultaFactura() {
 
 }
 
-function actualizarND(_valor) {
-//    var sms = "";
-//    if (parseInt(_valor) === 1) {
-//        var sms = 'Desea Aprobar Registro..?';
-//    } else {
-//        if (parseInt(_valor) === 3) {
-//            var sms = 'Desea Revertir el estado del  Registro..?';
-//        }
-//    }
 
-    valorEstado = $('#v_estado').val();
 
-    if (valorEstado === "") {
-        alert('No se ha seleccionado ningún registro');
-    } else {
-        if (valorEstado === 'Aprobado') {
-            alert('El registro ya fue aprobado.!!');
-        } else {
-            if (valorEstado === 'Pendiente') {
-                var opcion = confirm('Desea Aprobar Registro..? : ' + $('#v_nroND').val());
-
-                if (opcion === true) {
-                    jsonEstado = {
-                        "opcion": 7,
-                        "_estado": _valor,
-                        "_idND": $('#v_nroND').val()
-                    };
-                    $.ajax({
-                        url: "http://localhost:8084/TALLERCASAJC/notaDebitocontrol",
-                        type: 'POST',
-                        data: jsonEstado,
-                        cache: false,
-                        success: function () {
-
-                        }
-                    });
-                    $('#miTablaNotaDebito').find('tbody').find('tr').empty();
-                    allnotasDebitos();
-                } else {
-                }
-            }
-        }
-    }
-}
-
-function revertirND(_valor) {
-//    var sms = "";
-//    if (parseInt(_valor) === 1) {
-//        var sms = 'Desea Aprobar Registro..?';
-//    } else {
-//        if (parseInt(_valor) === 3) {
-//            var sms = 'Desea Revertir el estado del  Registro..?';
-//        }
-//    }
-
-    valorEstado = $('#v_estado').val();
-
-    if (valorEstado === "") {
-        alert('No se ha seleccionado ningún registro');
-    } else {
-        if (valorEstado === 'Pendiente') {
-            alert('El registro ya fue revertido.!!');
-        } else {
-            if (valorEstado === 'Aprobado') {
-                var opcion = confirm('Desea Revertir Registro..? : ' + $('#v_nroND').val());
-
-                if (opcion === true) {
-                    jsonEstado = {
-                        "opcion": 7,
-                        "_estado": _valor,
-                        "_idND": $('#v_nroND').val()
-                    };
-                    $.ajax({
-                        url: "http://localhost:8084/TALLERCASAJC/notaDebitocontrol",
-                        type: 'POST',
-                        data: jsonEstado,
-                        cache: false,
-                        success: function () {
-
-                        }
-                    });
-                    $('#miTablaNotaDebito').find('tbody').find('tr').empty();
-                    allnotasDebitos();
-                } else {
-                }
-            }
-        }
-    }
-}
-
-function anularND(_valor) {
-//    var sms = "";
-//    if (parseInt(_valor) === 1) {
-//        var sms = 'Desea Aprobar Registro..?';
-//    } else {
-//        if (parseInt(_valor) === 3) {
-//            var sms = 'Desea Revertir el estado del  Registro..?';
-//        }
-//    }
-
-    valorEstado = $('#v_estado').val();
-
-    if (valorEstado === "") {
-        alert('No se ha seleccionado ningún registro');
-    } else {
-        if (valorEstado === 'Aprobado') {
-            alert('No se puede anular por que esta aprobado.!!');
-        } else {
-            if (valorEstado === 'Pendiente') {
-                var opcion = confirm('Desea Anular Registro..? : ' + $('#v_nroND').val());
-
-                if (opcion === true) {
-                    jsonEstado = {
-                        "opcion": 7,
-                        "_estado": _valor,
-                        "_idND": $('#v_nroND').val()
-                    };
-                    $.ajax({
-                        url: "http://localhost:8084/TALLERCASAJC/notaDebitocontrol",
-                        type: 'POST',
-                        data: jsonEstado,
-                        cache: false,
-                        success: function () {
-                        }
-                    });
-                    $('#miTablaNotaDebito').find('tbody').find('tr').empty();
-                    allnotasDebitos();
-                } else {
-                }
-            }
-        }
-    }
-}
-
-function revertirND(_valor) {
-//    var sms = "";
-//    if (parseInt(_valor) === 1) {
-//        var sms = 'Desea Aprobar Registro..?';
-//    } else {
-//        if (parseInt(_valor) === 3) {
-//            var sms = 'Desea Revertir el estado del  Registro..?';
-//        }
-//    }
-    valorEstado = $('#v_estado').val();
-    if (valorEstado === "") {
-        alert('No se ha seleccionado ningún registro');
-    } else {
-        if (valorEstado === 'Pendiente') {
-            alert('El registro ya fue revertido.!!');
-        } else {
-            if (valorEstado === 'Aprobado') {
-                var opcion = confirm('Desea Revertir Registro..? : ' + $('#v_nroND').val());
-                if (opcion === true) {
-                    jsonEstado = {
-                        "opcion": 7,
-                        "_estado": _valor,
-                        "_idND": $('#v_nroND').val()
-                    };
-                    $.ajax({
-                        url: "http://localhost:8084/TALLERCASAJC/notaDebitocontrol",
-                        type: 'POST',
-                        data: jsonEstado,
-                        cache: false,
-                        success: function () {
-                        }
-                    });
-                    $('#miTablaNotaDebito').find('tbody').find('tr').empty();
-                    allnotasDebitos();
-                } else {
-                }
-            }
-        }
-    }
-}
 
 function updateCabecera() {
     var opcion = confirm('Desea Modificar el registro..?');
@@ -480,4 +307,84 @@ function updateDetalle() {
         }
     });
 
+}
+
+function actualizarestadoND() {
+    var btn = "";
+    $(document).ready(function () {
+        $('body').on('click', '#botonoesND a', function () {
+            btn = ($(this).attr('id'));
+            if (btn === 'btnAnularND') {
+                if ($('#v_estado').val() === "") {
+                    alert('Seleccione un registro.!');
+                } else if ($('#v_estado').val() === 'CONFIRMADO') {
+                    alert('El registro no se puede confirmar.');
+                } else {
+                    var opcion = confirm('Desea Anular el registro.??');
+                    if (opcion === true) {
+                        datosNC = {
+                            "opcion": 10,
+                            "codEstado": 2,
+                            "codND": $('#v_nroND').val()
+                        };
+                      confirmarND();
+                        alert('Registro Anulado con éxito.!!');
+                    }
+                }
+            } else if (btn === 'btnConfirmarND') {
+                if ($('#v_estado').val() === "") {
+                    alert('Seleccione un registro!');
+                } else if ($('#v_estado').val() === 'CONFIRMADO') {
+                    alert('El registro ya fue confirmado..');
+                } else {
+                    var opcion = confirm('Desea Confirmar el registro.??');
+                    if (opcion === true) {
+                        datosNC = {
+                            "opcion": 10,
+                            "codEstado": 1,
+                            "codND": $('#v_nroND').val()
+                        };
+                       confirmarND();
+                        alert('Registro Confirmado con éxito.!!');
+                    }
+                }
+            } else if (btn === 'btnRevertirND') {
+                if ($('#v_estado').val() === "") {
+                    alert('Seleccione un registro!');
+                } else if ($('#v_estado').val() === 'PENDIENTE') {
+                    alert('El registro no se puede Revertir..');
+                } else {
+                    var opcion = confirm('Desea Revertir el registro.??');
+                    if (opcion === true) {
+                        datosNC = {
+                            "opcion": 10,
+                            "codEstado": 3,
+                            "codND": $('#v_nroND').val()
+                        };
+                     confirmarND();
+                        alert('Registro revertido con exito.!!');
+                    }
+                }
+
+
+            }
+        });
+    });
+}
+
+function confirmarND() {
+    $.ajax({
+        url:  "http://localhost:8084/TALLERCASAJC/notaDebitocontrol",
+        type: 'POST',
+        data: datosNC,
+        cache: false,
+        dataType: 'text',
+        success: function () {
+            $('#miTablaNotaDebito').find('tbody').find('tr').empty();
+             allnotasDebitos();
+        },
+        error: function () {
+
+        }
+    });
 }
