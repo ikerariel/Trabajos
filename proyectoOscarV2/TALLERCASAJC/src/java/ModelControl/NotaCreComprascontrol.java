@@ -46,13 +46,23 @@ public class NotaCreComprascontrol extends HttpServlet {
                 out.println(ncDAO.getNotaCreCompras());
                 break;
             case 2:
-                ncDTO.setNro_nocred(Integer.parseInt(request.getParameter("_nronocred")));
-                ncDTO.setNro_timbrado(Integer.parseInt(request.getParameter("_nrotimbrado")));
-                ncDTO.setObs_nocred(request.getParameter("_obsnocred"));
-                ncDTO.setId_compra(Integer.parseInt(request.getParameter("_codcompra")));
-                ncDTO.setId_usuario(Integer.parseInt(request.getParameter("_codusuario")));
-                ncDTO.setId_estado(Integer.parseInt(request.getParameter("_codestado")));
-
+                Integer vc = Integer.parseInt(request.getParameter("vvcaso"));
+                if (vc == 1) {
+                    ncDTO.setNro_nocred(Integer.parseInt(request.getParameter("_nronocred")));
+                    ncDTO.setNro_timbrado(Integer.parseInt(request.getParameter("_nrotimbrado")));
+                    ncDTO.setObs_nocred(request.getParameter("_obsnocred"));
+                    ncDTO.setId_compra(Integer.parseInt(request.getParameter("_nrofacturaC")));
+                    ncDTO.setId_usuario(Integer.parseInt(request.getParameter("_codusuario")));
+                    ncDTO.setId_deposito(Integer.parseInt(request.getParameter("_deposito")));
+                } else if (vc == 2) {
+                    ncDTO.setNro_nocred(Integer.parseInt(request.getParameter("_nronocred")));
+                    ncDTO.setNro_timbrado(Integer.parseInt(request.getParameter("_nrotimbradod")));
+                    ncDTO.setObs_nocred(request.getParameter("_obsnocred"));
+                    ncDTO.setId_compra(Integer.parseInt(request.getParameter("_nrofacturaCd")));
+                    ncDTO.setId_usuario(Integer.parseInt(request.getParameter("_codusuariod")));
+                    ncDTO.setId_deposito(Integer.parseInt(request.getParameter("_depositonro")));
+                    ncDTO.setId_notacrecompra(Integer.parseInt(request.getParameter("_codnotacrecompra")));
+                }
                 if (ncDAO.insertarNC(ncDTO)) {
                     out.println("Exitoso");
                 }

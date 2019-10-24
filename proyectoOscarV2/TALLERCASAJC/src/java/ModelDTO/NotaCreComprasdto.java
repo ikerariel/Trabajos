@@ -36,6 +36,14 @@ public class NotaCreComprasdto {
     private String usuarios;
     private String estados;
 
+    public Integer getId_deposito() {
+        return id_deposito;
+    }
+
+    public void setId_deposito(Integer id_deposito) {
+        this.id_deposito = id_deposito;
+    }
+
     public NotaCreComprasdto() {
     }
 

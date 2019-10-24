@@ -126,7 +126,7 @@ coalesce(a.total,0) as totalporfactura
 				<text><![CDATA[Fecha Fact.]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="211" y="0" width="80" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="8e14d7a2-68d4-4893-af81-c2470118f793"/>
+				<reportElement mode="Opaque" x="247" y="0" width="80" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="8e14d7a2-68d4-4893-af81-c2470118f793"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -142,18 +142,11 @@ coalesce(a.total,0) as totalporfactura
 				</graphicElement>
 			</line>
 			<staticText>
-				<reportElement mode="Opaque" x="343" y="0" width="70" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="199ff3a8-3501-4a2e-b5c0-71b07d58bf78"/>
+				<reportElement mode="Opaque" x="441" y="0" width="70" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="199ff3a8-3501-4a2e-b5c0-71b07d58bf78"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Monto Fact.]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="466" y="0" width="70" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b1b32a5e-f8e0-4840-a14f-d63df44c49d7"/>
-				<textElement textAlignment="Center">
-					<font size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Estado]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -167,7 +160,7 @@ coalesce(a.total,0) as totalporfactura
 				<textFieldExpression><![CDATA[$F{co_nrofact}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement x="227" y="0" width="111" height="20" uuid="d81fe17d-a76f-4345-b124-d47b7265f185"/>
+				<reportElement x="263" y="0" width="111" height="20" uuid="d81fe17d-a76f-4345-b124-d47b7265f185"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
@@ -178,12 +171,8 @@ coalesce(a.total,0) as totalporfactura
 				<textFieldExpression><![CDATA[$F{co_fecha}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
-				<reportElement x="349" y="0" width="100" height="20" uuid="b472d77f-9c23-4b22-a8d3-2d4998f436c5"/>
+				<reportElement x="447" y="0" width="100" height="20" uuid="b472d77f-9c23-4b22-a8d3-2d4998f436c5"/>
 				<textFieldExpression><![CDATA[$F{totalporfactura}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0">
-				<reportElement x="449" y="0" width="106" height="21" uuid="2e047d5a-d357-4333-a464-2c35ccde7a34"/>
-				<textFieldExpression><![CDATA[$F{estado}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

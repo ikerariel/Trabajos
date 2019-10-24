@@ -105,15 +105,15 @@ public class NotaCreComprasdaoimpl implements NotaCreComprasdao {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "INSERT INTO notacrecompras(nro_nocred,  nro_timbrado, \n"
-                    + " obs_nocred, id_compra,  id_usuario, id_estado)\n"
-                    + " VALUES (?, ?, ?, ?, ?, ?, );";
+                    + " obs_nocred, id_compra,  id_usuario, id_estado,id_estado)\n"
+                    + " VALUES (?, ?, ?, ?, ?, 3, );";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setObject(1, Dto.getNro_nocred());
             preparedStatement.setObject(2, Dto.getNro_timbrado());
             preparedStatement.setObject(3, Dto.getObs_nocred());
             preparedStatement.setObject(4, Dto.getId_compra());
             preparedStatement.setObject(5, Dto.getId_usuario());
-            preparedStatement.setObject(6, Dto.getId_estado());
+            preparedStatement.setObject(6, Dto.getId_deposito());
 
             filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {

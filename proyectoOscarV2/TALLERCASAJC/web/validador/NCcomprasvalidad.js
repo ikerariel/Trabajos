@@ -183,10 +183,10 @@ function  updateNCD() {
                     "vvcaso": 2,
                     "_nronocred": $('#nroNC').val(),
                     "_codnotacrecompra": $('#codigoNC').val(),
-                    "_nrotimbrado": $('#timbradoNC').val(),
+                    "_nrotimbradod": $('#timbradoNC').val(),
                     "_obsnocred": $('#obserNC').val(),
-                    "_codusuario": $('#idusersession_v').val(),
-                    "_nrofacturaC": $('#idnrofacturaNC').val(),
+                    "_codusuariod": $('#idusersession_v').val(),
+                    "_nrofacturaCd": $('#idnrofacturaNC').val(),
                     "_depositonro": $('#depositoNC').val()
                 };
                 $.ajax({
