@@ -47,11 +47,11 @@ var indx = 0;
 function recuperarFacturaNC() {
     $('#mitabladetalleNC').find('tbody').find('tr').empty();
     json = {
-        "opcion": 7,
-        "nrofacturaNC": $('#nrofacturaNC').val()
+        "opcion": 6,
+        "_nroFactura": $('#nrofacturaNC').val()
     };
     $.ajax({
-        url: "/TALLERCASAJC/NotaCreComprasControl",
+        url: "/TALLERCASAJC/NotaCreComprascontrol",
         type: 'POST',
         data: json,
         cache: false,
@@ -59,7 +59,7 @@ function recuperarFacturaNC() {
             if (JSON.stringify(resp) != '[]') {
                 var nro = JSON.stringify(resp);
                 var n = JSON.parse(nro);
-                var fac = n[0].nrofact;
+                var fac = n[0].co_nrofact;
                 if (parseInt(fac) > 0) {
                     alert('La factura  ya fue procesada..');
                 } else {
@@ -75,7 +75,7 @@ function recuperarFacturaNC() {
                             indx++;
                             $('#mitabladetalleNC').append("<tr id=\'prod" + indx + "\'>\
                                   <td>" + value.id_articulo + "</td>\n\
-                                    <td>" + value.art_descripcion + "</td>\n\
+                                    <td>" + value.articulo + "</td>\n\
                                      <td>" + value.precio_detcomp + "</td>\n\
                                     <td>" + value.cantidad_detcomp + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
@@ -259,10 +259,10 @@ function  deleteNC() {
 
 function getplanillaNC() {
     js = {
-        'opcion': 3
+        'opcion': 1
     };
     $.ajax({
-        url: "/TALLERCASAJC/NotaCreComprasControl",
+        url: "/TALLERCASAJC/NotaCreComprascontrol",
         type: 'POST',
         data: js,
         cache: false,
@@ -270,8 +270,8 @@ function getplanillaNC() {
             $.each(resp, function (indice, value) {
                 $("#mitablaNC").append($("<tr>").append($("<td>" + value.id_notacrecompra + "</td>" +
                         "<td>" + value.fecha_nocred + "</td>" +
-                        "<td>" + value.usuario + "</td>" +
-                        "<td>" + value.estado + "</td>")));
+                        "<td>" + value.est_descripcion + "</td>" +
+                        "<td>" + value.est_descripcion + "</td>")));
             });
         }
     });
@@ -286,11 +286,11 @@ function recuperarNC() {
         $('#btnguardarNC').hide();
         $('#mitabladetalleNC').find('tbody').find('tr').empty();
         detallejs = {
-            "opcion": 4,
-            "nronotacrecompra": $('#nronc').val()
+            "opcion": 5,
+            "_nroNC": $('#nronc').val()
         };
         $.ajax({
-            url: "/TALLERCASAJC/NotaCreComprasControl",
+            url: "/TALLERCASAJC/NotaCreComprascontrol",
             type: 'POST',
             data: detallejs,
             cache: false,
@@ -300,7 +300,7 @@ function recuperarNC() {
                     $.each(resp, function (indice, value) {
                         ///RECUPERA LA CABECERA/////////
                         $("#codigoNC").val(value.id_notacrecompra);
-                        $("#nrofacturaNC").val(value.co_nrofact);
+                        $("#nrofacturaNC").val(value.factura);
                         $("#idnrofacturaNC").val(value.id_compra);
                         $("#obserNC").val(value.obs_nocred);
                         $("#fechaNC").val(value.fecha_nocred);
@@ -308,12 +308,12 @@ function recuperarNC() {
                         $("#timbradoNC").val(value.nro_timbrado);
                         $("#depositoNC").val(value.id_deposito);
 
-                        subtotal = value.preciouni_detnocre * value.cantidad_detnocre;
+                        subtotal = value.cantidad_detnocre*value.montouni_detnocre;
                         ixInde++;
                         $('#mitabladetalleNC').append("<tr id=\'prod" + ixInde + "\'>\
                                     <td >" + value.id_articulo + "</td>\n\
                                     <td>" + value.articulo + "</td>\n\
-                                    <td>" + value.preciouni_detnocre + "</td>\n\
+                                    <td>" + value.montouni_detnocre + "</td>\n\
                                     <td>" + value.cantidad_detnocre + "</td>\n\
                                     <td>" + subtotal + "</td>\n\
                                     <td><button type=button title='Quitar el registro de la lista' \n\

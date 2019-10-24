@@ -28,6 +28,10 @@
         <servlet-name>sEntregaEquiposSERVLET</servlet-name>
         <servlet-class>ModelControl.sEntregaEquiposSERVLET</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NotaCreComprasSERVLET</servlet-name>
+        <servlet-class>ModelControl.NotaCreComprasSERVLET</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>javier</servlet-name>
         <url-pattern>/javier</url-pattern>
@@ -55,6 +59,10 @@
     <servlet-mapping>
         <servlet-name>sEntregaEquiposSERVLET</servlet-name>
         <url-pattern>/sEntregaEquiposSERVLET</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NotaCreComprasSERVLET</servlet-name>
+        <url-pattern>/NotaCreComprasSERVLET</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="80f3c484-baf8-434d-a065-5fcbaa6d4492">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="id_estado" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="vUser" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fdesde" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fhasta" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT $P{vUser} as usuario,f.id_compra, f.co_nrofact, f.co_fecha, p.ras_social,$P{fdesde}::date as fechadessde, $P{fhasta}::date as fechahasta,(e.est_descripcion) as estado,
+coalesce(a.total,0) as totalporfactura
+	FROM public.facturascompras f
+	left join proveedores p on  f.id_proveedor = p.id_proveedor
+          left join estados e on f.id_estado=e.id_estado
+	left join (select f.id_compra, sum(d.cantidad_detcomp*d.precio_detcomp)as total
+	from facturascompras f
+	left join detfacturascompras d on f.id_compra=d.id_compra
+          where  f.id_estado=1 and f.co_fecha::date between $P{fdesde}::date and  $P{fhasta}::date
+	group by f.id_compra) a  on a.id_compra = f.id_compra
+        where f.id_estado=1 and f.co_fecha::date between $P{fdesde}::date and  $P{fhasta}::date
+	group by  f.co_nrofact, coalesce(a.total, 0),e.est_descripcion,
+	f.id_compra, f.co_fecha, p.ras_social
+	order by f.co_nrofact asc]]>
+	</queryString>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="id_compra" class="java.lang.Integer"/>
+	<field name="co_nrofact" class="java.lang.Integer"/>
+	<field name="co_fecha" class="java.sql.Timestamp"/>
+	<field name="ras_social" class="java.lang.String"/>
+	<field name="fechadessde" class="java.sql.Date"/>
+	<field name="fechahasta" class="java.sql.Date"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="totalporfactura" class="java.lang.Long"/>
+	<variable name="totalporfactura_1" class="java.lang.Long" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{totalporfactura}]]></variableExpression>
+	</variable>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="79">
+			<rectangle radius="10">
+				<reportElement x="150" y="9" width="264" height="35" uuid="6bb53567-0121-4cee-adbb-3534d546d84a"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="160" y="23" width="254" height="28" forecolor="#000000" uuid="8e80dfac-5bdc-469b-899b-fdc7ea77e19d"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Facturas Compras ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="7" width="221" height="28" forecolor="#000000" uuid="dbe9770d-a4aa-4264-b489-2a4149c02868"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="100" y="57" width="98" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="9ae51c39-28b5-47ca-a960-8223e76d9d42"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Desde :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="340" y="56" width="98" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b1b9c223-c586-40e7-aa3d-7ffbd1ca4fcc"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Hasta :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="423" y="9" width="65" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="3c6356d1-29d1-489c-8250-e6aab02896db"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuario :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="480" y="10" width="100" height="20" uuid="359a0733-2718-4f6a-9532-c9739421ddf0"/>
+				<textFieldExpression><![CDATA[$F{usuario}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="198" y="59" width="100" height="20" uuid="d32c3873-bac1-4936-beb2-923673f1055e"/>
+				<textFieldExpression><![CDATA[$F{fechadessde}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="433" y="58" width="100" height="20" uuid="8b3d3753-6220-4d23-b50b-e2e326a0cb98"/>
+				<textFieldExpression><![CDATA[$F{fechahasta}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="18"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21">
+			<line>
+				<reportElement x="-20" y="20" width="595" height="1" forecolor="#666666" uuid="d1249bc3-5cfc-4f68-9636-11bcfdbf368e"/>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="8" y="0" width="77" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="0b44bbcb-ff96-490c-9a58-143218ac76f8"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro. Factura]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="-9" width="595" height="1" forecolor="#666666" uuid="d9f46dee-617c-4aad-a306-5bf1c8e098ad"/>
+			</line>
+			<staticText>
+				<reportElement x="111" y="1" width="100" height="20" forecolor="#000000" uuid="ed9398e4-c630-4c46-aea8-075a2942d7de"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Fact.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="211" y="0" width="80" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="8e14d7a2-68d4-4893-af81-c2470118f793"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Proveedor]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="-155" width="595" height="1" forecolor="#666666" uuid="b2e016e6-d096-4a09-ae32-afb36f5ee2e3"/>
+			</line>
+			<line>
+				<reportElement x="-21" y="-5" width="595" height="1" forecolor="#666666" uuid="828459eb-499f-4ad2-9242-7c67f1586da2"/>
+				<graphicElement>
+					<pen lineWidth="1.75" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="343" y="0" width="70" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="199ff3a8-3501-4a2e-b5c0-71b07d58bf78"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto Fact.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="466" y="0" width="70" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b1b32a5e-f8e0-4840-a14f-d63df44c49d7"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="13" y="0" width="87" height="20" uuid="96bb690d-c1eb-4163-8e82-5f722d35c026"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{co_nrofact}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="227" y="0" width="111" height="20" uuid="d81fe17d-a76f-4345-b124-d47b7265f185"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ras_social}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="113" y="0" width="100" height="20" uuid="6fee8096-0577-4a02-8a78-5987d6b70fc8"/>
+				<textFieldExpression><![CDATA[$F{co_fecha}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="349" y="0" width="100" height="20" uuid="b472d77f-9c23-4b22-a8d3-2d4998f436c5"/>
+				<textFieldExpression><![CDATA[$F{totalporfactura}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="449" y="0" width="106" height="21" uuid="2e047d5a-d357-4333-a464-2c35ccde7a34"/>
+				<textFieldExpression><![CDATA[$F{estado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="39">
+			<staticText>
+				<reportElement mode="Opaque" x="396" y="0" width="70" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="143003dd-8a69-47bc-a54a-e4f9684a6a25"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total :]]></text>
+			</staticText>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="22" width="515" height="13" backcolor="#FFFFFF" uuid="523946b9-d6c8-4be5-8378-346c67b6a9bc"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="22" width="40" height="13" backcolor="#FFFFFF" uuid="50ad3766-8efa-4c37-8ac9-df851aa4dacb"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="0" y="22" width="100" height="13" uuid="fcfb6264-c611-4ef0-8107-eb4f71ccab0c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="-20" y="21" width="595" height="1" uuid="5d31199a-4c1c-483e-938e-c9514016976a"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="-20" y="0" width="595" height="1" uuid="1308cdb8-33cf-45d7-b4ae-bf61199494df"/>
+			</line>
+			<textField pattern="#,##0">
+				<reportElement x="474" y="2" width="100" height="20" uuid="e4686c7c-9086-427e-8d63-61f80b5522b1"/>
+				<textFieldExpression><![CDATA[$V{totalporfactura_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

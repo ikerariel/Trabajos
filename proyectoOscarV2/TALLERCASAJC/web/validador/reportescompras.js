@@ -64,7 +64,9 @@ function generarInforme() {
       
 
     } else if ($('#vComprasresumen').is(':checked')) {
-        alert('marcado resumen!!');
+          var cod=6;
+       window.open(`reportesCompra_v.jsp?fdesde=${fdesde}&fhasta=${fhasta}&vUser=${vUser}&codigo=${cod}`, "_blank");
+        location.reload();
 
     } else if (parseInt(vProveedor) === 5 && parseInt(vEstado) === 5 &&
             $('#vlibrocompra').prop('checked', false) && $('#vComprasresumen').prop('checked', false)) {
