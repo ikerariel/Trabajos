@@ -57,7 +57,7 @@
                     <a id="btnAnularNR" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Anular Nota Remision">Anular*</a>
                     <a id="btnConfirmarNR" class="btn btn-lg btn-warning glyphicon glyphicon-ok" style=" font-weight: bold" title="Confirmar Nota Remision" onclick=></a>
                     <a id="btnRevertirNR" class="btn btn-lg btn-danger glyphicon glyphicon-minus-sign" style=" font-weight: bold" title="Revertir Confirmacion Nota Remision" onclick=""></a>
-                    <a id="btnReporteNR" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="reportes()"></a>
+                    <a id="btnReporteNR" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="informeremision(5)"></a>
                 </div>
 
                 <br>

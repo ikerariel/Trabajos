@@ -22,39 +22,7 @@ function opcionesNDC() {
             $('#codigoNC').val(parseInt(num) + 1);
         }
     });
-//
-//$('#notatipo').change(function () {
-//    var tipo = $('#notatipo').val();
-//    if (tipo === 'CREDITO') {
-//        $('#miTablaDetalleNota').find('tbody').find('tr').empty();
-//        $("#notaMotivo").prop('disabled', false);
-//        $("#codgenericiMerca").prop('disabled', false);
-//        $("#nombreMerca").prop('disabled', true);
-//        $('#notaMotivo').focus();
-//        $('#codigotablaNC').show();
-//        $('#descripcionablaNC').show();
-//        $('#precioablaNC').show();
-//        $('#cantidadablaNC').show();
-//        $('#subtotalablaNC').show();
-//        $('#btnguardarND').hide();
-//        $('#btnGuardarModificado').hide();
-//        $('#btnGuardar').show();
-//    } else if (tipo === 'DEBITO') {
-//        $('#miTablaDetalleNota').find('tbody').find('tr').empty();
-//        $('#btnguardarND').show();
-//        $('#btnGuardarModificado').hide();
-//        $('#btnGuardar').hide();
-//        $("#notaMotivo").prop('disabled', true);
-//        $("#codgenericiMerca").prop('disabled', true);
-//        $("#nombreMerca").prop('disabled', false);
-//        $("#nombreMerca").focus();
-//        $('#codigotablaNC').hide();
-//        $('#descripcionablaNC').show();
-//        $('#precioablaNC').show();
-//        $('#cantidadablaNC').show();
-//        $('#subtotalablaNC').show();
-//    }
-//});
+
 }
 
 

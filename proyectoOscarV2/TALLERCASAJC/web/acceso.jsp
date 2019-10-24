@@ -22,7 +22,7 @@
             #services{
                 max-width: 450px;
                 height: 280px;
-                opacity: 20%;
+                opacity: 100%;
                 webkit-box-shadow: 0px 0px 18px 0px rgba(48, 50, 50, 0.48);
                 -moz-box-shadow: 0px 0px 18px 0px rgba(48, 50, 50, 0.48);
                 box-shadow: 0px 0px 18px 0px rgba(48, 50, 50, 0.48);

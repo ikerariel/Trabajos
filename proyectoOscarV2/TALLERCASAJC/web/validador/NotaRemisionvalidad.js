@@ -10,7 +10,17 @@ $(document).ready(function () {
 //FUNCIONES DE TRANSACCIONES ----------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
 
+function informeremision(v) {
+    var nroremi = $('#_nro_NreC').val();
+    if (parseInt(v) === 5) {
+        var cod = v;
+        window.open(`reportesCompra_v.jsp?codigo=${cod}&id_notaremi=${nroremi}`, "_blank");
+        location.reload();
+    }
 
+    
+
+}
 function crearJSON(id) {
     datosJSON = {
         "opcion": id,

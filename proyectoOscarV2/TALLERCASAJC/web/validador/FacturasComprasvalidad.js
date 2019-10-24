@@ -9,7 +9,17 @@ $(document).ready(function () {
 
 //FUNCIONES DE TRANSACCIONES----------------------------------------------------------------------------
 //-------------------------------------------------------------------------------------------------------
+function informesvarios(v) {
+    var nrocompra = $('#nrofacturaP').val();
+    if (parseInt(v) === 4) {
+        var cod = v;
+        window.open(`reportesCompra_v.jsp?codigo=${cod}&id_compra=${nrocompra}`, "_blank");
+        location.reload();
+    }
 
+    
+
+}
 
 function opcionesCompras() {
     $('#btnNuevoCompras').click(function () {

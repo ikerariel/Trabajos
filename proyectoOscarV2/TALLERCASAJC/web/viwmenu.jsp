@@ -43,14 +43,14 @@
                                 <ul class="dropdown-menu">
                                      <li><a href="">SubMenu2</a></li>
                                 </ul>
-                                <li><a style="display: none" id="m_pedidoscompras" href="PedidosCompras.jsp">PedidosCompras</a></li>
-                                <li><a style="display: none" id="m_presupuestocompras" href="Presupuesto.jsp">Registrar Presupuesto</a></li>
-                                <li><a style="display: none" id="m_ordencompra" href="OrdenCompras.jsp">Orden Compras</a></li>
-                                <li><a style="display: none" id="m_facturacompra" href="FacturasCompras.jsp">FacturasCompras</a></li>
-                                <li><a style="display: none" id="m_notaremision" href="NotaRemision.jsp">Nota Remision</a></li>
-                                <li><a style="display: none" id="m_notacredito" href="NotaCreCompras.jsp">Nota Creditos</a></li>
-                                <li><a style="display: none" id="m_notadebito" href="NotaDebitoCompra.jsp">Nota Debitos</a></li>
-                                <li><a style="display: none" id="m_ajustes"href="Ajustes.jsp">Ajustes</a></li>
+                                <li><a style="display: none" id="m_pedidoscompras" href="PedidosCompras.jsp"> <span class="glyphicon glyphicon-chevron-down"></span> PedidosCompras</a></li>
+                                <li><a style="display: none" id="m_presupuestocompras" href="Presupuesto.jsp"><span class="glyphicon glyphicon-chevron-down"></span> Registrar Presupuesto</a></li>
+                                <li><a style="display: none" id="m_ordencompra" href="OrdenCompras.jsp"><span class="glyphicon glyphicon-chevron-down"></span> Orden Compras</a></li>
+                                <li><a style="display: none" id="m_facturacompra" href="FacturasCompras.jsp"><span class="glyphicon glyphicon-chevron-down"></span> FacturasCompras</a></li>
+                                <li><a style="display: none" id="m_notaremision" href="NotaRemision.jsp"><span class="glyphicon glyphicon-chevron-down"></span> Nota Remision</a></li>
+                                <li><a style="display: none" id="m_notacredito" href="NotaCreCompras.jsp"><span class="glyphicon glyphicon-chevron-down"></span> Nota Creditos</a></li>
+                                <li><a style="display: none" id="m_notadebito" href="NotaDebitoCompra.jsp"><span class="glyphicon glyphicon-chevron-down"></span> Nota Debitos</a></li>
+                                <li><a style="display: none" id="m_ajustes"href="Ajustes.jsp"><span class="glyphicon glyphicon-chevron-down"></span> Ajustes</a></li>
                                 
                                
                              

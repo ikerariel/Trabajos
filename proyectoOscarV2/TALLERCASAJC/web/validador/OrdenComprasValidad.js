@@ -1020,7 +1020,9 @@ function traerDetalleOrdenCompra() {
     $('#btnGuardarOrdencompra').hide();
     if ($('#ordenNro').val() === "") {
         alert('Seleecione un pedido para visualizar..');
-    } else {
+    } else if($('#estadOrdenP').val() === "CONFIRMADO"){
+        alert('No se puede modificar el registro');
+    }else{
         $('#ventanaOrdenCompra').modal('show');
         $('#mitablaOrdendetalle').find('tbody').find('tr').empty();
         datosOrden = {

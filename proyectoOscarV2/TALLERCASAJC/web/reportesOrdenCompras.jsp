@@ -16,9 +16,9 @@
 <%
         Conexion cn = new Conexion();
 
-        File reporFile = new File(application.getRealPath("/reportes/reportesOrdenCompras.jasper"));
+        File reporFile = new File(application.getRealPath("/reportes/ordenCompra.jasper"));
         Map parameters = new HashMap();
-        parameters.put("nro" , Integer.parseInt(request.getParameter("cod")));
+        parameters.put("id_ordcompra" , Integer.parseInt(request.getParameter("cod")));
         byte[] bytes = JasperRunManager.runReportToPdf(reporFile.getPath(), parameters, cn.getConexion());
         response.setContentLength(bytes.length);
         ServletOutputStream outputStream = response.getOutputStream();
