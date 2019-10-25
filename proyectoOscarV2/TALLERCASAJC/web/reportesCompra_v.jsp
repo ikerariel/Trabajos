@@ -91,6 +91,38 @@
         outputStream.flush();
         outputStream.close();
         
+    }if (codigo == 7) {
+          File reporFile = new File(application.getRealPath("/reportes/notaCredtioCompra.jasper"));
+        Map parameters = new HashMap();
+        parameters.put("id_notacrecompra" , Integer.parseInt(request.getParameter("id_notacrecompra")));
+        byte[] bytes = JasperRunManager.runReportToPdf(reporFile.getPath(), parameters, cn.getConexion());
+        response.setContentLength(bytes.length);
+        ServletOutputStream outputStream = response.getOutputStream();
+        outputStream.write(bytes, 0, bytes.length);
+        outputStream.flush();
+        outputStream.close();
+    }
+    if (codigo == 8) {
+          File reporFile = new File(application.getRealPath("/reportes/notaDebitoCompras.jasper"));
+        Map parameters = new HashMap();
+        parameters.put("id_notadecompra" , Integer.parseInt(request.getParameter("id_notadecompra")));
+        byte[] bytes = JasperRunManager.runReportToPdf(reporFile.getPath(), parameters, cn.getConexion());
+        response.setContentLength(bytes.length);
+        ServletOutputStream outputStream = response.getOutputStream();
+        outputStream.write(bytes, 0, bytes.length);
+        outputStream.flush();
+        outputStream.close();
+    }
+    if (codigo == 9) {
+          File reporFile = new File(application.getRealPath("/reportes/ajustesCompras.jasper"));
+        Map parameters = new HashMap();
+        parameters.put("id_ajuste" , Integer.parseInt(request.getParameter("id_ajuste")));
+        byte[] bytes = JasperRunManager.runReportToPdf(reporFile.getPath(), parameters, cn.getConexion());
+        response.setContentLength(bytes.length);
+        ServletOutputStream outputStream = response.getOutputStream();
+        outputStream.write(bytes, 0, bytes.length);
+        outputStream.flush();
+        outputStream.close();
     }
       
 %>

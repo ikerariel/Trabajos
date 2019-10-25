@@ -33,6 +33,7 @@
         <script src="Recursos/js/bootstrap-select.min.js"></script>
         <script src="Recursos/js/ImagenFondo.js"></script> 
         <script src="validador/notaDebitovalidad.js"></script>
+        <script src="validador/genericoJS.js"></script>
         <title>Nota Debito Compras</title>
         
         <style>
@@ -53,7 +54,7 @@
                     <a id="btnAnularND" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Anular Pedido" >Anular*</a>
                     <a id="btnConfirmarND" class="btn btn-lg btn-warning glyphicon glyphicon-ok" style=" font-weight: bold" title="Confirmar Nota de Débito" ></a>
                     <a id="btnRevertirND" class="btn btn-lg btn-danger glyphicon glyphicon-minus-sign" style=" font-weight: bold" title="Revertir Confirmacion" ></a>
-                    <a id="btnReporte" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="reportesPedido()"></a>
+                    <a id="btnReporte" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="informeND()"></a>
 
                 </div>
                 <br>
@@ -152,13 +153,18 @@
 
                                 <div class="form-group">
                                     <label id="texND" class="col-md-2 control-label">Nro. Nota Debitos</label>  
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <input   id="NroNotaDebitos" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" name="codigo" type="number" placeholder="Ingrese Nro Nota Debito" class="form-control input-sm" required=""  autofocus >
                                     </div>
 
                                     <label class="col-md-2 control-label">Nro. Timbrados</label>  
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <input  id ="NroTimbrados" type="number" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"
+                                                placeholder="Ingrese nro timbrado" class="form-control input-sm ">
+                                    </div>
+                                    <label class="col-md-2 control-label">Monto Acreditar</label>  
+                                    <div class="col-md-2">
+                                        <input disabled="" id ="montoAcreditar" type="text" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"
                                                 placeholder="Ingrese nro timbrado" class="form-control input-sm ">
                                     </div>
                                 </div>
@@ -166,18 +172,22 @@
                             </div>
                             <div class="form-horizontal">
                                 <div class="form-group">
-                                    <label class="col-md-1 control-label">Usuario</label>  
-                                    <div class="col-md-2">
+                                    <label style="display: none" class="col-md-1 control-label">Usuario</label>  
+                                    <div style="display: none" class="col-md-2">
                                         <input disabled  id="usuario" type="text" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" placeholder="Ivan" value="Ivan" class="form-control input-sm alert-danger">
                                     </div>
                                     <label class="col-md-2 control-label">Nro Factura.*</label>  
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <input maxlength="60" id="nrofacturaND" type="number" 
                                                onkeydown="
                                                        if (event.keyCode === 13) {
                                                            consultaFactura();
                                                        }"
                                                style="text-transform: uppercase; font-weight: bold;font-size: 12pt"  class="form-control input-sm" required=""  autofocus onkeydown="">
+                                    </div>
+                                      <label class="col-md-1 control-label">Obs.*</label>  
+                                    <div class="col-md-7">
+                                        <input maxlength="98" id="observacionND" style="text-transform: uppercase; font-weight: bold;font-size: 12pt"  class="form-control input-sm" required=""  autofocus onkeydown="">
                                     </div>
                                     <div class="col-md-1">
                                         <input  id="NDIdUsuario" type="text" style="visibility: hidden;">
@@ -196,7 +206,7 @@
                                     </div>
                                     <label class="col-md-1 control-label">Importe.*</label>  
                                     <div class="col-md-2">
-                                        <input   id="importeND" type="number" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" placeholder="Importe"  class="form-control input-sm"
+                                        <input   id="importeND" onkeyup="numeroDecimal('importeND')" type="text" style="text-transform: uppercase; font-weight: bold;font-size: 12pt" placeholder="Importe"  class="form-control input-sm"
                                                  onkeydown="
                                                          if (event.keyCode === 13) {
                                                              agregarFilaND();
@@ -216,7 +226,7 @@
                                             <th style="display: none">cod</th>
                                             <th>CONCEPTOS</th>
                                             <th>IMPORTE</th>    
-                                            <th style="display: none"></th>    
+                                            <th>OPCION</th>    
                                         </tr>
                                     </thead>
                                     <tbody id="table_deta" style="font-weight: bold;font-size: 10pt">

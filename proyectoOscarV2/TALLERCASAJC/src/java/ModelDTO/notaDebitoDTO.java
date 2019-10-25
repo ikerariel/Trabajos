@@ -30,6 +30,15 @@ public class notaDebitoDTO {
     Integer id_compra;
     Integer nrofact;
     Integer co_nrofact;
+    String observacion;
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
 
     public notaDebitoDTO(Integer id_notadecompra, String fecha, Integer id_estado, String est_descripcion) {
         this.id_notadecompra = id_notadecompra;
@@ -39,10 +48,11 @@ public class notaDebitoDTO {
 
     }
 
-    public notaDebitoDTO(String fecha, Integer nro_notadebito, Integer nro_timbradonotadebito,
+    public notaDebitoDTO(String fecha,String observacion, Integer nro_notadebito, Integer nro_timbradonotadebito,
             Integer id_compra, Integer factura, Integer id_usuario, String usu_nombre,
             Integer id_estado, String estado, String conceptos, Integer importe) {
         this.fecha = fecha;
+        this.observacion = observacion;
         this.nro_notadebito = nro_notadebito;
         this.nro_timbradonotadebito = nro_timbradonotadebito;
         this.id_compra = id_compra;

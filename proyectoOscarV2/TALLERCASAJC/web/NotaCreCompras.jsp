@@ -76,7 +76,7 @@
                     <a id="btnAnularNC" class="btn btn-lg btn-danger" style=" font-weight: bold" title="Anular Factura" >Anular*</a>
                     <a id="btnConfirmarNC" class="btn btn-lg btn-warning glyphicon glyphicon-ok"  style=" font-weight: bold" title="Confirmar Factura Compras" onclick="actualizarpresupuesto(1)"></a>
                     <a id="btnRevertirNc" class="btn btn-lg btn-danger glyphicon glyphicon-minus-sign" style=" font-weight: bold" title="Revertir Confirmacion Factura Compras" onclick="actualizarpresupuesto(3)"></a>
-                    <a id="btnReporte" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="informepresupuesto()"></a>
+                    <a id="btnReporte" class="btn btn-lg btn-primary glyphicon glyphicon-print" title="Reporte de Panilla" onclick="informenc()"></a>
                 </div>
 
                 <br>

@@ -57,13 +57,14 @@ public class notaDebitoDAOIMPLE implements notaDebitoDAO {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "INSERT INTO notadecompras( nro_notadebito, nro_timbradonotadebito, \n"
-                    + "id_compra, id_estado, id_usuario)\n"
+                    + "id_compra, id_estado, id_usuario, observacion)\n"
                     + "VALUES (?, ?, ?, 3, ?);";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setObject(1, Dto.getNro_notadebito());
             preparedStatement.setObject(2, Dto.getNro_timbradonotadebito());
             preparedStatement.setObject(3, Dto.getId_compra());
             preparedStatement.setObject(4, Dto.getIdusuario());
+            preparedStatement.setObject(5, Dto.getObservacion());
 
             filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {
@@ -165,7 +166,7 @@ public class notaDebitoDAOIMPLE implements notaDebitoDAO {
             conexion = new Conexion();
             sintaxiSql = "SELECT n.id_notadecompra, n.fecha::date, n.nro_notadebito, n.nro_timbradonotadebito, \n"
                     + "n.id_compra, (f.co_nrofact) as factura, n.id_estado, (e.est_descripcion) as estado,\n"
-                    + " n.id_usuario, (u.usu_nombre) as usuario, d.importe, d.conceptos\n"
+                    + " n.id_usuario,n.observacion, (u.usu_nombre) as usuario, d.importe, d.conceptos\n"
                     + "FROM notadecompras n\n"
                     + "INNER JOIN detnotadecompras d on n.id_notadecompra = d.id_notadecompra\n"
                     + "INNER JOIN facturascompras f on n.id_compra = f.id_compra\n"
@@ -178,6 +179,7 @@ public class notaDebitoDAOIMPLE implements notaDebitoDAO {
             while (rs.next()) {
                 alldetalleND.add(new notaDebitoDTO(
                         rs.getString("fecha"),
+                        rs.getString("observacion"),
                         rs.getInt("nro_notadebito"),
                         rs.getInt("nro_timbradonotadebito"),
                         rs.getInt("id_compra"),
@@ -261,14 +263,15 @@ public class notaDebitoDAOIMPLE implements notaDebitoDAO {
             conexion = new Conexion();
             sintaxiSql = "UPDATE notadecompras\n"
                     + "   SET nro_notadebito=?, nro_timbradonotadebito=?, \n"
-                    + "       id_compra=?, id_estado=3, id_usuario=?\n"
+                    + "       id_compra=?, id_estado=3, id_usuario=?, observacion=?\n"
                     + " WHERE id_notadecompra=?";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setObject(1, Dto.getNro_notadebito());
             preparedStatement.setObject(2, Dto.getNro_timbradonotadebito());
             preparedStatement.setObject(3, Dto.getId_compra());
             preparedStatement.setObject(4, Dto.getIdusuario());
-            preparedStatement.setObject(5, Dto.getId_notadecompra());
+            preparedStatement.setObject(5, Dto.getObservacion());
+            preparedStatement.setObject(6, Dto.getId_notadecompra());
 
             filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {

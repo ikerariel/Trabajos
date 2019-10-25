@@ -63,7 +63,7 @@ public class NotaCreComprascontrol extends HttpServlet {
                     ncDTO.setId_deposito(Integer.parseInt(request.getParameter("_depositonro")));
                     ncDTO.setId_notacrecompra(Integer.parseInt(request.getParameter("_codnotacrecompra")));
                 }
-                if (ncDAO.insertarNC(ncDTO)) {
+                if (ncDAO.insertarNC(ncDTO,vc)) {
                     out.println("Exitoso");
                 }
                 break;
@@ -112,6 +112,12 @@ public class NotaCreComprascontrol extends HttpServlet {
                 ncDTO.setId_notacrecompra(Integer.parseInt(request.getParameter("_codNC")));
 
                 if (ncDAO.updateCabeceraNC(ncDTO)) {
+                    out.println("Exitoso");
+                }
+                break;
+            case 9:
+                ncDTO.setId_notacrecompra(Integer.parseInt(request.getParameter("vNroNC")));
+                if (ncDAO.deleteNc(ncDTO)) {
                     out.println("Exitoso");
                 }
                 break;

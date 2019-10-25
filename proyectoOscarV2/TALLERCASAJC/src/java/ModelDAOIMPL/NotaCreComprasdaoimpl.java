@@ -62,16 +62,17 @@ public class NotaCreComprasdaoimpl implements NotaCreComprasdao {
         try {
             sintaxiSql = null;
             conexion = new Conexion();
-            sintaxiSql = "SELECT nc.id_notacrecompra,nc.id_deposito, nc.fecha_nocred::date, nc.nro_nocred, nc.nro_timbrado, \n" +
-"                     nc.obs_nocred, nc.id_compra, (f.co_nrofact) as factura, \n" +
-"                     nc.id_usuario, (u.usu_nombre) as usuarios, nc.id_estado, (e.est_descripcion) as estados,\n" +
-"                     dnc. id_notacrecompra, dnc. id_articulo, dnc. cantidad_detnocre, dnc. montouni_detnocre        \n" +
-"                     FROM notacrecompras nc\n" +
-"                     INNER JOIN detnotacrecompras dnc on dnc.id_notacrecompra = dnc.id_notacrecompra\n" +
-"                     INNER JOIN facturascompras f on nc.id_compra = f.id_compra\n" +
-"                     INNER JOIN usuarios u on nc.id_usuario = u.id_usuario\n" +
-"                    INNER JOIN estados e on nc.id_estado = e.id_estado\n" +
-"                    where nc.id_notacrecompra = ?";
+            sintaxiSql = "SELECT nc.id_notacrecompra,nc.id_deposito, nc.fecha_nocred::date, nc.nro_nocred, nc.nro_timbrado, \n"
+                    + "                     nc.obs_nocred, nc.id_compra, (f.co_nrofact) as factura, \n"
+                    + "                     nc.id_usuario,(a.art_descripcion) as articulo, (u.usu_nombre) as usuarios, nc.id_estado, (e.est_descripcion) as estados,\n"
+                    + "                     dnc. id_notacrecompra, dnc.id_articulo, dnc.cantidad_detnocre, dnc. montouni_detnocre        \n"
+                    + "                     FROM notacrecompras nc\n"
+                    + "                     INNER JOIN detnotacrecompras dnc on nc.id_notacrecompra = dnc.id_notacrecompra\n"
+                    + "                      INNER JOIN articulos a on dnc.id_articulo=a.id_articulo\n"
+                    + "                     INNER JOIN facturascompras f on nc.id_compra = f.id_compra\n"
+                    + "                     INNER JOIN usuarios u on nc.id_usuario = u.id_usuario\n"
+                    + "                    INNER JOIN estados e on nc.id_estado = e.id_estado\n"
+                    + "                    where nc.id_notacrecompra = ?";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, id);
             rs = preparedStatement.executeQuery();
@@ -91,6 +92,7 @@ public class NotaCreComprasdaoimpl implements NotaCreComprasdao {
                         rs.getInt("id_articulo"),
                         rs.getInt("id_deposito"),
                         rs.getInt("cantidad_detnocre"),
+                        rs.getString("articulo"),
                         rs.getInt("montouni_detnocre")));
             }
         } catch (SQLException ex) {
@@ -100,34 +102,70 @@ public class NotaCreComprasdaoimpl implements NotaCreComprasdao {
     }
 
     @Override
-    public boolean insertarNC(NotaCreComprasdto Dto) {
-        try {
-            sintaxiSql = null;
-            conexion = new Conexion();
-            sintaxiSql = "INSERT INTO notacrecompras(nro_nocred,  nro_timbrado, \n"
-                    + " obs_nocred, id_compra,  id_usuario, id_estado,id_estado)\n"
-                    + " VALUES (?, ?, ?, ?, ?, 3, );";
-            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
-            preparedStatement.setObject(1, Dto.getNro_nocred());
-            preparedStatement.setObject(2, Dto.getNro_timbrado());
-            preparedStatement.setObject(3, Dto.getObs_nocred());
-            preparedStatement.setObject(4, Dto.getId_compra());
-            preparedStatement.setObject(5, Dto.getId_usuario());
-            preparedStatement.setObject(6, Dto.getId_deposito());
+    public boolean insertarNC(NotaCreComprasdto Dto, Integer cod) {
+        switch (cod) {
+            case 1:
+                try {
+                    sintaxiSql = null;
+                    conexion = new Conexion();
+                    sintaxiSql = "INSERT INTO notacrecompras(nro_nocred,  nro_timbrado, \n"
+                            + " obs_nocred, id_compra,  id_usuario, id_estado,id_deposito)\n"
+                            + " VALUES (?, ?, ?, ?, ?, 3, );";
+                    preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+                    preparedStatement.setObject(1, Dto.getNro_nocred());
+                    preparedStatement.setObject(2, Dto.getNro_timbrado());
+                    preparedStatement.setObject(3, Dto.getObs_nocred());
+                    preparedStatement.setObject(4, Dto.getId_compra());
+                    preparedStatement.setObject(5, Dto.getId_usuario());
+                    preparedStatement.setObject(6, Dto.getId_deposito());
 
-            filasAfectadas = preparedStatement.executeUpdate();
-            if (filasAfectadas > 0) {
-                conexion.comit();
-                System.out.println("Comit() Realizado");
-                return true;
-            } else {
-                conexion.rollback();
-                System.out.println("Rollback() Realizado");
-            }
-            conexion.desConectarBD();
-        } catch (SQLException ex) {
-            Logger.getLogger(NotaCreComprasdaoimpl.class.getName()).log(Level.SEVERE, null, ex);
+                    filasAfectadas = preparedStatement.executeUpdate();
+                    if (filasAfectadas > 0) {
+                        conexion.comit();
+                        System.out.println("Comit() Realizado");
+                        return true;
+                    } else {
+                        conexion.rollback();
+                        System.out.println("Rollback() Realizado");
+                    }
+                    conexion.desConectarBD();
+                } catch (SQLException ex) {
+                    Logger.getLogger(NotaCreComprasdaoimpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
+            case 2:
+                try {
+                    sintaxiSql = null;
+                    conexion = new Conexion();
+                    sintaxiSql = "UPDATE notacrecompras\n"
+                            + " SET nro_nocred=?, nro_timbrado=?,obs_nocred=?,\n"
+                            + " id_compra=?, id_usuario=?,  id_estado=3, id_deposito=?\n"
+                            + " WHERE id_notacrecompra=?;";
+                    preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+                    preparedStatement.setObject(1, Dto.getNro_nocred());
+                    preparedStatement.setObject(2, Dto.getNro_timbrado());
+                    preparedStatement.setObject(3, Dto.getObs_nocred());
+                    preparedStatement.setObject(4, Dto.getId_compra());
+                    preparedStatement.setObject(5, Dto.getId_usuario());
+                    preparedStatement.setObject(6, Dto.getId_deposito());
+                    preparedStatement.setObject(7, Dto.getId_notacrecompra());
+
+                    filasAfectadas = preparedStatement.executeUpdate();
+                    if (filasAfectadas > 0) {
+                        conexion.comit();
+                        System.out.println("Comit() Realizado");
+                        return true;
+                    } else {
+                        conexion.rollback();
+                        System.out.println("Rollback() Realizado");
+                    }
+                    conexion.desConectarBD();
+                } catch (SQLException ex) {
+                    Logger.getLogger(NotaCreComprasdaoimpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
         }
+
         return false;
     }
 
@@ -169,7 +207,7 @@ public class NotaCreComprasdaoimpl implements NotaCreComprasdao {
         try {
             sintaxiSql = null;
             conexion = new Conexion();
-            sintaxiSql = "UPDATE id_notacrecompra\n"
+            sintaxiSql = "UPDATE notacrecompras\n"
                     + " SET  id_estado=?\n"
                     + " WHERE id_notacrecompra=?";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
@@ -198,7 +236,7 @@ public class NotaCreComprasdaoimpl implements NotaCreComprasdao {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "INSERT INTO detnotacrecompras(id_notacrecompra, id_articulo, cantidad_detnocre, montouni_detnocre)\n"
-                       + "VALUES (?, ?, ?, ?);";
+                    + "VALUES (?, ?, ?, ?);";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setObject(1, Dto.getId_notacrecompra());
             preparedStatement.setObject(2, Dto.getId_articulo());
@@ -262,7 +300,7 @@ public class NotaCreComprasdaoimpl implements NotaCreComprasdao {
                 return rs.getInt("codigo");
             }
         } catch (SQLException ex) {
-            Logger.getLogger( NotaCreComprasdaoimpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NotaCreComprasdaoimpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
 
@@ -276,13 +314,13 @@ public class NotaCreComprasdaoimpl implements NotaCreComprasdao {
         try {
             sintaxiSql = null;
             conexion = new Conexion();
-            sintaxiSql = "SELECT f.id_compra,f.id_estado, df.id_articulo,f.id_deposito, df.cantidad_detcomp, df.precio_detcomp,(a.art_descripcion)as articulo,\n" +
-"(select n.id_compra from notacrecompras n left join facturascompras f on n.id_compra=f.id_compra \n" +
-" where f.co_nrofact=? and n.id_estado in(1,3)) as co_nrofact\n" +
-"                     FROM facturascompras f\n" +
-"                     left join detfacturascompras df on f.id_compra=df.id_compra\n" +
-"			left join articulos a on df.id_articulo=a.id_articulo\n" +
-"                     where f.co_nrofact=?";
+            sintaxiSql = "SELECT f.id_compra,f.id_estado, df.id_articulo,f.id_deposito, df.cantidad_detcomp, df.precio_detcomp,(a.art_descripcion)as articulo,\n"
+                    + "(select n.id_compra from notacrecompras n left join facturascompras f on n.id_compra=f.id_compra \n"
+                    + " where f.co_nrofact=? and n.id_estado in(1,3)) as co_nrofact\n"
+                    + "                     FROM facturascompras f\n"
+                    + "                     left join detfacturascompras df on f.id_compra=df.id_compra\n"
+                    + "			left join articulos a on df.id_articulo=a.id_articulo\n"
+                    + "                     where f.co_nrofact=?";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, facturaNRO);
             preparedStatement.setInt(2, facturaNRO);
@@ -302,6 +340,30 @@ public class NotaCreComprasdaoimpl implements NotaCreComprasdao {
             Logger.getLogger(NotaCreComprasdaoimpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return new Gson().toJson(consultarfactura);
+    }
+
+    @Override
+    public boolean deleteNc(NotaCreComprasdto DTO) {
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "DELETE FROM public.detnotacrecompras\n"
+                    + " WHERE id_notacrecompra=?";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            preparedStatement.setObject(1, DTO.getId_notacrecompra());
+            filasAfectadas = preparedStatement.executeUpdate();
+            if (filasAfectadas > 0) {
+                conexion.comit();
+                System.out.println("Comit() Realizado");
+                return true;
+            } else {
+                conexion.rollback();
+                System.out.println("Rollback() Realizado");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(NotaCreComprasdaoimpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
 }

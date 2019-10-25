@@ -80,7 +80,7 @@ public class NotaCreComprasdto {
 
     public NotaCreComprasdto(Integer id_notacrecompra, String fecha_nocred, Integer nro_nocred, Integer nro_timbrado,String obs_nocred,
             Integer id_compra, Integer factura, Integer id_usuario,String usuarios, Integer id_estado,
-            String estados, Integer id_articulo, Integer id_deposito,Integer cantidad_detnocre, Integer montouni_detnocre) {
+            String estados, Integer id_articulo, Integer id_deposito,Integer cantidad_detnocre,String articulo, Integer montouni_detnocre) {
         this.id_notacrecompra = id_notacrecompra;
         this.fecha_nocred = fecha_nocred;
         this.nro_nocred = nro_nocred;
@@ -95,6 +95,7 @@ public class NotaCreComprasdto {
         this.id_articulo = id_articulo;
         this.id_deposito = id_deposito;
         this.cantidad_detnocre = cantidad_detnocre;
+        this.articulo = articulo;
         this.montouni_detnocre = montouni_detnocre;
     }
 

@@ -73,35 +73,6 @@ function generarInforme() {
         alert('Solo debes Seleciona una Opcion!!');
     }
 
-
-//        if(){
-//            
-//        }
-//    if ($('#vlibrocompra').is(':checked') && $('#vComprasresumen').is(':checked')) {
-//        alert('Solo debes Seleciona una ocpión!!');
-//        $('#vlibrocompra').prop('checked', false);
-//        $('#vComprasresumen').prop('checked', false);
-//
-//    }
-//    if ($('#vlibrocompra').is(':checked')) {
-//        $('#vComprasresumen').prop('checked', false);
-//        cod = 2;
-//        window.open(`reportesCompra_v.jsp?fdesde=${fdesde}&fhasta=${fhasta}&vUser=${vUser}&codigo=${cod}`, "_blank");
-//        location.reload();
-//    }
-//    if ($('#vComprasresumen').is(':checked')) {
-//        cod = 3;
-//        $('#vlibrocompra').prop('checked', false);
-//        window.open(`reportesCompra_v.jsp?fdesde=${fdesde}&fhasta=${fhasta}&vUser=${vUser}&codigo=${cod}`, "_blank");
-//        location.reload();
-//    }
-//    if (parseInt(vProveedor) > 0) {
-//        cod = 1;
-////            $('#vlibrocompra').prop('checked', false);
-//        window.open(`reportesCompra_v.jsp?fdesde=${fdesde}&fhasta=${fhasta}&vUser=${vUser}&codigo=${cod}&id_proveedor=${vProveedor}`, "_blank");
-//        location.reload();
-////        } if ($('#vlibrocompra').prop('checked', false) && $('#vComprasresumen').prop('checked', false)) {
-//        alert('Solo debes Seleciona una ocpión!!');
 }
 
 

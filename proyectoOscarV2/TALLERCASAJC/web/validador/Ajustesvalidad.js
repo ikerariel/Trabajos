@@ -13,7 +13,16 @@ function fechaactualL() {
 
     $('#fechaajuste').val(fecha.getDate() + "/" + (fecha.getMonth() + 1) + "/" + fecha.getFullYear());
 }
+
+function infoajustes() {
+    var ajuste = $('#v_nroAjustes').val();
+    var cod = 9;
+    window.open(`reportesCompra_v.jsp?codigo=${cod}&id_ajuste=${ajuste}`, "_blank");
+//        location.reload();
+
+}
 tindex = 0;
+
 function agregarFilasAjustes() {
 
     var v_codMaterialG = $('#codproductoAjustes').val();

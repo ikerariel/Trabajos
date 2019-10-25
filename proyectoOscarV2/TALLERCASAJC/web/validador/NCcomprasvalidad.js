@@ -3,11 +3,19 @@ $(document).ready(function () {
 });
 
 
+function informenc(v) {
+    var nc = $('#nronc').val();
+    var cod = 7;
+    window.open(`reportesCompra_v.jsp?codigo=${cod}&id_notacrecompra=${nc}`, "_blank");
+//        location.reload();
+
+}
+
 function opcionesNDC() {
     fechaNC();
     getplanillaNC();
     getProductos();
-    actualizarestadoNC(); 
+    actualizarestadoNC();
     $('#btnNuevoNC').click(function () {
         $('#mitabladetalleNC').find('tbody').find('tr').empty();
         $('#btnguardarNC').show();
@@ -129,7 +137,7 @@ function  insertarNotaC() {
             var opcion = confirm('Desea Guardar Nota credito debito..?');
             if (opcion === true) {
                 datosCabeceraJSON = {
-                    "opcion": 1,
+                    "opcion": 2,
                     "vvcaso": 1,
                     "_nronocred": $('#nroNC').val(),
                     "_nrotimbrado": $('#timbradoNC').val(),
@@ -139,7 +147,7 @@ function  insertarNotaC() {
                     "_deposito": $('#depositoNC').val()
                 };
                 $.ajax({
-                    url: "/TALLERCASAJC/NotaCreComprasControl",
+                    url: "/TALLERCASAJC/NotaCreComprascontrol",
                     type: 'POST',
                     data: datosCabeceraJSON,
                     cache: false,
@@ -179,7 +187,7 @@ function  updateNCD() {
             var opcion = confirm('Desea Guardar Nota credito debito..?');
             if (opcion === true) {
                 datos = {
-                    "opcion": 1,
+                    "opcion": 2,
                     "vvcaso": 2,
                     "_nronocred": $('#nroNC').val(),
                     "_codnotacrecompra": $('#codigoNC').val(),
@@ -190,7 +198,7 @@ function  updateNCD() {
                     "_depositonro": $('#depositoNC').val()
                 };
                 $.ajax({
-                    url: "/TALLERCASAJC/NotaCreComprasControl",
+                    url: "/TALLERCASAJC/NotaCreComprascontrol",
                     type: 'POST',
                     data: datos,
                     cache: false,
@@ -198,7 +206,7 @@ function  updateNCD() {
                     success: function () {
                         deleteNC();
                         setTimeout(function () {
-                            insertarDetalleNotaC()
+                            insertarDetalleNotaC();
                         }, 2000);
 
 
@@ -215,14 +223,14 @@ function  updateNCD() {
 function  insertarDetalleNotaC() {
     $('#mitabladetalleNC').find('tbody').find('tr').each(function () {
         datosDetalleJSON = {
-            "opcion": 2,
-            "_codnotacrecompra": $('#codigoNC').val(),
-            "_codarticulo": $(this).find("td").eq(0).html(),
-            "_cantidad": $(this).find("td").eq(3).html(),
-            "_preciounitario": $(this).find("td").eq(2).html()
+            "opcion": 4,
+            "DtNC_codigoNC": $('#codigoNC').val(),
+            "DtNC_codarticulo": $(this).find("td").eq(0).html(),
+            "DtNC_cantidaddetnocre": $(this).find("td").eq(3).html(),
+            "DtMC_montounidetnocre": $(this).find("td").eq(2).html().replace(/\./g, '')
         };
         $.ajax({
-            url: "/TALLERCASAJC/NotaCreComprasControl",
+            url: "/TALLERCASAJC/NotaCreComprascontrol",
             type: 'POST',
             data: datosDetalleJSON,
             cache: false,
@@ -239,11 +247,11 @@ function  insertarDetalleNotaC() {
 
 function  deleteNC() {
     datosDetalleJSON = {
-        "opcion": 5,
-        "_codnotacrecompra": $('#codigoNC').val()
+        "opcion": 9,
+        "vNroNC": $('#codigoNC').val()
     };
     $.ajax({
-        url: "/TALLERCASAJC/NotaCreComprasControl",
+        url: "/TALLERCASAJC/NotaCreComprascontrol",
         type: 'POST',
         data: datosDetalleJSON,
         cache: false,
@@ -308,7 +316,7 @@ function recuperarNC() {
                         $("#timbradoNC").val(value.nro_timbrado);
                         $("#depositoNC").val(value.id_deposito);
 
-                        subtotal = value.cantidad_detnocre*value.montouni_detnocre;
+                        subtotal = value.cantidad_detnocre * value.montouni_detnocre;
                         ixInde++;
                         $('#mitabladetalleNC').append("<tr id=\'prod" + ixInde + "\'>\
                                     <td >" + value.id_articulo + "</td>\n\
@@ -477,9 +485,9 @@ function actualizarestadoNC() {
                     var opcion = confirm('Desea Anular el registro.??');
                     if (opcion === true) {
                         datoJson = {
-                            "opcion": 6,
+                            "opcion": 7,
                             "_estado": 2,
-                            "_notacrecompra": $('#nronc').val()
+                            "_idNC": $('#nronc').val()
                         };
                         confirmarNota();
                         alert('Registro Anulado con éxito.!!');
@@ -494,9 +502,9 @@ function actualizarestadoNC() {
                     var opcion = confirm('Desea Confirmar el registro.??');
                     if (opcion === true) {
                         datoJson = {
-                            "opcion": 6,
+                            "opcion": 7,
                             "_estado": 1,
-                            "_notacrecompra": $('#nronc').val()
+                            "_idNC": $('#nronc').val()
                         };
                         confirmarNota();
                         alert('Registro Confirmado con éxito.!!');
@@ -511,9 +519,9 @@ function actualizarestadoNC() {
                     var opcion = confirm('Desea Revertir el registro.??');
                     if (opcion === true) {
                         datoJson = {
-                           "opcion": 6,
+                            "opcion": 7,
                             "_estado": 3,
-                            "_notacrecompra": $('#nronc').val()
+                            "_idNC": $('#nronc').val()
                         };
                         confirmarNota();
                         alert('Registro Revertido.!!');
@@ -525,7 +533,7 @@ function actualizarestadoNC() {
 }
 function confirmarNota() {
     $.ajax({
-        url: "/TALLERCASAJC/NotaCreComprasControl",
+        url: "/TALLERCASAJC/NotaCreComprascontrol",
         type: 'POST',
         data: datoJson,
         cache: false,

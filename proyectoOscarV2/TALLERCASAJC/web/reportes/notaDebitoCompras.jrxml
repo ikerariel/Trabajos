@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="80f3c484-baf8-434d-a065-5fcbaa6d4492">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="dataset1" uuid="5d45ac10-d55a-4a6a-97ad-98cad36e7e17"/>
+	<parameter name="id_notadecompra" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT n.id_notadecompra, n.fecha::date, n.nro_notadebito, n.nro_timbradonotadebito, 
+                    n.id_compra, (f.co_nrofact) as factura, n.id_estado, (e.est_descripcion) as estado,
+                     n.id_usuario, (u.usu_nombre) as usuario, d.importe, UPPER(d.conceptos) as concepto, n.observacion
+                    FROM notadecompras n
+                    INNER JOIN detnotadecompras d on n.id_notadecompra = d.id_notadecompra
+                    INNER JOIN facturascompras f on n.id_compra = f.id_compra
+                    INNER JOIN usuarios u on n.id_usuario = u.id_usuario
+                    INNER JOIN estados e on n.id_estado = e.id_estado
+                    where n.id_notadecompra = $P{id_notadecompra}]]>
+	</queryString>
+	<field name="id_notadecompra" class="java.lang.Integer"/>
+	<field name="fecha" class="java.sql.Date"/>
+	<field name="nro_notadebito" class="java.lang.Integer"/>
+	<field name="nro_timbradonotadebito" class="java.lang.Integer"/>
+	<field name="id_compra" class="java.lang.Integer"/>
+	<field name="factura" class="java.lang.Integer"/>
+	<field name="id_estado" class="java.lang.Integer"/>
+	<field name="estado" class="java.lang.String"/>
+	<field name="id_usuario" class="java.lang.Integer"/>
+	<field name="usuario" class="java.lang.String"/>
+	<field name="importe" class="java.lang.Integer"/>
+	<field name="concepto" class="java.lang.String"/>
+	<field name="observacion" class="java.lang.String"/>
+	<variable name="importe_1" class="java.lang.Integer" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{importe}]]></variableExpression>
+	</variable>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="52">
+			<rectangle radius="10">
+				<reportElement x="150" y="9" width="264" height="35" uuid="6bb53567-0121-4cee-adbb-3534d546d84a"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="159" y="15" width="258" height="28" forecolor="#000000" uuid="8e80dfac-5bdc-469b-899b-fdc7ea77e19d"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="15" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reporte de Nota Débitos]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="54">
+			<staticText>
+				<reportElement mode="Opaque" x="344" y="3" width="143" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="232f1a08-e939-4ff2-93bc-54c2f2500851"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro. Factura :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="-4" y="1" width="119" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="d060f5c0-c3ef-4827-adbb-a7e23c3b61cf"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro. Registro :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="161" y="3" width="68" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="2aa1c581-19e8-4985-9e76-1d94eacd2de2"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="113" y="1" width="46" height="20" uuid="a236f4ac-a3b1-44c1-be28-09a35e12b1c7"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{id_notadecompra}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy">
+				<reportElement x="227" y="3" width="138" height="20" uuid="7c1b21f4-14cc-4dc1-8359-b50bec885a97"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="23" y="24" width="52" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="cef5fedd-8e36-4159-817d-01d365a90a88"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Obs. :]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="66" y="23" width="461" height="20" uuid="8b1588b3-3150-464f-b8e5-a77b62569abf"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{observacion}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="###0">
+				<reportElement x="469" y="3" width="100" height="20" uuid="8691bb25-c31d-45c1-a9eb-2d8126eac7b7"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{factura}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="21">
+			<line>
+				<reportElement x="-20" y="20" width="595" height="1" forecolor="#666666" uuid="d1249bc3-5cfc-4f68-9636-11bcfdbf368e"/>
+			</line>
+			<line>
+				<reportElement x="-20" y="-52" width="595" height="1" forecolor="#666666" uuid="b2e016e6-d096-4a09-ae32-afb36f5ee2e3"/>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="446" y="-1" width="64" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="5aca38b1-a77e-4e5a-8d94-b08d269f6308"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Precio U.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="-20" y="-6" width="595" height="1" forecolor="#666666" uuid="d9f46dee-617c-4aad-a306-5bf1c8e098ad"/>
+			</line>
+			<staticText>
+				<reportElement x="3" y="1" width="100" height="20" forecolor="#000000" uuid="ed9398e4-c630-4c46-aea8-075a2942d7de"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<textField isStretchWithOverflow="true" pattern="#,##0">
+				<reportElement x="450" y="0" width="71" height="20" uuid="e173dfd3-db8d-4f84-aee6-a03bda3108c5"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="5" y="0" width="409" height="20" uuid="6fee8096-0577-4a02-8a78-5987d6b70fc8"/>
+				<textFieldExpression><![CDATA[$F{concepto}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="39">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="22" width="515" height="13" backcolor="#FFFFFF" uuid="523946b9-d6c8-4be5-8378-346c67b6a9bc"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pag. "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="22" width="40" height="13" backcolor="#FFFFFF" uuid="50ad3766-8efa-4c37-8ac9-df851aa4dacb"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="0" y="22" width="100" height="13" uuid="fcfb6264-c611-4ef0-8107-eb4f71ccab0c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="-20" y="21" width="595" height="1" uuid="5d31199a-4c1c-483e-938e-c9514016976a"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="-20" y="0" width="595" height="1" uuid="1308cdb8-33cf-45d7-b4ae-bf61199494df"/>
+			</line>
+			<staticText>
+				<reportElement mode="Opaque" x="417" y="1" width="46" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b303db77-126d-4a65-8c77-212f79a1167e"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total :]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="463" y="2" width="100" height="20" uuid="46cea5a2-6f97-410b-b9c0-2b2355f79bfc"/>
+				<textFieldExpression><![CDATA[$V{importe_1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

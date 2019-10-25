@@ -85,8 +85,7 @@ public class accesoSERVLET extends HttpServlet {
             response.sendRedirect("/TALLERCASAJC/acceso.jsp");
 //            JOptionPane.showMessageDialog(null, "Contrasea inválida..!");
             System.out.println("error al verificar el usuario");
-            cont++;
-            System.out.println(cont);
+
 
         }
 //        switch (opcion) {

@@ -51,6 +51,7 @@ public class notaDebitocontrol extends HttpServlet {
                 ndDTO.setNro_timbradonotadebito(Integer.parseInt(request.getParameter("_nrotimbradoDebito")));
                 ndDTO.setId_compra(Integer.parseInt(request.getParameter("_codcompra")));
                 ndDTO.setIdusuario(Integer.parseInt(request.getParameter("_codusuario")));
+                ndDTO.setObservacion(request.getParameter("_observacionND"));
 
                 if (ndDAO.insertarND(ndDTO)) {
                     out.println("Exitoso");
@@ -96,6 +97,7 @@ public class notaDebitocontrol extends HttpServlet {
                 ndDTO.setNro_timbradonotadebito(Integer.parseInt(request.getParameter("_nrotimbradoDebito")));
                 ndDTO.setId_compra(Integer.parseInt(request.getParameter("_codcompra")));
                 ndDTO.setIdusuario(Integer.parseInt(request.getParameter("_codusuario")));
+                   ndDTO.setObservacion(request.getParameter("_observacionNDV"));
                 ndDTO.setId_notadecompra(Integer.parseInt(request.getParameter("_codND")));
 
                 if (ndDAO.updateCabeceraND(ndDTO)) {

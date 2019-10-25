@@ -71,7 +71,7 @@ public class accesoDAOIMPL implements accesoDAO {
 
     @Override
     public boolean accesoUsuario(accesoDTO accesoDTO) {
-
+        Integer cont = 0;
         try {
             sintaxiSql = null;
             conexion = new Conexion();
@@ -89,6 +89,9 @@ public class accesoDAOIMPL implements accesoDAO {
             if (resultado.next()) {
 
                 return true;
+            } else {
+        
+                System.out.println("USUARIO INCORRECTO...");
             }
             conexion.desConectarBD();
         } catch (SQLException ex) {

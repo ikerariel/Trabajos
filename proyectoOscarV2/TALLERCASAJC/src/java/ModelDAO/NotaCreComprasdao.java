@@ -17,7 +17,7 @@ public interface NotaCreComprasdao {
 
     String getDetNotaCreCompras(Integer id);
 
-    boolean insertarNC(NotaCreComprasdto Dto);
+    boolean insertarNC(NotaCreComprasdto Dto, Integer cod);
 
     boolean updateCabeceraNC(NotaCreComprasdto Dto);
 
@@ -26,6 +26,7 @@ public interface NotaCreComprasdao {
     boolean insertarDetalleNC(NotaCreComprasdto Dto);
 
     boolean insertarDetllaNc(NotaCreComprasdto DTO);
+    boolean deleteNc(NotaCreComprasdto DTO);
 
     Integer getUltimoCodigo();
     

@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     fechaactual();
     allnotasDebitos();
-    actualizarestadoND(); 
+    actualizarestadoND();
 });
 function fechaactual() {
     var fecha = new Date();
@@ -15,6 +15,15 @@ function abrirVentana() {
     getcodND();
 }
 
+function informeND() {
+    var ND = $('#v_nroND').val();
+        var cod = 8;
+        window.open(`reportesCompra_v.jsp?codigo=${cod}&id_notadecompra=${ND}`, "_blank");
+        location.reload();
+
+    
+
+}
 var tindex = 0;
 
 function agregarFilaND() {
@@ -32,16 +41,19 @@ function agregarFilaND() {
             var v_importe = $('#importeND').val();
 
             // °°°°style=display:none°°° PARA ocultar ej. "Nro Factura"
+            tindex++;
             $('#miTablaDetalleND').append("<tr id=\'prod" + tindex + "\'>\
             <td style=display:none>" + v_nrofac + "</td>\n\
             <td>" + v_obs + "</td>\n\
             <td>" + v_importe + "</td>\n\
-            <td><img onclick=\"$(\'#prod" + tindex + "\').remove()\n\
-            \" src='Recursos/img/delete.png' width=14 height=14/></td></tr>");
+            <td><button type=button title='Quitar el registro de la lista' \n\
+            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + tindex + "\').remove();calculoND();\">\n\
+            <span class='glyphicon glyphicon-remove'></span></button></td></tr>");
             $('#importeND').val(null);
             $('#observND').val(null);
             $('#observND').focus;
         }
+        calculoND();
     }
 }//-----------------------
 
@@ -83,7 +95,8 @@ function  insertarND() {
                     "_nrodebito": $('#NroNotaDebitos').val(),
                     "_nrotimbradoDebito": $('#NroTimbrados').val(),
                     "_codcompra": $('#idcompraND').val(),
-                    "_codusuario":$('#idusersession_v').val()
+                    "_codusuario": $('#idusersession_v').val(),
+                    "_observacionND": $('#observacionND').val()
                 };
 
                 $.ajax({
@@ -93,9 +106,9 @@ function  insertarND() {
                     cache: false,
                     dataType: 'text',
                     success: function () {
-                        setTimeout(function (){
-                              insetarDetalleND(); 
-                        },1200);
+                        setTimeout(function () {
+                            insetarDetalleND();
+                        }, 1200);
                         alert("Registro guardado correctamente.!!");
                     },
                     error: function () {
@@ -106,7 +119,7 @@ function  insertarND() {
             } else {
 
             }
-         
+
         }
     }
 }
@@ -117,7 +130,7 @@ function  insetarDetalleND() {
             datosDetalleND = {
                 "opcion": 4,
                 "ND_codigoD": $('#codigoND').val(),
-                "ND_importe": $(this).find("td").eq(2).html(),
+                "ND_importe": $(this).find("td").eq(2).html().replace(/\./g, ''),
                 "NT_comentario": $(this).find("td").eq(1).html()
             };
             $.ajax({
@@ -193,16 +206,20 @@ function recuperarDetalleND() {
                             $("#NroTimbrados").val(value.nro_timbradonotadebito);
                             $("#nrofacturaND").val(value.factura);
                             $("#idcompraND").val(value.id_compra);
+                            $("#observacionND").val(value.observacion);
 
                             tindex++;
                             $('#miTablaDetalleND').append("<tr id=\'prod" + tindex + "\'>\
                              <td style=display:none>" + '0' + "</td>\n\
                              <td>" + value.conceptos + "</td>\n\
                                 <td>" + value.importe + "</td>\n\
-                               <td><img onclick=\"$(\'#prod" + tindex + "\').remove()\" src='Recursos/img/delete.png' width=14 height=14/></td>\n\
+                               <td><button type=button title='Quitar el registro de la lista' \n\
+            style='align-content:center' class='btn btn-danger' onclick=\"$(\'#prod" + tindex + "\').remove();calculoND();\">\n\
+            <span class='glyphicon glyphicon-remove'></span></button></td>\n\
                                 </tr>");
 
                         });
+                        calculoND();
                     } else {
                         alert('Datos no encontrados..');
                     }
@@ -210,6 +227,23 @@ function recuperarDetalleND() {
             });
         }
     }
+}
+
+function calculoND() {
+    setTimeout(function () {
+        monto = 0;
+        acumu = 0;
+        $('#miTablaDetalleND').find('tbody').find('tr').each(function () {
+            monto = parseInt($(this).find("td").eq(2).html());
+            acumu = acumu + monto;
+        });
+        $('#montoAcreditar').val(acumu);
+        tindex++;
+        numeroDecimal('montoAcreditar');
+
+
+    }, 1000);
+
 }
 
 function consultaFactura() {
@@ -264,7 +298,8 @@ function updateCabecera() {
             "_nrodebito": $('#NroNotaDebitos').val(),
             "_nrotimbradoDebito": $('#NroTimbrados').val(),
             "_codcompra": $('#idcompraND').val(),
-            "_codusuario": 1,
+            "_codusuario": $('#idusersession_v').val(),
+            "_observacionNDV": $('#observacionND').val(),
             "_codND": $('#codigoND').val()
         };
 
@@ -278,6 +313,9 @@ function updateCabecera() {
 
                 alert("Registro modificado correctamente.!!");
                 updateDetalle();
+                setTimeout(function () {
+                    insetarDetalleND();
+                }, 1200);
             },
             error: function () {
             }
@@ -288,7 +326,7 @@ function updateCabecera() {
 
     }
 
-    insetarDetalleND();
+
 }
 
 
@@ -327,7 +365,7 @@ function actualizarestadoND() {
                             "codEstado": 2,
                             "codND": $('#v_nroND').val()
                         };
-                      confirmarND();
+                        confirmarND();
                         alert('Registro Anulado con éxito.!!');
                     }
                 }
@@ -344,7 +382,7 @@ function actualizarestadoND() {
                             "codEstado": 1,
                             "codND": $('#v_nroND').val()
                         };
-                       confirmarND();
+                        confirmarND();
                         alert('Registro Confirmado con éxito.!!');
                     }
                 }
@@ -361,7 +399,7 @@ function actualizarestadoND() {
                             "codEstado": 3,
                             "codND": $('#v_nroND').val()
                         };
-                     confirmarND();
+                        confirmarND();
                         alert('Registro revertido con exito.!!');
                     }
                 }
@@ -374,14 +412,14 @@ function actualizarestadoND() {
 
 function confirmarND() {
     $.ajax({
-        url:  "http://localhost:8084/TALLERCASAJC/notaDebitocontrol",
+        url: "http://localhost:8084/TALLERCASAJC/notaDebitocontrol",
         type: 'POST',
         data: datosNC,
         cache: false,
         dataType: 'text',
         success: function () {
             $('#miTablaNotaDebito').find('tbody').find('tr').empty();
-             allnotasDebitos();
+            allnotasDebitos();
         },
         error: function () {
 
