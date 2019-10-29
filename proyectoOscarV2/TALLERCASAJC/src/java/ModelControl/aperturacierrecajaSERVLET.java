@@ -62,7 +62,7 @@ public class aperturacierrecajaSERVLET extends HttpServlet {
                 apDTO.setId_caja(Integer.parseInt(request.getParameter("codigocaja")));
                 apDTO.setId_sucursal(Integer.parseInt(request.getParameter("codigosucursal")));
                 apDTO.setId_deposito(Integer.parseInt(request.getParameter("codigodeposito")));
-                apDTO.setIdsupervisor(Integer.parseInt(request.getParameter("codigosupervisor")));
+                apDTO.setId_usuario(Integer.parseInt(request.getParameter("codigouser")));
                 apDTO.setIdcajero(Integer.parseInt(request.getParameter("codigocajero")));
                 apDTO.setId_timbrado(Integer.parseInt(request.getParameter("codigotimbrado")));
                 out.println(apDTO);
@@ -105,6 +105,9 @@ public class aperturacierrecajaSERVLET extends HttpServlet {
                 } else {
                     System.out.println("Mensaje del Servler...Error al recuperar filtro");
                 }
+                    case 8:
+                out.println(apDAO.getCajeros());
+                break;
         }
 
 //        try (PrintWriter out = response.getWriter()) {

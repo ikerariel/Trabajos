@@ -60,11 +60,12 @@ public class ventaDAOIMPLE implements ventaDAO {
         try {
             sintaxiSql = null;
             conexion = new Conexion();
-            sintaxiSql = "SELECT v.idvendedor, v.fechaentrada, v.fechasalida, v.id_estado, v.id_empleado,\n"
-                    + "(e.nombre||' '||e.apellido) vendedor\n"
-                    + "  FROM public.vendedor v\n"
-                    + "  INNER JOIN empleados e on e.id_empleado=v.id_empleado\n"
-                    + "where v.id_estado=7";
+            sintaxiSql = "SELECT v.idvendedor,\n"
+                    + "                   upper(e.nombre||' '||e.apellido) as  vendedor\n"
+                    + "                      FROM vendedor v\n"
+                    + "                      INNER JOIN usuarios u on v.id_usuario=u.id_usuario\n"
+                    + "		      inner join empleados e on u.id_empleado=e.id_empleado\n"
+                    + "                    where v.id_estado=7";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
@@ -107,17 +108,23 @@ public class ventaDAOIMPLE implements ventaDAO {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "INSERT INTO public.ventas(\n"
-                    + "             nrofactura, idtipopag, id_cliente,id_deposito, \n"
-                    + "             id_estado, id_usuario,idvendedor,id_apcica)\n"
-                    + "    VALUES (?, ?, ?, ?, 1, ?, ?, ?)";
+                    + "             nrofactura, id_condicionpago, id_cliente,id_deposito,id_pedidoven, \n"
+                    + "             id_estado, id_usuario,idvendedor,id_apcica,idfactura,vcantcuota,vmontocuota,intervalo,vfechavto)\n"
+                    + "    VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?,?,?,?,?,?::date)";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setObject(1, Dto.getNumerofac());
             preparedStatement.setObject(2, Dto.getTipoog());
             preparedStatement.setObject(3, Dto.getId_cliente());
             preparedStatement.setObject(4, Dto.getId_deposito());
-            preparedStatement.setObject(5, Dto.getId_usuario());
-            preparedStatement.setObject(6, Dto.getIdvendedor());
-            preparedStatement.setObject(7, Dto.getId_apcica());
+            preparedStatement.setObject(5, Dto.getId_pedidoven());
+            preparedStatement.setObject(6, Dto.getId_usuario());
+            preparedStatement.setObject(7, Dto.getIdvendedor());
+            preparedStatement.setObject(8, Dto.getId_apcica());
+            preparedStatement.setObject(9, Dto.getIdfactura());
+            preparedStatement.setObject(10, Dto.getVcantcuota());
+            preparedStatement.setObject(11, Dto.getVmontocuota());
+            preparedStatement.setObject(12, Dto.getIntervalo());
+            preparedStatement.setObject(13, Dto.getVfechavto());
             filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {
                 conexion.comit();
@@ -141,13 +148,12 @@ public class ventaDAOIMPLE implements ventaDAO {
             conexion = new Conexion();
             sintaxiSql = "INSERT INTO public.detventas(\n"
                     + "            id_articulo, id_venta, cantidad, precio, id_impuesto)\n"
-                    + "    VALUES (?, ?, ?, ?, ?);";
+                    + "    VALUES (?, (select id_venta from ventas order by id_venta desc limit 1), ?, ?, ?);";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setObject(1, Dto.getId_articulo());
-            preparedStatement.setObject(2, Dto.getId_venta());
-            preparedStatement.setObject(3, Dto.getCantidad());
-            preparedStatement.setObject(4, Dto.getPreciounitario());
-            preparedStatement.setObject(5, Dto.getId_impuesto());
+            preparedStatement.setObject(2, Dto.getCantidad());
+            preparedStatement.setObject(3, Dto.getPreciounitario());
+            preparedStatement.setObject(4, Dto.getId_impuesto());
             filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {
                 conexion.comit();
@@ -227,11 +233,11 @@ public class ventaDAOIMPLE implements ventaDAO {
 
             sintaxiSql = null;
             conexion = new Conexion();
-            sintaxiSql = "SELECT v.idvendedor, v.fechaentrada, v.fechasalida, v.id_estado, v.id_empleado,\n"
-                    + "(e.nombre||' '||e.apellido) vendedor\n"
-                    + "  FROM public.vendedor v\n"
-                    + "  INNER JOIN empleados e on e.id_empleado=v.id_empleado\n"
-                    + "where v.id_estado=7 and  v.idvendedor=?";
+            sintaxiSql = " SELECT v.idvendedor,(e.nombre||' '||e.apellido) vendedor\n"
+                    + "FROM public.vendedor v\n"
+                    + "inner join usuarios u on v.id_usuario=u.id_usuario\n"
+                    + "INNER JOIN empleados e on u.id_empleado=e.id_empleado\n"
+                    + "             where v.id_estado=7 and  v.idvendedor=?";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, codVendedor);
             rs = preparedStatement.executeQuery();
@@ -330,11 +336,12 @@ public class ventaDAOIMPLE implements ventaDAO {
         try {
             sintaxiSql = null;
             conexion = new Conexion();
-            sintaxiSql = "SELECT t.id_timbrado, t.numero, t.inicio_fecha::date, t.final_fecha, t.vencimientos, \n"
+            sintaxiSql = "SELECT t.id_timbrado,(tp.descripcion) as tipodocumento, t.numero, t.inicio_fecha::date, t.final_fecha, t.vencimientos, \n"
                     + "       t.id_estado, t.id_usuario, t.fac_establecimiento, t.fac_caja, t.fac_desde, \n"
                     + "       t.fac_hasta, e.est_descripcion\n"
                     + "  FROM public.timbrados t\n"
-                    + "  INNER JOIN estados e on t.id_estado = e.id_estado";
+                    + "  left join tipodocumento tp on t.id_tipodocumento=tp.id_tipodocumento\n"
+                    + "  INNER JOIN estados e on t.id_estado = e.id_estado order by t.id_timbrado desc";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
@@ -343,6 +350,7 @@ public class ventaDAOIMPLE implements ventaDAO {
                         rs.getString("inicio_fecha"),
                         rs.getString("vencimientos"),
                         rs.getString("est_descripcion"),
+                        rs.getString("tipodocumento"),
                         rs.getString("fac_caja")));
 
             }
@@ -360,8 +368,8 @@ public class ventaDAOIMPLE implements ventaDAO {
             sintaxiSql = "INSERT INTO public.timbrados(\n"
                     + "            numero, vencimientos,id_estado, \n"
                     + "            id_usuario, fac_establecimiento, fac_caja, fac_desde, \n"
-                    + "            fac_hasta)\n"
-                    + "    VALUES (?, ?::date, 7, ?, ?, ?, ?, ?);";
+                    + "            fac_hasta,id_tipodocumento)\n"
+                    + "    VALUES (?, ?::date, 7, ?, ?, ?, ?, ?,?);";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setObject(1, Dto.getNumero());
             preparedStatement.setObject(2, Dto.getVencimientos());
@@ -370,6 +378,7 @@ public class ventaDAOIMPLE implements ventaDAO {
             preparedStatement.setObject(5, Dto.getFac_caja());
             preparedStatement.setObject(6, Dto.getFac_desde());
             preparedStatement.setObject(7, Dto.getFac_hasta());
+            preparedStatement.setObject(8, Dto.getId_tipodocumento());
 
             filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {
@@ -392,12 +401,12 @@ public class ventaDAOIMPLE implements ventaDAO {
         try {
             sintaxiSql = null;
             conexion = new Conexion();
-            sintaxiSql = "INSERT INTO public.factura(\n"
-                    + "      id_estado, id_timbrado, numerofac)\n"
-                    + "    VALUES (5, (select id_timbrado from timbrados where numero=?), ?);";
+            sintaxiSql = "INSERT INTO public.factura(\n" +
+"                         id_estado, id_timbrado, numerofac,secuencia)\n" +
+"                       VALUES (5,(select id_timbrado from timbrados order by id_timbrado desc limit 1),?,?);";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
-            preparedStatement.setObject(1, Dto.getNumero());
-            preparedStatement.setObject(2, Dto.getNumerofac());
+            preparedStatement.setObject(1, Dto.getNumerofac());
+            preparedStatement.setObject(2, Dto.getSecuencia());
 
             filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {
@@ -448,12 +457,12 @@ public class ventaDAOIMPLE implements ventaDAO {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "INSERT INTO public.cobros(\n"
-                    + "            importe, idtipopag,id_venta)\n"
+                    + "            importe, idtipopag,id_cuencob)\n"
                     + "    VALUES (?, ?, ?)";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setObject(1, Dto.getImporte());
-            preparedStatement.setObject(2, Dto.getId_cobro());
-            preparedStatement.setObject(3, Dto.getId_venta());
+            preparedStatement.setObject(2, Dto.getIdtipopago());
+            preparedStatement.setObject(3, Dto.getId_cuencob());
 
             filasAfectadas = preparedStatement.executeUpdate();
             if (filasAfectadas > 0) {
@@ -479,9 +488,9 @@ public class ventaDAOIMPLE implements ventaDAO {
             sintaxiSql = "INSERT INTO public.cobrostarjetas(\n"
                     + "            id_cobro, tarjnrobol, \n"
                     + "            id_entiemi, id_tipotarjeta)\n"
-                    + "    VALUES ((select id_cobro from cobros where id_venta=? and idtipopag = 2), ?, ?, ?);";
+                    + "    VALUES ((select id_cobro from cobros where id_cuencob=? and idtipopag = 2), ?, ?, ?);";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
-            preparedStatement.setObject(1, Dto.getId_venta());
+            preparedStatement.setObject(1, Dto.getId_cuencob());
             preparedStatement.setObject(2, Dto.getTarjnrobol());
             preparedStatement.setObject(3, Dto.getId_entiemi());
             preparedStatement.setObject(4, Dto.getId_tipotarjeta());
@@ -511,11 +520,11 @@ public class ventaDAOIMPLE implements ventaDAO {
             sintaxiSql = "INSERT INTO public.cobroscheques(\n"
                     + "             nrochque, id_tipocheque, \n"
                     + "            id_cobro, id_bancocheque)\n"
-                    + "    VALUES (?, ?, (select id_cobro from cobros where id_venta=? and idtipopag = 3), ? )";
+                    + "    VALUES (?, ?, (select id_cobro from cobros where id_cuencob=? and idtipopag = 3), ? )";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setObject(1, Dto.getNrochque());
             preparedStatement.setObject(2, Dto.getId_tipocheque());
-            preparedStatement.setObject(3, Dto.getId_venta());
+            preparedStatement.setObject(3, Dto.getId_cuencob());
             preparedStatement.setObject(4, Dto.getId_bancocheque());
 
             filasAfectadas = preparedStatement.executeUpdate();
@@ -541,34 +550,36 @@ public class ventaDAOIMPLE implements ventaDAO {
         try {
             sintaxiSql = null;
             conexion = new Conexion();
-            sintaxiSql = " SELECT p.id_pedidoven, p.fechapedido::date, p.id_cliente, p.id_estado, p.idvendedor, \n"
-                    + "                    e.est_descripcion,(u.usu_nombre) as vendedor,p.observacion,\n"
-                    + "                    (c.ruc) as cedula,c.cv, (c.ruc||'-'||c.cv||' / '||c.razonsocial) as cliente,\n"
-                    + "                    d.id_articulo, d.cantidad, d.precio, (a.art_descripcion) as articulo,a.id_impuesto,\n"
-                    + "                    (i.imp_descripcion) as impuesto\n"
-                    + "                    FROM public.pedidosventas p\n"
-                    + "                    left join detpedidosventas d on p.id_pedidoven=d.id_pedidoven\n"
-                    + "                    left join articulos a on d.id_articulo=a.id_articulo\n"
-                    + "		    left join impuestos i on a.id_impuesto=i.id_impuesto\n"
-                    + "                    left join clientes c on p.id_cliente = c.id_cliente\n"
-                    + "                    left join vendedor v on p.idvendedor = v.idvendedor\n"
-                    + "                    left join empleados emp on v.id_empleado = emp.id_empleado\n"
-                    + "                    left join usuarios u on emp.id_empleado = u.id_empleado\n"
-                    + "                    left join estados e on p.id_estado=e.id_estado\n"
-                    + "                    where p.id_estado in(1,3) and p.id_pedidoven=? order by p.id_pedidoven desc";
+            sintaxiSql = " SELECT p.id_pedidoven, p.fechapedido::date, p.id_cliente, p.id_estado, p.idvendedor, \n" +
+"                                        e.est_descripcion,(u.usu_nombre) as vendedor,p.observacion,\n" +
+"                                        (c.ruc) as cedula,c.cv, (c.ruc||'-'||c.cv||' / '||c.razonsocial) as cliente,\n" +
+"                                        d.id_articulo, d.cantidad, d.precio, (a.art_descripcion) as articulo,a.id_impuesto,\n" +
+"                                        (select id_pedidoven from ventas where id_pedidoven=?) as pedido,\n" +
+"                                        (i.imp_descripcion) as impuesto\n" +
+"                                        FROM public.pedidosventas p\n" +
+"                                        left join detpedidosventas d on p.id_pedidoven=d.id_pedidoven\n" +
+"                                        left join articulos a on d.id_articulo=a.id_articulo\n" +
+"                    		    left join impuestos i on a.id_impuesto=i.id_impuesto\n" +
+"                                        left join clientes c on p.id_cliente = c.id_cliente\n" +
+"                                        left join vendedor v on p.idvendedor = v.idvendedor\n" +
+"                                        left join usuarios u on v.id_usuario = u.id_usuario\n" +
+"                                        left join estados e on p.id_estado=e.id_estado\n" +
+"                                       where p.id_estado in(1) and p.id_pedidoven=? order by p.id_pedidoven desc";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, pedidoVentaFactura);
+            preparedStatement.setInt(2, pedidoVentaFactura);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 allpventaFac.add(new ventaDTO(rs.getString("cedula"),
-                         rs.getInt("idvendedor"),
-                         rs.getInt("id_articulo"),
-                         rs.getString("articulo"),
-                         rs.getInt("cantidad"),
-                         rs.getInt("precio"),
-                         rs.getInt("id_estado"),
-                         rs.getString("impuesto"),
-                         rs.getInt("id_impuesto")));
+                        rs.getInt("idvendedor"),
+                        rs.getInt("id_articulo"),
+                        rs.getString("articulo"),
+                        rs.getInt("cantidad"),
+                        rs.getInt("precio"),
+                        rs.getInt("id_estado"),
+                        rs.getString("impuesto"),
+                        rs.getInt("pedido"),
+                        rs.getInt("id_impuesto")));
 
             }
         } catch (SQLException ex) {
@@ -579,7 +590,7 @@ public class ventaDAOIMPLE implements ventaDAO {
 
     @Override
     public String nletra(Integer numero) {
-         String cadena = new String();
+        String cadena = new String();
 
         //AQUI SE INDENTIFICA SI LLEVA MILLONES
         if ((numero / 1000000) > 0) {
@@ -718,7 +729,7 @@ public class ventaDAOIMPLE implements ventaDAO {
                                 }
                             case 9:
                                 switch ((int) (numero % 10)) {
-                                    
+
                                     case 0:
                                         cadena = " Setenta ";
                                         break;
@@ -768,5 +779,27 @@ public class ventaDAOIMPLE implements ventaDAO {
         }
 
         return cadena;
+    }
+
+    @Override
+    public String gettipodocumento() {
+        ResultSet rs;
+        ArrayList<ventaDTO> alldocu = new ArrayList<>();
+        try {
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "SELECT id_tipodocumento, descripcion\n"
+                    + "  FROM public.tipodocumento;";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                alldocu.add(new ventaDTO(rs.getInt("id_tipodocumento"),
+                        rs.getString("descripcion")));
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ventaDAOIMPLE.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new Gson().toJson(alldocu);
     }
 }

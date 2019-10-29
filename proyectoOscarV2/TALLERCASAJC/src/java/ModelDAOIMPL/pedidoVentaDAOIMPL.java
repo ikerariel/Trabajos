@@ -198,8 +198,7 @@ public class pedidoVentaDAOIMPL implements pedidoVentaDAO {
                     + "                                         FROM public.pedidosventas p\n"
                     + "                                        left join clientes c on p.id_cliente = c.id_cliente\n"
                     + "                                        left join vendedor v on p.idvendedor = v.idvendedor\n"
-                    + "                    		left join empleados emp on v.id_empleado = emp.id_empleado\n"
-                    + "                    		left join usuarios u on emp.id_empleado = u.id_empleado\n"
+                    + "                    		left join usuarios u on v.id_usuario = u.id_usuario\n"
                     + "                    left join estados e on p.id_estado=e.id_estado\n"
                     + "                    where p.id_estado in(1,3) order by p.id_pedidoven desc";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
@@ -236,8 +235,7 @@ public class pedidoVentaDAOIMPL implements pedidoVentaDAO {
                     + "left join articulos a on d.id_articulo=a.id_articulo\n"
                     + "left join clientes c on p.id_cliente = c.id_cliente\n"
                     + "left join vendedor v on p.idvendedor = v.idvendedor\n"
-                    + "left join empleados emp on v.id_empleado = emp.id_empleado\n"
-                    + "left join usuarios u on emp.id_empleado = u.id_empleado\n"
+                    + "left join usuarios u on v.id_usuario = u.id_usuario\n"
                     + "left join estados e on p.id_estado=e.id_estado\n"
                     + "where p.id_estado in(1,3) and p.id_pedidoven=? order by p.id_pedidoven desc";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);

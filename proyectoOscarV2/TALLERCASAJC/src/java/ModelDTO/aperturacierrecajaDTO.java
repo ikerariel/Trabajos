@@ -12,9 +12,11 @@ package ModelDTO;
 public class aperturacierrecajaDTO {
 
     Integer id_apcica;
+    Integer id_usuario;
     String apertura_fecha;
     String caja;
     Integer idfactura;
+    Integer timbradoapertura;
     String cajas;
     String cajero;
     String estado;
@@ -22,6 +24,20 @@ public class aperturacierrecajaDTO {
     String factura;
     
     Integer  apcica_ciermonto;
+
+    public aperturacierrecajaDTO(Integer id_timbrado,String numero, Integer timbradoapertura) {
+        this.id_timbrado=id_timbrado;
+        this.timbradoapertura=timbradoapertura;
+        this.numero=numero;
+    }
+
+    public Integer getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(Integer id_usuario) {
+        this.id_usuario = id_usuario;
+    }
   Integer apcica_apermonto;
   String apcica_ciefecha;
   String numero;
@@ -49,8 +65,10 @@ public class aperturacierrecajaDTO {
         this.numero =numero;
     }
 
-    public aperturacierrecajaDTO(Integer id_apcica, String apertura_fecha, String caja, String cajero, String supervisor, String estado) {
+    public aperturacierrecajaDTO(Integer id_apcica,Integer id_caja, Integer idcajero,String apertura_fecha, String caja, String cajero, String supervisor, String estado) {
         this.id_apcica = id_apcica;
+        this.id_caja = id_caja;
+        this.idcajero = idcajero;
         this.apertura_fecha = apertura_fecha;
         this.caja = caja;
         this.cajero = cajero;
@@ -65,6 +83,12 @@ public class aperturacierrecajaDTO {
         this.idfactura = idfactura;
         this.factura = factura;
 
+    }
+
+    public aperturacierrecajaDTO(Integer idcajero, Integer id_usuario, String cajero) {
+        this.idcajero=idcajero;
+        this.id_usuario=id_usuario;
+        this.cajero=cajero;
     }
 
     public Integer getId_apcica() {

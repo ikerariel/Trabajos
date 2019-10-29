@@ -26,6 +26,7 @@ public interface aperturacierrecajaDAO {
     String getfacturacion(String loguin);
 
     String getlistatimbrado();
+    String getCajeros();
 
     String gettimbrado(Integer timbrado);
 }

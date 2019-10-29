@@ -1,13 +1,15 @@
 $(document).ready(function () {
 //    obtenerNroFactura();
     listaparametros();
-    condicionCobro();
+//    condicionCobro();
     listartipopago();
     obtenerventa();
     listarvendedor();
     fechafac();
     condicionventa();
     listararticulos();
+    listadocumentos();
+    numLetras();
 
 
 
@@ -16,6 +18,7 @@ function fechafac() {
     var fv = new Date();
     $('#v_fechafac').val(fv.getDate() + "/" + (fv.getMonth() + 1) + "/" + fv.getFullYear());
     $('#_fecha').val(fv.getDate() + "/" + (fv.getMonth() + 1) + "/" + fv.getFullYear());
+    $('#fechavto_v').val(fv.getDate() + "/" + (fv.getMonth() + 1) + "/" + fv.getFullYear());
 }
 
 function obtenerNroFactura() {
@@ -30,13 +33,13 @@ function obtenerNroFactura() {
         cache: false,
         success: function (data) {
             if (JSON.stringify(data) != '[]') {
-                     $.each(data, function (indice, valor) {
+                $.each(data, function (indice, valor) {
                     $('#idventa_v').val(valor.idgenerico);
                     $('#nrofac_v').val(valor.descripgenerico);
                 });
-              
+
             } else {
-              $('#nrofac_v').val(null);
+                $('#nrofac_v').val(null);
             }
 
 
@@ -78,7 +81,29 @@ function listararticulos() {
         cache: false,
         success: function (resp) {
             $.each(resp, function (indice, value) {
-                $("#listaarti").append("<option value= \"" + value.id_articulo + "\"> " + value.art_descripcion + " Cantidad : " + value.cantidad + "</option>");
+                var cant = value.cantidad;
+                if (cant > 0) {
+                    $("#listaarti").append("<option value= \"" + value.id_articulo + "\"> " + value.art_descripcion + " Cantidad : " + value.cantidad + "</option>");
+
+                }
+
+            });
+
+        }
+    });
+}
+function listadocumentos() {
+    articulos = {
+        "opcion": 21
+    };
+    $.ajax({
+        url: "http://localhost:8084/TALLERCASAJC/ventaSERVLET",
+        type: 'POST',
+        data: articulos,
+        cache: false,
+        success: function (resp) {
+            $.each(resp, function (indice, value) {
+                $("#vtipodocumento").append("<option value= \"" + value.idgenerico + "\"> " + value.descripgenerico + "</option>");
 
             });
 
@@ -97,9 +122,10 @@ function listaparametros() {
         cache: false,
         success: function (resp) {
             $.each(resp, function (indice, value) {
-           
+
                 $('#tabladetalleparametros').append("<tr id=\'prod" + tindex + "\'>\
             <td>" + value.id_timbrado + "</td>\n\
+            <td>" + value.tipodocumento + "</td>\n\
             <td>" + value.numero + "</td>\n\
             <td>" + value.inicio_fecha + "</td>\n\
             <td>" + value.vencimientos + "</td>\n\
@@ -165,7 +191,7 @@ function obtenerarticulos() {
                 exis = value.cantidad;
                 if (exis > 0) {
                     $('#producto_v').val(value.art_descripcion);
-                    $('#punitario_v').val(value.preccompras);
+                    $('#punitario_v').val(value.precventas);
                     $('#impuesto_v').val(value.impuesto);
                     $('#idimpuesto_v').val(value.id_impuesto);
                     $('#canti_v').focus();
@@ -259,11 +285,7 @@ function actufactura() {
     });
 
 
-    setTimeout(function () {
-        guardarDetalle();
-        guardarCobro();
 
-    }, 2000);
 
 
 }
@@ -316,39 +338,55 @@ function grabartimbrado() {
         "opcion": 13,
         "nrotimbrado_v": $('#_timbrado').val(),
         "fvto_v": $('#_fechavto').val(),
-        "coduser_v": 1,
+        "coduser_v": $('#idusersession_v').val(),
         "establecimiento_v": $('#_nroexpe').val(),
         "caja_v": $('#_nrocaja').val(),
         "fdesde_v": $('#_facdesde').val(),
-        "fhasta_v": $('#_fachasta').val()
+        "fhasta_v": $('#_fachasta').val(),
+        "tipodocuemtno": $('#vtipodocumento').val()
     };
     $.ajax({
         url: "http://localhost:8084/TALLERCASAJC/ventaSERVLET",
         type: 'POST',
         data: timbrados,
         cache: false,
-        success: function () {
+        dataType: 'text',
+        success: function (resp) {
+            setTimeout(function () {
+                guardarDetallefactura();
+                alert('Guardado correctamente');
+                location.reload();
+            }, 1200);
         },
         error: function () {
 
         }
 
     });
-    setTimeout(function () {
-        guardarDetallefactura();
-        alert('Guardado correctamente');
-    }, 2000);
+
 
 }
 
-function abricobro() {
-    valores('subtotal_v');
-    $('#cobroview').modal('show');
-    $('#v_totalcobro').val($('#subtotal_v').val());
-    $('#factura_cobro').val($('#nrofac_v').val());
-    $('#v_clienteci').val($('#cedula_v').val());
-    $('#v_clientenombre').val($('#razonsocial_v').val());
-    $('#diferencia_v').val($('#v_totalcobro').val());
+//function abricobro() {
+//    valores('subtotal_v');
+//    $('#cobroview').modal('show');
+//    $('#v_totalcobro').val($('#subtotal_v').val());
+//    $('#factura_cobro').val($('#nrofac_v').val());
+//    $('#v_clienteci').val($('#cedula_v').val());
+//    $('#v_clientenombre').val($('#razonsocial_v').val());
+//    $('#diferencia_v').val($('#v_totalcobro').val());
+//
+//}
+function calculocuotaVenta() {
+    if ($('#subtotal_v').val() === "0") {
+        alert('No se encuetra registros..');
+    } else {
+        var cancuota = $('#cantcuota_v').val();
+        var montoventa = $('#subtotal_v').val().replace(/\./g, '');
+        var montocuota = parseInt(montoventa) / parseInt(cancuota);
+        $('#montocuota_v').val(Math.trunc(montocuota));
+        numeroDecimal('montocuota_v');
+    }
 
 }
 function guardarventa() {
@@ -365,23 +403,52 @@ function guardarventa() {
             alert('Algunos datos no fueron cargados correctamente');
         } else {
             var resp = confirm("Desea guardar la VENTA ?");
+            var condventa = $('#condventa_v').val();
+            var pedido = $('#v_nroPedidofact').val();
+            var tipo;
+            if (parseInt(condventa) === 1) {
+                tipo = $('#subtotal_v').val().replace(/\./g, '');
+            } else if (parseInt(condventa) === 2) {
+                tipo = $('#montocuota_v').val().replace(/\./g, '');
+            }
+            if(parseInt(pedido)>0){
+                pedido = $('#v_nroPedidofact').val();
+            }else{
+                pedido=0;
+            }
             if (resp) {
                 venta = {
                     "opcion": 5,
                     "nrofac_v": $('#nrofac_v').val(),
-                    "tipopag_v": 1,
+                    "condVenta": $('#condventa_v').val(),
                     "idcliente_v": $('#idcliente_v').val(),
                     "idusuario_v": $('#idusersession_v').val(),
                     "iddeposito_v": $('#coddeposito_v').val(),
                     "idvendendor_v": $('#vendedor_v').val(),
-                    "codapertura": $('#codapertura_ap').val()
+                    "codapertura": $('#codapertura_ap').val(),
+                    "codIdfacura": $('#idfactura_v').val(),
+                    "vCantCuota": $('#cantcuota_v').val(),
+                    "vMontoCuota": tipo,
+                    "vIntervalo": $('#intervalo_v').val(),
+                    "vFechaVto": $('#fechavto_v').val(),
+                    "codpedidoventa": pedido
                 };
                 $.ajax({
                     url: "http://localhost:8084/TALLERCASAJC/ventaSERVLET",
                     type: 'POST',
                     data: venta,
                     cache: false,
-                    success: function () {
+                    dataType: 'text',
+                    success: function (resp) {
+                        setTimeout(function () {
+                            guardarDetalle();
+                            //        guardarCobro();
+                        }, 1000);
+                        setTimeout(function () {
+                            actufactura();
+                            alert('Venta Guardada.!!');
+                            location.reload();
+                        }, 1250);
 
                     },
                     error: function () {
@@ -392,7 +459,7 @@ function guardarventa() {
             } else {
 
             }
-            actufactura();
+
 
         }
 
@@ -400,89 +467,7 @@ function guardarventa() {
 
 
 }
-var indx = 0;
-function agregarfilacobro() {
 
-    var v_tcobro = $('#v_tipocobro').val();
-    var v_tcobrodescrip = $('#v_tipocobro option:selected').text();
-    var v_nrocheque = $('#nrochque_ch').val();
-    var v_bcocheque = $('#banco_che').val();
-    var v_bcochequedescripcion = $('#banco_che option:selected').text();
-    var v_idtipochque = $('#tipocheque_ch').val();
-    var v_tipocheque = $('#tipocheque_ch option:selected').text();
-    var v_tipotarjeta = $('#tarjettipo_t').val();
-    var v_tipotarjetadescripcion = $('#tarjettipo_t option:selected').text();
-    var v_identidademisora = $('#entemisora_t').val();
-    var v_entidademisora = $('#entemisora_t option:selected').text();
-    var v_nroboletatarjeta = $('#nroboleta_t').val();
-    var v_montocobrar = $('#v_montocobrar').val();
-
-
-    switch (parseInt(v_tcobro)) {
-        case 1:
-            v_bcocheque = 0;
-            v_nrocheque = 0;
-            v_bcochequedescripcion = 0;
-            v_tipotarjeta = 0;
-            v_tipotarjetadescripcion = 0;
-            v_nroboletatarjeta = 0;
-            v_identidademisora = 0;
-            v_entidademisora = 0;
-            v_idtipochque = 0;
-            v_tipocheque = 0;
-            break;
-        case 2:
-            v_bcocheque = 0;
-            v_nrocheque = 0;
-            v_bcochequedescripcion = 0;
-            v_idtipochque = 0;
-            v_tipocheque = 0;
-            break;
-        case 3:
-            v_tipotarjeta = 0;
-            v_tipotarjetadescripcion = 0;
-            v_nroboletatarjeta = 0;
-            v_identidademisora = 0;
-            v_entidademisora = 0;
-            break;
-    }
-
-    indx++;
-    $('#tabladetallecobros').append("<tr id=\'prod" + indx + "\'>\
-            <td style='display: none'>" + v_tcobro + "</td>\n\
-            <td>" + v_tcobrodescrip + "</td>\n\
-            <td>" + v_nrocheque + "</td>\n\
-            <td style='display: none'>" + v_bcocheque + "</td>\n\
-            <td>" + v_bcochequedescripcion + "</td>\n\
-            <td style='display: none'>" + v_tipotarjeta + "</td>\n\
-            <td style='display: none'>" + v_identidademisora + "</td>\n\
-            <td>" + v_entidademisora + "</td>\n\
-            <td>" + v_tipotarjetadescripcion + "</td>\n\
-            <td>" + v_nroboletatarjeta + "</td>\n\
-            <td>" + v_montocobrar + "</td>\n\
-            <td ><button type=button title='Quitar el registro de la lista' style=text-align:center class='btn btn-sm btn-danger' onclick=\"$(\'#prod" + indx + "\').remove(),totalcobro()\">Quitar</button></td>\n\
-            <td style='display: none'>" + v_idtipochque + "</td>\n\
-            <td style='display: none'>" + v_tipocheque + "</td>\n\
-            </tr>");
-
-    totalcobro();
-}
-function totalcobro() {
-    var total = 0;
-    $('#tabladetallecobros tbody').find('tr').each(function (i, el) {
-        total += parseFloat($(this).find('td').eq(10).text().replace(/\./g, ''));
-    });
-    $('#totalcobro_v').val(total);
-    valores('diferencia_v');
-    valores('totalcobro_v');
-    var _acobrar = $('#v_totalcobro').val().replace(/\./g, '');
-    var _cobrado = $('#totalcobro_v').val().replace(/\./g, '');
-    var dif = parseInt(_acobrar) - parseInt(_cobrado);
-    $('#diferencia_v').val(dif);
-    valores('diferencia_v');
-    indx++;
-
-}
 
 function guardarDetalle() {
     $('#v_tablaDetalle').find('tbody').find('tr').each(function () {
@@ -511,8 +496,9 @@ function guardarDetallefactura() {
     $('#tablaparametros').find('tbody').find('tr').each(function () {
         datosdetallefac = {
             "opcion": 14,
-            "codtimbrado_v": $('#_timbrado').val(),
+            "secuenca_v": $(this).find("td").eq(0).html(),
             "numfactura_v": $(this).find("td").eq(3).html()
+
         };
         $.ajax({
             url: "http://localhost:8084/TALLERCASAJC/ventaSERVLET",
@@ -535,11 +521,18 @@ function condicionventa() {
         $("#cantcuota_v").prop('disabled', true);
         $("#montocuota_v").prop('disabled', true);
         $("#fechavto_v").prop('disabled', true);
+        $("#intervalo_v").prop('disabled', true);
+        $("#cantcuota_v").val('0');
+        $("#montocuota_v").val('0');
+        $("#intervalo_v").val('0');
     } else {
         if (parseInt(valor) === 2) {
             $("#cantcuota_v").removeAttr('disabled', true);
             $("#montocuota_v").removeAttr('disabled', true);
             $("#fechavto_v").removeAttr('disabled', true);
+            $("#cantcuota_v").val(null);
+            $("#montocuota_v").val(null);
+            $("#intervalo_v").val('30');
         }
     }
 
@@ -560,29 +553,42 @@ function tipoFact() {
     }
 
 }
-function condicionCobro() {
-    var valor = $('#v_tipocobro').val();
 
-    switch (parseInt(valor)) {
-        case 1:
-            $('#v_montocobrar').focus();
-            $("#v_chque").hide();
-            $("#v_tarjeta").hide();
-            $('#texcobro_v').html('Cobro en Efectivo..');
-            break;
-        case 2:
-            $("#v_tarjeta").show();
-            $("#v_chque").hide();
-            $('#texcobro_v').html('Cobro en Tarjeta..');
-            break;
+function cargatablaVentas() {
+    var ban = false;
+    if ($('#articulo_v').val() === "") {
+        alert('DEBES INGRESAR UN ARTICULO');
+    } else {
+        var cod = $('#articulo_v').val();
+        var codigo;
+        $('#v_tablaDetalle').find('tbody').find('tr').each(function () {
+            codigo = $(this).find("td").eq(0).html();
+            if (cod === codigo) {
+                var sms = confirm('Articulo cargado, desea sustituirlo ??');
+                if (sms === true) {
+                    $(this).closest("tr").remove();
+                    ban = true;
+                    agregarfilaventas();
+                } else {
+                    ban = true;
+                }
 
-        case 3:
-            $("#v_chque").show();
-            $("#v_tarjeta").hide();
-            $('#texcobro_v').html('Cobro en Cheque..');
-            break;
+            } else {
+
+            }
+
+        });
+        if (ban === false) {
+            agregarfilaventas();
+        }
+
+
+
+
+
 
     }
+
 }
 var tindex = 0;
 function agregarfilaventas() {
@@ -642,8 +648,8 @@ function traerPedidoVenta() {
             if (JSON.stringify(data) != '[]') {
                 var valor = JSON.stringify(data);
                 var vValor = JSON.parse(valor);
-                var estado = vValor[0].id_estado;
-                if (parseInt(estado) === 1) {
+                var ped= vValor[0].pedido;
+                if (parseInt(ped) === 0) {
                     $.each(data, function (indice, value) {
                         $('#cedula_v').val((value.cedula));
                         obtenerCliente();
@@ -688,7 +694,7 @@ function traerPedidoVenta() {
                     }, 1200);
 
                 } else {
-                    alert('Pedido de Venta Pendiente.!!');
+                    alert('Pedido de Venta ya fue procesada.!!');
                 }
 
             } else {
@@ -714,9 +720,14 @@ function subtotal() {
 
     });
     $('#subtotal_v').val(acumu);
+
     valores('subtotal_v');
+
+    $('#totoles').val($('#subtotal_v').val().replace(/\./g, ''));
+    numLetras();
+
     tindex++;
-    montoLetras();
+//    montoLetras();
 }
 
 function valores(numero) {
@@ -766,95 +777,20 @@ function generarparametros() {
     var _fachasta = $('#_fachasta').val();
     for (var i = 0, i = parseInt(_facdesde); i <= parseInt(_fachasta); i++) {
         cont++;
+        var v11 = JSON.parse([i]);
+        var v13 = v11.toString();
+        var v14 = v13.padStart(7, "0000000");
         $('#tablaparametros').append("<tr id=\'prod" + _index + "\'>\
                  <td>" + cont + "</td>\n\
                  <td>" + _expe + "</td>\n\
                  <td>" + _caja + "</td>\n\
                  <td>" +
-                [i] + "</td>\n\
+                v14 + "</td>\n\
                 </tr>");
 
     }
 }
 
-function guardarCobro() {
-
-    $('#tabladetallecobros').find('tbody').find('tr').each(function () {
-
-        detallecobro = {
-            "opcion": 16,
-            "impote_v": $(this).find("td").eq(10).html().replace(/\./g, ''),
-            "idtipopago_v": $(this).find("td").eq(0).html(),
-            "codigoventa_v": $('#idventa_v').val()
-        };
-        $.ajax({
-            url: "http://localhost:8084/TALLERCASAJC/ventaSERVLET",
-            type: 'POST',
-            data: detallecobro,
-            cache: false,
-            success: function () {
-            },
-            error: function () {
-            }
-        });
-
-    });
-    setTimeout(function () {
-        cobrodetalle();
-    }, 2000);
-
-}
-function cobrodetalle() {
-    var cobro = 0;
-    $('#tabladetallecobros').find('tbody').find('tr').each(function () {
-        cobro = $(this).find("td").eq(0).html();
-        switch (parseInt(cobro)) {
-            case 2:
-                tarjeta = {
-                    "opcion": 17,
-                    "codigoventa_v": $('#idventa_v').val(),
-                    "nroboleta_v": $(this).find("td").eq(9).html(),
-                    "entidademisora_v": $(this).find("td").eq(6).html(),
-                    "tipotarjeta_v": $(this).find("td").eq(5).html()
-                };
-                $.ajax({
-                    url: "http://localhost:8084/TALLERCASAJC/ventaSERVLET",
-                    type: 'POST',
-                    data: tarjeta,
-                    cache: false,
-                    success: function () {
-                    },
-                    error: function () {
-                    }
-                });
-                break;
-            case 3:
-                Cheque = {
-                    "opcion": 18,
-                    "codigoventa_vv": $('#idventa_v').val(),
-                    "nrocheque_v": $(this).find("td").eq(2).html(),
-                    "tipocheque_v": $(this).find("td").eq(12).html(),
-                    "banco_v": $(this).find("td").eq(3).html()
-                };
-                $.ajax({
-                    url: "http://localhost:8084/TALLERCASAJC/ventaSERVLET",
-                    type: 'POST',
-                    data: Cheque,
-                    cache: false,
-                    success: function () {
-                    },
-                    error: function () {
-                    }
-                });
-                break;
-            default :
-                break;
-
-        }
-    });
-    alert('Venta facturada');
-    location.reload();
-}
 
 
 
@@ -871,11 +807,216 @@ function montoLetras() {
         cache: false,
         dataType: 'text',
         success: function (resp) {
-          $('#montoLetrasV').html(resp);
+            $('#montoLetrasV').html(resp);
         },
         error: function () {
         }
     });
+
+
+}
+
+
+
+function numLetras() {
+    $('#totoles').val(function (e) {
+        document.getElementById("montoLetrasV").innerHTML = NumeroALetras(this.value);
+        $('#montoLetrasV').css('color', 'blue');
+    });
+
+    function Unidades(num) {
+
+        switch (num)
+        {
+            case 1:
+                return "UN";
+            case 2:
+                return "DOS";
+            case 3:
+                return "TRES";
+            case 4:
+                return "CUATRO";
+            case 5:
+                return "CINCO";
+            case 6:
+                return "SEIS";
+            case 7:
+                return "SIETE";
+            case 8:
+                return "OCHO";
+            case 9:
+                return "NUEVE";
+        }
+
+        return "";
+    }
+    function Decenas(num) {
+        decena = Math.floor(num / 10);
+        unidad = num - (decena * 10);
+
+        switch (decena)
+        {
+            case 1:
+            switch (unidad)
+            {
+                case 0:
+                    return "DIEZ";
+                case 1:
+                    return "ONCE";
+                case 2:
+                    return "DOCE";
+                case 3:
+                    return "TRECE";
+                case 4:
+                    return "CATORCE";
+                case 5:
+                    return "QUINCE";
+                default:
+                    return "DIECI" + Unidades(unidad);
+            }
+            case 2:
+            switch (unidad)
+            {
+                case 0:
+                    return "VEINTE";
+                default:
+                    return "VEINTI" + Unidades(unidad);
+            }
+            case 3:
+                return DecenasY("TREINTA", unidad);
+            case 4:
+                return DecenasY("CUARENTA", unidad);
+            case 5:
+                return DecenasY("CINCUENTA", unidad);
+            case 6:
+                return DecenasY("SESENTA", unidad);
+            case 7:
+                return DecenasY("SETENTA", unidad);
+            case 8:
+                return DecenasY("OCHENTA", unidad);
+            case 9:
+                return DecenasY("NOVENTA", unidad);
+            case 0:
+                return Unidades(unidad);
+        }
+    }//Unidades()
+
+    function DecenasY(strSin, numUnidades) {
+        if (numUnidades > 0)
+            return strSin + " Y " + Unidades(numUnidades)
+
+        return strSin;
+    }//DecenasY()
+
+    function Centenas(num) {
+
+        centenas = Math.floor(num / 100);
+        decenas = num - (centenas * 100);
+
+        switch (centenas)
+        {
+            case 1:
+                if (decenas > 0)
+                    return "CIENTO " + Decenas(decenas);
+                return "CIEN";
+            case 2:
+                return "DOSCIENTOS " + Decenas(decenas);
+            case 3:
+                return "TRESCIENTOS " + Decenas(decenas);
+            case 4:
+                return "CUATROCIENTOS " + Decenas(decenas);
+            case 5:
+                return "QUINIENTOS " + Decenas(decenas);
+            case 6:
+                return "SEISCIENTOS " + Decenas(decenas);
+            case 7:
+                return "SETECIENTOS " + Decenas(decenas);
+            case 8:
+                return "OCHOCIENTOS " + Decenas(decenas);
+            case 9:
+                return "NOVECIENTOS " + Decenas(decenas);
+        }
+
+        return Decenas(decenas);
+    }//Centenas()
+
+    function Seccion(num, divisor, strSingular, strPlural) {
+        cientos = Math.floor(num / divisor)
+        resto = num - (cientos * divisor)
+
+        letras = "";
+
+        if (cientos > 0)
+            if (cientos > 1)
+                letras = Centenas(cientos) + " " + strPlural;
+            else
+                letras = strSingular;
+
+        if (resto > 0)
+            letras += "";
+
+        return letras;
+    }//Seccion()
+
+    function Miles(num) {
+        divisor = 1000;
+        cientos = Math.floor(num / divisor)
+        resto = num - (cientos * divisor)
+
+        strMiles = Seccion(num, divisor, "MIL", "MIL");
+        strCentenas = Centenas(resto);
+
+        if (strMiles == "")
+            return strCentenas;
+
+        return strMiles + " " + strCentenas;
+
+        //return Seccion(num, divisor, "UN MIL", "MIL") + " " + Centenas(resto);
+    }//Miles()
+
+    function Millones(num) {
+        divisor = 1000000;
+        cientos = Math.floor(num / divisor)
+        resto = num - (cientos * divisor)
+
+        strMillones = Seccion(num, divisor, "UN MILLON", "MILLONES");
+        strMiles = Miles(resto);
+
+        if (strMillones == "")
+            return strMiles;
+
+        return strMillones + " " + strMiles;
+
+        //return Seccion(num, divisor, "UN MILLON", "MILLONES") + " " + Miles(resto);
+    }//Millones()
+
+    function NumeroALetras(num, centavos) {
+        var data = {
+            numero: num,
+            enteros: Math.floor(num),
+            centavos: (((Math.round(num * 100)) - (Math.floor(num) * 100))),
+            letrasCentavos: "",
+        };
+        if (centavos == undefined || centavos == false) {
+            data.letrasMonedaPlural = "GUARANIES";
+            data.letrasMonedaSingular = "GUARANIES";
+        } else {
+            data.letrasMonedaPlural = "CENTIMOS";
+            data.letrasMonedaSingular = "CENTIMO";
+        }
+
+        if (data.centavos > 0)
+            data.letrasCentavos = "CON " + NumeroALetras(data.centavos, true);
+
+        if (data.enteros == 0)
+            return "CERO " + data.letrasMonedaPlural + " " + data.letrasCentavos;
+        if (data.enteros == 1)
+            return Millones(data.enteros) + " " + data.letrasMonedaSingular + " " + data.letrasCentavos;
+
+
+        else
+            return Millones(data.enteros) + " " + data.letrasMonedaPlural + " " + data.letrasCentavos;
+    }
 
 
 }

@@ -34,7 +34,7 @@ public class aperturacierrecajaDAOIMPL implements aperturacierrecajaDAO {
             conexion = new Conexion();
             sintaxiSql = "INSERT INTO public.aperturacierrecajas(\n"
                     + "apcica_apermonto,id_caja, id_sucursal, id_estado, \n"
-                    + "id_deposito, idsupervisor, idcajero, \n"
+                    + "id_deposito, id_usuario, idcajero, \n"
                     + "id_timbrado)\n"
                     + " VALUES (?, ?, ?, 9, ?, ?, ?, ?);";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
@@ -42,7 +42,7 @@ public class aperturacierrecajaDAOIMPL implements aperturacierrecajaDAO {
             preparedStatement.setObject(2, Dto.getId_caja());
             preparedStatement.setObject(3, Dto.getId_sucursal());
             preparedStatement.setObject(4, Dto.getId_deposito());
-            preparedStatement.setObject(5, Dto.getIdsupervisor());
+            preparedStatement.setObject(5, Dto.getId_usuario());
             preparedStatement.setObject(6, Dto.getIdcajero());
             preparedStatement.setObject(7, Dto.getId_timbrado());
             filasAfectadas = preparedStatement.executeUpdate();
@@ -71,22 +71,23 @@ public class aperturacierrecajaDAOIMPL implements aperturacierrecajaDAO {
 
             sintaxiSql = null;
             conexion = new Conexion();
-            sintaxiSql = "SELECT a.id_apcica, a.apcica_ciermonto, a.apcica_apermonto, a.apcica_ciefecha, \n"
-                    + "a.id_caja, (c.descripcion) as caja, a.id_sucursal, a.id_estado, (e.est_descripcion) as estado, a.id_deposito,\n"
-                    + " a.idsupervisor,(us.usu_nombre)as supervisor, a.idcajero, \n"
-                    + "(u.usu_nombre) cajero, a.id_timbrado, a.apertura_fecha\n"
-                    + "  FROM public.aperturacierrecajas a\n"
-                    + "  INNER JOIN cajas c on a.id_caja = c.id_caja\n"
-                    + "  INNER JOIN cajero r on a.idcajero = r.idcajero\n"
-                    + "  INNER JOIN usuarios u on r.id_usuario = u.id_usuario\n"
-                    + "  INNER JOIN supervisor s on a.idsupervisor = s.idsupervisor\n"
-                    + "  INNER JOIN usuarios us on s.id_usuario = us.id_usuario\n"
-                    + "  INNER JOIN estados e on a.id_estado = e.id_estado order by a.id_apcica desc ";
+            sintaxiSql = "SELECT a.id_apcica, a.apcica_ciermonto, a.apcica_apermonto, a.apcica_ciefecha, \n" +
+"                    a.id_caja, (c.descripcion) as caja, a.id_sucursal, a.id_estado, (e.est_descripcion) as estado, a.id_deposito,\n" +
+"                     a.id_usuario,(us.usu_nombre)as supervisor, a.idcajero, \n" +
+"                    (u.usu_nombre) cajero, a.id_timbrado, a.apertura_fecha\n" +
+"                      FROM public.aperturacierrecajas a\n" +
+"                      INNER JOIN cajas c on a.id_caja = c.id_caja\n" +
+"                      INNER JOIN cajero r on a.idcajero = r.idcajero\n" +
+"                      INNER JOIN usuarios u on r.id_usuario = u.id_usuario\n" +
+"                      INNER JOIN usuarios us on a.id_usuario = us.id_usuario\n" +
+"                      INNER JOIN estados e on a.id_estado = e.id_estado where a.id_estado in(9,10) order by a.id_apcica desc ";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 allaperturacierrecaja.add(new aperturacierrecajaDTO(
                         rs.getInt("id_apcica"),
+                        rs.getInt("id_caja"),
+                        rs.getInt("idcajero"),
                         rs.getString("apertura_fecha"),
                         rs.getString("caja"),
                         rs.getString("cajero"),
@@ -110,15 +111,15 @@ public class aperturacierrecajaDAOIMPL implements aperturacierrecajaDAO {
             sintaxiSql = null;
             conexion = new Conexion();
             sintaxiSql = "SELECT a.id_apcica, a.apcica_ciermonto, a.apcica_apermonto, a.apcica_ciefecha, \n"
-                    + "                    a.id_caja, (j.descripcion) as caja, a.id_sucursal, a.id_estado, a.id_deposito, a.idsupervisor, a.idcajero, \n"
-                    + "                   a.id_timbrado, a.apertura_fecha,(t.fac_establecimiento||'-'||t.fac_caja||'-'||f.numerofac)as factura, f.idfactura\n"
+                    + "                    a.id_caja, (j.descripcion) as caja, a.id_sucursal, a.id_estado, a.id_deposito, a.id_usuario, a.idcajero, \n"
+                    + "                   a.id_timbrado, a.apertura_fecha,(t.fac_establecimiento||'-'||t.fac_caja||'-'||f.numerofac)as factura, f.idfactura, f.secuencia \n"
                     + "                    FROM public.aperturacierrecajas a\n"
                     + "                    INNER JOIN cajero c    on a.idcajero = c.idcajero\n"
                     + "                    INNER JOIN cajas j     on a.id_caja = j.id_caja\n"
                     + "                    INNER JOIN usuarios u  on c.id_usuario= u.id_usuario\n"
                     + "                   INNER JOIN timbrados t on a.id_timbrado=t.id_timbrado\n"
                     + "                    INNER JOIN factura f   on t.id_timbrado=f.id_timbrado\n"
-                    + "                    WHERE t.id_estado=7 and a.id_estado=9 and u.usu_nombre=? and f.id_estado=5 and t.id_estado=7 order by f.idfactura asc";
+                    + "                    WHERE t.id_estado=7 and a.id_estado=9 and u.usu_nombre=? and f.id_estado=5 and t.id_estado=7 order by f.secuencia asc";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setString(1, usuario);
             rs = preparedStatement.executeQuery();
@@ -208,15 +209,15 @@ public class aperturacierrecajaDAOIMPL implements aperturacierrecajaDAO {
 
             sintaxiSql = null;
             conexion = new Conexion();
-            sintaxiSql = "SELECT v.id_venta, v.nrofactura, v.fecha, v.idtipopag, v.id_timbrado, v.id_cliente, \n"
-                    + "v.id_deposito, v.id_pedidoven, v.id_estado, v.id_usuario, v.idvendedor, \n"
-                    + "v.id_apcica, sum(d.cantidad*d.precio) as subtotal, (select sum(d.cantidad*d.precio) \n"
-                    + "as total from detventas d inner join ventas v on d.id_venta=v.id_venta where v.id_apcica = ? ) \n"
-                    + "FROM public.ventas v\n"
-                    + "inner join detventas d on v.id_venta = d.id_venta\n"
-                    + "where id_apcica = ? group by v.id_venta, v.nrofactura, v.fecha, v.idtipopag, v.id_timbrado, v.id_cliente, \n"
-                    + "v.id_deposito, v.id_pedidoven, v.id_estado, v.id_usuario, v.idvendedor,\n"
-                    + "v.id_apcica";
+            sintaxiSql = "SELECT v.id_venta, v.nrofactura, v.fecha, v.id_condicionpago, v.id_timbrado, v.id_cliente, \n" +
+"                    v.id_deposito, v.id_pedidoven, v.id_estado, v.id_usuario, v.idvendedor, \n" +
+"                    v.id_apcica, sum(d.cantidad*d.precio) as subtotal, (select sum(d.cantidad*d.precio) \n" +
+"                    as total from detventas d inner join ventas v on d.id_venta=v.id_venta where v.id_apcica = ? ) \n" +
+"                    FROM public.ventas v\n" +
+"                    inner join detventas d on v.id_venta = d.id_venta\n" +
+"                    where id_apcica = ? group by v.id_venta, v.nrofactura, v.fecha, v.id_condicionpago, v.id_timbrado, v.id_cliente, \n" +
+"                    v.id_deposito, v.id_pedidoven, v.id_estado, v.id_usuario, v.idvendedor,\n" +
+"                    v.id_apcica";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             preparedStatement.setInt(1, codapertura1);
             preparedStatement.setInt(2, codapertura2);
@@ -244,19 +245,16 @@ public class aperturacierrecajaDAOIMPL implements aperturacierrecajaDAO {
             conexion = new Conexion();
             sintaxiSql = "SELECT id_timbrado, numero, inicio_fecha, final_fecha, vencimientos, \n"
                     + "       id_estado, id_usuario, fac_establecimiento, fac_caja, fac_desde, \n"
-                    + "       fac_hasta\n"
+                    + "       fac_hasta,(select id_timbrado from aperturacierrecajas where id_estado=9) as timbradoapertura\n"
                     + "  FROM public.timbrados\n"
-                    + "  where id_timbrado = 7";
+                    + "  where id_estado = 7 and id_tipodocumento=1";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
             rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 alltimbrados.add(new aperturacierrecajaDTO(
                         rs.getInt("id_timbrado"),
                         rs.getString("numero"),
-                        rs.getString("inicio_fecha"),
-                        rs.getString("vencimientos"),
-                        rs.getString("fac_caja"),
-                        rs.getString("fac_desde")));
+                        rs.getInt("timbradoapertura")));
             }
 
         } catch (SQLException ex) {
@@ -267,7 +265,7 @@ public class aperturacierrecajaDAOIMPL implements aperturacierrecajaDAO {
 
     @Override
     public String gettimbrado(Integer timbrado) {
-         ResultSet rs;
+        ResultSet rs;
         ArrayList<aperturacierrecajaDTO> alltimb = new ArrayList<>();
 
         try {
@@ -280,9 +278,9 @@ public class aperturacierrecajaDAOIMPL implements aperturacierrecajaDAO {
                     + "  FROM public.timbrados\n"
                     + "  where id_timbrado = ?";
             preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
-              preparedStatement.setInt(1, timbrado);
+            preparedStatement.setInt(1, timbrado);
             rs = preparedStatement.executeQuery();
-          
+
             while (rs.next()) {
                 alltimb.add(new aperturacierrecajaDTO(
                         rs.getString("numero")));
@@ -292,6 +290,35 @@ public class aperturacierrecajaDAOIMPL implements aperturacierrecajaDAO {
             Logger.getLogger(aperturacierrecajaDAOIMPL.class.getName()).log(Level.SEVERE, null, ex);
         }
         return new Gson().toJson(alltimb);
+    }
+
+    @Override
+    public String getCajeros() {
+        ResultSet rs;
+        ArrayList<aperturacierrecajaDTO> allcajeros = new ArrayList<>();
+
+        try {
+
+            sintaxiSql = null;
+            conexion = new Conexion();
+            sintaxiSql = "SELECT c.idcajero, c.id_usuario, c.id_estado, (u.usu_nombre) as cajero\n"
+                    + "  FROM public.cajero c\n"
+                    + "  left join usuarios u on c.id_usuario=u.id_usuario\n"
+                    + "  where c.id_estado= 7";
+            preparedStatement = conexion.getConexion().prepareStatement(sintaxiSql);
+            rs = preparedStatement.executeQuery();
+
+            while (rs.next()) {
+                allcajeros.add(new aperturacierrecajaDTO(
+                        rs.getInt("idcajero"),
+                        rs.getInt("id_usuario"),
+                        rs.getString("cajero")));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(aperturacierrecajaDAOIMPL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return new Gson().toJson(allcajeros);
     }
 
 }

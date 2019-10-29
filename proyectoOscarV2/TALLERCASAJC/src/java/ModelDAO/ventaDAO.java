@@ -14,6 +14,7 @@ import ModelDTO.ventaDTO;
 public interface ventaDAO {
 
     String getfactura(String caja);
+    String gettipodocumento();
 
     String nletra(Integer numero);
 

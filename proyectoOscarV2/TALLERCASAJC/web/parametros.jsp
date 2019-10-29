@@ -45,17 +45,19 @@
         <%@include file="viwmenu.jsp" %>
         <section style="background: white">
             <form class="form-horizontal "  id="defaultForm">
-                <div class="panel panel-footer" id="">
                     <div class="form-group">
                         <div class="col-md-4">
-                            <a  data-toggle="modal"  title="Imprimir Factura"  id="btnNuevo" class="btn btn-lg btn-primary" onclick="grabartimbrado()" ><span class="glyphicon glyphicon-floppy-save"></span> Guardar</a>
+                            <a  data-toggle="modal"  title="Guardar Timbrados"  id="btnNuevo" class="btn btn-md btn-primary" onclick="grabartimbrado()" ><span class="glyphicon glyphicon-floppy-save"></span> Guardar</a>
                         </div>
-
                     </div>
-
-                </div>
                 <div class="panel panel-body">
                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Tipo Documento</label>
+                            <div class="col-md-4">
+                                <select class="form-control" id="vtipodocumento"></select>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label class="control-label col-md-2">Timbrado</label>
                             <div class="col-md-4">
@@ -71,28 +73,36 @@
                             <div class="col-md-4">
                                 <input class="form-control" id="_nroexpe" type="text">
                             </div>
-                             <label class="control-label col-md-2">Fecha Vto.</label>
+                             <label class="control-label col-md-2">Fecha Vigencia.</label>
                             <div class="col-md-4">
-                                <input class="form-control" id="_fechavto" type="date">
+                                <input class="form-control" id="_fechavigencia" type="date">
                             </div>
                         </div>
+                  
                         <div class="form-group">
                             <label class="control-label col-md-2">Nro. Caja.</label>
                             <div class="col-md-4">
                                 <input class="form-control" id="_nrocaja" type="text">
                             </div>
+                          
+                               <label class="control-label col-md-2">Fecha Vto.</label>
+                            <div class="col-md-4">
+                                <input class="form-control" id="_fechavto" type="date">
+                            </div>
+                         
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-2">Fact.Desde.</label>
                             <div class="col-md-4">
                                 <input class="form-control" id="_facdesde" type="text">
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-2">Fact.Hasta.</label>
+                             <label class="control-label col-md-2">Fact.Hasta.</label>
                             <div class="col-md-4">
                                 <input class="form-control" id="_fachasta" type="text">
                             </div>
+                        </div>
+                        <div class="form-group">
+                           
                             <div class="col-md-4">
                                 <a class="btn btn-lg btn-block btn-success" style="border-radius: 28%" onclick="generarparametros()">
                                 AGREGAR =>>
@@ -103,7 +113,7 @@
                     </div>
                     <div class="col-md-6">
                        <div id="scroll" class="panel panel-footer">
-                                <table class="table table-striped table-bordered table-hover table input-md"  id="tablaparametros"  onclick="seleccion()">
+                                <table class="table table-striped table-bordered table-hover table input-md"  id="tablaparametros"  >
                                     <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
                                     <thead>
                                         <tr>
@@ -127,6 +137,7 @@
                                     <thead>
                                         <tr>
                                             <th>Nro Registro *</th>
+                                            <th>Tipo Documento</th>
                                             <th>Nro. Timbrado</th>
                                             <th>Fecha Alta *</th>
                                             <th>Fecha Vencimiento *</th>

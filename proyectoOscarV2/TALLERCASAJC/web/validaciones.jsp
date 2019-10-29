@@ -25,6 +25,7 @@
 <script src="Recursos/js/bootstrap-select.min.js"></script>
 <script src="Recursos/js/jquery.backstretch.min.js"></script>
 <script src="Recursos/js/ImagenFondo.js"></script>
+<script src="validador/genericoJS.js"></script>
 
 <!---------------------------------------------------------------------------------->
 <!--------------------------VISTA PREVIA DE LA FACTURA------------------------------->
@@ -284,8 +285,6 @@
                         <label class="control-label col-md-1">Cajero:</label>
                         <div class="col-md-3">
                             <select class="form-control" id="codigocajero_ap">
-                                <option value="1">ivanfernandez</option>
-                                <option value="2">Alberto</option>
                             </select>
                         </div>
                         <label class="control-label col-md-3">Timbrado Nro:</label>
@@ -430,158 +429,3 @@
 <!---------------------------------------------------------------------------------->
 
 
-<div class="modal fade" id="cobroview" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog" style="width: 1000px">
-        <div class="modal-content">
-            <!--HEADER DE LA VENTANA--->
-            <div class="modal-header">
-                <h4 class="modal-title" style="text-align: center;" id="textM">Cobros</h4>
-            </div>
-            <!--CONTENIDO DE LA VENTANA--->
-            <div class="panel panel-footer">
-                <a class="close btn btn-md btn-danger" data-dismiss="modal" aria-hidden="true" title="Salir">X</a>
-                <a class="btn btn-md btn-primary" onclick=" guardarventa()"><span class="glyphicon glyphicon-floppy-save"></span> Guardar</a>
-            </div>
-            <DIV class="modal-body">
-                <form class="form-horizontal" id="miForm" >
-                    <div class="form-group">
-                        <label class="control-label col-md-2">Fact Nro.</label>
-                        <div class="col-md-2">
-                            <input class="form-control" type="text" id="factura_cobro" disabled="">
-                        </div>
-                        <label class="control-label col-md-2">Tipo de Cobro</label>
-                        <div class="col-md-3">
-                            <select class="form-control" id="v_tipocobro" onchange="condicionCobro()">
-                                <option value="1">Efectivo</option>
-                                <option value="2">Tarjeta</option>
-                                <option value="3">Cheque</option>
-                            </select>
-                        </div>
-                        <label class="control-label col-md-1">Total.</label>
-                        <div class="col-md-2">
-                            <input class="form-control" type="text" id="v_totalcobro" disabled="">
-                        </div>
-
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-md-2">Cliente.</label>
-                        <div class="col-md-2">
-                            <input class="form-control" type="text" id="v_clienteci" disabled="">
-                        </div>
-                        <div class="col-md-6">
-                            <input class="form-control" type="text" id="v_clientenombre" disabled="">
-                        </div>
-
-                    </div>
-                    <div class="">
-                        <strong class="alert-warning" id="texcobro_v">Cobro por Cheque</strong>
-
-                        <div class="form-group panel panel-footer" id="v_chque" style="display:none">
-                            <label class="control-label col-md-2 ">Nro.Cheque.</label>
-                            <div class="col-md-2">
-                                <input class="form-control" type="text" id="nrochque_ch" >
-                            </div>
-                            <label class="control-label col-md-1">Banco.</label>
-                            <div class="col-md-3">
-                                <select class="form-control"  id="banco_che">
-                                    <option value="1">ITAU</option>
-                                    <option value="2">VISION</option>
-                                    <option value="3">FAMILIAR</option>
-                                    <option value="4">REGIONAL</option>
-                                    <option value="5">CONTINENTAL</option>
-                                </select>
-                            </div>
-                            <label class="control-label col-md-2">Tipo Cheque.</label>
-                            <div class="col-md-2">
-                                <select class="form-control" id="tipocheque_ch" >
-                                    <option value="1">AL DIA</option>
-                                    <option value="2">DIFERIDO</option>
-
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group panel panel-footer" id="v_tarjeta" style="display:none">
-                            <label class="control-label col-md-2">Ent. Emisora</label>
-                            <div class="col-md-2">
-                                <select class="form-control" id="entemisora_t"  >
-                                    <option value="4">VISA</option>
-                                    <option value="5">MASTERCARD</option>
-                                    <option value="6">AMERICA ESPRESS</option>
-                                </select>
-                            </div>
-                            <label class="control-label col-md-1">Tipo Tarjeta.</label>
-                            <div class="col-md-3">
-                                <select class="form-control" id="tarjettipo_t"  >
-                                    <option value="1">CRÉDITO</option>
-                                    <option value="2">DÉDBITO</option>
-
-                                </select>
-                            </div>
-                            <label class="control-label col-md-2">Nro.Boleta.</label>
-                            <div class="col-md-2">
-                                <input class="form-control" type="text" id="nroboleta_t">
-                            </div>
-                        </div>
-
-                        <div class="form-group panel panel-primary panel-footer">
-                            <label class="control-label col-md-3">Monto a Cobrar.</label>
-                            <div class="col-md-3">
-                                <input class="form-control" type="text" id="v_montocobrar" onkeyup=" valores('v_montocobrar')"
-                                       onkeydown="
-                                               if (event.keyCode === 13) {
-                                                   agregarfilacobro();
-                                               }">
-                            </div>
-                            <div class="col-md-2">
-                                <a class="btn btn-block btn-primary"><span class="glyphicon glyphicon-download"></span></a>
-                            </div>
-
-                        </div>
-                        <div class="form-group" id="scrollcobro">
-                            <div >
-                                <table class="table table-hover table-bordered table-striped" id="tabladetallecobros">
-                                    <thead>
-                                        <tr>
-                                            <td style="display: none">idtipocobro</td>
-                                            <td >Tipo Cobro</td>
-                                            <td>Nro. Cheque</td>
-                                            <td style="display: none">idbancocheque</td>
-                                            <td>Banco Chque</td>
-                                            <td style="display: none">idtipotarjeta</td>
-                                            <td style="display: none">identidademisora</td>
-                                            <td>entidademisora</td>
-                                            <td>Tipo Tarjeta</td>
-                                            <td>Nro. Boleta</td>
-                                            <td>Monto</td>
-                                            <td>Estado</td>
-                                            <td style="display: none">idtipochque</td>
-                                            <td style="display: none">tipocheque</td>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody></tbody>
-                                </table>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="form-group" >
-                        <label class="control-label col-md-6 col-lg-pull-0">Total Cobro :</label>
-                        <div class="col-md-2">
-                            <input class="form-control " id="totalcobro_v" type="text" disabled="">
-                        </div>
-                        <label class="control-label col-md-2 col-lg-offset-0">Diferencia :</label>
-                        <div class="col-md-2">
-                            <input class="form-control " id="diferencia_v" type="text" disabled="">
-                        </div>
-
-
-
-                    </div>
-
-                </form>   
-            </div>
-        </div>
-    </div> 
-</div>

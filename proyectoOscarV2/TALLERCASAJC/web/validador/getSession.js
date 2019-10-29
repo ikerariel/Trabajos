@@ -113,6 +113,7 @@ function permisos(valor) {
             $('#rv_tipostarjetas').show();
             $('#rv_tipospagos').show();
             $('#rv_vendedor').show();
+            $('#m_cobros').show();
 
             $('#rst_ReferencialesServiciosTecnicos').show();
             $('#rst_modelos').show();

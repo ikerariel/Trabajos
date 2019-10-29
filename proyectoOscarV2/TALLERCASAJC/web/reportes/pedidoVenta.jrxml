@@ -16,8 +16,7 @@ left join detpedidosventas d on p.id_pedidoven=d.id_pedidoven
 left join articulos a on d.id_articulo=a.id_articulo
 left join clientes c on p.id_cliente = c.id_cliente
 left join vendedor v on p.idvendedor = v.idvendedor
-left join empleados emp on v.id_empleado = emp.id_empleado
-left join usuarios u on emp.id_empleado = u.id_empleado
+left join usuarios u on v.id_usuario = u.id_usuario
 left join estados e on p.id_estado=e.id_estado
 where p.id_estado in(1,3) and p.id_pedidoven=$P{id_pedidoven} order by p.id_pedidoven desc]]>
 	</queryString>

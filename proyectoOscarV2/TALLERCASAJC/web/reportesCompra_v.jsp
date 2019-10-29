@@ -123,7 +123,19 @@
         outputStream.write(bytes, 0, bytes.length);
         outputStream.flush();
         outputStream.close();
-    }
+    }if (codigo == 10) {
+  
+        File reporFile = new File(application.getRealPath("/reportes/ivaVenta.jasper"));
+        Map parameters = new HashMap();
+        parameters.put("fdesde", request.getParameter("fdesde"));
+        parameters.put("fhasta", request.getParameter("fhasta"));
+         parameters.put("vUser", request.getParameter("vUser"));
+        byte[] bytes = JasperRunManager.runReportToPdf(reporFile.getPath(), parameters, cn.getConexion());
+        response.setContentLength(bytes.length);
+        ServletOutputStream outputStream = response.getOutputStream();
+        outputStream.write(bytes, 0, bytes.length);
+        outputStream.flush();
+        outputStream.close();
       
 %>
 

@@ -12,14 +12,26 @@ package ModelDTO;
 public class ventaDTO {
 
     String cedula;
+    Integer idfactura;
+    Integer id_pedidoven;
+    Integer id_cuencob;
+    Integer vcantcuota;
+    Integer vmontocuota;
+    Integer intervalo;
+    String vfechavto;
     Integer idvendedor;
+    String tipodocumento;
+    Integer id_tipodocumento;
+    String descripcion;
     Integer id_articulo;
     String articulo;
     Integer cantidad;
     Integer precio;
     Integer id_impuesto;
+    Integer secuencia;
 
     Integer idgenerico;
+    Integer idtipopago;
     Integer telefono;
     String numerofac;
     String direccion;
@@ -54,12 +66,93 @@ public class ventaDTO {
     Integer id_apcica;
     Integer id_deposito;
     Integer cv;
+    Integer pedido;
     String fac_establecimiento;
     String fac_desde;
     String fac_hasta;
     String impuesto;
 
-    public ventaDTO(String cedula, Integer idvendedor, Integer id_articulo, String articulo, Integer cantidad, Integer precio, Integer id_estado,String impuesto, Integer id_impuesto) {
+    public Integer getId_pedidoven() {
+        return id_pedidoven;
+    }
+
+    public void setId_pedidoven(Integer id_pedidoven) {
+        this.id_pedidoven = id_pedidoven;
+    }
+
+    public Integer getId_cuencob() {
+        return id_cuencob;
+    }
+
+    public Integer getIdtipopago() {
+        return idtipopago;
+    }
+
+    public void setIdtipopago(Integer idtipopago) {
+        this.idtipopago = idtipopago;
+    }
+
+    public void setId_cuencob(Integer id_cuencob) {
+        this.id_cuencob = id_cuencob;
+    }
+
+    public Integer getVcantcuota() {
+        return vcantcuota;
+    }
+
+    public void setVcantcuota(Integer vcantcuota) {
+        this.vcantcuota = vcantcuota;
+    }
+
+    public Integer getVmontocuota() {
+        return vmontocuota;
+    }
+
+    public void setVmontocuota(Integer vmontocuota) {
+        this.vmontocuota = vmontocuota;
+    }
+
+    public Integer getIntervalo() {
+        return intervalo;
+    }
+
+    public void setIntervalo(Integer intervalo) {
+        this.intervalo = intervalo;
+    }
+
+    public String getVfechavto() {
+        return vfechavto;
+    }
+
+    public void setVfechavto(String vfechavto) {
+        this.vfechavto = vfechavto;
+    }
+
+    public Integer getIdfactura() {
+        return idfactura;
+    }
+
+    public void setIdfactura(Integer idfactura) {
+        this.idfactura = idfactura;
+    }
+
+    public Integer getId_tipodocumento() {
+        return id_tipodocumento;
+    }
+
+    public void setId_tipodocumento(Integer id_tipodocumento) {
+        this.id_tipodocumento = id_tipodocumento;
+    }
+
+    public Integer getSecuencia() {
+        return secuencia;
+    }
+
+    public void setSecuencia(Integer secuencia) {
+        this.secuencia = secuencia;
+    }
+
+    public ventaDTO(String cedula, Integer idvendedor, Integer id_articulo, String articulo, Integer cantidad, Integer precio, Integer id_estado,String impuesto, Integer pedido, Integer id_impuesto) {
         this.cedula = cedula;
         this.idvendedor = idvendedor;
         this.id_articulo = id_articulo;
@@ -68,6 +161,7 @@ public class ventaDTO {
         this.precio = precio;
         this.id_estado = id_estado;
         this.impuesto = impuesto;
+        this.pedido = pedido;
         this.id_impuesto = id_impuesto;
     }
 
@@ -202,12 +296,13 @@ public class ventaDTO {
         this.descripgenerico = descripgenerico;
     }
 
-    public ventaDTO(Integer id_timbrado, Integer numero, String inicio_fecha, String vencimientos, String est_descripcion, String fac_caja) {
+    public ventaDTO(Integer id_timbrado, Integer numero, String inicio_fecha, String vencimientos, String est_descripcion,String tipodocumento, String fac_caja) {
         this.id_timbrado = id_timbrado;
         this.numero = numero;
         this.inicio_fecha = inicio_fecha;
         this.vencimientos = vencimientos;
         this.est_descripcion = est_descripcion;
+        this.tipodocumento = tipodocumento;
         this.fac_caja = fac_caja;
 
     }

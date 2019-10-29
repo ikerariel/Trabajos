@@ -22,6 +22,7 @@
         <%@include file="validaciones.jsp" %>
         <script src="validador/validadorAperturacierrecaja.js"></script>
         <script src="validador/validadorFacturaventaa.js"></script>
+        <script src="validador/genericoJS.js"></script>
         <style>
             #scrolaper{
                 overflow: scroll;
@@ -71,6 +72,8 @@
                                 <!--<table class="table table-hover  table-condensed with-pager input-md" id="miTabla" onclick="seleccion()">-->
                                 <thead>
                                     <tr>
+                                        <th style="display: none"></th>
+                                        <th style="display: none"></th>
                                         <th>NRO REGISTRO.</th>
                                         <th>FECHA</th>
                                         <th>CAJA</th>

@@ -2,6 +2,7 @@ $(document).ready(function () {
     listatimbrados();
     getfacturacion();
     getapertura();
+    listarcajeros();
 
 });
 
@@ -47,6 +48,8 @@ function getapertura() {
             console.log(resp);
             $.each(resp, function (indice, valor) {
                 $("#v_tablaapertura").append($("<tr>").append($(
+                        "<td style=display:none>" + valor.id_caja + "</td>" +
+                        "<td style=display:none>" + valor.idcajero + "</td>" +
                         "<td>" + valor.id_apcica + "</td>" +
                         "<td>" + valor.apertura_fecha + "</td>" +
                         "<td>" + valor.caja + "</td>" +
@@ -109,35 +112,58 @@ function totalfacturdo() {
 }
 
 function insertarApetura() {
-    if ($('#montoapertura_ap').val() === "" || $('#idtimbrado_vp').val() === "" || $('#idtimbrado_ap').val() === "") {
-        alert('Algunos campos no fueron cargados correctamente...');
+    var vEstado;
+    var vCajero;
+    var vCaja;
+    var v_Caja = $('#codigocaja_ap').val();
+    var v_Cajero = $('#codigocajero_ap').val();
+    $('#v_tablaapertura').each(function () {
+        vCaja = $(this).find("td").eq(0).html(); //caja
+        vCajero = $(this).find("td").eq(1).html();//cajero
+        vEstado = $(this).find("td").eq(7).html();//estadoo
+
+    });
+    if (vCaja === v_Caja && vEstado === "ABIERTA") {
+        alert('Caja Abierta.!!');
+    } else if (v_Cajero === vCajero && vEstado === "ABIERTA") {
+alert('El cajero se encuentra en un caja abierta.!!');
     } else {
-        var res = confirm("Desea guardar la apertura ?");
-        if (res) {
-            apertura = {
-                'opcion': 3,
-                'montoapertura': $('#montoapertura_ap').val(),
-                'codigocaja': $('#codigocaja_ap').val(),
-                'codigosucursal': $('#codsucursal_v').val(),
-                'codigodeposito': $('#coddeposito_v').val(),
-                'codigosupervisor': $('#idsuperv_v').val(),
-                'codigocajero': $('#codigocajero_ap').val(),
-                'codigotimbrado': $('#idtimbrado_vp').val()
-            };
-
-            $.ajax({
-                url: "/TALLERCASAJC/aperturacierrecajaSERVLET",
-                type: 'POST',
-                data: apertura,
-                cache: false,
-                success: function () {
-                    alert('guardado');
-                }
-            });
+        if ($('#montoapertura_ap').val() === "" || $('#idtimbrado_ap').val() === "") {
+            alert('Algunos campos no fueron cargados correctamente...');
+        } else if (parseInt($('#montoapertura_ap').val().replace(/\./g, '')) < 100000) {
+            alert('El monto de apertura debe ser mayor o igual a 100.000gs');
         } else {
+            var res = confirm("Desea guardar la apertura ?");
+            if (res) {
+                apertura = {
+                    'opcion': 3,
+                    'montoapertura': $('#montoapertura_ap').val().replace(/\./g, ''),
+                    'codigocaja': $('#codigocaja_ap').val(),
+                    'codigosucursal': $('#codsucursal_v').val(),
+                    'codigodeposito': $('#coddeposito_v').val(),
+                    'codigouser': $('#idusersession_v').val(),
+                    'codigocajero': $('#codigocajero_ap').val(),
+                    'codigotimbrado': $('#idtimbrado_vp').val()
+                };
 
+                $.ajax({
+                    url: "/TALLERCASAJC/aperturacierrecajaSERVLET",
+                    type: 'POST',
+                    data: apertura,
+                    cache: false,
+                    dataType: 'text',
+                    success: function (resp) {
+                        alert('Apertura Guardada');
+                        location.reload();
+                    }
+                });
+            } else {
+
+            }
         }
     }
+
+
 
 
 
@@ -165,8 +191,10 @@ function insertarMovimientoapertura() {
                 type: 'POST',
                 data: movimiento,
                 cache: false,
-                success: function () {
-                    alert('guardado');
+                 dataType: 'text',
+                success: function (resp) {
+                    alert('Caja Cerrada.!!');
+                    location.reload();
                 }
             });
         });
@@ -282,8 +310,8 @@ function totalarqueo() {
 
 function seleccionarqueo() {
     $('#v_tablaapertura tr').click(function () {
-        $('#codarqueo_ap').val($(this).find("td").eq(0).html());
-        $('#estadoapertura_ap').val($(this).find("td").eq(5).html());
+        $('#codarqueo_ap').val($(this).find("td").eq(2).html());
+        $('#estadoapertura_ap').val($(this).find("td").eq(7).html());
 
     });
 }
@@ -358,8 +386,35 @@ function listatimbrados() {
         data: timbrado,
         cache: false,
         success: function (resp) {
+            if (JSON.stringify(resp) != '[]') {
+                var ord = JSON.stringify(resp);
+                var orden = JSON.parse(ord);
+                var nro = orden[0].timbradoapertura;
+                if (parseInt(nro) > 0) {
+                } else {
+                    $.each(resp, function (indice, value) {
+                        $("#listatimbrado").append("<option value= \"" + value.id_timbrado + "\"> " + value.numero + "</option>");
+
+                    });
+                }
+            }
+
+
+        }
+    });
+}
+function listarcajeros() {
+    cajeros = {
+        "opcion": 8
+    };
+    $.ajax({
+        url: "/TALLERCASAJC/aperturacierrecajaSERVLET",
+        type: 'POST',
+        data: cajeros,
+        cache: false,
+        success: function (resp) {
             $.each(resp, function (indice, value) {
-                $("#listatimbrado").append("<option value= \"" + value.id_apcica + "\"> " + value.apertura_fecha + "</option>");
+                $("#codigocajero_ap").append("<option value= \"" + value.idcajero + "\"> " + value.cajero + "</option>");
 
             });
 

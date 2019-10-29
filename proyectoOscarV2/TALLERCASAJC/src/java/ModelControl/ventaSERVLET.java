@@ -57,12 +57,18 @@ public class ventaSERVLET extends HttpServlet {
                 break;
             case 5:
                 vDTO.setNumerofac(request.getParameter("nrofac_v"));
-                vDTO.setTipoog(Integer.parseInt(request.getParameter("tipopag_v")));
+                vDTO.setTipoog(Integer.parseInt(request.getParameter("condVenta")));
                 vDTO.setId_cliente(Integer.parseInt(request.getParameter("idcliente_v")));
                 vDTO.setId_deposito(Integer.parseInt(request.getParameter("iddeposito_v")));
+                vDTO.setId_pedidoven(Integer.parseInt(request.getParameter("codpedidoventa")));
                 vDTO.setId_usuario(Integer.parseInt(request.getParameter("idusuario_v")));
                 vDTO.setIdvendedor(Integer.parseInt(request.getParameter("idvendendor_v")));
                 vDTO.setId_apcica(Integer.parseInt(request.getParameter("codapertura")));
+                vDTO.setIdfactura(Integer.parseInt(request.getParameter("codIdfacura")));
+                vDTO.setVcantcuota(Integer.parseInt(request.getParameter("vCantCuota")));
+                vDTO.setVmontocuota(Integer.parseInt(request.getParameter("vMontoCuota")));
+                vDTO.setIntervalo(Integer.parseInt(request.getParameter("vIntervalo")));
+                vDTO.setVfechavto(request.getParameter("vFechaVto"));
                 if (vDAO.insertarventa(vDTO)) {
                     System.out.println("FACTURADO CON EXITO");
                 } else {
@@ -84,7 +90,6 @@ public class ventaSERVLET extends HttpServlet {
                 break;
             case 8:
                 vDTO.setId_articulo(Integer.parseInt(request.getParameter("codarticulo_v")));
-                vDTO.setId_venta(Integer.parseInt(request.getParameter("codventa_v")));
                 vDTO.setCantidad(Integer.parseInt(request.getParameter("cantidad_v")));
                 vDTO.setPreciounitario(Integer.parseInt(request.getParameter("preciou_v")));
                 vDTO.setId_impuesto(Integer.parseInt(request.getParameter("codimpuesto_v")));
@@ -130,6 +135,7 @@ public class ventaSERVLET extends HttpServlet {
                 vDTO.setFac_caja(request.getParameter("caja_v"));
                 vDTO.setFac_desde(request.getParameter("fdesde_v"));
                 vDTO.setFac_hasta(request.getParameter("fhasta_v"));
+                vDTO.setId_tipodocumento(Integer.parseInt(request.getParameter("tipodocuemtno")));
                 if (vIMPL.insertartimbrado(vDTO)) {
                     System.out.println("DETALLE CON EXITO");
                 } else {
@@ -137,7 +143,7 @@ public class ventaSERVLET extends HttpServlet {
                 }
                 break;
             case 14:
-                vDTO.setNumero(Integer.parseInt(request.getParameter("codtimbrado_v")));
+                vDTO.setSecuencia(Integer.parseInt(request.getParameter("secuenca_v")));
                 vDTO.setNumerofac(request.getParameter("numfactura_v"));
 
                 if (vIMPL.insertardetallefacturas(vDTO)) {
@@ -149,11 +155,11 @@ public class ventaSERVLET extends HttpServlet {
             case 15:
                 out.println(vDAO.getfac(request.getParameter("logueo")));
                 break;
-                
+
             case 16:
                 vDTO.setImporte(Integer.parseInt(request.getParameter("impote_v")));
-                vDTO.setId_cobro(Integer.parseInt(request.getParameter("idtipopago_v")));
-                vDTO.setId_venta(Integer.parseInt(request.getParameter("codigoventa_v")));
+                vDTO.setIdtipopago(Integer.parseInt(request.getParameter("idtipopago_v")));
+                vDTO.setId_cuencob(Integer.parseInt(request.getParameter("codigocobro")));
                 if (vIMPL.insertarcobro(vDTO)) {
                     System.out.println("INSERTADO EL COBRO");
                 } else {
@@ -161,7 +167,7 @@ public class ventaSERVLET extends HttpServlet {
                 }
                 break;
             case 17:
-                vDTO.setId_venta(Integer.parseInt(request.getParameter("codigoventa_v")));
+                vDTO.setId_cuencob(Integer.parseInt(request.getParameter("codCobrov")));
                 vDTO.setTarjnrobol(Integer.parseInt(request.getParameter("nroboleta_v")));
                 vDTO.setId_entiemi(Integer.parseInt(request.getParameter("entidademisora_v")));
                 vDTO.setId_tipotarjeta(Integer.parseInt(request.getParameter("tipotarjeta_v")));
@@ -174,7 +180,7 @@ public class ventaSERVLET extends HttpServlet {
             case 18:
                 vDTO.setNrochque(Integer.parseInt(request.getParameter("nrocheque_v")));
                 vDTO.setId_tipocheque(Integer.parseInt(request.getParameter("tipocheque_v")));
-                vDTO.setId_venta(Integer.parseInt(request.getParameter("codigoventa_vv")));
+                vDTO.setId_cuencob(Integer.parseInt(request.getParameter("codCobro")));
                 vDTO.setId_bancocheque(Integer.parseInt(request.getParameter("banco_v")));
                 if (vIMPL.insertarcobrocheque(vDTO)) {
                     System.out.println("INSERTADO EL COBRO EN CHEQUE");
@@ -182,11 +188,14 @@ public class ventaSERVLET extends HttpServlet {
                     System.out.println("NO SS PUDO INSERTAR EL COBRO DE CHEQUE");
                 }
                 break;
-                   case 19:
+            case 19:
                 out.println(vDAO.getpedidoventafactura(Integer.parseInt(request.getParameter("facPedidoVenta"))));
                 break;
-                   case 20:
+            case 20:
                 out.println(vDAO.nletra(Integer.parseInt(request.getParameter("monto"))));
+                break;
+            case 21:
+                out.println(vDAO.gettipodocumento());
                 break;
 
         }
