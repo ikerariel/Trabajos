@@ -28,7 +28,7 @@
                             <li><a href="">SubMenu2</a></li>
                         </ul>
                         <li><a style="display: none"    href="parametros.jsp" id="m_parametros"><span class="glyphicon glyphicon-chevron-down"></span> Registras Parámetros</a></li>
-                        <li><a style="display: none" href="aperturacaja.jsp"id="m_pedidoventas"><span class="glyphicon glyphicon-chevron-down"></span> Pedidos Ventas</a></li>
+                        <li><a style="display: none" href="PedidosVenta.jsp"id="m_pedidoventas"><span class="glyphicon glyphicon-chevron-down"></span> Pedidos Ventas</a></li>
                         <li><a style="display: none" href="aperturacaja.jsp" id="m_aperturacaja"><span class="glyphicon glyphicon-chevron-down"></span> Apertura de Caja</a></li>
                         <li><a style="display: none" href="FacturasVenta.jsp" id="m_facturacion"><span class="glyphicon glyphicon-chevron-down"></span> Facturación</a></li>
                         <li><a style="display: none" href="cobros.jsp" id="m_cobros"><span class="glyphicon glyphicon-chevron-down"></span> Registrar Cobros</a></li>

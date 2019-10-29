@@ -25,7 +25,7 @@ public class Conexion {
     private final String ControladorBD = "org.postgresql.Driver";
     //private final String ControladorBD = "com.mysql.jdbc.Driver";
     
-    private final String baseDatos = "oscar";
+    private final String baseDatos = "oscartesis";
 //    private final String baseDatos = "bd_casajctesiss";
     private final String usuario = "postgres";
 //    private final String password = "123456";
